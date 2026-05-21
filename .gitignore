@@ -1,0 +1,72 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE local state
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+*.swp
+*.swo
+
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# Logs
+*.log
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+venv/
+ENV/
+
+# Python packaging / build output
+build/
+dist/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+.next/
+.nuxt/
+.vite/
+out/
+
+# Streamlit local secrets/cache
+.streamlit/secrets.toml
+
+# Infra / containers local state
+.podman/
+.tmp/
+tmp/
+
+# Local coding-agent adapters and personal config
+.claude/
+.codex/
+.gemini/
+.factory/
+.opencode/
+
+# Keep shared project skills tracked
+!.agents/
+!.agents/skills/
+!.agents/skills/**

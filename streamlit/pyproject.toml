@@ -1,0 +1,9 @@
+[project]
+name = "streamlit-app"
+version = "0.1.0"
+description = "Streamlit-based Python framework project for SKN28 3rd 1Team"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "streamlit>=1.57.0",
+]

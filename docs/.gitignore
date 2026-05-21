@@ -1,0 +1,9 @@
+# Temporary docs output
+.site/
+_book/
+
+# Logs
+*.log
+
+# Local drafts that should not be committed
+*.local.md

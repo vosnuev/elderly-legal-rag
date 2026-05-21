@@ -1,0 +1,23 @@
+# Local env
+.env
+.env.*
+!.env.example
+
+# uv / Python local environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Build output
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log

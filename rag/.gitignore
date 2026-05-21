@@ -1,0 +1,23 @@
+# Local env
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Data / generated artifacts
+.data/
+data/raw/
+data/processed/
+outputs/
+artifacts/
+
+# Logs
+*.log

@@ -1,0 +1,7 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Main backend service for the SKN28 3rd 1Team project"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
