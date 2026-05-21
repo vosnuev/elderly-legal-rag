@@ -143,43 +143,13 @@ Streamlit 기반 Python 프레임워크, 백엔드, RAG, 프론트엔드, 인프
 ```txt
 SKN28-3rd-1Team/
 ├── README.md
-├── requirements.txt
-│
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── embeddings/
-│
-├── docs/
-│   ├── project_description.md
-│   ├── rag_pipeline.md
-│   └── execution_guide.md
-│
-├── notebooks/
-│   ├── 01_data_loading.ipynb
-│   ├── 02_chunking.ipynb
-│   ├── 03_embedding.ipynb
-│   └── 04_rag_test.ipynb
-│
-├── src/
-│   ├── data/
-│   │   ├── load_documents.py
-│   │   └── preprocess.py
-│   │
-│   ├── rag/
-│   │   ├── embedding.py
-│   │   ├── vector_store.py
-│   │   ├── retriever.py
-│   │   └── chain.py
-│   │
-│   ├── app/
-│   │   └── streamlit_app.py
-│   │
-│   └── utils/
-│       └── helpers.py
-│
-└── assets/
-    └── images/
+├── .gitignore
+├── backend/          # 백엔드 서비스
+├── frontend/         # 프론트엔드 서비스
+├── infra/            # 인프라 및 배포 설정
+├── rag/              # RAG, 문서 파싱, 분석 관련 작업
+├── streamlit/        # Streamlit 기반 앱
+└── docs/             # 프로젝트 문서
 ```
 
 ## Environment Files
