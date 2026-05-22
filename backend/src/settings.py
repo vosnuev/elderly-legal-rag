@@ -1,0 +1,38 @@
+from __future__ import annotations
+
+from functools import lru_cache
+from pathlib import Path
+
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+SERVICE_DIR = Path(__file__).resolve().parents[1]
+SRC_DIR = SERVICE_DIR / "src"
+REPO_ROOT = SERVICE_DIR.parent
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=SERVICE_DIR / ".env",
+        env_file_encoding="utf-8",
+        env_prefix="BACKEND_",
+        extra="ignore",
+    )
+
+    service_name: str = "SKN28 Backend"
+    service_version: str = "0.1.0"
+    api_host: str = "127.0.0.1"
+    api_port: int = 8000
+    reload: bool = True
+    cors_origins: list[str] = Field(default_factory=list)
+    langchain_project: str | None = None
+    repo_root: Path = REPO_ROOT
+    src_dir: Path = SRC_DIR
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()

@@ -1,13 +1,13 @@
 [project]
-name = "streamlit-app"
+name = "rag"
 version = "0.1.0"
-description = "Streamlit-based Python framework project for SKN28 3rd 1Team"
+description = "RAG and Microsoft GraphRAG workspace for SKN28 3rd 1Team"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
+    "graphrag>=3.0.9",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.1",
-    "streamlit>=1.57.0",
 ]
 
 [tool.uv]

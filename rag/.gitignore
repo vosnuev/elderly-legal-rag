@@ -16,6 +16,10 @@ venv/
 .data/
 data/raw/
 data/processed/
+workspace/
+input/
+output/
+cache/
 outputs/
 artifacts/
 
