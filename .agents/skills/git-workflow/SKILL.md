@@ -42,6 +42,16 @@ Rules:
 - Do not commit secrets, `.env`, virtual environments, generated build output, or personal agent config.
 - Avoid WIP commits unless the user requests a checkpoint or handoff.
 
+## Atomic Commits
+
+Use atomic commits by default.
+
+- Each commit should represent one reviewable reason for change.
+- Split work by service, domain, or workflow when changes are not directly dependent on each other.
+- Keep generated files, binary assets, docs, and code in separate commits unless they describe the same behavior change.
+- Stage files deliberately and review `git diff --staged` before committing.
+- If the branch starts collecting unrelated follow-up work, open or update a GitHub issue and move that work to a separate branch.
+
 ## Pull Requests
 
 PRs should target `main` and include:

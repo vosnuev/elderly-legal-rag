@@ -31,6 +31,7 @@ bootcamp-project/
 ## Project Skills
 
 Project-scoped skills are committed under `.agents/skills/` and are the canonical shared skill source for this repo.
+Keep skills for reusable agent workflows. Static repo structure rules live in this file, and README/documentation rules live in shared rules and the relevant docs.
 
 Use these skills when relevant:
 
@@ -39,12 +40,10 @@ Use these skills when relevant:
 - `git-commit`: diff analysis, staging guidance, and commit message generation.
 - `git-workflow`: branch, commit, and pull request decisions.
 - `github-issues`: GitHub issue creation, updates, labels, metadata, dependencies, and workflows.
-- `monorepo-structure`: directory ownership and environment-file placement.
 - `prd`: product requirements document creation and refinement.
-- `readme-docs`: README and documentation maintenance.
 - `shadcn`: shadcn/ui component usage, styling, customization, and project guidance.
-- `uv-python`: Python project setup and dependency management with uv.
-- `web-design-guidelines`: UI, UX, and accessibility review guidance.
+- `uv-python`: repo-specific Python setup and dependency management with uv.
+- `web-design-guidelines`: Vercel-sourced UI, UX, and accessibility review guidance.
 
 Skill adapter directories for specific tools or agents are local-only unless the team explicitly approves committing them. Generated or personal directories such as `.claude/`, `.codex/`, `.gemini/`, `.factory/`, and `.opencode/` must not be committed.
 
@@ -73,6 +72,15 @@ This repo uses GitHub Flow.
 - Do not mix unrelated frontend, backend, RAG, Streamlit, infra, or docs changes in one commit.
 - Avoid WIP commits unless the user asks for a checkpoint or handoff commit.
 - Commit messages must be written in Korean.
+
+### Atomic Commit Rules
+
+- One commit should have one clear reason to exist.
+- Split unrelated changes by service, domain, or workflow even when they are edited in the same session.
+- Keep code, config, docs, and binary assets in separate commits unless the docs/assets directly explain the same change.
+- Stage files intentionally. Review `git diff --staged` before committing.
+- Do not sweep ignored files, local notes, generated output, or personal adapter config into a commit.
+- If a task grows beyond the current branch scope, create or update a GitHub issue and move the extra work to a separate branch.
 
 ### Pull Request Rules
 
