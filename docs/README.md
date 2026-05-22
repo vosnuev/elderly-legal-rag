@@ -9,6 +9,7 @@
 - `server_onboarding_human_guide.docx`: 사람에게 공유하는 서버 접속 온보딩 문서
 - `ai_agent_dependency_prereq_guide.docx`: AI 에이전트 의존성/사전 준비 가이드
 - `linear_mcp_vscode_port_forwarding_guide.docx`: Linear MCP와 VS Code 포트 포워딩 가이드
+- `linear_mcp_token_setup_guide.docx`: Linear MCP 토큰 발급 및 Codex 연결 가이드
 - `assets/`: 문서에서 사용하는 이미지 자료
 
 문서 작성 원칙:
