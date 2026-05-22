@@ -10,6 +10,7 @@
 - `ai_agent_dependency_prereq_guide.docx`: AI 에이전트 의존성/사전 준비 가이드
 - `linear_mcp_vscode_port_forwarding_guide.docx`: Linear MCP와 VS Code 포트 포워딩 가이드
 - `linear_mcp_token_setup_guide.docx`: Linear MCP 토큰 발급 및 Codex 연결 가이드
+- `meeting/`: 회의록 및 의사결정 기록
 - `assets/`: 문서에서 사용하는 이미지 자료
 
 문서 작성 원칙:
