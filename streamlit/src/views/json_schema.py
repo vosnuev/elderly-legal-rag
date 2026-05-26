@@ -1,5 +1,9 @@
 import streamlit as st
 
+from structured_logging import get_logger
+
+logger = get_logger(__name__)
+
 
 RESPONSE_SCHEMA = {
     "summary": "string",
@@ -12,6 +16,13 @@ RESPONSE_SCHEMA = {
 
 
 def render_json_schema() -> None:
+    logger.info(
+        "json_schema_view_rendered",
+        field_count=len(RESPONSE_SCHEMA),
+        fields=list(RESPONSE_SCHEMA.keys()),
+        schema_name="response_schema",
+    )
+
     st.title("응답 JSON 스키마")
     st.write(
         "프론트는 markdown 대신 구조화된 JSON 응답을 백엔드에서 받는 것이 안정적인 렌더링의 핵심입니다."

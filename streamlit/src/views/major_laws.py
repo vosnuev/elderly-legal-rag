@@ -3,7 +3,11 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from structured_logging import get_logger
+
 from .legal_data import LAW_SUMMARIES
+
+logger = get_logger(__name__)
 
 
 def _laws_table() -> pd.DataFrame:
@@ -37,6 +41,11 @@ def render_major_laws() -> None:
         for law in LAW_SUMMARIES
         if selected_category == "전체" or law["category"] == selected_category
     ]
+    logger.info(
+        "major_laws_view_rendered",
+        category=selected_category,
+        law_count=len(laws),
+    )
 
     for law in laws:
         with st.container(border=True):
