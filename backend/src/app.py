@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.chat import router as chat_router
 from settings import settings
 
 
@@ -33,6 +34,8 @@ def create_app() -> FastAPI:
             "agent_stack": ["LangChain", "LangGraph"],
             "settings": "pydantic-settings",
         }
+
+    app.include_router(chat_router)
 
     return app
 

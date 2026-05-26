@@ -74,3 +74,7 @@ tmp/
 !.agents/
 !.agents/skills/
 !.agents/skills/**
+
+
+#instructions
+instructions.md
