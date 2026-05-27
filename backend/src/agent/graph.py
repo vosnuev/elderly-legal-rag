@@ -27,6 +27,8 @@ from settings import settings
 from logger import get_logger
 
 logger = get_logger(__name__)
+FOLLOW_UP_CONTEXT_TURNS = 2
+FOLLOW_UP_CONTEXT_CHARS = 240
 
 # LLM이 생성한 보기 3개 파싱 출력 모델
 class ClarificationOptionOutput(BaseModel):
@@ -145,6 +147,27 @@ def _excerpt(text: str, limit: int = 500) -> str:
     return f"{normalized[: limit - 3]}..."
 
 
+# 검색 쿼리 조각의 공백을 정리
+def _normalize_query_part(text: str | None) -> str:
+    return " ".join((text or "").split())
+
+
+# 검색 쿼리 조각을 중복 없이 추가
+def _append_unique_query_part(parts: list[str], text: str | None) -> None:
+    normalized = _normalize_query_part(text)
+    if normalized and normalized not in parts:
+        parts.append(normalized)
+
+
+# 긴 검색 쿼리를 설정된 길이 안으로 축소
+def _trim_query_text(text: str, limit: int | None = None) -> str:
+    max_chars = limit or settings.rag_search_query_max_chars
+    normalized = text.strip()
+    if len(normalized) <= max_chars:
+        return normalized
+    return normalized[: max_chars - 3].rstrip() + "..."
+
+
 # 사용자에게 보여줄 출처 라벨 문자열 생성
 def _source_label(document: RetrievedDocument) -> str:
     source = document.source
@@ -236,25 +259,30 @@ def _retrieve_documents(query: str) -> list[RetrievedDocument]:
         for result in search_response.results
     ]
 
-# 원 질문 + 선택/기타 의도 = RAG 검색 쿼리 생성
-def _build_rag_query(request: ChatRequest) -> str:
-    primary_terms = [request.question]
+# 원 질문 + 선택/기타 의도 + 필요 맥락 = RAG 검색 쿼리 생성
+def _build_rag_query(request: ChatRequest, context: str | None = None) -> str:
+    primary_terms: list[str] = []
+    _append_unique_query_part(primary_terms, request.question)
 
     if request.selected_option is not None:
         selected = request.selected_option
-        primary_terms.append(selected.search_focus or selected.title)
+        _append_unique_query_part(primary_terms, selected.search_focus or selected.title)
 
     if request.custom_intent:
-        primary_terms.append(request.custom_intent)
+        _append_unique_query_part(primary_terms, request.custom_intent)
 
     primary_text = " ".join(primary_terms)
     lines = [primary_text]
+
+    normalized_context = _normalize_query_part(context)
+    if normalized_context:
+        lines.append(f"이전 맥락: {_trim_query_text(normalized_context, FOLLOW_UP_CONTEXT_CHARS)}")
 
     profile_terms = _profile_search_terms(request, primary_text)
     if profile_terms:
         lines.append(" ".join(profile_terms))
 
-    return "\n".join(lines)
+    return _trim_query_text("\n".join(line for line in lines if line))
 
 # LLM 보기 생성 실패 시, 사용할 기본 보기 3개 반환
 def _fallback_options() -> list[ClarificationOption]:
@@ -375,8 +403,9 @@ def answer_with_selected_option(
 def answer_with_custom_intent(
     request: ChatRequest,
     history: list[ConversationTurn] | None = None,
+    context: str | None = None,
 ) -> ChatResponse:
-    query = _build_rag_query(request)
+    query = _build_rag_query(request, context)
     try:
         documents = _retrieve_documents(query)
     except RagSearchError as exc:
@@ -423,18 +452,13 @@ def answer_with_follow_up(
 ) -> ChatResponse:
     recent_context = _recent_user_context(history)
     follow_up_intent = request.custom_intent or request.question
-    custom_intent = (
-        f"{recent_context}\n{follow_up_intent}"
-        if recent_context
-        else follow_up_intent
-    )
 
     request = request.model_copy(
         update={
-            "custom_intent": custom_intent,
+            "custom_intent": follow_up_intent,
         }
     )
-    response = answer_with_custom_intent(request, history)
+    response = answer_with_custom_intent(request, history, context=recent_context)
     return response.model_copy(update={"question_type": QuestionType.FOLLOW_UP})
 
 # LLM이 생성한 근거 기반 답변을 파싱하기 위한 출력 모델
@@ -465,8 +489,17 @@ def _recent_user_context(history: list[ConversationTurn] | None) -> str:
     if not history:
         return ""
 
-    user_turns = [turn.content for turn in history if turn.role == "user"]
-    return "\n".join(user_turns[-3:])
+    user_turns: list[str] = []
+    for turn in reversed(history):
+        if turn.role != "user":
+            continue
+        text = _normalize_query_part(turn.content)
+        if text:
+            user_turns.append(_trim_query_text(text, FOLLOW_UP_CONTEXT_CHARS // 2))
+        if len(user_turns) >= FOLLOW_UP_CONTEXT_TURNS:
+            break
+
+    return _trim_query_text(" | ".join(reversed(user_turns)), FOLLOW_UP_CONTEXT_CHARS)
 
 
 # 검색 문서 목록을 LLM prompt에 넣을 근거 문자열로 변환

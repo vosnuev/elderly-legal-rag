@@ -25,8 +25,10 @@ class Settings(BaseSettings):
     service_version: str = "0.1.0"
     api_host: str = "127.0.0.1"
     api_port: int = 8000
-    reload: bool = True
-    cors_origins: list[str] = Field(default_factory=list)
+    reload: bool = False
+    cors_origins: list[str] = Field(
+        default_factory=lambda: ["http://localhost:5173", "http://localhost:3000"],
+    )
     langchain_project: str | None = None
     repo_root: Path = REPO_ROOT
     src_dir: Path = SRC_DIR
@@ -35,6 +37,25 @@ class Settings(BaseSettings):
     output_dir: Path = RAG_DIR / "output"
     cache_dir: Path = RAG_DIR / "cache"
     upload_dir: Path = SERVICE_DIR / "storage" / "uploads"
+    upload_max_file_mb: int = Field(default=50, gt=0)
+    upload_allowed_extensions: list[str] = Field(
+        default_factory=lambda: [".csv", ".json", ".txt", ".md", ".pdf", ".docx", ".hwp"],
+    )
+    upload_allowed_mime_types: dict[str, list[str]] = Field(
+        default_factory=lambda: {
+            ".csv": ["text/csv", "application/csv", "application/vnd.ms-excel", "text/plain"],
+            ".json": ["application/json", "text/json", "text/plain"],
+            ".txt": ["text/plain"],
+            ".md": ["text/markdown", "text/x-markdown", "text/plain"],
+            ".pdf": ["application/pdf"],
+            ".docx": ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+            ".hwp": [
+                "application/x-hwp",
+                "application/haansofthwp",
+                "application/vnd.hancom.hwp",
+            ],
+        },
+    )
 
     openrouter_api_key: SecretStr | None = None
     openrouter_model: str = "openai/gpt-oss-120b"
@@ -49,14 +70,20 @@ class Settings(BaseSettings):
 
     agent_clarification_option_count: int = Field(default=3, ge=3, le=3)
     agent_custom_input_enabled: bool = True
-    agent_demo_mode: bool = True
+
+    session_ttl_seconds: int = Field(default=3600, gt=0)
 
     rag_ingest_url: str = "http://127.0.0.1:8010/ingest"
     rag_ingest_status_url: str = "http://127.0.0.1:8010/ingest/status"
     rag_ingest_timeout_ms: int = Field(default=10_000, gt=0)
     rag_search_url: str = "http://127.0.0.1:8010/search"
     rag_search_top_k: int = Field(default=5, ge=1, le=20)
+    rag_search_query_max_chars: int = Field(default=500, ge=100, le=2000)
     rag_search_timeout_ms: int = Field(default=10_000, gt=0)
+
+    rate_limit_enabled: bool = True
+    rate_limit_requests: int = Field(default=60, gt=0)
+    rate_limit_window_seconds: int = Field(default=60, gt=0)
 
     log_level: str = "INFO"
     log_llm_context: bool = True

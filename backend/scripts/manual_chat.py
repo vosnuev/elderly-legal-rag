@@ -8,6 +8,8 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+ACTIVE_SESSION_ID: str | None = None
+
 
 # 사용자가 터미널 테스트 종료를 요청했을 때 쓰는 예외
 class QuitRequested(Exception):
@@ -36,6 +38,12 @@ def _input_choice(prompt: str) -> str:
 def _optional_text(prompt: str) -> str | None:
     value = _input(prompt)
     return value or None
+
+
+# 종료 시 삭제할 현재 backend 세션 ID 저장
+def _set_active_session_id(session_id: str | None) -> None:
+    global ACTIVE_SESSION_ID
+    ACTIVE_SESSION_ID = session_id
 
 
 # 선택 입력값을 양의 정수 또는 None으로 받음
@@ -200,6 +208,25 @@ def post_chat(base_url: str, payload: dict[str, Any], timeout: int) -> dict[str,
         print("\n백엔드가 JSON이 아닌 응답을 반환했습니다.")
         print(body)
         return None
+
+
+# backend 세션 메모리 삭제
+def delete_chat_session(base_url: str, session_id: str | None, timeout: int) -> None:
+    if not session_id:
+        return
+
+    url = f"{base_url.rstrip('/')}/api/chat/session/{session_id}"
+    request = Request(
+        url,
+        headers={"Accept": "application/json"},
+        method="DELETE",
+    )
+
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            response.read()
+    except (HTTPError, TimeoutError, URLError):
+        print("\n세션 메모리 삭제 요청에 실패했습니다.")
 
 
 # backend HTTP 오류 응답을 사용자에게 읽기 쉬운 형태로 출력
@@ -431,6 +458,7 @@ def run(base_url: str, timeout: int, stream_delay: float) -> int:
             continue
 
         session_id = response.get("session_id") or session_id
+        _set_active_session_id(session_id)
         profile_dirty = False
         render_response(response, stream_delay)
 
@@ -452,6 +480,7 @@ def run(base_url: str, timeout: int, stream_delay: float) -> int:
                 continue
             if isinstance(handled, str):
                 session_id = handled
+                _set_active_session_id(session_id)
 
         next_mode = ask_next_mode(can_go_back=last_clarification_response is not None)
         if next_mode == "quit":
@@ -488,6 +517,7 @@ def handle_clarification_choice(
         return session_id
 
     next_session_id = follow_response.get("session_id") or session_id
+    _set_active_session_id(next_session_id)
     render_response(follow_response, stream_delay)
     return next_session_id
 
@@ -497,8 +527,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Backend /api/chat manual terminal tester")
     parser.add_argument(
         "--base-url",
-        default="http://127.0.0.1:8001",
-        help="Backend base URL. Default: http://127.0.0.1:8001",
+        default="http://127.0.0.1:8000",
+        help="Backend base URL. Default: http://127.0.0.1:8000",
     )
     parser.add_argument(
         "--timeout",
@@ -516,11 +546,16 @@ def parse_args() -> argparse.Namespace:
 
 
 if __name__ == "__main__":
+    args = parse_args()
+    exit_code = 0
     try:
-        raise SystemExit(run(**vars(parse_args())))
+        exit_code = run(**vars(args))
     except QuitRequested:
         print("\n종료합니다.")
-        sys.exit(0)
     except KeyboardInterrupt:
         print("\n종료합니다.")
-        sys.exit(130)
+        exit_code = 130
+    finally:
+        delete_chat_session(args.base_url, ACTIVE_SESSION_ID, args.timeout)
+
+    sys.exit(exit_code)
