@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import csv
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -13,7 +14,7 @@ from settings import settings
 
 
 class SearchRequest(BaseModel):
-    query: str = Field(..., min_length=1)
+    query: str = Field(min_length=1)
     top_k: int = Field(default=5, ge=1, le=20)
 
 
@@ -57,6 +58,28 @@ def _row_to_content(row: dict[str, str]) -> str:
     return "\n".join(f"{key}: {value}" for key, value in row.items() if value)
 
 
+def _first_present(data: dict[str, Any], keys: tuple[str, ...]) -> str | None:
+    for key in keys:
+        value = data.get(key)
+        if value:
+            return str(value)
+    return None
+
+
+def _source_title_from_data(data: dict[str, Any], fallback: str) -> str:
+    return (
+        _first_present(
+            data,
+            ("출처명", "source_title", "source", "title", "정책명", "주요복지정책", "name"),
+        )
+        or fallback
+    )
+
+
+def _url_from_data(data: dict[str, Any]) -> str | None:
+    return _first_present(data, ("출처URL", "url", "source_url", "link"))
+
+
 def _load_csv_documents(path: Path) -> list[RagDocument]:
     text = path.read_text(encoding="utf-8-sig")
     reader = csv.DictReader(text.splitlines())
@@ -70,21 +93,14 @@ def _load_csv_documents(path: Path) -> list[RagDocument]:
         if not content.strip():
             continue
 
-        source_title = (
-            row_data.get("출처명")
-            or row_data.get("정책명")
-            or row_data.get("주요복지정책")
-            or path.stem
-        )
-
         documents.append(
             RagDocument(
                 content=content,
-                source_title=source_title,
+                source_title=_source_title_from_data(row_data, path.stem),
                 file_name=path.name,
                 file_type="csv",
                 location=f"row {row_number}",
-                url=row_data.get("출처URL") or None,
+                url=_url_from_data(row_data),
             )
         )
 
@@ -105,11 +121,13 @@ def _load_json_documents(path: Path) -> list[RagDocument]:
             documents.append(
                 RagDocument(
                     content=_json_to_text(item),
-                    source_title=path.stem,
+                    source_title=_source_title_from_data(item, path.stem)
+                    if isinstance(item, dict)
+                    else path.stem,
                     file_name=path.name,
                     file_type="json",
                     location=f"item {index}",
-                    url=item.get("url") if isinstance(item, dict) else None,
+                    url=_url_from_data(item) if isinstance(item, dict) else None,
                 )
             )
         return documents
@@ -119,11 +137,13 @@ def _load_json_documents(path: Path) -> list[RagDocument]:
             documents.append(
                 RagDocument(
                     content=_json_to_text(value),
-                    source_title=str(key),
+                    source_title=_source_title_from_data(value, str(key))
+                    if isinstance(value, dict)
+                    else str(key),
                     file_name=path.name,
                     file_type="json",
                     location=f"key {key}",
-                    url=value.get("url") if isinstance(value, dict) else None,
+                    url=_url_from_data(value) if isinstance(value, dict) else None,
                 )
             )
         return documents
@@ -198,23 +218,66 @@ def _load_documents() -> list[RagDocument]:
         if not path.is_file():
             continue
 
-        if path.suffix == ".csv":
+        suffix = path.suffix.lower()
+
+        if suffix == ".csv":
             documents.extend(_load_csv_documents(path))
-        elif path.suffix == ".json":
+        elif suffix == ".json":
             documents.extend(_load_json_documents(path))
-        elif path.suffix == ".py":
+        elif suffix == ".py":
             documents.extend(_load_py_documents(path))
 
     return documents
 
 
+def _tokenize(text: str) -> list[str]:
+    tokens = re.findall(r"[0-9a-zA-Z가-힣]+", text.lower())
+    return [token for token in (_normalize_token(token) for token in tokens) if len(token) > 1]
+
+
+def _normalize_token(token: str) -> str:
+    suffixes = (
+        "에게서",
+        "으로",
+        "에서",
+        "에게",
+        "부터",
+        "까지",
+        "이다",
+        "입니다",
+        "과",
+        "와",
+        "은",
+        "는",
+        "이",
+        "가",
+        "을",
+        "를",
+        "도",
+        "만",
+    )
+    for suffix in suffixes:
+        if token.endswith(suffix) and len(token) > len(suffix) + 1:
+            return token[: -len(suffix)]
+    return token
+
+
 def _score(query: str, text: str) -> float:
-    terms = [term for term in query.lower().split() if term]
+    terms = list(dict.fromkeys(_tokenize(query)))
     if not terms:
         return 0.0
 
     lowered = text.lower()
+    primary_line = next((line.strip() for line in query.splitlines() if line.strip()), query)
+    primary_terms = list(dict.fromkeys(_tokenize(primary_line)))
+    primary_matched = sum(1 for term in primary_terms if term in lowered)
+    if len(primary_terms) >= 3:
+        if primary_matched < 2:
+            return 0.0
+
     matched = sum(1 for term in terms if term in lowered)
+    if len(terms) >= 3 and matched < 2:
+        return 0.0
 
     return matched / len(terms)
 

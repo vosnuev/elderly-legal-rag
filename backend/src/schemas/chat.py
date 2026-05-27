@@ -5,11 +5,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 class InputMode(StrEnum):
     TEXT = "text"
     VOICE = "voice"
-
 
 class QuestionType(StrEnum):
     SEARCH = "search"
@@ -18,11 +16,9 @@ class QuestionType(StrEnum):
     CUSTOM_INTENT = "custom_intent"
     FOLLOW_UP = "follow_up"
 
-
 class ResponseKind(StrEnum):
     CLARIFICATION = "clarification"
     ANSWER = "answer"
-
 
 class EligibilityStatus(StrEnum):
     ELIGIBLE = "eligible"
@@ -30,7 +26,6 @@ class EligibilityStatus(StrEnum):
     POSSIBLY_ELIGIBLE = "possibly_eligible"
     CONFIRMATION_REQUIRED = "confirmation_required"
     UNKNOWN = "unknown"
-
 
 class UserLocation(BaseModel):
     city: str | None = Field(default=None, description="시/도 또는 광역 지자체")
@@ -120,6 +115,7 @@ class EligibilityAssessment(BaseModel):
 
 
 class ChatResponse(BaseModel):
+    session_id: str | None = None
     kind: ResponseKind = ResponseKind.ANSWER
     question_type: QuestionType | None = None
     summary: str = ""

@@ -5,18 +5,22 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from langchain_core.output_parsers import PydanticOutputParser
-from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field, ValidationError
 
 from agent.openrouter_llm import get_chat_llm
+from prompt import create_clarification_prompt, create_grounded_answer_prompt
 from schemas.chat import(
     ChatRequest,
     ChatResponse,
     ClarificationOption,
     QuestionType,
     ResponseKind,
-    SourceReference
+    SourceReference,
+    LawReference,
+    TableData
 )
+
+from session_store import ConversationTurn
 from settings import settings
 from logger import get_logger
 
@@ -45,6 +49,58 @@ def _profile_context(request: ChatRequest) -> str:
             f"소득 메모 : {profile.income_note or '없음'}",
         ]
     )
+
+
+def _contains_any(text: str, keywords: tuple[str, ...]) -> bool:
+    return any(keyword in text for keyword in keywords)
+
+
+def _profile_search_terms(request: ChatRequest, primary_text: str) -> list[str]:
+    profile = request.user_profile
+    if profile is None:
+        return []
+
+    terms: list[str] = []
+    normalized = primary_text.replace(" ", "")
+
+    age_keywords = ("나이", "연령", "대상", "자격", "조건", "노인", "어르신", "고령", "시니어")
+    income_keywords = ("소득", "중위소득", "재산", "가구", "수급", "기초연금", "지원금", "자격", "조건", "대상")
+    location_keywords = (
+        "지역",
+        "거주",
+        "동네",
+        "근처",
+        "주변",
+        "지자체",
+        "시청",
+        "구청",
+        "군청",
+        "주민센터",
+        "행정복지센터",
+        "관할",
+    )
+
+    if profile.age is not None and _contains_any(normalized, age_keywords):
+        terms.append(f"{profile.age}세")
+
+    location = profile.location
+    if location is not None:
+        location_parts = [location.city, location.district, location.town]
+        location_text = " ".join(part for part in location_parts if part)
+        explicit_location = any(part and part.replace(" ", "") in normalized for part in location_parts)
+        if location_text and (_contains_any(normalized, location_keywords) or explicit_location):
+            terms.append(location_text)
+
+    if _contains_any(normalized, income_keywords):
+        if profile.monthly_income_krw is not None:
+            terms.append(f"월소득 {profile.monthly_income_krw}원")
+        if profile.household_size is not None:
+            terms.append(f"{profile.household_size}인 가구")
+        if profile.income_note:
+            terms.append(profile.income_note)
+
+    return terms
+
 
 class RetrievedDocument(BaseModel):
     content : str
@@ -166,32 +222,21 @@ def _retrieve_documents(query: str) -> list[RetrievedDocument]:
     ]
 
 def _build_rag_query(request: ChatRequest) -> str:
-    lines = [
-          f"사용자 질문: {request.question}",
-          "",
-          "사용자 기본정보:",
-          _profile_context(request),
-      ]
+    primary_terms = [request.question]
 
     if request.selected_option is not None:
         selected = request.selected_option
-        lines.extend(
-            [
-                "",
-                "사용자가 선택한 보기:",
-                f"- 제목: {selected.title}",
-                f"- 검색 의도: {selected.search_focus or selected.title}",
-            ]
-        )
+        primary_terms.append(selected.search_focus or selected.title)
 
     if request.custom_intent:
-        lines.extend(
-            [
-                "",
-                "사용자가 기타로 입력한 의도:",
-                f"- {request.custom_intent}",
-            ]
-        )
+        primary_terms.append(request.custom_intent)
+
+    primary_text = " ".join(primary_terms)
+    lines = [primary_text]
+
+    profile_terms = _profile_search_terms(request, primary_text)
+    if profile_terms:
+        lines.append(" ".join(profile_terms))
 
     return "\n".join(lines)
 
@@ -219,40 +264,10 @@ def _fallback_options() -> list[ClarificationOption]:
 
 def generate_clarification_options(request: ChatRequest) -> list[ClarificationOption]:
     parser = PydanticOutputParser(pydantic_object=ClarificationOptionOutput)
-
-    prompt = ChatPromptTemplate.from_messages(
-        [
-            (
-                "system",
-"""
-너는 노인복지 RAG 상담 Agent의 질문 해석 모듈이다.
-
-역할:
-- 사용자의 질문이 넓거나 모호할 때 답변하지 말고 보기 3개를 만든다.
-- 보기는 사용자가 실제로 찾을 가능성이 높은 방향이어야 한다.
-- 노인복지, 복지서비스, 요양시설, 지역 정책, 소득 기준 혜택 관점으로 해석한다.
-- 법령이나 정책 내용을 단정하지 않는다.
-- 사용자가 고르기 쉬운 짧고 쉬운 표현을 쓴다.
-- 기타 입력은 프론트에서 별도로 제공하므로 options에는 포함하지 않는다.
-
-반드시 JSON 형식만 출력한다.
-{format_instructions}
-""",
-            ),
-            (
-                "human",
-"""
-사용자 질문:{question}
-사용자 기본 정보 : {profile_context}
-보기 3개를 생성해줘.
-""",
-            ),
-        ]
-    )
-
-    chain = prompt | get_chat_llm() | parser
+    prompt = create_clarification_prompt()
 
     try:
+        chain = prompt | get_chat_llm() | parser
         result = chain.invoke(
             {
                 "question" : request.question,
@@ -278,7 +293,10 @@ def create_clarification_response(request: ChatRequest) -> ChatResponse:
         allow_custom_input=settings.agent_custom_input_enabled,
     )
 
-def answer_with_selected_option(request: ChatRequest) -> ChatResponse:
+def answer_with_selected_option(
+    request: ChatRequest,
+    history: list[ConversationTurn] | None = None,
+) -> ChatResponse:
     selected = request.selected_option
 
     if selected is None:
@@ -317,16 +335,18 @@ def answer_with_selected_option(request: ChatRequest) -> ChatResponse:
             warning="근거 문서가 없어 정책 내용이나 자격 여부를 단정하지 않았습니다.",
         )
 
-    return ChatResponse(
-        kind=ResponseKind.ANSWER,
+    return generate_grounded_answer(
+        request=request,
+        query=query,
+        documents=documents,
+        history=history,
         question_type=QuestionType.SEARCH,
-        summary="RAG 서버에서 관련 문서를 찾았습니다.",
-        details=_documents_to_details(query, documents),
-        sources=[_source_label(document) for document in documents],
-        references=[document.source for document in documents],
     )
 
-def answer_with_custom_intent(request: ChatRequest) -> ChatResponse:
+def answer_with_custom_intent(
+    request: ChatRequest,
+    history: list[ConversationTurn] | None = None,
+) -> ChatResponse:
     query = _build_rag_query(request)
     try:
         documents = _retrieve_documents(query)
@@ -355,11 +375,119 @@ def answer_with_custom_intent(request: ChatRequest) -> ChatResponse:
             warning="근거 문서가 없어 정책 내용이나 자격 여부를 단정하지 않았습니다."
         )
 
+    return generate_grounded_answer(
+        request=request,
+        query=query,
+        documents=documents,
+        history=history,
+        question_type=QuestionType.CUSTOM_INTENT,
+    )
+
+def answer_with_follow_up(
+    request: ChatRequest,
+    history: list[ConversationTurn] | None = None,
+) -> ChatResponse:
+    recent_context = _recent_user_context(history)
+    follow_up_intent = request.custom_intent or request.question
+    custom_intent = (
+        f"{recent_context}\n{follow_up_intent}"
+        if recent_context
+        else follow_up_intent
+    )
+
+    request = request.model_copy(
+        update={
+            "custom_intent": custom_intent,
+        }
+    )
+    response = answer_with_custom_intent(request, history)
+    return response.model_copy(update={"question_type": QuestionType.FOLLOW_UP})
+
+class GroundedAnswerOutput(BaseModel):
+    summary: str
+    details: list[str] = Field(default_factory=list)
+    laws: list[LawReference] = Field(default_factory=list)
+    table: TableData | None = None
+    warning: str | None = None
+
+def _history_text(history: list[ConversationTurn] | None) -> str:
+    if not history:
+        return "이전 대화 없음"
+
+    return "\n".join(
+        f"{turn.role} : {turn.content}"
+        for turn in history[-6:]
+    )
+
+
+def _recent_user_context(history: list[ConversationTurn] | None) -> str:
+    if not history:
+        return ""
+
+    user_turns = [turn.content for turn in history if turn.role == "user"]
+    return "\n".join(user_turns[-3:])
+
+
+def _documents_context(documents: list[RetrievedDocument]) -> str:
+    blocks: list[str] = []
+
+    for index, document in enumerate(documents, start=1):
+        source = document.source
+        blocks.append(
+            "\n".join(
+                [
+                    f"[{index} {source.title}]",
+                    f"file: {source.file_name or '-'}",
+                    f"section: {source.section or '-'}",
+                    f"url: {source.url or '-'}",
+                    f"content: {document.content}",
+                ]
+            )
+        )
+    return "\n\n".join(blocks)
+
+def generate_grounded_answer(
+    request: ChatRequest,
+    query: str,
+    documents: list[RetrievedDocument],
+    history: list[ConversationTurn] | None = None,
+    question_type: QuestionType = QuestionType.SEARCH,
+) -> ChatResponse:
+    parser = PydanticOutputParser(pydantic_object=GroundedAnswerOutput)
+    prompt = create_grounded_answer_prompt()
+
+    try:
+        chain = prompt | get_chat_llm() | parser
+        answer = chain.invoke(
+            {
+                "question": request.question,
+                "query": query,
+                "profile_context": _profile_context(request),
+                "history": _history_text(history),
+                "documents_context": _documents_context(documents),
+                "format_instructions": parser.get_format_instructions(),
+            }
+        )
+    except Exception:
+        logger.exception("grounded answer generation failed")
+        return ChatResponse(
+            kind=ResponseKind.ANSWER,
+            question_type=question_type,
+            summary="RAG 서버에서 관련 문서를 찾았습니다.",
+            details=_documents_to_details(query, documents),
+            sources=[_source_label(document) for document in documents],
+            references=[document.source for document in documents],
+            warning="LLM 답변 생성에 실패해 검색 결과를 그대로 반환했습니다.",
+        )
+
     return ChatResponse(
         kind=ResponseKind.ANSWER,
-        question_type=QuestionType.CUSTOM_INTENT,
-        summary="RAG 서버에서 관련 문서를 찾았습니다.",
-        details=_documents_to_details(query, documents),
+        question_type=question_type,
+        summary=answer.summary,
+        details=answer.details,
+        laws=answer.laws,
+        table=answer.table,
         sources=[_source_label(document) for document in documents],
         references=[document.source for document in documents],
+        warning=answer.warning,
     )
