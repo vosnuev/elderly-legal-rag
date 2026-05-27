@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.files import router as files_router
 from api.chat import router as chat_router
 from settings import settings
 from logger import configure_logging, get_logger
@@ -44,6 +45,7 @@ def create_app() -> FastAPI:
         }
 
     app.include_router(chat_router)
+    app.include_router(files_router)
 
     return app
 

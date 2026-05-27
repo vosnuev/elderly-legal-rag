@@ -31,6 +31,13 @@ class EligibilityStatus(StrEnum):
     CONFIRMATION_REQUIRED = "confirmation_required"
     UNKNOWN = "unknown"
 
+# RAG 근거 충분한지, 검색/LLM fallback 상태인지 표현하는 값 정의
+class EvidenceStatus(StrEnum):
+    SUFFICIENT = "sufficient"
+    INSUFFICIENT = "insufficient"
+    RAG_ERROR = "rag_error"
+    LLM_FALLBACK = "llm_fallback"
+
 # 사용자의 지역 정보 담는 요청 모델
 class UserLocation(BaseModel):
     city: str | None = Field(default=None, description="시/도 또는 광역 지자체")
@@ -118,6 +125,7 @@ class SourceReference(BaseModel):
     article: str | None = None
     section: str | None = None
     excerpt: str | None = Field(default=None, description="답변 근거가 된 짧은 원문")
+    score: float | None = Field(default=None, ge=0, description="RAG 검색 점수")
 
 
 # 사용자의 자격 가능성 판단 결과 담는 모델
@@ -145,6 +153,19 @@ class ChatResponse(BaseModel):
         description="RAG 검증용 상세 출처 목록",
     )
     eligibility: EligibilityAssessment | None = None
+
+    # 답변 신뢰도를 프론트에서 표시할 수 있게 내려주는 필드
+    confidence: float | None = Field(
+        default=None,
+        ge=0,
+        le=1,
+        description="답변 신뢰도. 0~1 범위",
+    )
+    # 근거 충분 여부 또는 fallback 상태를 프론트에서 구분할 수 있게 내려주는 필드
+    evidence_status: EvidenceStatus = Field(
+        default=EvidenceStatus.SUFFICIENT,
+        description="근거 충분 여부 또는 fallback 상태",
+    )
     options: list[ClarificationOption] = Field(
         default_factory=list,
         description="질문이 넓거나 모호할 때 제공하는 보기 3개",

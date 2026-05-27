@@ -17,7 +17,9 @@ from schemas.chat import(
     ResponseKind,
     SourceReference,
     LawReference,
-    TableData
+    TableData,
+    EligibilityAssessment,
+    EvidenceStatus,
 )
 
 from session_store import ConversationTurn
@@ -227,6 +229,7 @@ def _retrieve_documents(query: str) -> list[RetrievedDocument]:
                 url=result.url,
                 section=result.location,
                 excerpt=_excerpt(result.content),
+                score=result.score,
             ),
             score=result.score,
         )
@@ -321,6 +324,8 @@ def answer_with_selected_option(
             kind=ResponseKind.ANSWER,
             question_type=QuestionType.SEARCH,
             summary="선택한 보기가 없습니다.",
+            confidence=0.0,
+            evidence_status=EvidenceStatus.INSUFFICIENT,
             warning="selected_option이 없어 답변을 생성할 수 없습니다.",
         )
 
@@ -334,6 +339,8 @@ def answer_with_selected_option(
             summary="RAG 검색 실패",
             details=[f"검색에 사용한 질문 : {query}"],
             sources=[],
+            confidence=0.0,
+            evidence_status=EvidenceStatus.RAG_ERROR,
             references=[],
             warning=str(exc),
         )
@@ -348,6 +355,8 @@ def answer_with_selected_option(
                 f"검색에 사용할 질문 : {query}",
             ],
             sources=[],
+            confidence=0.0,
+            evidence_status=EvidenceStatus.INSUFFICIENT,
             references=[],
             warning="근거 문서가 없어 정책 내용이나 자격 여부를 단정하지 않았습니다.",
         )
@@ -376,6 +385,8 @@ def answer_with_custom_intent(
             details=[f"검색에 사용한 질문 : {query}"],
             sources=[],
             references=[],
+            confidence=0.0,
+            evidence_status=EvidenceStatus.RAG_ERROR,
             warning=str(exc),
         )
 
@@ -390,6 +401,8 @@ def answer_with_custom_intent(
             ],
             sources=[],
             references=[],
+            confidence=0.0,
+            evidence_status=EvidenceStatus.INSUFFICIENT,
             warning="근거 문서가 없어 정책 내용이나 자격 여부를 단정하지 않았습니다."
         )
 
@@ -428,7 +441,11 @@ class GroundedAnswerOutput(BaseModel):
     details: list[str] = Field(default_factory=list)
     laws: list[LawReference] = Field(default_factory=list)
     table: TableData | None = None
+    eligibility: EligibilityAssessment | None = None
+    confidence: float | None = Field(default=None, ge=0, le=1)
+    evidence_status: EvidenceStatus = EvidenceStatus.SUFFICIENT
     warning: str | None = None
+
 
 # 이전 대화 기록을 prompt에 넣을 문자열로 변환
 def _history_text(history: list[ConversationTurn] | None) -> str:
@@ -490,7 +507,7 @@ def generate_grounded_answer(
                 "history": _history_text(history),
                 "documents_context": _documents_context(documents),
                 "format_instructions": parser.get_format_instructions(),
-            }
+            },
         )
     except Exception:
         logger.exception("grounded answer generation failed")
@@ -500,6 +517,8 @@ def generate_grounded_answer(
             summary="RAG 서버에서 관련 문서를 찾았습니다.",
             details=_documents_to_details(query, documents),
             sources=[_source_label(document) for document in documents],
+            confidence=0.5,
+            evidence_status=EvidenceStatus.LLM_FALLBACK,
             references=[document.source for document in documents],
             warning="LLM 답변 생성에 실패해 검색 결과를 그대로 반환했습니다.",
         )
@@ -513,5 +532,8 @@ def generate_grounded_answer(
         table=answer.table,
         sources=[_source_label(document) for document in documents],
         references=[document.source for document in documents],
+        eligibility=answer.eligibility,
+        confidence=answer.confidence,
+        evidence_status=answer.evidence_status,
         warning=answer.warning,
     )

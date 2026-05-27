@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     input_dir: Path = RAG_DIR / "input"
     output_dir: Path = RAG_DIR / "output"
     cache_dir: Path = RAG_DIR / "cache"
+    upload_dir: Path = SERVICE_DIR / "storage" / "uploads"
 
     openrouter_api_key: SecretStr | None = None
     openrouter_model: str = "openai/gpt-oss-120b"
@@ -50,12 +51,16 @@ class Settings(BaseSettings):
     agent_custom_input_enabled: bool = True
     agent_demo_mode: bool = True
 
+    rag_ingest_url: str = "http://127.0.0.1:8010/ingest"
+    rag_ingest_status_url: str = "http://127.0.0.1:8010/ingest/status"
+    rag_ingest_timeout_ms: int = Field(default=10_000, gt=0)
     rag_search_url: str = "http://127.0.0.1:8010/search"
     rag_search_top_k: int = Field(default=5, ge=1, le=20)
     rag_search_timeout_ms: int = Field(default=10_000, gt=0)
 
     log_level: str = "INFO"
     log_llm_context: bool = True
+
 
 # Settings 인스턴스를 캐시해서 앱 전체에서 재사용
 @lru_cache

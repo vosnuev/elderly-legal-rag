@@ -20,6 +20,40 @@ rag/
 └── uv.lock
 ```
 
+## API
+
+### `POST /ingest`
+
+backend가 저장한 업로드 파일 경로를 받아 RAG 입력 디렉터리에 적재합니다.
+
+현재 지원 파일 형식:
+
+- `.csv`
+- `.json`
+- `.py`
+- `.txt`
+- `.md`
+
+요청 예시:
+
+```json
+{
+  "job_id": "업로드 응답에서 받은 job_id",
+  "file_name": "sample.md",
+  "content_type": "text/markdown",
+  "file_size": 1234,
+  "stored_path": "/absolute/path/to/backend/storage/uploads/{job_id}/sample.md"
+}
+```
+
+### `GET /ingest/status/{job_id}`
+
+파일 적재 상태를 반환합니다. 서버 재시작 시 메모리 상태는 초기화됩니다.
+
+### `POST /search`
+
+`input_dir`의 지원 파일들을 읽어 검색 결과를 반환합니다. ingest가 완료된 파일은 다음 검색 요청부터 포함됩니다.
+
 ## Toolchain
 
 이 디렉토리는 `uv`를 사용합니다.
