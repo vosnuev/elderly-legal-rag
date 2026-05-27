@@ -49,6 +49,10 @@ class Settings(BaseSettings):
     agent_custom_input_enabled: bool = True
     agent_demo_mode: bool = True
 
+    rag_search_url: str = "http://127.0.0.1:8010/search"
+    rag_search_top_k: int = Field(default=5, ge=1, le=20)
+    rag_search_timeout_ms: int = Field(default=10_000, gt=0)
+
     log_level: str = "INFO"
     log_llm_context: bool = True
 

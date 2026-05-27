@@ -2,6 +2,9 @@ from __future__ import annotations
 from functools import lru_cache
 from langchain_openai import ChatOpenAI
 from settings import settings
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 def _openrouter_headers() -> dict[str, str]:
     headers = {
@@ -16,7 +19,10 @@ def _openrouter_headers() -> dict[str, str]:
 @lru_cache
 def get_chat_llm() -> ChatOpenAI:
     if settings.openrouter_api_key is None:
+        logger.error("BACKEND_OPENROUTER_API_KEY is not set")
         raise RuntimeError("BACKEND_OPENROUTER_API_KEY is not set.")
+
+    logger.info("creating OpenRouter chat llm model=%s", settings.openrouter_model)
 
     return ChatOpenAI(
         model=settings.openrouter_model,

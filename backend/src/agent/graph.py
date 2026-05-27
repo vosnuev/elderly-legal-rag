@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import json
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
+
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from agent.openrouter_llm import get_chat_llm
 from schemas.chat import(
@@ -14,6 +18,9 @@ from schemas.chat import(
     SourceReference
 )
 from settings import settings
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 class ClarificationOptionOutput(BaseModel):
     options : list[ClarificationOption] = Field(..., min_length=3, max_length=3)
@@ -44,9 +51,119 @@ class RetrievedDocument(BaseModel):
     source : SourceReference
     score : float | None = Field(default=None, ge=0)
 
+
+class RagSearchResult(BaseModel):
+    content: str
+    source_title: str
+    file_name: str | None = None
+    file_type: str | None = None
+    location: str | None = None
+    url: str | None = None
+    score: float | None = Field(default=None, ge=0)
+
+
+class RagSearchResponse(BaseModel):
+    query: str
+    results: list[RagSearchResult] = Field(default_factory=list)
+
+
+class RagSearchError(RuntimeError):
+    pass
+
+
+def _excerpt(text: str, limit: int = 500) -> str:
+    normalized = " ".join(text.split())
+    if len(normalized) <= limit:
+        return normalized
+    return f"{normalized[: limit - 3]}..."
+
+
+def _source_label(document: RetrievedDocument) -> str:
+    source = document.source
+    parts = [source.title]
+
+    if source.file_name:
+        parts.append(source.file_name)
+    if source.section:
+        parts.append(source.section)
+    if document.score is not None:
+        parts.append(f"score={document.score:.2f}")
+
+    return " / ".join(parts)
+
+
+def _documents_to_details(query: str, documents: list[RetrievedDocument]) -> list[str]:
+    details = [f"검색에 사용한 질문 : {query}", "RAG 검색 결과:"]
+
+    for index, document in enumerate(documents, start=1):
+        details.append(
+            "\n".join(
+                [
+                    f"{index}. {_source_label(document)}",
+                    _excerpt(document.content),
+                ]
+            )
+        )
+
+    return details
+
+
 def _retrieve_documents(query: str) -> list[RetrievedDocument]:
-    # TODO :이후 Vector DB 또는 RAG 서버 검색으로 교체
-    return []
+    payload = {
+        "query": query,
+        "top_k": settings.rag_search_top_k,
+    }
+    request = Request(
+        settings.rag_search_url,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        method="POST",
+    )
+    timeout = settings.rag_search_timeout_ms / 1000
+
+    logger.info(
+        "rag search request url=%s top_k=%s",
+        settings.rag_search_url,
+        settings.rag_search_top_k,
+    )
+
+    if settings.log_llm_context:
+        logger.debug("rag search query=%s", query)
+
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            response_body = response.read().decode("utf-8")
+    except HTTPError as exc:
+        raise RagSearchError(f"RAG 검색 서버가 HTTP {exc.code} 응답을 반환했습니다.") from exc
+    except TimeoutError as exc:
+        raise RagSearchError("RAG 검색 서버 요청 시간이 초과되었습니다.") from exc
+    except URLError as exc:
+        raise RagSearchError(f"RAG 검색 서버에 연결할 수 없습니다: {exc.reason}") from exc
+
+    try:
+        search_response = RagSearchResponse.model_validate_json(response_body)
+    except (ValidationError, ValueError) as exc:
+        raise RagSearchError("RAG 검색 서버 응답 형식이 올바르지 않습니다.") from exc
+
+    logger.info("rag search response count=%d", len(search_response.results))
+
+    return [
+        RetrievedDocument(
+            content=result.content,
+            source=SourceReference(
+                title=result.source_title,
+                file_name=result.file_name,
+                url=result.url,
+                section=result.location,
+                excerpt=_excerpt(result.content),
+            ),
+            score=result.score,
+        )
+        for result in search_response.results
+    ]
 
 def _build_rag_query(request: ChatRequest) -> str:
     lines = [
@@ -145,6 +262,7 @@ def generate_clarification_options(request: ChatRequest) -> list[ClarificationOp
         )
         return result.options[: settings.agent_clarification_option_count]
     except Exception:
+        logger.exception("clarification option generation failed")
         return _fallback_options()
 
 def create_clarification_response(request: ChatRequest) -> ChatResponse:
@@ -172,7 +290,18 @@ def answer_with_selected_option(request: ChatRequest) -> ChatResponse:
         )
 
     query = _build_rag_query(request)
-    documents = _retrieve_documents(query)
+    try:
+        documents = _retrieve_documents(query)
+    except RagSearchError as exc:
+        return ChatResponse(
+            kind=ResponseKind.ANSWER,
+            question_type=QuestionType.SEARCH,
+            summary="RAG 검색 실패",
+            details=[f"검색에 사용한 질문 : {query}"],
+            sources=[],
+            references=[],
+            warning=str(exc),
+        )
 
     if not documents:
         return ChatResponse(
@@ -180,7 +309,7 @@ def answer_with_selected_option(request: ChatRequest) -> ChatResponse:
             question_type=QuestionType.SEARCH,
             summary="확인 필요",
             details=[
-                "아직 연결된 RAG 검색 결과가 없습니다.",
+                "RAG 서버에서 검색 결과를 찾지 못했습니다.",
                 f"검색에 사용할 질문 : {query}",
             ],
             sources=[],
@@ -191,17 +320,26 @@ def answer_with_selected_option(request: ChatRequest) -> ChatResponse:
     return ChatResponse(
         kind=ResponseKind.ANSWER,
         question_type=QuestionType.SEARCH,
-        summary="선택한 보기 기준으로 답변을 생성할 예정입니다.",
-        details=[
-            f"검색에 사용할 질문 : {query}",
-            "다음 단계에서 이 query를 RAG 검색기에 넘기면 됩니다.",
-        ],
-        warning="아직 실제 RAG검색은 연결되지 않았습니다.",
+        summary="RAG 서버에서 관련 문서를 찾았습니다.",
+        details=_documents_to_details(query, documents),
+        sources=[_source_label(document) for document in documents],
+        references=[document.source for document in documents],
     )
 
 def answer_with_custom_intent(request: ChatRequest) -> ChatResponse:
     query = _build_rag_query(request)
-    documents = _retrieve_documents(query)
+    try:
+        documents = _retrieve_documents(query)
+    except RagSearchError as exc:
+        return ChatResponse(
+            kind=ResponseKind.ANSWER,
+            question_type=QuestionType.CUSTOM_INTENT,
+            summary="RAG 검색 실패",
+            details=[f"검색에 사용한 질문 : {query}"],
+            sources=[],
+            references=[],
+            warning=str(exc),
+        )
 
     if not documents:
         return ChatResponse(
@@ -209,7 +347,7 @@ def answer_with_custom_intent(request: ChatRequest) -> ChatResponse:
             question_type=QuestionType.CUSTOM_INTENT,
             summary="확인 필요",
             details=[
-                "아직 연결된 RAG 검색 결과가 없습니다.",
+                "RAG 서버에서 검색 결과를 찾지 못했습니다.",
                 f"검색에 사용할 질문 : {query}",
             ],
             sources=[],
@@ -220,10 +358,8 @@ def answer_with_custom_intent(request: ChatRequest) -> ChatResponse:
     return ChatResponse(
         kind=ResponseKind.ANSWER,
         question_type=QuestionType.CUSTOM_INTENT,
-        summary="기타 입력 기준으로 답변을 생성할 예정입니다.",
-        details=[
-            f"검색에 사용할 질문 : {query}",
-            "기타 입력은 다시 보기 3개를 만들지 않고 바로 답변으로 갑니다.",
-        ],
-        warning="아직 실제 RAG검색은 연결되지 않았습니다.",
+        summary="RAG 서버에서 관련 문서를 찾았습니다.",
+        details=_documents_to_details(query, documents),
+        sources=[_source_label(document) for document in documents],
+        references=[document.source for document in documents],
     )
