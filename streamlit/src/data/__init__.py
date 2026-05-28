@@ -1,0 +1,3 @@
+from .legal_data import FALLBACK_RESULT, LAW_SUMMARIES
+
+__all__ = ["FALLBACK_RESULT", "LAW_SUMMARIES"]

@@ -31,9 +31,16 @@
 
 ## 2. Streamlit UI / 렌더링 설계
 
+### 상담 진입 흐름
+
+- 첫 화면에서는 태어난 연도, 사는 지역, 기타 정보 등 기본정보만 입력받습니다.
+- 기본정보가 완료되기 전에는 질문 입력창과 예시 상담을 노출하지 않습니다.
+- 상담 시작 후 사용자 질문에는 기본정보 컨텍스트를 자동으로 붙여 백엔드 프롬프트에 전달합니다.
+- 모호한 질문은 의도 선택 버튼 대신 assistant가 채팅 메시지로 필요한 정보 범위를 되묻습니다.
+
 ### 페이지 구조
 
-- `Search`: 사용자 질문 입력과 mock 응답 렌더링
+- `내 상황 상담`: 기본정보를 먼저 입력한 뒤 채팅형 상담을 진행
 - `Use Cases`: 프론트엔드 유스케이스와 화면 요소 매핑
 - `JSON Schema`: 응답 계약 및 스키마 설명
 - `Mock Response UI`: mock 데이터를 이용한 렌더링 검증
@@ -79,10 +86,22 @@
 3. 실제 API가 준비되면 `get_mock_response`를 백엔드 호출로 대체합니다.
 4. citation은 별도 패널로 분리하고, `st.expander`/`st.tabs`로 긴 답변을 숨깁니다.
 
-## 5. 실행 방법
+## 5. 백엔드 연결 전환 구조
+
+프론트는 DB나 AI API key를 직접 사용하지 않고 백엔드 API만 호출합니다.
+
+- `src/shared/backend.py`: `STREAMLIT_BACKEND_BASE_URL` 기준으로 `/api/chat` payload 구성 및 호출
+- `src/api_client.py`: 백엔드 HTTP 요청을 실행하는 저수준 클라이언트
+- `src/response_renderer.py`: 백엔드 `ChatResponse`를 공통 렌더링
+- `STREAMLIT_USE_BACKEND_API=false`: 임시 데이터 기반 UI 개발
+- `STREAMLIT_USE_BACKEND_API=true`: 백엔드 API 연결 모드
+
+프론트에서 직접 관리하는 환경 변수는 화면 설정과 백엔드 주소입니다. AI API key, DB URL, RAG 연결 정보는 `backend/.env`에서 관리합니다.
+
+## 6. 실행 방법
 
 ```bash
 cd streamlit
 uv sync
-uv run streamlit run src/app.py
+uv run streamlit run streamlit.py
 ```

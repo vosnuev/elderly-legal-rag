@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     page_title: str = "법률 RAG 프론트"
     layout: Literal["centered", "wide"] = "wide"
     backend_base_url: AnyUrl = "http://127.0.0.1:8000"
+    backend_timeout_seconds: float = 15
+    use_backend_api: bool = False
 
 
 @lru_cache
