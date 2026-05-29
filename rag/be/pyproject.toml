@@ -1,12 +1,15 @@
 [project]
-name = "rag"
+name = "rag-be"
 version = "0.1.0"
-description = "RAG and Microsoft GraphRAG workspace for SKN28 3rd 1Team"
+description = "Memgraph GraphRAG backend and MCP service for SKN28 3rd 1Team"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
     "fastapi>=0.136.3",
     "graphrag>=3.0.9",
+    "langchain>=1.3.2",
+    "mcp>=1.27.1",
+    "neo4j>=6.2.0",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.1",
     "uvicorn[standard]>=0.48.0",
@@ -14,3 +17,6 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[tool.fastapi]
+entrypoint = "src/app.py"
