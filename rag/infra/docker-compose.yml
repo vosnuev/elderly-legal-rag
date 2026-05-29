@@ -1,0 +1,36 @@
+services:
+  memgraph:
+    image: ${MEMGRAPH_IMAGE:-memgraph/memgraph-mage:latest}
+    container_name: ${MEMGRAPH_CONTAINER_NAME:-rag-memgraph}
+    ports:
+      - "${MEMGRAPH_PUBLISH_HOST:-127.0.0.1}:${MEMGRAPH_BOLT_PORT:-7687}:7687"
+      - "${MEMGRAPH_PUBLISH_HOST:-127.0.0.1}:${MEMGRAPH_LOG_PORT:-7444}:7444"
+    volumes:
+      - memgraph_lib:/var/lib/memgraph
+      - memgraph_log:/var/log/memgraph
+      - memgraph_etc:/etc/memgraph
+    command:
+      - "--log-level=${MEMGRAPH_LOG_LEVEL:-INFO}"
+      - "--schema-info-enabled=${MEMGRAPH_SCHEMA_INFO_ENABLED:-true}"
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'RETURN 0;' | mgconsole || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  lab:
+    image: ${MEMGRAPH_LAB_IMAGE:-memgraph/lab:latest}
+    container_name: ${MEMGRAPH_LAB_CONTAINER_NAME:-rag-memgraph-lab}
+    ports:
+      - "${MEMGRAPH_PUBLISH_HOST:-127.0.0.1}:${MEMGRAPH_LAB_PORT:-3000}:3000"
+    depends_on:
+      - memgraph
+    environment:
+      QUICK_CONNECT_MG_HOST: memgraph
+      QUICK_CONNECT_MG_PORT: 7687
+
+volumes:
+  memgraph_lib:
+  memgraph_log:
+  memgraph_etc:
