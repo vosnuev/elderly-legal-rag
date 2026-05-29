@@ -3,7 +3,7 @@ from __future__ import annotations
 import streamlit as st
 
 from response_renderer import render_chat_response
-from services.consultation_flow import example_chat_messages
+from services import example_chat_messages
 
 
 def render_example_chat() -> None:
@@ -30,8 +30,10 @@ def render_chat_history() -> None:
 
 
 def render_chat_prompt() -> str | None:
+    pending = bool(st.session_state.get("chat_response_pending"))
     prompt = st.chat_input(
-        "상황을 입력하세요. 예: 회사에서 장애 때문에 불이익을 받은 것 같아요."
+        "답변 생성 중입니다." if pending else "상황을 입력하세요. 예: 회사에서 장애 때문에 불이익을 받은 것 같아요.",
+        disabled=pending,
     )
     if prompt and prompt.strip():
         return prompt.strip()

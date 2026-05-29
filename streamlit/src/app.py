@@ -13,7 +13,11 @@ logger = get_logger(__name__)
 def main() -> None:
     configure_logging()
     logger.info("streamlit_app_started", page_count=len(PAGES))
-    st.set_page_config(page_title=settings.page_title, layout=settings.layout)
+    st.set_page_config(
+        page_title=settings.page_title,
+        layout=settings.layout,
+        initial_sidebar_state=settings.initial_sidebar_state,
+    )
     apply_styles()
     selected_page = render_sidebar()
     logger.info("streamlit_page_selected", page=selected_page)

@@ -1,4 +1,4 @@
-from .first_page import render_first_page
-from .second_page import render_second_page
+from .consulting_page import render_consulting_page
+from .law_record_page import render_law_record_page
 
-__all__ = ["render_first_page", "render_second_page"]
+__all__ = ["render_consulting_page", "render_law_record_page"]

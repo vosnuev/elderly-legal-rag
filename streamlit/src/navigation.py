@@ -4,15 +4,14 @@ from collections.abc import Callable
 
 import streamlit as st
 
-from pages.first_page import render_first_page
-from pages.second_page import render_second_page
-from settings import settings
+from pages.consulting_page import render_consulting_page
+from pages.law_record_page import render_law_record_page
 
 PageRenderer = Callable[[], None]
 
 PAGES: dict[str, PageRenderer] = {
-    "내 상황 상담": render_first_page,
-    "주요 법령": render_second_page,
+    "내 상황 상담": render_consulting_page,
+    "주요 법령": render_law_record_page,
 }
 
 
@@ -36,15 +35,6 @@ def render_sidebar() -> str:
         label_visibility="collapsed",
     )
 
-    st.sidebar.markdown(
-        f"""
-        <div class="sidebar-footer">
-            <strong>Backend API</strong><br>
-            {settings.backend_base_url}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
     if st.sidebar.button("로그아웃", width="stretch"):
         st.sidebar.info("로그아웃 요청이 기록되었습니다.")
 

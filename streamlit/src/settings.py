@@ -21,9 +21,12 @@ class Settings(BaseSettings):
     app_title: str = "법률 RAG 프론트"
     page_title: str = "법률 RAG 프론트"
     layout: Literal["centered", "wide"] = "wide"
+    initial_sidebar_state: Literal["auto", "expanded", "collapsed"] = "expanded"
     backend_base_url: AnyUrl = "http://127.0.0.1:8000"
     backend_timeout_seconds: float = 15
-    use_backend_api: bool = False
+    chat_backend_mock: bool = True
+    chat_mock_chunk_delay_seconds: float = 0.02
+    log_llm_context: bool = False
 
 
 @lru_cache

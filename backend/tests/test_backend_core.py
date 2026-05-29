@@ -48,7 +48,7 @@ class ChatApiTest(unittest.TestCase):
                 "sources": [],
             },
         )
-        run_agent.assert_called_once_with("노인일자리 신청 방법 알려줘")
+        run_agent.assert_called_once_with("노인일자리 신청 방법 알려줘", session_id="test-session")
 
 
 if __name__ == "__main__":

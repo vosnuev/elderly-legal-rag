@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+from functools import lru_cache
 from typing import Any
+from uuid import uuid4
 
 from langchain.agents import create_agent
+from langgraph.checkpoint.memory import InMemorySaver
 
 from agent.openrouter_llm import get_chat_llm
 from agent.tool import get_tools
@@ -13,12 +16,20 @@ logger = get_logger(__name__)
 
 
 # Main Agent Orchestrator 생성
+@lru_cache
 def create_main_agent() -> Any:
     return create_agent(
         model=get_chat_llm(),
         tools=get_tools(),
         system_prompt=render_prompt("system_prompt.j2"),
+        checkpointer=InMemorySaver(),
     )
+
+
+# LangGraph checkpointer가 사용할 thread_id 설정 생성
+def _agent_config(session_id: str | None) -> dict[str, Any]:
+    thread_id = session_id.strip() if session_id else f"anonymous-{uuid4()}"
+    return {"configurable": {"thread_id": thread_id}}
 
 
 # LangChain 메시지 content 값을 사용자에게 보낼 문자열로 변환
@@ -54,7 +65,7 @@ def _extract_answer(result: object) -> str:
 
 
 # 사용자 메시지를 Main Agent에 전달하고, 최종 텍스트 답변 반환
-def run_agent(message: str) -> str:
+def run_agent(message: str, session_id: str | None = None) -> str:
     agent = create_main_agent()
     result = agent.invoke(
         {
@@ -64,7 +75,8 @@ def run_agent(message: str) -> str:
                     "content": message,
                 }
             ]
-        }
+        },
+        config=_agent_config(session_id),
     )
 
     answer = _extract_answer(result)

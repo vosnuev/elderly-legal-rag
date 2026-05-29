@@ -1,42 +1,35 @@
 # Streamlit Frontend Design
 
-## 1. 응답 JSON 스키마
+## 1. Backend Chat 응답 스키마
 
-프론트는 LLM 또는 백엔드에서 자유형 markdown이 아니라 구조화된 JSON을 받아야 합니다.
+v1 Streamlit은 backend main agent의 `/chat` 응답을 기준으로 합니다. agent의 자연어 답변은 `answer`로 받고, tool 호출과 출처는 선택적으로 렌더링합니다.
 
 ```json
 {
-  "summary": "...",
-  "details": ["..."],
-  "laws": [
-    {"name": "...", "article": "..."}
-  ],
-  "table": {
-    "headers": ["..."],
-    "rows": [["...", "..."]]
-  },
-  "sources": ["..."],
-  "warning": "..."
+  "answer": "...",
+  "tool_calls": [],
+  "sources": []
 }
 ```
 
 ### 필드 설명
 
-- `summary`: 사용자에게 보여줄 핵심 요약
-- `details`: 상세 설명을 리스트 형태로 제공
-- `laws`: 관련 법령 및 조항 정보를 카드 형태로 렌더링
-- `table`: 질문이 수치, 표 형태일 때 자동 테이블 렌더링
-- `sources`: citation / 출처 목록
-- `warning`: 경고 메시지나 fallback 안내
+- `answer`: 사용자에게 보여줄 최종 상담 답변
+- `tool_calls`: agent가 호출한 tool 요약
+- `sources`: RAG 또는 외부 문서 출처 목록
 
 ## 2. Streamlit UI / 렌더링 설계
 
 ### 상담 진입 흐름
 
-- 첫 화면에서는 태어난 연도, 사는 지역, 기타 정보 등 기본정보만 입력받습니다.
+- 첫 화면에서는 태어난 연도, 사는 지역, 상담 대상, 필요한 정보, 진행 단계, 기타 정보를 입력받습니다.
 - 기본정보가 완료되기 전에는 질문 입력창과 예시 상담을 노출하지 않습니다.
-- 상담 시작 후 사용자 질문에는 기본정보 컨텍스트를 자동으로 붙여 백엔드 프롬프트에 전달합니다.
-- 모호한 질문은 의도 선택 버튼 대신 assistant가 채팅 메시지로 필요한 정보 범위를 되묻습니다.
+- 첫 질문에는 form context를 자동으로 붙여 backend `/chat`의 `message`로 전달합니다.
+- 이후 질문은 같은 `session_id`와 새 사용자 입력만 전달합니다.
+- backend가 LangChain/LangGraph memory를 붙이면 `session_id`를 `thread_id`로 사용해 이전 context를 복원합니다.
+- 모호한 질문은 backend agent가 채팅 답변 안에서 bullet 또는 table 형태로 되묻습니다.
+- 선택지에 맞는 값이 없으면 `여기에 없어요`를 선택해 pass할 수 있습니다.
+- `STREAMLIT_LOG_LLM_CONTEXT=true`일 때 frontend가 구성한 backend `message`를 structured log로 확인합니다.
 
 ### 페이지 구조
 
@@ -68,33 +61,31 @@
 
 유스케이스별 화면 요소 매핑은 `frontend_usecases.md`와 Streamlit `Use Cases` 페이지에서 관리합니다.
 
-## 3. mock response 기반 프론트 코드
+## 3. mock stream 기반 프론트 코드
 
-현재 `streamlit/src/views/mock_ui.py`는 다음 구조로 동작합니다.
+현재 `streamlit/src/chat_backend_client.py`는 `.env`의 `STREAMLIT_CHAT_BACKEND_MOCK` 값으로 mock/real backend를 전환합니다.
 
-- `MOCK_RESPONSE`에 구조화된 JSON 데이터 저장
-- `st.info`로 요약 표시
-- `st.expander`로 상세 내용 표시
-- `st.dataframe`으로 테이블 자동 렌더링
-- 관련 법 조항은 `st.markdown`으로 카드 형태 렌더링
-- 출처 목록과 경고 메시지를 별도 섹션으로 구성
+- `true`: backend 없이 agent stream 응답을 흉내낸 generator 사용
+- `false`: `STREAMLIT_BACKEND_BASE_URL`의 `/chat` endpoint 호출
+- 두 모드는 모두 `answer`, `tool_calls`, `sources` shape으로 렌더링
 
 ## 4. 작업 가이드
 
-1. 먼저 백엔드와 응답 스키마를 합의합니다.
-2. 프론트는 `MOCK_RESPONSE` 형태를 기준으로 렌더링 구현합니다.
-3. 실제 API가 준비되면 `get_mock_response`를 백엔드 호출로 대체합니다.
+1. form 필드 수정은 `streamlit/src/forms/FORM_INSTRUCTIONS.md`를 먼저 확인합니다.
+2. frontend DTO를 늘리지 말고 form 값은 첫 턴 context 문장으로 합성합니다.
+3. backend 호출 payload는 `{session_id, message, metadata}`를 유지합니다.
 4. citation은 별도 패널로 분리하고, `st.expander`/`st.tabs`로 긴 답변을 숨깁니다.
 
 ## 5. 백엔드 연결 전환 구조
 
 프론트는 DB나 AI API key를 직접 사용하지 않고 백엔드 API만 호출합니다.
 
-- `src/shared/backend.py`: `STREAMLIT_BACKEND_BASE_URL` 기준으로 `/api/chat` payload 구성 및 호출
-- `src/api_client.py`: 백엔드 HTTP 요청을 실행하는 저수준 클라이언트
+- `src/chat_backend_client.py`: `STREAMLIT_BACKEND_BASE_URL` 기준으로 `/chat` payload 구성 및 호출
+- `src/services/chat_flow.py`: session_id 유지, 첫 턴 context seed, stream event 처리
+- `src/forms/`: form 선택지와 context construction 규칙 관리
 - `src/response_renderer.py`: 백엔드 `ChatResponse`를 공통 렌더링
-- `STREAMLIT_USE_BACKEND_API=false`: 임시 데이터 기반 UI 개발
-- `STREAMLIT_USE_BACKEND_API=true`: 백엔드 API 연결 모드
+- `STREAMLIT_CHAT_BACKEND_MOCK=true`: mock stream generator 사용
+- `STREAMLIT_CHAT_BACKEND_MOCK=false`: backend `/chat` 연결 모드
 
 프론트에서 직접 관리하는 환경 변수는 화면 설정과 백엔드 주소입니다. AI API key, DB URL, RAG 연결 정보는 `backend/.env`에서 관리합니다.
 

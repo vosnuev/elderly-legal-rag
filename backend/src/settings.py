@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, SecretStr
+from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 SERVICE_DIR = Path(__file__).resolve().parents[1]
@@ -25,17 +25,28 @@ class Settings(BaseSettings):
     api_port: int = 8000
     reload: bool = False
     cors_origins: list[str] = Field(
-        default_factory=lambda: ["http://localhost:5173", "http://localhost:3000"],
+        default_factory=lambda: [
+            "http://localhost:8501",
+            "http://127.0.0.1:8501",
+            "http://localhost:5173",
+            "http://localhost:3000",
+        ],
     )
     langchain_project: str | None = None
     repo_root: Path = REPO_ROOT
     src_dir: Path = SRC_DIR
 
-    openrouter_api_key: SecretStr | None = None
+    openrouter_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("OPENROUTER_API_KEY", "BACKEND_OPENROUTER_API_KEY"),
+    )
     openrouter_model: str = "openai/gpt-oss-120b"
     openrouter_app_title: str = "SKN28 Backend Agent"
     openrouter_app_url: str | None = None
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    openrouter_provider_order: list[str] = Field(default_factory=lambda: ["cerebras"])
+    openrouter_allow_fallbacks: bool = True
+    openrouter_require_parameters: bool = False
 
     llm_temperature: float = 0.2
     llm_timeout_ms: int = 60_000

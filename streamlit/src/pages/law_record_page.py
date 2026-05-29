@@ -24,7 +24,7 @@ def _laws_table() -> pd.DataFrame:
     )
 
 
-def render_second_page() -> None:
+def render_law_record_page() -> None:
     render_page_hero(
         eyebrow="주요 법령",
         title="자주 확인하는 법령 정리",

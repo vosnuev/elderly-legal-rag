@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import Any
 
 from langchain_openai import ChatOpenAI
 
@@ -22,14 +23,34 @@ def _openrouter_headers() -> dict[str, str]:
     return headers
 
 
+# OpenRouter provider routing 설정을 Chat Completions body에 포함한다.
+def _openrouter_extra_body() -> dict[str, Any]:
+    provider: dict[str, Any] = {
+        "allow_fallbacks": settings.openrouter_allow_fallbacks,
+    }
+
+    if settings.openrouter_provider_order:
+        provider["order"] = settings.openrouter_provider_order
+
+    if settings.openrouter_require_parameters:
+        provider["require_parameters"] = True
+
+    return {"provider": provider}
+
+
 # OpenRouter 기반 ChatOpenAI 클라이언트를 캐시해서 반환
 @lru_cache
 def get_chat_llm() -> ChatOpenAI:
     if settings.openrouter_api_key is None:
-        logger.error("BACKEND_OPENROUTER_API_KEY is not set")
-        raise RuntimeError("BACKEND_OPENROUTER_API_KEY is not set.")
+        logger.error("OPENROUTER_API_KEY is not set")
+        raise RuntimeError("OPENROUTER_API_KEY is not set.")
 
-    logger.info("creating OpenRouter chat llm model=%s", settings.openrouter_model)
+    logger.info(
+        "creating OpenRouter chat llm model=%s provider_order=%s allow_fallbacks=%s",
+        settings.openrouter_model,
+        settings.openrouter_provider_order,
+        settings.openrouter_allow_fallbacks,
+    )
 
     return ChatOpenAI(
         model=settings.openrouter_model,
@@ -40,4 +61,5 @@ def get_chat_llm() -> ChatOpenAI:
         max_retries=settings.llm_max_retries,
         reasoning_effort=settings.llm_reasoning_effort,
         default_headers=_openrouter_headers(),
+        extra_body=_openrouter_extra_body(),
     )

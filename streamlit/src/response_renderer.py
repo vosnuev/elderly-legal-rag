@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import html
+import re
 from typing import Any
 
 import pandas as pd
@@ -24,6 +26,24 @@ ELIGIBILITY_LABELS = {
     "confirmation_required": "추가 확인 필요",
     "unknown": "판단 보류",
 }
+
+HTML_TAG_PATTERN = re.compile(r"<[^<>\n]{1,120}>")
+LINE_BREAK_TAG_PATTERN = re.compile(r"<\s*br\s*/?\s*>", re.IGNORECASE)
+
+
+def render_agent_markdown(value: str, target: Any | None = None) -> None:
+    renderer = target or st
+    renderer.markdown(_sanitize_agent_markdown(value), unsafe_allow_html=True)
+
+
+def _sanitize_agent_markdown(value: str) -> str:
+    def replace_tag(match: re.Match[str]) -> str:
+        tag = match.group(0)
+        if LINE_BREAK_TAG_PATTERN.fullmatch(tag):
+            return "<br>"
+        return html.escape(tag)
+
+    return HTML_TAG_PATTERN.sub(replace_tag, value)
 
 
 def _render_table(table_data: dict[str, Any]) -> None:
@@ -95,6 +115,10 @@ def _render_eligibility(eligibility: dict[str, Any] | None) -> None:
 
 
 def render_chat_response(response: dict[str, Any]) -> None:
+    if response.get("answer"):
+        _render_backend_answer(response)
+        return
+
     logger.info(
         "chat_response_rendered",
         kind=response.get("kind"),
@@ -154,3 +178,45 @@ def render_chat_response(response: dict[str, Any]) -> None:
         warning = response.get("warning")
         if warning:
             st.warning(str(warning))
+
+
+def _render_backend_answer(response: dict[str, Any]) -> None:
+    logger.info(
+        "backend_chat_response_rendered",
+        tool_call_count=len(response.get("tool_calls") or []),
+        source_count=len(response.get("sources") or []),
+    )
+
+    with st.container(border=True):
+        st.subheader("상담 답변")
+        render_agent_markdown(str(response["answer"]))
+
+        tool_calls = response.get("tool_calls") or []
+        sources = response.get("sources") or []
+        if not tool_calls and not sources:
+            return
+
+        tool_tab, source_tab = st.tabs(["도구 호출", "출처"])
+        with tool_tab:
+            if tool_calls:
+                for tool_call in tool_calls:
+                    if isinstance(tool_call, dict):
+                        st.markdown(
+                            f"- **{tool_call.get('name', '-')}**: {tool_call.get('status', '-')}"
+                        )
+            else:
+                st.info("표시할 도구 호출 정보가 없습니다.")
+        with source_tab:
+            if sources:
+                for source in sources:
+                    if isinstance(source, dict):
+                        title = source.get("title") or "출처명 미확인"
+                        url = source.get("url")
+                        if url:
+                            st.markdown(f"- [{title}]({url})")
+                        else:
+                            st.markdown(f"- {title}")
+                        if source.get("excerpt"):
+                            st.caption(str(source["excerpt"]))
+            else:
+                st.info("표시할 출처가 없습니다.")

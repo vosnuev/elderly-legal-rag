@@ -44,7 +44,7 @@ class ChatResponse(BaseModel):
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest) -> ChatResponse:
     try:
-        answer = run_agent(request.message)
+        answer = run_agent(request.message, session_id=request.session_id)
     except Exception as exc:
         logger.exception("chat agent execution failed")
         raise HTTPException(status_code=500, detail="Agent 실행 중 오류가 발생했습니다.") from exc

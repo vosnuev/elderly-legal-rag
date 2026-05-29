@@ -9,8 +9,8 @@ Frontend는 `POST /chat`으로 사용자 메시지를 보내고, backend는 Lang
 | 구분 | 내용 |
 | --- | --- |
 | 🚪 API 입구 | `POST /chat` |
-| 🧠 LLM | OpenRouter 기반 `ChatOpenAI` |
-| 🧩 Agent | LangChain `create_agent()` |
+| 🧠 LLM | OpenRouter 기반 `ChatOpenAI`, Cerebras primary provider |
+| 🧩 Agent | LangChain `create_agent()` + LangGraph checkpointer |
 | 🛠️ Tool | `agent/tool.py`에서 관리 |
 | 📚 RAG | 추후 FastMCP Tool Server로 연결 |
 | 💬 응답 | 자연스러운 한국어 `answer` 반환 |
@@ -77,10 +77,10 @@ backend/
 
 1. `src/app.py`가 FastAPI 앱을 만들고 `api.chat.router`를 등록한다.
 2. Frontend가 `POST /chat`으로 `message`를 보낸다.
-3. `src/api/chat.py`가 `ChatRequest`를 검증하고 `run_agent(request.message)`를 호출한다.
-4. `src/agent/graph.py`가 `create_agent()`로 Agent를 만든다.
+3. `src/api/chat.py`가 `ChatRequest`를 검증하고 `run_agent(request.message, session_id=...)`를 호출한다.
+4. `src/agent/graph.py`가 `create_agent()`와 `InMemorySaver` checkpointer로 Agent를 만든다.
 5. Agent는 `get_chat_llm()`, `get_tools()`, `render_prompt("system_prompt.j2")`를 조합한다.
-6. `src/agent/openrouter_llm.py`가 OpenRouter API key로 `ChatOpenAI`를 생성한다.
+6. `src/agent/openrouter_llm.py`가 OpenRouter API key와 provider routing으로 `ChatOpenAI`를 생성한다.
 7. `src/agent/tool.py`가 현재는 placeholder `rag_search_tool`을 반환한다.
 8. Agent 실행 결과의 마지막 assistant message를 `answer` 문자열로 반환한다.
 9. `/chat` endpoint가 `{ "answer": "...", "tool_calls": [], "sources": [] }` 형태로 응답한다.
@@ -106,6 +106,7 @@ async function sendChat(message: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       message,
+      session_id: "browser-session-id",
       metadata: { source: "frontend" },
     }),
   });
@@ -200,7 +201,7 @@ PYTHONPATH=src uv run python src/app.py
 }
 ```
 
-현재 `session_id`는 request schema에만 남아 있다. 대화 history는 아직 저장하지 않으며, 이후 LangGraph checkpointer 또는 LangChain message history 방식으로 붙인다.
+`session_id`는 LangGraph `thread_id`로 전달된다. 같은 `session_id`로 요청하면 프로세스가 살아 있는 동안 `InMemorySaver` checkpointer가 같은 대화 이력을 이어간다. `session_id`가 없으면 요청마다 익명 thread를 새로 만들어 세션 간 이력이 섞이지 않게 처리한다.
 
 ## 🧾 Prompt
 
@@ -227,17 +228,20 @@ cp .env.example .env
 
 | 변수 | 기본값 | 설명 |
 | --- | --- | --- |
+| `OPENROUTER_API_KEY` | 빈 값 | 실제 `/chat` 호출에 필요한 OpenRouter API 키 |
+| `BACKEND_OPENROUTER_MODEL` | `openai/gpt-oss-120b` | 사용할 LLM 모델 |
+| `BACKEND_OPENROUTER_PROVIDER_ORDER` | `["cerebras"]` | 우선 시도할 OpenRouter provider 순서 |
+| `BACKEND_OPENROUTER_ALLOW_FALLBACKS` | `true` | primary provider 실패 시 OpenRouter fallback 허용 여부 |
 | `BACKEND_API_HOST` | `127.0.0.1` | backend bind host |
 | `BACKEND_API_PORT` | `8000` | backend 서버 포트 |
-| `BACKEND_CORS_ORIGINS` | `["http://localhost:5173","http://localhost:3000"]` | 허용할 frontend origin |
-| `BACKEND_OPENROUTER_API_KEY` | 빈 값 | 실제 `/chat` 호출에 필요한 OpenRouter API 키 |
-| `BACKEND_OPENROUTER_MODEL` | `openai/gpt-oss-120b` | 사용할 LLM 모델 |
-| `BACKEND_OPENROUTER_BASE_URL` | `https://openrouter.ai/api/v1` | OpenRouter 호환 API base URL |
+| `BACKEND_CORS_ORIGINS` | `["http://localhost:8501","http://127.0.0.1:8501","http://localhost:5173","http://localhost:3000"]` | 허용할 frontend origin |
 | `BACKEND_LLM_TEMPERATURE` | `0.2` | LLM temperature |
 | `BACKEND_LLM_TIMEOUT_MS` | `60000` | LLM timeout |
 | `BACKEND_LLM_MAX_RETRIES` | `2` | LLM 재시도 횟수 |
 | `BACKEND_RAG_MCP_URL` | `http://127.0.0.1:8010/mcp` | RAG MCP Tool Server URL |
 | `BACKEND_TOOL_TIMEOUT_MS` | `30000` | tool 실행 timeout |
+
+`.env.example`에는 로컬에서 자주 바꿔야 하는 값만 남겼다. 서비스 이름/버전, OpenRouter base URL/app title은 코드 기본값을 사용한다.
 
 ## ✅ 검증 방법
 
@@ -298,7 +302,7 @@ curl -s http://127.0.0.1:8000/health
 
 ### 6. chat curl 확인
 
-실제 LLM 호출이므로 `.env`에 `BACKEND_OPENROUTER_API_KEY`가 필요하다.
+실제 LLM 호출이므로 `.env`에 `OPENROUTER_API_KEY`가 필요하다.
 
 ```bash
 curl -s http://127.0.0.1:8000/chat \
@@ -330,7 +334,7 @@ PYTHONPATH=src uv run python scripts/manual_chat.py
 
 | 증상 | 확인할 것 |
 | --- | --- |
-| `/chat`이 500을 반환 | `.env`의 `BACKEND_OPENROUTER_API_KEY` 설정 여부 |
+| `/chat`이 500을 반환 | `.env`의 `OPENROUTER_API_KEY` 설정 여부 |
 | `/health` 연결 실패 | uvicorn이 켜져 있는지, 포트가 `8000`인지 확인 |
 | `Address already in use` | 이미 8000 포트를 쓰는 서버 종료 또는 `--port 8001` 사용 |
 | RAG 근거가 안 붙음 | 아직 MCP RAG tool 연결 전 상태인지 확인 |
@@ -343,6 +347,7 @@ PYTHONPATH=src uv run python scripts/manual_chat.py
 - `unittest` 성공
 - `GET /health`가 200 반환
 - `POST /chat`이 `answer` 필드를 포함한 200 반환
+- 같은 `session_id`로 연속 요청 시 같은 LangGraph thread를 사용
 - `schemas`, `mock`, `session_store.py`, `rate_limiter.py` import가 남아 있지 않음
 
-남은 구현 작업은 MCP RAG tool을 `src/agent/tool.py`에 연결하고, 필요하면 `session_id` 기반 대화 history를 별도 방식으로 붙이는 것이다.
+남은 구현 작업은 MCP RAG tool을 `src/agent/tool.py`에 연결하고, 필요하면 in-memory checkpointer를 영속 저장소 기반 checkpointer로 교체하는 것이다.
