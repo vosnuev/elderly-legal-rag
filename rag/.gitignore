@@ -14,14 +14,18 @@ venv/
 
 # Data / generated artifacts
 .data/
-data/raw/
-data/processed/
+
+data/
+
 workspace/
 input/
 output/
 cache/
+
+
 outputs/
 artifacts/
+graphrag_workspace/
 
 # Logs
 *.log
