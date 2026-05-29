@@ -1,6 +1,6 @@
 ---
 name: uv-python
-description: Use this skill for Python setup, dependency management, and run commands in backend/ and streamlit/.
+description: Use this skill for Python setup, dependency management, and run commands in backend/, rag/, and streamlit/.
 ---
 
 # uv Python Skill
@@ -16,10 +16,11 @@ Python projects in this repository must use `uv`.
 
 ## Backend
 
+Run commands from inside `backend/`:
+
 ```bash
-cd backend
 uv sync
-uv run python main.py
+uv run fastapi dev src/app.py
 ```
 
 Add backend dependencies from inside `backend/`:
@@ -28,15 +29,31 @@ Add backend dependencies from inside `backend/`:
 uv add <package>
 ```
 
-## Streamlit
+## RAG
+
+Run commands from inside `rag/`:
 
 ```bash
-cd streamlit
 uv sync
-uv run streamlit run main.py
+uv run python src/app.py
 ```
 
-Add Streamlit project dependencies from inside `streamlit/`:
+Add RAG dependencies from inside `rag/`:
+
+```bash
+uv add <package>
+```
+
+## Streamlit
+
+Run commands from inside `streamlit/`:
+
+```bash
+uv sync
+uv run streamlit run src/app.py
+```
+
+Add Streamlit dependencies from inside `streamlit/`:
 
 ```bash
 uv add <package>

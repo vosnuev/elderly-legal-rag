@@ -1,0 +1,16 @@
+[project]
+name = "rag"
+version = "0.1.0"
+description = "RAG and Microsoft GraphRAG workspace for SKN28 3rd 1Team"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi>=0.136.3",
+    "graphrag>=3.0.9",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.14.1",
+    "uvicorn[standard]>=0.48.0",
+]
+
+[tool.uv]
+package = false

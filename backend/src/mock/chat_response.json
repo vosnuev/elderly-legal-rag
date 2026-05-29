@@ -1,0 +1,35 @@
+{
+    "session_id" : "demo-session_id",
+    "kind" : "answer",
+    "question_type" :"search",
+    "summary" : "근거에서 확인된 범위에서는 수원시 노인일자리 신청은 모집 공고 확인 후 수행 기관에 신청하는 방식입니다.",
+    "details" : [
+        "신청 전 모집 대상, 기간, 수행기관을 확인해야 합니다. [1]",
+        "문의처는 공고에 표시된 담당부서 또는 수행기관 기준으로 안내해야 합니다. [1]"
+    ],
+    "laws" : [],
+    "table" : null,
+    "sources" : ["수원시 노인일자리 안내 / senior_jobs.md / 신청방법 / score=0.87"],
+    "references" : [
+        {
+            "title": "수원시 노인일자리 안내",
+            "file_name": "senior_jobs.md",
+            "url": "https://example.com/suwon-senior-jobs",
+            "page": null,
+            "article": null,
+            "section": "신청방법",
+            "excerpt": "노인일자리 신청은 모집 기간 내 수행기관 또는 담당부서를 통해 접수합니다.",
+            "score" : 0.87
+        }
+    ],
+    "eligibility" : { 
+        "status" : "confirmation_required",
+        "reason" : "나이와 거주지는 확인됐지만 모집 유형별 세부 조건은 추가 확인이 필요합니다.",
+        "required_info" : ["참여 희망 사업 유형", "모집 공고 기준 신청 기간"]
+    },
+    "confidence" : 0.78,
+    "evidence_status" : "sufficient",
+    "options" : [],
+    "allow_custom_input" : false,
+    "warning" : null
+}

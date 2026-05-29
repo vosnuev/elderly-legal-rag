@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "name": "repo-root",
+      "path": "."
+    },
+    {
+      "name": "backend",
+      "path": "backend"
+    },
+    {
+      "name": "rag",
+      "path": "rag"
+    },
+    {
+      "name": "streamlit",
+      "path": "streamlit"
+    },
+    {
+      "name": "frontend",
+      "path": "frontend"
+    },
+    {
+      "name": "docs_web",
+      "path": "docs_web"
+    }
+  ],
+  "settings": {
+    "python.analysis.autoImportCompletions": true,
+    "python.terminal.activateEnvironment": true
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "charliermarsh.ruff",
+      "tamasfe.even-better-toml"
+    ]
+  }
+}

@@ -5,6 +5,7 @@ Thumbs.db
 # Editor / IDE local state
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 !.vscode/settings.example.json
 .idea/
 *.swp
@@ -21,6 +22,9 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Local operational notes
+user_list.md
 
 # Python
 __pycache__/
@@ -70,3 +74,7 @@ tmp/
 !.agents/
 !.agents/skills/
 !.agents/skills/**
+
+
+#instructions
+instructions.md

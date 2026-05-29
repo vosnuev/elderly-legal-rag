@@ -1,0 +1,73 @@
+name: Deploy Docs Web
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docs_web/**
+      - .github/workflows/docs-web-pages.yml
+  push:
+    branches:
+      - main
+    paths:
+      - docs_web/**
+      - .github/workflows/docs-web-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: docs_web/package-lock.json
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Install dependencies
+        working-directory: docs_web
+        run: npm ci
+
+      - name: Build
+        working-directory: docs_web
+        run: npm run build
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs_web/dist
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+      - name: Report deployed URL
+        run: |
+          echo "### Docs Web URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"

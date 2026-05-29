@@ -40,6 +40,18 @@ Do not commit when:
 - unrelated changes are mixed together;
 - local secrets, `.env`, virtual environments, build output, or personal agent config are included.
 
+## Atomic Commit Checklist
+
+Before committing, confirm:
+
+- the staged diff has one purpose;
+- the commit can be reviewed without unrelated context;
+- frontend, backend, RAG, Streamlit, infra, and docs-only work are split when they are independent;
+- docs or assets are staged with code only when they explain the same change;
+- ignored files, local notes, generated output, and personal adapter config are not staged.
+
+If the remaining work is useful but out of branch scope, capture it in a GitHub issue instead of expanding the commit.
+
 ## Pull Request Checklist
 
 Each PR should include:
