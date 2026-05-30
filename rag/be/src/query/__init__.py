@@ -1,3 +1,3 @@
-from query.service import MemgraphQueryService
+from query.service import MemgraphQueryService, get_memgraph_query_service
 
-__all__ = ["MemgraphQueryService"]
+__all__ = ["MemgraphQueryService", "get_memgraph_query_service"]

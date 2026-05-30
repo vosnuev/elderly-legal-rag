@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from ingest.service import ingest_service
+from ingest_tasks.service import ingest_task_service
 
 router = APIRouter(tags=["system"])
 
@@ -17,5 +17,4 @@ def health() -> dict[str, str]:
 
 @router.get("/api/system/dependencies")
 def dependencies() -> dict[str, object]:
-    return ingest_service.dependency_summary()
-
+    return ingest_task_service.dependency_summary()

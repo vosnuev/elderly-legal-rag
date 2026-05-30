@@ -61,7 +61,7 @@ READ_START_TOKENS = frozenset(
 )
 
 WRITE_START_TOKENS = READ_START_TOKENS | frozenset({"CREATE", "MERGE", "SET"})
-ALLOWED_EXTERNAL_CALLS = ("vector_search.",)
+ALLOWED_EXTERNAL_CALLS = ("vector_search.", "text_search.")
 TOKEN_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]*\b")
 
 

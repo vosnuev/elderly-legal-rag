@@ -27,11 +27,17 @@ class SearchResponse(BaseModel):
 
 class IngestStage(StrEnum):
     UPLOADED = "uploaded"
-    PARSED = "parsed"
-    CONVERTED = "converted"
-    STORED = "stored"
+    VALIDATED = "validated"
+    UPLOADED_TO_DATABASE = "uploaded_to_database"
     GRAPH_ADD_STARTED = "graph_add_started"
-    INDEXED = "indexed"
+    DOCUMENT_REGISTERED = "document_registered"
+    CHUNKED = "chunked"
+    CHUNKS_STORED = "chunks_stored"
+    EMBEDDING_DISPATCHED = "embedding_dispatched"
+    CANDIDATES_GENERATED = "candidates_generated"
+    PENDING_REVIEW = "pending_review"
+    NEEDS_RETRY = "needs_retry"
+    COMPLETED = "completed"
     FAILED = "failed"
 
 
@@ -70,6 +76,10 @@ class FileIngestStatusResponse(BaseModel):
     completed: bool
     stages: list[IngestStageResult]
     warning: str | None = None
+    document_id: str | None = None
+    chunk_count: int = 0
+    candidate_count: int = 0
+    pending_review_count: int = 0
 
 
 class RagDocument(BaseModel):
@@ -79,4 +89,3 @@ class RagDocument(BaseModel):
     file_type: str
     location: str | None = None
     url: str | None = None
-

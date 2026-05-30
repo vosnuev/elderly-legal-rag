@@ -10,7 +10,9 @@ from neo4j.graph import Node, Path, Relationship
 from settings import settings
 
 
-class MemgraphClient:
+class MemgraphBoltClient:
+    """Pure Bolt adapter for Memgraph query execution."""
+
     def __init__(
         self,
         uri: str,
@@ -69,13 +71,13 @@ class MemgraphClient:
 
 
 @lru_cache
-def get_memgraph_client() -> MemgraphClient:
+def get_memgraph_bolt_client() -> MemgraphBoltClient:
     password = (
         settings.memgraph_password.get_secret_value()
         if settings.memgraph_password is not None
         else None
     )
-    return MemgraphClient(
+    return MemgraphBoltClient(
         uri=settings.memgraph_uri,
         username=settings.memgraph_username,
         password=password,

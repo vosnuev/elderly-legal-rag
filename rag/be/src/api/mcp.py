@@ -5,7 +5,7 @@ from typing import Any
 from mcp.server.fastmcp import FastMCP
 
 from query.instructions import GRAPH_SCHEMA_INSTRUCTIONS
-from query.service import MemgraphQueryService
+from query.service import MemgraphQueryService, get_memgraph_query_service
 
 
 def _new_mcp(name: str) -> FastMCP:
@@ -20,7 +20,7 @@ def _new_mcp(name: str) -> FastMCP:
 
 def create_external_mcp(service: MemgraphQueryService | None = None) -> FastMCP:
     mcp = _new_mcp("SKN28 RAG External Memgraph Tools")
-    _register_read_tools(mcp, service or MemgraphQueryService())
+    _register_read_tools(mcp, service or get_memgraph_query_service())
     return mcp
 
 
@@ -51,14 +51,15 @@ def _register_read_tools(mcp: FastMCP, service: MemgraphQueryService) -> None:
         return service.vector_search(index_name, embedding, top_k)
 
     @mcp.tool(
-        name="memgraph.keyword_search",
-        description=(
-            "Search text-bearing Document, Chunk, and Entity nodes with a bounded "
-            "case-insensitive CONTAINS query."
-        ),
+        name="memgraph.text_search",
+        description="Search text-bearing graph nodes with the configured text search wrapper.",
     )
-    def keyword_search(keyword: str, top_k: int = 20) -> dict[str, Any]:
-        return service.keyword_search(keyword, top_k)
+    def text_search(
+        keyword: str,
+        top_k: int = 20,
+        index_name: str | None = None,
+    ) -> dict[str, Any]:
+        return service.text_search(keyword, top_k, index_name)
 
     @mcp.tool(
         name="memgraph.graph_traverse",

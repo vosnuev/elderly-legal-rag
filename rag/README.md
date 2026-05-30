@@ -6,12 +6,12 @@ Memgraph 기반 GraphRAG, 문서 ingest, MCP query tool, RAG 운영 UI를 관리
 
 ```text
 rag/
-├── be/            # FastAPI RAG backend, MCP, ingest pipeline, Memgraph query logic
+├── be/            # FastAPI RAG backend, MCP, ingest task layer, graph ingest runtime
 ├── fe/            # Bun + Vite + React RAG operations UI
 ├── docs/          # PRD and architecture docs
 ├── infra/         # Memgraph and Memgraph Lab Docker Compose
 ├── sample_datas/  # Local sample text/JSON data
-└── code_refernce/ # Legacy/reference scripts kept out of runtime
+└── code_reference/ # Legacy/reference scripts kept out of runtime
 ```
 
 ## Services
@@ -30,11 +30,9 @@ External read-only MCP endpoint:
 http://127.0.0.1:8010/mcp
 ```
 
-Internal graph ingest agent tools are Python LangChain tools, not MCP tools:
-
-```python
-from agents.graph_ingest.tools import get_graph_ingest_tools
-```
+Internal graph ingest subagents import singleton LangChain tools from
+`rag/be/src/tools/`. Runtime job/document context is bound in-process and those
+tools are not exposed through MCP.
 
 ### Frontend
 
@@ -68,5 +66,6 @@ Default endpoints:
 ## Docs
 
 - `docs/memgraph_mcp_graphrag_prd.md`: Memgraph 기반 GraphRAG, MCP query server, 문서 ingest/그래프 확장 설계 PRD
+- `docs/query_agent_tool_boundary_correction_prd.md`: query layer, subagent tool, Memgraph write ownership correction PRD
 - `be/README.md`: Backend runtime, API, env, and test commands
 - `infra/README.md`: Memgraph and Memgraph Lab Docker Compose usage

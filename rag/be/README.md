@@ -1,13 +1,15 @@
 # RAG Backend
 
-FastAPI 기반 RAG backend입니다. 문서 ingest API, external read-only MCP endpoint, internal graph ingest agent tools, Memgraph query business logic을 포함합니다.
+FastAPI 기반 RAG backend입니다. 문서 ingest API, external read-only MCP endpoint, internal agentic graph ingest runtime, Memgraph query business logic을 포함합니다.
 
 ## Runtime
 
 - Python 3.13
 - FastAPI
 - FastMCP / MCP Streamable HTTP
-- LangChain tools for internal graph ingest agent
+- LangGraph orchestrator for agentic ingest
+- LangChain tools for internal graph ingest subagents
+- OpenRouter-compatible LangChain chat/embedding clients
 - Memgraph via Neo4j-compatible Bolt driver
 - Pydantic / pydantic-settings
 
@@ -17,9 +19,12 @@ FastAPI 기반 RAG backend입니다. 문서 ingest API, external read-only MCP e
 be/
 ├── src/app.py                  # FastAPI bootstrap and MCP mount
 ├── src/api/                    # HTTP and MCP exposure layer
-├── src/agents/graph_ingest/    # Internal LangChain tools and graph ingest agent shell
-├── src/ingest/                 # Document ingest, parsing, and local job state
-├── src/query/                  # Memgraph query business logic
+├── src/agents/graph_ingest/    # LangGraph orchestrator and graph ingest subagents
+├── src/external/memgraph/      # Pure Memgraph Bolt adapter
+├── src/ingest_tasks/           # Document DB upload, ingest job state, task queue boundary
+├── src/logger.py               # Loguru structured logging setup
+├── src/query/                  # Memgraph query methods and repositories
+├── src/tools/                  # Singleton LangChain tools and context binding
 ├── src/settings.py             # Environment settings
 ├── tests/
 ├── .env.example
@@ -47,6 +52,19 @@ PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
 - `GET /api/documents`
 - `POST /api/documents/search`
 - `GET /api/review/edge-candidates`
+- `POST /api/review/edge-candidates/{candidate_id}/decision`
+
+## Query Layer
+
+`src/query/service.py` is a compatibility facade used by APIs, tools, ingest
+tasks, and graph-ingest services. The implementation is split below it:
+
+- `src/query/methods/`: Memgraph primitive query methods such as guarded Cypher,
+  schema reads, text search, vector search, and bounded graph traversal.
+- `src/query/repositories/`: project graph-schema queries for `Document`,
+  `Chunk`, `RelationshipCandidate`, `ReviewNote`, and `IngestJob`.
+- `src/external/memgraph/`: pure Memgraph Bolt driver lifecycle and result
+  serialization.
 
 ## MCP
 
@@ -60,21 +78,31 @@ External MCP tools:
 
 - `memgraph.read_query`
 - `memgraph.vector_search`
-- `memgraph.keyword_search`
+- `memgraph.text_search`
 - `memgraph.graph_traverse`
 - `memgraph.schema_read`
 
-MCP only exposes read tools. Write/upsert tools are only available in-process to the graph ingest agent:
+MCP only exposes read tools. Internal ingest subagents import singleton
+read/write tools from `src/tools/`; runtime context is bound in-process and is
+not part of the LLM-facing tool schema.
 
-```python
-from agents.graph_ingest.tools import get_graph_ingest_tools
-```
+## Ingest Flow
+
+1. API receives text/file input.
+2. `src/ingest_tasks/` stores the original document in Memgraph and creates an ingest job with `document_id`.
+3. `IngestTaskQueue` starts the LangGraph runtime with `job_id` and `document_id`.
+4. `src/agents/graph_ingest/orchestrator.py` loads the document from Memgraph and runs subagents.
+5. `chunking_agent` writes chunks through `write_chunk_tool`; `graph_candidate_agent` writes relationship candidates through `write_relationship_candidate_tool`.
+6. Deterministic services persist embeddings, progress, review status, reviewer notes, and approved actual edge materialization.
+7. Review APIs resume pending candidate decisions.
 
 ## Environment
 
 - Example file: `.env.example`
 - Local file: `.env` (do not commit)
 - Settings prefix: `RAG_`
+- Text search indexes are configured with `RAG_TEXT_SEARCH_INDEX_NAME`, `RAG_DOCUMENT_TEXT_SEARCH_INDEX_NAME`, and `RAG_REVIEW_NOTE_TEXT_SEARCH_INDEX_NAME`.
+- Structured logs use Loguru. `RAG_LOG_JSON=true` emits JSON logs to stderr.
 
 ## Checks
 

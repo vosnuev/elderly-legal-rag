@@ -15,7 +15,7 @@ Core graph hierarchy:
 - (:Chunk)-[:MENTIONS]->(:Entity)
 - (:Chunk)-[:EVIDENCE_FOR]->(:RelationshipCandidate)
 
-Prefer wrapper tools for vector search, keyword search, graph traversal, and schema reads.
+Prefer wrapper tools for text search, vector search, graph traversal, and schema reads.
 Use raw Cypher only when wrapper tools cannot express the graph reasoning.
 Always bound query result size and traversal depth.
 """

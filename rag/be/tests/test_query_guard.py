@@ -20,6 +20,14 @@ class QueryGuardTest(unittest.TestCase):
         with self.assertRaises(QueryValidationError):
             validate_read_query("MATCH (n) RETURN n; MATCH (m) RETURN m", max_rows=10)
 
+    def test_read_query_allows_memgraph_text_search_call(self) -> None:
+        result = validate_read_query(
+            "CALL text_search.search($index_name, $query) YIELD node RETURN node",
+            max_rows=10,
+        )
+
+        self.assertEqual(result.access, "read_only")
+
     def test_internal_write_query_requires_job_metadata(self) -> None:
         with self.assertRaises(QueryValidationError):
             validate_write_query(
