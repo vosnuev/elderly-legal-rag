@@ -9,7 +9,7 @@ from ingest_tasks.schemas import (
 )
 from ingest_tasks.service import ingest_task_service
 
-router = APIRouter(tags=["ingest"])
+router = APIRouter(tags=["ingest-jobs"])
 
 
 @router.post("/ingest", response_model=FileIngestStatusResponse)
@@ -17,16 +17,16 @@ def ingest(request: RagIngestRequest) -> FileIngestStatusResponse:
     return ingest_task_service.ingest_backend_file(request)
 
 
-@router.get("/ingest/status/{job_id}", response_model=FileIngestStatusResponse)
-def ingest_status(job_id: str) -> FileIngestStatusResponse:
-    return ingest_task_service.get_status(job_id)
-
-
 @router.post("/api/ingest/jobs", response_model=FileIngestStatusResponse)
 def create_ingest_job(
     request: CreateDocumentIngestJobRequest,
 ) -> FileIngestStatusResponse:
     return ingest_task_service.create_text_job(request)
+
+
+@router.get("/ingest/status/{job_id}", response_model=FileIngestStatusResponse)
+def legacy_ingest_status(job_id: str) -> FileIngestStatusResponse:
+    return ingest_task_service.get_status(job_id)
 
 
 @router.get("/api/ingest/jobs/{job_id}", response_model=FileIngestStatusResponse)
