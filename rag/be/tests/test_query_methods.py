@@ -8,6 +8,7 @@ from unittest.mock import patch
 from query.read.document import get_document_record
 from query.read.raw import read_query
 from query.read.schema import schema_read
+from query.schema import AgentMemoryNode, ReviewNoteNode
 from query.read.text_search import text_search
 from query.write.cypher import write_query
 from query.write.document_registration import register_document
@@ -174,6 +175,31 @@ class QueryWriteMethodsTest(unittest.TestCase):
         self.assertNotIn("IngestJob", query)
         self.assertEqual(parameters["document_id"], "doc-1")
         self.assertEqual(parameters["document"]["raw_content"], "original text")
+
+
+class QuerySchemaContractsTest(unittest.TestCase):
+    def test_review_note_belongs_to_relationship_candidate(self) -> None:
+        note = ReviewNoteNode(
+            id="note-1",
+            relationship_candidate_id="candidate-1",
+            action="yes",
+            reviewer="tester",
+            note="이 관계는 조례 근거가 명확함",
+        )
+
+        self.assertEqual(note.relationship_candidate_id, "candidate-1")
+
+    def test_agent_memory_is_evidence_backed_artifact(self) -> None:
+        memory = AgentMemoryNode(
+            id="memory-1",
+            content="사용자는 지역 scope가 명확하지 않은 관계 candidate를 거절하는 경향이 있다.",
+            evidence_review_note_ids=["note-1"],
+            evidence_relationship_candidate_ids=["candidate-1"],
+        )
+
+        self.assertEqual(memory.memory_kind, "review_preference")
+        self.assertEqual(memory.author_agent, "memory_update_agent")
+        self.assertEqual(memory.evidence_review_note_ids, ["note-1"])
 
 
 if __name__ == "__main__":
