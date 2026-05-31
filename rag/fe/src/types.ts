@@ -19,6 +19,10 @@ export interface FileIngestStatusResponse {
   completed: boolean
   stages: IngestStageResult[]
   warning?: string | null
+  document_id?: string | null
+  chunk_count?: number
+  candidate_count?: number
+  pending_review_count?: number
 }
 
 export interface RagDocument {
@@ -36,4 +40,37 @@ export interface ReviewCandidateResponse {
   rows?: unknown[]
   row_count?: number
   elapsed_ms?: number
+}
+
+export type ReviewAction = 'yes' | 'no' | 'retry'
+
+export interface RelationshipCandidate {
+  id: string
+  job_id: string
+  source_node: string
+  target_node: string
+  relationship_type: string
+  source_chunk_id: string
+  evidence_text: string
+  rationale: string
+  status: string
+  version: number
+  metadata: Record<string, unknown>
+}
+
+export interface ReviewDecisionRequest {
+  action: ReviewAction
+  note?: string | null
+  reviewer?: string
+}
+
+export interface IngestGraphResult {
+  job_id: string
+  phase: string
+  document_id?: string | null
+  chunk_count: number
+  candidate_count: number
+  pending_review_count: number
+  warnings: string[]
+  errors: string[]
 }
