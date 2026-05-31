@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, NotRequired, TypedDict
 
-from agents.graph_ingest.schemas import (
+from pipeline.schemas import (
     FeedbackJudgeResult,
     GraphChunk,
     GraphIngestPhase,

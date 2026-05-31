@@ -5,7 +5,13 @@ from typing import Any
 from langchain.tools import tool
 from langchain_core.tools import BaseTool
 
-from query.service import get_memgraph_query_service
+from query.read import (
+    graph_traverse,
+    read_query,
+    schema_read,
+    text_search,
+    vector_search,
+)
 
 
 @tool
@@ -15,13 +21,13 @@ def memgraph_read_query(
     max_rows: int | None = None,
 ) -> dict[str, Any]:
     """Execute a bounded read-only Cypher query against Memgraph."""
-    return get_memgraph_query_service().read_query(query, parameters, max_rows)
+    return read_query(query, parameters, max_rows)
 
 
 @tool
 def memgraph_schema_read() -> dict[str, Any]:
     """Read graph labels, relationship types, indexes, and query instructions."""
-    return get_memgraph_query_service().schema_read()
+    return schema_read()
 
 
 @tool
@@ -31,7 +37,7 @@ def memgraph_text_search(
     index_name: str | None = None,
 ) -> dict[str, Any]:
     """Search indexed text in Memgraph using the configured text search wrapper."""
-    return get_memgraph_query_service().text_search(keyword, top_k, index_name)
+    return text_search(keyword, top_k, index_name)
 
 
 @tool
@@ -41,7 +47,7 @@ def memgraph_vector_search(
     top_k: int = 5,
 ) -> dict[str, Any]:
     """Run Memgraph vector search over a configured vector index."""
-    return get_memgraph_query_service().vector_search(index_name, embedding, top_k)
+    return vector_search(index_name, embedding, top_k)
 
 
 @tool
@@ -52,7 +58,7 @@ def memgraph_graph_traverse(
     max_rows: int = 50,
 ) -> dict[str, Any]:
     """Traverse a bounded graph neighborhood from a node id property."""
-    return get_memgraph_query_service().graph_traverse(
+    return graph_traverse(
         node_id,
         id_property,
         max_depth,
@@ -66,7 +72,10 @@ def memgraph_probe_existing_context(
     top_k: int = 20,
 ) -> dict[str, Any]:
     """Probe existing graph context with primitive read methods."""
-    return get_memgraph_query_service().probe_existing_context(keyword, top_k)
+    return {
+        "text_matches": text_search(keyword, top_k),
+        "schema": schema_read(),
+    }
 
 
 MEMGRAPH_READ_TOOLS: list[BaseTool] = [

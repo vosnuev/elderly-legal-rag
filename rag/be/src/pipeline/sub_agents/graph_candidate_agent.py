@@ -9,8 +9,8 @@ from langchain.agents import create_agent
 from langchain_core.runnables import Runnable
 from langchain_core.tools import BaseTool
 
-from agents.graph_ingest.schemas import GraphChunk, RelationshipCandidate
-from agents.llm_clients.factory import create_openrouter_chat_model
+from pipeline.schemas import GraphChunk, RelationshipCandidate
+from external.openrouter import create_openrouter_chat_model
 from settings import settings
 from tools import (
     AgentToolContext,

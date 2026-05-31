@@ -2,16 +2,14 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from agents.graph_ingest.schemas import GraphChunk
-from agents.llm_clients.factory import create_openrouter_embeddings
-from query.service import MemgraphQueryService, get_memgraph_query_service
+from external.openrouter import create_openrouter_embeddings
+from pipeline.schemas import GraphChunk
+from query.utils import graph_properties
+from query.write import write_query
 from settings import settings
 
 
 class EmbeddingDispatchService:
-    def __init__(self, query_service: MemgraphQueryService | None = None) -> None:
-        self._query_service = query_service or get_memgraph_query_service()
-
     def dispatch(self, *, job_id: str, chunks: list[GraphChunk]) -> list[GraphChunk]:
         embeddings = create_openrouter_embeddings()
         updated_chunks: list[GraphChunk] = []
@@ -39,8 +37,23 @@ class EmbeddingDispatchService:
                 )
             )
 
-        self._query_service.store_chunk_embeddings(
-            job_id,
-            [chunk.model_dump() for chunk in updated_chunks],
+        write_query(
+            """
+            UNWIND $chunks AS chunk
+            MATCH (c:Chunk {id: chunk.id})
+            SET c.embedding_status = chunk.embedding_status,
+                c.embedding_model = chunk.embedding_model,
+                c.embedding_dimensions = chunk.embedding_dimensions,
+                c.embedding = chunk.embedding,
+                c.last_embedding_job_id = $job_id
+            RETURN count(c) AS stored_count
+            """,
+            {
+                "job_id": job_id,
+                "chunks": [
+                    graph_properties(chunk.model_dump())
+                    for chunk in updated_chunks
+                ],
+            },
         )
         return updated_chunks

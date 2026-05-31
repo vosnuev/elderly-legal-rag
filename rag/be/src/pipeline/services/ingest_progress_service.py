@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from agents.graph_ingest.schemas import GraphIngestPhase, IngestGraphResult
+from pipeline.schemas import GraphIngestPhase, IngestGraphResult
 from logger import bind_logger
-from query.service import MemgraphQueryService, get_memgraph_query_service
+from query.utils import graph_properties
+from query.write import write_query
 
 
 class IngestProgressService:
-    def __init__(self, query_service: MemgraphQueryService | None = None) -> None:
-        self._query_service = query_service or get_memgraph_query_service()
+    def __init__(self) -> None:
         self._logger = bind_logger(component="ingest_progress_service")
 
     def mark(
@@ -32,7 +32,18 @@ class IngestProgressService:
             warnings=warnings or [],
             errors=errors or [],
         )
-        self._query_service.store_ingest_progress(result.model_dump())
+        write_query(
+            """
+            MERGE (job:IngestJob {id: $job_id})
+            SET job += $progress,
+                job.updated_at = localDateTime()
+            RETURN job
+            """,
+            {
+                "job_id": job_id,
+                "progress": graph_properties(result.model_dump()),
+            },
+        )
         self._logger.bind(
             job_id=job_id,
             phase=phase.value,

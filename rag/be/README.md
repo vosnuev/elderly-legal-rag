@@ -7,9 +7,9 @@ FastAPI 기반 RAG backend입니다. 문서 ingest API, external read-only MCP e
 - Python 3.13
 - FastAPI
 - FastMCP / MCP Streamable HTTP
-- LangGraph orchestrator for agentic ingest
+- LangGraph pipeline for agentic ingest
 - LangChain tools for internal graph ingest subagents
-- OpenRouter-compatible LangChain chat/embedding clients
+- OpenRouter-compatible LangChain chat/embedding clients via `src/external/openrouter/`
 - Memgraph via Neo4j-compatible Bolt driver
 - Pydantic / pydantic-settings
 
@@ -18,12 +18,13 @@ FastAPI 기반 RAG backend입니다. 문서 ingest API, external read-only MCP e
 ```text
 be/
 ├── src/app.py                  # FastAPI bootstrap and MCP mount
-├── src/api/                    # HTTP and MCP exposure layer
-├── src/agents/graph_ingest/    # LangGraph orchestrator and graph ingest subagents
+├── src/api/                    # MCP, ingest command, and FE operations API surfaces
+├── src/pipeline/               # LangGraph ingest pipeline, subagents, and service nodes
 ├── src/external/memgraph/      # Pure Memgraph Bolt adapter
+├── src/external/openrouter/    # OpenRouter chat and embedding client adapters
 ├── src/ingest_tasks/           # Document DB upload, ingest job state, task queue boundary
 ├── src/logger.py               # Loguru structured logging setup
-├── src/query/                  # Memgraph query methods and repositories
+├── src/query/                  # Memgraph read/write query functions
 ├── src/tools/                  # Singleton LangChain tools and context binding
 ├── src/settings.py             # Environment settings
 ├── tests/
@@ -41,6 +42,12 @@ PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
 
 ## API
 
+API code is split by boundary:
+
+- `src/api/mcp/`: external read-only MCP server.
+- `src/api/ingest/`: document ingest job creation and pipeline start commands.
+- `src/api/operations/`: FE operations endpoints for status, documents, and search.
+
 - `GET /health`
 - `GET /api/system/dependencies`
 - `POST /ingest`
@@ -56,13 +63,14 @@ PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
 
 ## Query Layer
 
-`src/query/service.py` is a compatibility facade used by APIs, tools, ingest
-tasks, and graph-ingest services. The implementation is split below it:
+`src/query/` is a direct function layer over Memgraph query primitives. It does
+not contain prompt text, MCP instructions, repository abstractions, or a service
+singleton.
 
-- `src/query/methods/`: Memgraph primitive query methods such as guarded Cypher,
-  schema reads, text search, vector search, and bounded graph traversal.
-- `src/query/repositories/`: project graph-schema queries for `Document`,
-  `Chunk`, `RelationshipCandidate`, `ReviewNote`, and `IngestJob`.
+- `src/query/read/`: raw read Cypher, schema reads, text search, vector search,
+  bounded graph traversal, and document lookup by id.
+- `src/query/write/`: raw write Cypher and deterministic original-document
+  registration.
 - `src/external/memgraph/`: pure Memgraph Bolt driver lifecycle and result
   serialization.
 
@@ -90,8 +98,8 @@ not part of the LLM-facing tool schema.
 
 1. API receives text/file input.
 2. `src/ingest_tasks/` stores the original document in Memgraph and creates an ingest job with `document_id`.
-3. `IngestTaskQueue` starts the LangGraph runtime with `job_id` and `document_id`.
-4. `src/agents/graph_ingest/orchestrator.py` loads the document from Memgraph and runs subagents.
+3. `IngestTaskQueue` starts the LangGraph pipeline with `job_id` and `document_id`.
+4. `src/pipeline/invocation.py` invokes graph flows under `src/pipeline/graphs/`.
 5. `chunking_agent` writes chunks through `write_chunk_tool`; `graph_candidate_agent` writes relationship candidates through `write_relationship_candidate_tool`.
 6. Deterministic services persist embeddings, progress, review status, reviewer notes, and approved actual edge materialization.
 7. Review APIs resume pending candidate decisions.

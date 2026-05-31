@@ -2,50 +2,15 @@ from __future__ import annotations
 
 import unittest
 
-from agents.graph_ingest.schemas import RegisteredDocument
-from agents.graph_ingest.sub_agents.chunking_agent import ChunkingAgent
-from agents.graph_ingest.sub_agents.feedback_judge_agent import FeedbackJudgeAgent
-from agents.graph_ingest.sub_agents.graph_candidate_agent import GraphCandidateAgent
-from agents.graph_ingest.sub_agents.graph_candidate_revision_agent import (
+from pipeline.schemas import RegisteredDocument
+from pipeline.sub_agents.chunking_agent import ChunkingAgent
+from pipeline.sub_agents.feedback_judge_agent import FeedbackJudgeAgent
+from pipeline.sub_agents.graph_candidate_agent import GraphCandidateAgent
+from pipeline.sub_agents.graph_candidate_revision_agent import (
     GraphCandidateRevisionAgent,
 )
-from api.mcp import create_external_mcp
 from tools import AgentToolContext, bind_agent_tool_context, count_occurrences_tool
-
-
-class FakeQueryService:
-    def read_query(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def vector_search(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def text_search(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def graph_traverse(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def schema_read(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def store_chunks(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def store_edge_candidates(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def probe_existing_context(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def find_review_notes(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def get_ingest_progress(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return {}
-
-    def get_document_raw_content(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN201
-        return "alpha beta alpha"
+from api.mcp import create_external_mcp
 
 
 class EndpointToolsTest(unittest.TestCase):
@@ -110,7 +75,7 @@ class EndpointToolsTest(unittest.TestCase):
         self._assert_no_runtime_context_schema(tools)
 
     def test_external_mcp_is_read_only_surface(self) -> None:
-        tool_manager = create_external_mcp(FakeQueryService())._tool_manager
+        tool_manager = create_external_mcp()._tool_manager
         tool_names = set(tool_manager._tools)
 
         self.assertIn("memgraph.read_query", tool_names)

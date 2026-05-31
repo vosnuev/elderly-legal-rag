@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from uuid import uuid4
 
+from pipeline.schemas import IngestGraphResult, ReviewDecisionRequest
 from ingest_tasks.document_service import DocumentIngestService, SUPPORTED_INPUT_SUFFIXES
 from ingest_tasks.job_store import (
     IngestJobStore,
@@ -24,7 +25,7 @@ from ingest_tasks.schemas import (
     StageStatus,
 )
 from logger import bind_logger
-from query.service import MemgraphQueryService, get_memgraph_query_service
+from query.read import list_documents, read_query, search_documents
 from settings import settings
 
 
@@ -34,12 +35,10 @@ class IngestTaskService:
         store: IngestJobStore | None = None,
         document_service: DocumentIngestService | None = None,
         task_queue: IngestTaskQueue | None = None,
-        query_service: MemgraphQueryService | None = None,
     ) -> None:
         self._store = store or IngestJobStore()
-        self._query_service = query_service or get_memgraph_query_service()
-        self._document_service = document_service or DocumentIngestService(self._query_service)
-        self._task_queue = task_queue or IngestTaskQueue(query_service=self._query_service)
+        self._document_service = document_service or DocumentIngestService()
+        self._task_queue = task_queue or IngestTaskQueue()
         self._logger = bind_logger(component="ingest_task_service")
 
     def dependency_summary(self) -> dict[str, object]:
@@ -143,17 +142,41 @@ class IngestTaskService:
         return apply_graph_ingest_result(job, result, self._store)
 
     def list_documents(self) -> list[RagDocument]:
-        result = self._query_service.list_documents(limit=settings.query_max_rows)
+        result = list_documents(limit=settings.query_max_rows)
         return [_document_from_record(row["document"]) for row in result["rows"]]
 
     def search(self, request: SearchRequest) -> SearchResponse:
-        result = self._query_service.search_documents(request.query, request.top_k)
+        result = search_documents(request.query, request.top_k)
         return SearchResponse(
             query=request.query,
             results=[
                 _search_result_from_record(row["document"], score=float(row.get("score") or 1.0))
                 for row in result["rows"]
             ],
+        )
+
+    def list_pending_edge_candidates(self, limit: int = 50) -> dict[str, object]:
+        return read_query(
+            """
+            MATCH (candidate:RelationshipCandidate)
+            WHERE coalesce(candidate.status, "pending_review") = "pending_review"
+            RETURN candidate
+            LIMIT $limit
+            """,
+            {"limit": limit},
+        )
+
+    def decide_edge_candidate(
+        self,
+        *,
+        candidate_id: str,
+        request: ReviewDecisionRequest,
+    ) -> IngestGraphResult:
+        return self._task_queue.apply_review_decision(
+            candidate_id=candidate_id,
+            action=request.action,
+            reviewer=request.reviewer,
+            note=request.note,
         )
 
     def _create_job_from_content(

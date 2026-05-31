@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from agents.graph_ingest.schemas import GraphIngestPhase, IngestGraphResult
+from pipeline.schemas import GraphIngestPhase, IngestGraphResult
 from ingest_tasks.schemas import (
     FileIngestStatusResponse,
     IngestStage,

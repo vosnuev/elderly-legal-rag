@@ -6,17 +6,17 @@ from itertools import count
 from pathlib import Path
 from uuid import uuid4
 
-from agents.graph_ingest.schemas import RegisteredDocument
+from pipeline.schemas import RegisteredDocument
 from logger import bind_logger
-from query.service import MemgraphQueryService, get_memgraph_query_service
+from query.read import get_document_record
+from query.write import register_document
 
 SUPPORTED_INPUT_SUFFIXES = {".csv", ".json", ".py", ".txt", ".md"}
 _ENTRY_COUNTER = count(1)
 
 
 class DocumentIngestService:
-    def __init__(self, query_service: MemgraphQueryService | None = None) -> None:
-        self._query_service = query_service or get_memgraph_query_service()
+    def __init__(self) -> None:
         self._logger = bind_logger(component="document_ingest_service")
 
     def register_text_document(
@@ -47,7 +47,7 @@ class DocumentIngestService:
                 "last_ingest_job_id": job_id,
             },
         )
-        self._query_service.store_document_record(job_id, document.model_dump())
+        register_document(document.model_dump())
         self._logger.bind(
             job_id=job_id,
             document_id=document.id,
@@ -56,7 +56,7 @@ class DocumentIngestService:
         return document
 
     def get_registered_document(self, document_id: str) -> RegisteredDocument:
-        record = self._query_service.get_document_record(document_id)
+        record = get_document_record(document_id)
         return RegisteredDocument.model_validate(record)
 
 
