@@ -8,7 +8,9 @@ from settings import settings
 
 
 def schema_read() -> dict[str, Any]:
-    schema_result = get_memgraph_bolt_client().execute_read("SHOW SCHEMA INFO")
+    schema_result = get_memgraph_bolt_client().execute_autocommit_read(
+        "SHOW SCHEMA INFO"
+    )
     schema = _parse_schema_info(schema_result)
 
     return {

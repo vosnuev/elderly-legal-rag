@@ -35,6 +35,25 @@ class MemgraphBoltClient:
     ) -> dict[str, Any]:
         return self._execute(query, parameters, RoutingControl.READ)
 
+    def execute_autocommit_read(
+        self,
+        query: str,
+        parameters: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        started_at = perf_counter()
+        with self._driver.session(database="memgraph") as session:
+            result = session.run(query, _sanitize_parameters(parameters))
+            keys = result.keys()
+            records = list(result)
+            summary = result.consume()
+        elapsed_ms = round((perf_counter() - started_at) * 1000, 2)
+        return _format_query_result(
+            records=records,
+            summary=summary,
+            keys=keys,
+            elapsed_ms=elapsed_ms,
+        )
+
     def execute_write(
         self,
         query: str,
@@ -57,17 +76,12 @@ class MemgraphBoltClient:
         )
         elapsed_ms = round((perf_counter() - started_at) * 1000, 2)
 
-        return {
-            "columns": list(keys),
-            "rows": [
-                {key: _serialize_value(record.get(key)) for key in keys}
-                for record in records
-            ],
-            "row_count": len(records),
-            "elapsed_ms": elapsed_ms,
-            "query": summary.query,
-            "counters": _serialize_counters(summary.counters),
-        }
+        return _format_query_result(
+            records=records,
+            summary=summary,
+            keys=keys,
+            elapsed_ms=elapsed_ms,
+        )
 
 
 @lru_cache
@@ -88,6 +102,26 @@ def _sanitize_parameters(parameters: dict[str, Any] | None) -> dict[str, Any]:
     if parameters is None:
         return {}
     return parameters
+
+
+def _format_query_result(
+    *,
+    records: list[Any],
+    summary: Any,
+    keys: list[str],
+    elapsed_ms: float,
+) -> dict[str, Any]:
+    return {
+        "columns": list(keys),
+        "rows": [
+            {key: _serialize_value(record.get(key)) for key in keys}
+            for record in records
+        ],
+        "row_count": len(records),
+        "elapsed_ms": elapsed_ms,
+        "query": summary.query,
+        "counters": _serialize_counters(summary.counters),
+    }
 
 
 def _serialize_counters(counters: Any) -> dict[str, Any]:

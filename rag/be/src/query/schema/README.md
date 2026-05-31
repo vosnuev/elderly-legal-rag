@@ -28,7 +28,7 @@
   candidate node.
 - `ReviewNote`: 특정 `RelationshipCandidate` review에 붙는 user approval/rejection/retry
   note. 독립 knowledge node가 아니라 `RelationshipCandidate -[:HAS_REVIEW_NOTE]->
-  ReviewNote` 형태의 review artifact이다.
+  ReviewNote` 형태의 review artifact node이다.
 - `AgentMemory`: review note와 candidate feedback을 근거로 memory update agent가 만든
   compact memory node. semantic knowledge graph의 지식 노드가 아니라 agent가 다음
   판단에서 참고할 memory artifact이다.
@@ -69,7 +69,14 @@ flowchart TD
 주의할 점:
 
 - `RelationshipCandidate`의 `left_node/right_node`는 candidate endpoint이고,
-  `evidence_node_id`는 grounding/provenance anchor이다.
+  `evidence_node_id`는 optional grounding/provenance anchor이다. 다른 문서나 chunk가
+  두 endpoint 사이의 관계를 언급할 때만 별도로 사용한다.
+- `RelationshipCandidate.job_id`는 이 candidate가 어떤 document ingest run에서
+  생성됐는지 묶는 runtime provenance field이다. semantic knowledge property가 아니다.
+- `RelationshipCandidate.previous_candidate_id`는 retry/revision flow에서 원본 candidate와
+  새 candidate version을 연결하기 위한 review workflow property이다.
+- `RelationshipCandidate.status`는 `pending_review`, `approved`, `rejected`, `retry`
+  중 하나만 허용한다.
 - `ReviewNote`는 `RelationshipCandidate` review에 붙는 event성 artifact이다.
 - `AgentMemory`는 semantic KG 지식 노드가 아니라, review feedback을 압축한 agent용
   memory artifact이다.
@@ -118,7 +125,9 @@ query/schema
   -> pipeline/services validation 기준
 ```
 
-`nodes.py`는 semantic graph와 review artifact node storage contract를 담는다.
+`nodes.py`는 `Document`, `Chunk`처럼 graph content node storage contract를 담는다.
+`review.py`는 `RelationshipCandidate`, `ReviewNote`처럼 실제 DB node이지만 semantic
+content node가 아니라 review workflow artifact인 storage contract를 담는다.
 `memory.py`는 `AgentMemory`처럼 agent가 참고하는 compact memory artifact contract를
 담는다.
 `runtime.py`는 `IngestJob`처럼 pipeline 실행 상태를 저장하는 operational node contract를

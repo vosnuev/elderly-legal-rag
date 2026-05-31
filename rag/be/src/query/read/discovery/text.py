@@ -27,3 +27,25 @@ def text_search(
             "limit": limit,
         },
     )
+
+
+def text_search_edges(
+    keyword: str,
+    top_k: int = 20,
+    index_name: str | None = None,
+) -> dict[str, Any]:
+    limit = bounded_limit(top_k)
+    query = """
+    CALL text_search.search_edges($index_name, $search_query, $limit)
+    YIELD edge, score
+    RETURN type(edge) AS relationship_type, edge AS edge, score
+    ORDER BY score DESC
+    """
+    return get_memgraph_bolt_client().execute_read(
+        query,
+        {
+            "index_name": index_name or settings.text_search_index_name,
+            "search_query": keyword,
+            "limit": limit,
+        },
+    )
