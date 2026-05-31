@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from query.guard import QueryValidationError
 from settings import settings
 
 
@@ -15,7 +14,7 @@ def bounded_limit(value: int | None) -> int:
 
 def safe_identifier(value: str) -> str:
     if not value or not value.replace("_", "").isalnum() or value[0].isdigit():
-        raise QueryValidationError(f"Unsafe Cypher identifier: {value}")
+        raise ValueError(f"Unsafe Cypher identifier: {value}")
     return value
 
 
