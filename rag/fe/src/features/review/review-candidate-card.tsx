@@ -33,7 +33,6 @@ import {
   CardHeader,
 } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Dialog,
@@ -428,14 +427,14 @@ function ChunkNodePanel({
 
       {/* Body: Purely dedicated to rendering the Raw Chunk content */}
       <div className="review-node-body p-3 flex-1 flex flex-col min-h-0 bg-background/30 justify-stretch items-stretch">
-        {/* Compact Neon Scroll Area with Pure Raw Text */}
-        <ScrollArea className={`review-document-scroll flex-1 h-[12.5rem] min-h-0 border rounded-lg bg-card/65 p-3 focus-within:ring-1 transition-all ${
+        {/* Expanded Neon Area without inner scrollbar for perfect double scroll prevention */}
+        <div className={`review-document-scroll flex-1 min-h-[12.5rem] border rounded-lg bg-card/65 p-3.5 select-text transition-all ${
           kind === 'source'
-            ? 'border-primary/10 focus-within:ring-primary/45'
-            : 'border-chart-2/10 focus-within:ring-chart-2/45'
+            ? 'border-primary/15'
+            : 'border-chart-2/15'
         }`}>
           <RawTextViewer text={text} />
-        </ScrollArea>
+        </div>
       </div>
     </section>
   )
