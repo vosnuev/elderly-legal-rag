@@ -3,11 +3,7 @@ from __future__ import annotations
 from typing import Any, NotRequired, TypedDict
 
 from pipeline.schemas import (
-    FeedbackJudgeResult,
-    GraphChunk,
     GraphIngestPhase,
-    RegisteredDocument,
-    RelationshipCandidate,
     ReviewAction,
 )
 
@@ -15,14 +11,10 @@ from pipeline.schemas import (
 class GraphIngestState(TypedDict):
     job_id: str
     document_id: str
-    document: NotRequired[RegisteredDocument]
-    chunks: NotRequired[list[GraphChunk]]
-    candidates: NotRequired[list[RelationshipCandidate]]
-    feedback: NotRequired[FeedbackJudgeResult]
+    chunk_ids: NotRequired[list[str]]
+    edge_candidate_ids: NotRequired[list[str]]
+    missing_chunk_ids: NotRequired[list[str]]
     phase: NotRequired[GraphIngestPhase]
-    retry_count: NotRequired[int]
-    warnings: NotRequired[list[str]]
-    errors: NotRequired[list[str]]
 
 
 class CandidateReviewActionState(TypedDict):
@@ -31,7 +23,5 @@ class CandidateReviewActionState(TypedDict):
     reviewer: str
     note: NotRequired[str | None]
     candidate: NotRequired[dict[str, Any]]
-    candidates: NotRequired[list[RelationshipCandidate]]
+    edge_candidate_ids: NotRequired[list[str]]
     phase: NotRequired[GraphIngestPhase]
-    warnings: NotRequired[list[str]]
-    errors: NotRequired[list[str]]

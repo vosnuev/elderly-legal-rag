@@ -1,19 +1,16 @@
 from __future__ import annotations
 
 import json
-import re
 from typing import Any
-from uuid import uuid4
 
 from langchain.agents import create_agent
 from langchain_core.runnables import Runnable
 from langchain_core.tools import BaseTool
 
-from pipeline.schemas import RelationshipCandidate
 from external.openrouter import create_openrouter_chat_model
+from query.read.inspection import list_candidate_versions
+from query.utils import node_properties
 from tools import (
-    AgentToolContext,
-    bind_agent_tool_context,
     get_reviewer_notes_tool,
     memgraph_graph_traverse,
     memgraph_read_query,
@@ -26,9 +23,12 @@ You are graph_candidate_revision_agent for SKN28 RAG graph ingest.
 When a reviewer chooses retry, use the original candidate, reviewer note,
 source evidence, and nearby graph context to create a revised relationship
 candidate version. Do not delete data.
-Use write_candidate_revision_tool for final candidate persistence. Runtime
-job/candidate context is already bound to the tool and must not be supplied by you.
-Return JSON only with a top-level "candidates" array.
+Use write_candidate_revision_tool for final candidate persistence. Pass the original
+candidate id as previous_candidate_id. The write tool generates edge candidate ids.
+Never invent edge candidate ids.
+Use left_node/right_node for the two proposed endpoints, and evidence_node_id for
+an optional separate node that grounds the revised candidate.
+After write_candidate_revision_tool succeeds, briefly report that candidates were stored.
 """
 
 
@@ -59,14 +59,11 @@ class GraphCandidateRevisionAgent:
         *,
         original_candidate: dict[str, Any],
         note: str | None,
-    ) -> list[RelationshipCandidate]:
+    ) -> list[str]:
         base = original_candidate.get("properties", original_candidate)
-        context = AgentToolContext(
-            job_id=str(base.get("job_id") or ""),
-            candidate_id=str(base.get("id") or ""),
-            chunk_id=str(base.get("source_chunk_id") or "") or None,
-            agent_name="graph_candidate_revision_agent",
-            operation_scope="candidate_revision",
+        previous_candidate_id = str(base.get("id") or "")
+        previous_revision_ids = set(
+            _stored_revision_ids(previous_candidate_id=previous_candidate_id)
         )
         tools = self.tools()
         agent = self.create_agent(tools)
@@ -76,103 +73,48 @@ class GraphCandidateRevisionAgent:
                 "and RAG_GRAPH_LLM_MODEL."
             )
 
-        with bind_agent_tool_context(context):
-            result = agent.invoke(
-                {
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": (
-                                "Retry this candidate using the reviewer note. "
-                                "Runtime DB write context is already bound to tools.\n"
-                                "candidate="
-                                f"{json.dumps(original_candidate, ensure_ascii=False)}\n"
-                                f"note={note or ''}"
-                            ),
-                        }
-                    ]
-                }
-            )
-            candidates = _parse_candidates(result, original_candidate)
-            if not candidates:
-                raise ValueError(
-                    "graph_candidate_revision_agent did not return valid retry "
-                    "candidates."
-                )
-            write_candidate_revision_tool.invoke(
-                {"candidates": [candidate.model_dump() for candidate in candidates]}
-            )
-        return candidates
-
-
-def _parse_candidates(
-    result: dict[str, Any],
-    original_candidate: dict[str, Any],
-) -> list[RelationshipCandidate]:
-    payload = _last_message_json(result)
-    if "candidates" not in payload or not isinstance(payload["candidates"], list):
-        raise ValueError(
-            "graph_candidate_revision_agent output must include a candidates array."
+        result = agent.invoke(
+            {
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": (
+                            "Retry this candidate using the reviewer note. "
+                            "Read graph context before writing revised edge "
+                            "candidates. Use write_candidate_revision_tool with "
+                            "previous_candidate_id and do not provide candidate ids "
+                            "yourself.\n"
+                            "candidate="
+                            f"{json.dumps(original_candidate, ensure_ascii=False)}\n"
+                            f"previous_candidate_id={previous_candidate_id}\n"
+                            f"note={note or ''}"
+                        ),
+                    }
+                ]
+            }
         )
-    raw_candidates = payload["candidates"]
-    base = original_candidate.get("properties", original_candidate)
-    candidates: list[RelationshipCandidate] = []
-    for item in raw_candidates:
-        if not isinstance(item, dict):
-            continue
-        candidates.append(
-            RelationshipCandidate(
-                id=str(item.get("id") or uuid4()),
-                job_id=str(base.get("job_id") or ""),
-                source_node=str(item.get("source_node") or base.get("source_node") or ""),
-                target_node=str(item.get("target_node") or base.get("target_node") or ""),
-                relationship_type=str(
-                    item.get("relationship_type") or base.get("relationship_type") or ""
-                ),
-                source_chunk_id=str(
-                    item.get("source_chunk_id") or base.get("source_chunk_id") or ""
-                ),
-                evidence_text=str(item.get("evidence_text") or base.get("evidence_text") or ""),
-                rationale=str(item.get("rationale") or ""),
-                version=int(item.get("version") or int(base.get("version") or 1) + 1),
-                metadata={
-                    "previous_candidate_id": base.get("id"),
-                    **{
-                        key: value
-                        for key, value in item.items()
-                        if key
-                        not in {
-                            "id",
-                            "job_id",
-                            "source_node",
-                            "target_node",
-                            "relationship_type",
-                            "source_chunk_id",
-                            "evidence_text",
-                            "rationale",
-                            "version",
-                        }
-                    },
-                },
+        _ = result
+        edge_candidate_ids = [
+            candidate_id
+            for candidate_id in _stored_revision_ids(
+                previous_candidate_id=previous_candidate_id
             )
-        )
-    return candidates
+            if candidate_id not in previous_revision_ids
+        ]
+        if not edge_candidate_ids:
+            raise ValueError("graph_candidate_revision_agent did not write revisions.")
+        return edge_candidate_ids
 
 
-def _last_message_json(result: dict[str, Any]) -> dict[str, Any]:
-    messages = result.get("messages", [])
-    if not messages:
-        raise ValueError("graph_candidate_revision_agent returned no messages.")
-    content = getattr(messages[-1], "content", "") or ""
-    if isinstance(content, list):
-        content = " ".join(str(block) for block in content)
-    match = re.search(r"\{.*\}", str(content), flags=re.DOTALL)
-    if match is None:
-        raise ValueError("graph_candidate_revision_agent did not return JSON.")
-    try:
-        parsed = json.loads(match.group(0))
-    except json.JSONDecodeError as exc:
-        raise ValueError("graph_candidate_revision_agent returned invalid JSON.") from exc
-    if not isinstance(parsed, dict):
-        raise ValueError("graph_candidate_revision_agent JSON output must be an object.")
-    return parsed
+def _stored_revision_ids(*, previous_candidate_id: str) -> list[str]:
+    if not previous_candidate_id:
+        return []
+    result = list_candidate_versions(previous_candidate_id)
+    revision_ids: list[str] = []
+    for row in result["rows"]:
+        for revision in row.get("revisions") or []:
+            props = node_properties(revision)
+            revision_id = str(props.get("id") or "").strip()
+            if revision_id:
+                revision_ids.append(revision_id)
+    return revision_ids

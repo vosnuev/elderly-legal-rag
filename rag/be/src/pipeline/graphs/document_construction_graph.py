@@ -1,17 +1,16 @@
 from __future__ import annotations
 
-from typing import Literal
-
 from langgraph.graph import END, START, StateGraph
 
-from pipeline.schemas import GraphIngestPhase, IngestGraphResult, RegisteredDocument
+from pipeline.schemas import GraphIngestPhase, IngestGraphResult
 from pipeline.services.embedding_dispatch_service import EmbeddingDispatchService
 from pipeline.services.ingest_progress_service import IngestProgressService
 from pipeline.state import GraphIngestState
 from pipeline.sub_agents.chunking_agent import ChunkingAgent
 from pipeline.sub_agents.feedback_judge_agent import FeedbackJudgeAgent
 from pipeline.sub_agents.graph_candidate_agent import GraphCandidateAgent
-from query.read import get_document_record
+from query.read.inspection import get_document_record
+from query.schema import DocumentNode
 
 
 class DocumentConstructionGraph:
@@ -36,9 +35,6 @@ class DocumentConstructionGraph:
                 "job_id": job_id,
                 "document_id": document_id,
                 "phase": GraphIngestPhase.GRAPH_ADD_STARTED,
-                "retry_count": 0,
-                "warnings": [],
-                "errors": [],
             }
         )
         return self._state_to_result(state)
@@ -56,92 +52,72 @@ class DocumentConstructionGraph:
         builder.add_edge("chunking_agent", "embedding_dispatch_service")
         builder.add_edge("embedding_dispatch_service", "graph_candidate_agent")
         builder.add_edge("graph_candidate_agent", "feedback_judge_agent")
-        builder.add_conditional_edges(
-            "feedback_judge_agent",
-            self._route_after_feedback,
-            {
-                "retry": "graph_candidate_agent",
-                "finish": "ingest_progress_service",
-            },
-        )
+        builder.add_edge("feedback_judge_agent", "ingest_progress_service")
         builder.add_edge("ingest_progress_service", END)
         return builder.compile()
 
     def _load_document(self, state: GraphIngestState) -> dict[str, object]:
         record = get_document_record(state["document_id"])
-        document = RegisteredDocument.model_validate(record)
-        return {"document": document, "phase": GraphIngestPhase.DOCUMENT_REGISTERED}
+        DocumentNode.model_validate(record)
+        return {"phase": GraphIngestPhase.DOCUMENT_REGISTERED}
 
     def _run_chunking_agent(self, state: GraphIngestState) -> dict[str, object]:
-        chunks = self._chunking_agent.run(
+        chunk_ids = self._chunking_agent.run(
             job_id=state["job_id"],
-            document=state["document"],
+            document_id=state["document_id"],
         )
-        return {"chunks": chunks, "phase": GraphIngestPhase.CHUNKED}
+        return {"chunk_ids": chunk_ids, "phase": GraphIngestPhase.CHUNKED}
 
     def _dispatch_embeddings(self, state: GraphIngestState) -> dict[str, object]:
-        chunks = self._embedding_dispatch_service.dispatch(
+        chunk_ids = self._embedding_dispatch_service.dispatch(
             job_id=state["job_id"],
-            chunks=state.get("chunks", []),
+            chunk_ids=state.get("chunk_ids", []),
         )
         return {
-            "chunks": chunks,
+            "chunk_ids": chunk_ids,
             "phase": GraphIngestPhase.EMBEDDING_DISPATCHED,
-            "warnings": list(state.get("warnings", [])),
         }
 
     def _run_graph_candidate_agent(self, state: GraphIngestState) -> dict[str, object]:
-        candidates = self._graph_candidate_agent.run(
+        edge_candidate_ids = self._graph_candidate_agent.run(
             job_id=state["job_id"],
-            chunks=state.get("chunks", []),
+            document_id=state["document_id"],
+            chunk_ids=state.get("chunk_ids", []),
         )
         return {
-            "candidates": candidates,
+            "edge_candidate_ids": edge_candidate_ids,
             "phase": GraphIngestPhase.CANDIDATES_GENERATED,
         }
 
     def _run_feedback_judge_agent(self, state: GraphIngestState) -> dict[str, object]:
         feedback = self._feedback_judge_agent.run(
             job_id=state["job_id"],
-            chunks=state.get("chunks", []),
-            candidates=state.get("candidates", []),
+            document_id=state["document_id"],
+            chunk_ids=state.get("chunk_ids", []),
+            edge_candidate_ids=state.get("edge_candidate_ids", []),
         )
-        retry_count = state.get("retry_count", 0)
-        update: dict[str, object] = {"feedback": feedback}
         if feedback.incomplete:
-            update["retry_count"] = retry_count + 1
-            if retry_count >= 1:
-                update["phase"] = GraphIngestPhase.NEEDS_RETRY
+            phase = GraphIngestPhase.NEEDS_RETRY
         elif not feedback.ready_for_review:
-            update["phase"] = GraphIngestPhase.NEEDS_RETRY
+            phase = GraphIngestPhase.NEEDS_RETRY
         else:
-            update["phase"] = (
+            phase = (
                 GraphIngestPhase.PENDING_REVIEW
-                if state.get("candidates")
+                if state.get("edge_candidate_ids")
                 else GraphIngestPhase.COMPLETED
             )
-        return update
-
-    def _route_after_feedback(
-        self,
-        state: GraphIngestState,
-    ) -> Literal["retry", "finish"]:
-        feedback = state.get("feedback")
-        retry_count = state.get("retry_count", 0)
-        if feedback and feedback.incomplete and retry_count <= 1:
-            return "retry"
-        return "finish"
+        return {"phase": phase}
 
     def _mark_ingest_progress(self, state: GraphIngestState) -> dict[str, object]:
         phase = state.get("phase", GraphIngestPhase.COMPLETED)
         result = self._ingest_progress_service.mark(
             job_id=state["job_id"],
             phase=phase,
-            document_id=state.get("document").id if state.get("document") else None,
-            chunk_count=len(state.get("chunks", [])),
-            candidate_count=len(state.get("candidates", [])),
-            warnings=state.get("warnings", []),
-            errors=state.get("errors", []),
+            document_id=state["document_id"],
+            chunk_count=len(state.get("chunk_ids", [])),
+            candidate_count=len(state.get("edge_candidate_ids", [])),
+            warnings=[],
+            errors=[],
         )
         return {"phase": result.phase}
 
@@ -149,14 +125,14 @@ class DocumentConstructionGraph:
         return IngestGraphResult(
             job_id=state["job_id"],
             phase=state.get("phase", GraphIngestPhase.COMPLETED),
-            document_id=state.get("document").id if state.get("document") else None,
-            chunk_count=len(state.get("chunks", [])),
-            candidate_count=len(state.get("candidates", [])),
+            document_id=state["document_id"],
+            chunk_count=len(state.get("chunk_ids", [])),
+            candidate_count=len(state.get("edge_candidate_ids", [])),
             pending_review_count=(
-                len(state.get("candidates", []))
+                len(state.get("edge_candidate_ids", []))
                 if state.get("phase") is GraphIngestPhase.PENDING_REVIEW
                 else 0
             ),
-            warnings=state.get("warnings", []),
-            errors=state.get("errors", []),
+            warnings=[],
+            errors=[],
         )

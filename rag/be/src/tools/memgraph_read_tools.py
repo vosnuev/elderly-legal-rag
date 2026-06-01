@@ -5,13 +5,8 @@ from typing import Any
 from langchain.tools import tool
 from langchain_core.tools import BaseTool
 
-from query.read import (
-    graph_traverse,
-    read_query,
-    schema_read,
-    text_search,
-    vector_search,
-)
+from query.read.core import read_query, schema_read
+from query.read.discovery import graph_traverse, text_search, vector_search
 
 
 @tool

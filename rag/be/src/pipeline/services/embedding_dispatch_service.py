@@ -3,16 +3,20 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 from external.openrouter import create_openrouter_embeddings
-from pipeline.schemas import GraphChunk
-from query.utils import graph_properties
-from query.write import write_query
+from query.read.inspection import read_chunk_by_id
+from query.schema import ChunkNode
+from query.write import update_chunk_embeddings
 from settings import settings
 
 
 class EmbeddingDispatchService:
-    def dispatch(self, *, job_id: str, chunks: list[GraphChunk]) -> list[GraphChunk]:
+    def dispatch(self, *, job_id: str, chunk_ids: list[str]) -> list[str]:
+        chunks = _load_chunks(chunk_ids)
+        if not chunks:
+            return []
+
         embeddings = create_openrouter_embeddings()
-        updated_chunks: list[GraphChunk] = []
+        updated_chunks: list[ChunkNode] = []
 
         if embeddings is None:
             raise RuntimeError(
@@ -27,7 +31,6 @@ class EmbeddingDispatchService:
                     update={
                         "embedding_status": "embedded",
                         "embedding_model": settings.embedding_model,
-                        "embedding_dimensions": settings.embedding_dimensions,
                         "embedding": vector,
                         "metadata": {
                             **chunk.metadata,
@@ -37,23 +40,12 @@ class EmbeddingDispatchService:
                 )
             )
 
-        write_query(
-            """
-            UNWIND $chunks AS chunk
-            MATCH (c:Chunk {id: chunk.id})
-            SET c.embedding_status = chunk.embedding_status,
-                c.embedding_model = chunk.embedding_model,
-                c.embedding_dimensions = chunk.embedding_dimensions,
-                c.embedding = chunk.embedding,
-                c.last_embedding_job_id = $job_id
-            RETURN count(c) AS stored_count
-            """,
-            {
-                "job_id": job_id,
-                "chunks": [
-                    graph_properties(chunk.model_dump())
-                    for chunk in updated_chunks
-                ],
-            },
-        )
-        return updated_chunks
+        update_chunk_embeddings(job_id=job_id, chunks=updated_chunks)
+        return [chunk.id for chunk in updated_chunks]
+
+
+def _load_chunks(chunk_ids: list[str]) -> list[ChunkNode]:
+    return [
+        ChunkNode.model_validate(read_chunk_by_id(chunk_id))
+        for chunk_id in chunk_ids
+    ]

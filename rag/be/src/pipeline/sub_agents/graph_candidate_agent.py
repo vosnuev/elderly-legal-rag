@@ -1,21 +1,15 @@
 from __future__ import annotations
 
-import json
-import re
-from typing import Any
-from uuid import uuid4
-
 from langchain.agents import create_agent
 from langchain_core.runnables import Runnable
 from langchain_core.tools import BaseTool
 
-from pipeline.schemas import GraphChunk, RelationshipCandidate
 from external.openrouter import create_openrouter_chat_model
+from query.read.inspection import list_candidates_for_job
+from query.utils import node_properties
 from settings import settings
 from tools import (
-    AgentToolContext,
     MEMGRAPH_READ_TOOLS,
-    bind_agent_tool_context,
     get_reviewer_notes_tool,
     write_relationship_candidate_tool,
 )
@@ -27,12 +21,18 @@ Use Memgraph tools to inspect existing schema, related entities, prior chunks,
 and reviewer notes. You may use internal write tools when needed, but never
 delete or destructively mutate graph data.
 
-Generate all semantic relationship candidates that are grounded in the chunk.
+Generate all semantic edge candidates that are grounded in the chunk.
 Do not hide candidates by ranking or filtering. Proposed semantic relationships
-remain review candidates until a reviewer approves them.
-Use write_relationship_candidate_tool for final candidate persistence. Runtime
-job/document/chunk context is already bound to the tool and must not be supplied by you.
-Return JSON only with a top-level "candidates" array.
+remain edge candidates until a reviewer approves them.
+Read each chunk through Memgraph tools by chunk id before proposing candidates.
+Use write_relationship_candidate_tool for final candidate persistence. Every candidate
+must include left_node, right_node, relationship_type, relationship_direction,
+evidence_text, and rationale. evidence_node_id is optional and should be used when a
+separate Chunk, Document, or graph node grounds the candidate. The write tool generates
+edge candidate ids.
+Never invent edge candidate ids.
+After write_relationship_candidate_tool succeeds, briefly report that candidates were
+stored.
 """
 
 
@@ -57,16 +57,9 @@ class GraphCandidateAgent:
             system_prompt=SYSTEM_PROMPT,
         )
 
-    def run(self, *, job_id: str, chunks: list[GraphChunk]) -> list[RelationshipCandidate]:
-        candidates: list[RelationshipCandidate] = []
-        for chunk in chunks:
-            context = AgentToolContext(
-                job_id=job_id,
-                document_id=chunk.document_id,
-                chunk_id=chunk.id,
-                agent_name="graph_candidate_agent",
-                operation_scope="candidate_generation",
-            )
+    def run(self, *, job_id: str, document_id: str, chunk_ids: list[str]) -> list[str]:
+        previous_ids = set(_stored_candidate_ids(job_id=job_id))
+        for chunk_id in chunk_ids:
             tools = self.tools()
             agent = self.create_agent(tools)
             if agent is None:
@@ -74,102 +67,44 @@ class GraphCandidateAgent:
                     "graph_candidate_agent requires RAG_OPENROUTER_API_KEY and "
                     "RAG_GRAPH_LLM_MODEL."
                 )
-            with bind_agent_tool_context(context):
-                result = agent.invoke(
-                    {
-                        "messages": [
-                            {
-                                "role": "user",
-                                "content": (
-                                    "Runtime DB write context is already bound to "
-                                    "tools.\n"
-                                    f"chunk_text:\n{chunk.text}"
-                                ),
-                            }
-                        ]
-                    },
-                    config={"recursion_limit": settings.graph_candidate_tool_budget},
-                )
-                chunk_candidates = _parse_candidates(result, job_id, chunk)
-                if chunk_candidates:
-                    write_relationship_candidate_tool.invoke(
+            result = agent.invoke(
+                {
+                    "messages": [
                         {
-                            "candidates": [
-                                candidate.model_dump()
-                                for candidate in chunk_candidates
-                            ]
-                        },
-                    )
-            candidates.extend(chunk_candidates)
-        return candidates
-
-
-def _parse_candidates(
-    result: dict[str, Any],
-    job_id: str,
-    chunk: GraphChunk,
-) -> list[RelationshipCandidate]:
-    payload = _last_message_json(result)
-    if "candidates" not in payload or not isinstance(payload["candidates"], list):
-        raise ValueError("graph_candidate_agent output must include a candidates array.")
-    raw_candidates = payload["candidates"]
-    candidates: list[RelationshipCandidate] = []
-    for item in raw_candidates:
-        if not isinstance(item, dict):
-            continue
-        relationship_type = str(item.get("relationship_type") or "").strip()
-        source_node = str(item.get("source_node") or item.get("source") or "").strip()
-        target_node = str(item.get("target_node") or item.get("target") or "").strip()
-        evidence_text = str(item.get("evidence_text") or item.get("evidence") or "").strip()
-        rationale = str(item.get("rationale") or "").strip()
-        if not relationship_type or not source_node or not target_node or not evidence_text:
-            continue
-        candidates.append(
-            RelationshipCandidate(
-                id=str(item.get("id") or uuid4()),
-                job_id=job_id,
-                source_node=source_node,
-                target_node=target_node,
-                relationship_type=relationship_type,
-                source_chunk_id=str(item.get("source_chunk_id") or chunk.id),
-                evidence_text=evidence_text,
-                rationale=rationale,
-                metadata={
-                    key: value
-                    for key, value in item.items()
-                    if key
-                    not in {
-                        "id",
-                        "source_node",
-                        "source",
-                        "target_node",
-                        "target",
-                        "relationship_type",
-                        "source_chunk_id",
-                        "evidence_text",
-                        "evidence",
-                        "rationale",
-                    }
+                            "role": "user",
+                            "content": (
+                                "Read and inspect this chunk id through Memgraph "
+                                "tools before writing edge candidates. Use "
+                                "write_relationship_candidate_tool for persistence "
+                                "and use this chunk id as evidence_node_id unless "
+                                "another graph node is a better evidence anchor. "
+                                "Do not provide edge candidate ids yourself.\n"
+                                f"document_id={document_id}\n"
+                                f"chunk_id={chunk_id}"
+                            ),
+                        }
+                    ]
                 },
+                config={"recursion_limit": settings.graph_candidate_tool_budget},
             )
-        )
-    return candidates
+            _ = result
+        candidate_ids = _stored_candidate_ids(job_id=job_id)
+        new_candidate_ids = [
+            candidate_id
+            for candidate_id in candidate_ids
+            if candidate_id not in previous_ids
+        ]
+        return new_candidate_ids or candidate_ids
 
 
-def _last_message_json(result: dict[str, Any]) -> dict[str, Any]:
-    messages = result.get("messages", [])
-    if not messages:
-        raise ValueError("graph_candidate_agent returned no messages.")
-    content = getattr(messages[-1], "content", "") or ""
-    if isinstance(content, list):
-        content = " ".join(str(block) for block in content)
-    match = re.search(r"\{.*\}", str(content), flags=re.DOTALL)
-    if match is None:
-        raise ValueError("graph_candidate_agent did not return JSON.")
-    try:
-        parsed = json.loads(match.group(0))
-    except json.JSONDecodeError as exc:
-        raise ValueError("graph_candidate_agent returned invalid JSON.") from exc
-    if not isinstance(parsed, dict):
-        raise ValueError("graph_candidate_agent JSON output must be an object.")
-    return parsed
+def _stored_candidate_ids(*, job_id: str) -> list[str]:
+    if not job_id:
+        return []
+    result = list_candidates_for_job(job_id)
+    candidate_ids: list[str] = []
+    for row in result["rows"]:
+        candidate = node_properties(row["candidate"])
+        candidate_id = str(candidate.get("id") or "").strip()
+        if candidate_id:
+            candidate_ids.append(candidate_id)
+    return candidate_ids

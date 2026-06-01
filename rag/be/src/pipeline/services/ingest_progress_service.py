@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from pipeline.schemas import GraphIngestPhase, IngestGraphResult
 from logger import bind_logger
-from query.utils import graph_properties
-from query.write import write_query
+from query.write import upsert_ingest_job_progress
 
 
 class IngestProgressService:
@@ -32,17 +31,15 @@ class IngestProgressService:
             warnings=warnings or [],
             errors=errors or [],
         )
-        write_query(
-            """
-            MERGE (job:IngestJob {id: $job_id})
-            SET job += $progress,
-                job.updated_at = localDateTime()
-            RETURN job
-            """,
-            {
-                "job_id": job_id,
-                "progress": graph_properties(result.model_dump()),
-            },
+        upsert_ingest_job_progress(
+            job_id=job_id,
+            phase=phase.value,
+            document_id=document_id,
+            chunk_count=chunk_count,
+            candidate_count=candidate_count,
+            pending_review_count=pending_review_count,
+            warnings=warnings or [],
+            errors=errors or [],
         )
         self._logger.bind(
             job_id=job_id,

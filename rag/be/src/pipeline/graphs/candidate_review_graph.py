@@ -15,7 +15,7 @@ from pipeline.state import CandidateReviewActionState
 from pipeline.sub_agents.graph_candidate_revision_agent import (
     GraphCandidateRevisionAgent,
 )
-from query.read import read_node_by_id
+from query.read.inspection import read_relationship_candidate
 
 
 class CandidateReviewGraph:
@@ -43,8 +43,6 @@ class CandidateReviewGraph:
                 "action": action,
                 "reviewer": reviewer,
                 "note": note,
-                "warnings": [],
-                "errors": [],
             }
         )
         return self._state_to_result(state)
@@ -81,10 +79,7 @@ class CandidateReviewGraph:
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        candidate = read_node_by_id(
-            state["candidate_id"],
-            label="RelationshipCandidate",
-        )
+        candidate = read_relationship_candidate(state["candidate_id"])
         return {"candidate": candidate}
 
     def _route_review_action(
@@ -118,11 +113,11 @@ class CandidateReviewGraph:
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        candidates = self._graph_candidate_revision_agent.run(
+        edge_candidate_ids = self._graph_candidate_revision_agent.run(
             original_candidate=state["candidate"],
             note=state.get("note"),
         )
-        return {"candidates": candidates}
+        return {"edge_candidate_ids": edge_candidate_ids}
 
     def _store_preference_note(
         self,
@@ -140,18 +135,13 @@ class CandidateReviewGraph:
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        candidate_props = state.get("candidate", {}).get(
-            "properties",
-            state.get("candidate", {}),
-        )
+        candidate_props = _candidate_properties(state)
         self._ingest_progress_service.mark(
             job_id=str(candidate_props.get("job_id") or ""),
             phase=state.get("phase", GraphIngestPhase.COMPLETED),
             document_id=None,
             chunk_count=0,
-            candidate_count=len(state.get("candidates", [])),
-            warnings=state.get("warnings", []),
-            errors=state.get("errors", []),
+            candidate_count=len(state.get("edge_candidate_ids", [])),
         )
         return {}
 
@@ -159,14 +149,19 @@ class CandidateReviewGraph:
         self,
         state: CandidateReviewActionState,
     ) -> IngestGraphResult:
+        candidate_props = _candidate_properties(state)
         return IngestGraphResult(
-            job_id=str(
-                state.get("candidate", {})
-                .get("properties", state.get("candidate", {}))
-                .get("job_id", "")
-            ),
+            job_id=str(candidate_props.get("job_id") or ""),
             phase=state.get("phase", GraphIngestPhase.COMPLETED),
-            candidate_count=len(state.get("candidates", [])),
-            warnings=state.get("warnings", []),
-            errors=state.get("errors", []),
+            candidate_count=len(state.get("edge_candidate_ids", [])),
         )
+
+
+def _candidate_properties(state: CandidateReviewActionState) -> dict[str, object]:
+    candidate = state.get("candidate", {})
+    if not isinstance(candidate, dict):
+        return {}
+    properties = candidate.get("properties")
+    if isinstance(properties, dict):
+        return properties
+    return candidate

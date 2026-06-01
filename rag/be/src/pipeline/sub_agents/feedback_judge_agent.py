@@ -8,12 +8,10 @@ from langchain.agents import create_agent
 from langchain_core.runnables import Runnable
 from langchain_core.tools import BaseTool
 
-from pipeline.schemas import FeedbackJudgeResult, GraphChunk, RelationshipCandidate
+from pipeline.schemas import FeedbackJudgeResult
 from external.openrouter import create_openrouter_chat_model
 from tools import (
-    AgentToolContext,
-    bind_agent_tool_context,
-    get_ingest_state_tool,
+    memgraph_graph_traverse,
     memgraph_read_query,
     memgraph_schema_read,
 )
@@ -30,7 +28,7 @@ Return JSON only with ready_for_review, incomplete, and reason.
 
 class FeedbackJudgeAgent:
     def tools(self) -> list[BaseTool]:
-        return [memgraph_schema_read, memgraph_read_query, get_ingest_state_tool]
+        return [memgraph_schema_read, memgraph_read_query, memgraph_graph_traverse]
 
     def create_agent(
         self,
@@ -49,21 +47,17 @@ class FeedbackJudgeAgent:
         self,
         *,
         job_id: str,
-        chunks: list[GraphChunk],
-        candidates: list[RelationshipCandidate],
+        document_id: str,
+        chunk_ids: list[str],
+        edge_candidate_ids: list[str],
     ) -> FeedbackJudgeResult:
-        if not chunks:
+        if not chunk_ids:
             return FeedbackJudgeResult(
                 ready_for_review=False,
                 incomplete=True,
-                reason="No chunks were produced.",
+                reason="No chunk ids were produced.",
             )
 
-        context = AgentToolContext(
-            job_id=job_id,
-            agent_name="feedback_judge_agent",
-            operation_scope="feedback_judge",
-        )
         tools = self.tools()
         agent = self.create_agent(tools)
         if agent is None:
@@ -71,23 +65,23 @@ class FeedbackJudgeAgent:
                 "feedback_judge_agent requires RAG_OPENROUTER_API_KEY and RAG_GRAPH_LLM_MODEL."
             )
 
-        with bind_agent_tool_context(context):
-            result = agent.invoke(
-                {
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": (
-                                "Runtime ingest state context is already bound to "
-                                "tools.\n"
-                                f"chunk_count={len(chunks)}\n"
-                                f"candidate_count={len(candidates)}\n"
-                                "Judge whether this ingest can move to pending review."
-                            ),
-                        }
-                    ]
-                }
-            )
+        result = agent.invoke(
+            {
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": (
+                            "Use Memgraph read tools if needed.\n"
+                            f"job_id={job_id}\n"
+                            f"document_id={document_id}\n"
+                            f"chunk_ids={chunk_ids}\n"
+                            f"edge_candidate_ids={edge_candidate_ids}\n"
+                            "Judge whether this ingest can move to pending review."
+                        ),
+                    }
+                ]
+            }
+        )
         parsed = _last_message_json(result)
         return FeedbackJudgeResult(
             ready_for_review=bool(parsed.get("ready_for_review", True)),

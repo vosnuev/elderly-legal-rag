@@ -1,43 +1,63 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
-from pipeline.schemas import RegisteredDocument
 from pipeline.sub_agents.chunking_agent import ChunkingAgent
 from pipeline.sub_agents.feedback_judge_agent import FeedbackJudgeAgent
 from pipeline.sub_agents.graph_candidate_agent import GraphCandidateAgent
 from pipeline.sub_agents.graph_candidate_revision_agent import (
     GraphCandidateRevisionAgent,
 )
-from tools import AgentToolContext, bind_agent_tool_context, count_occurrences_tool
+from tools import (
+    check_document_unique_string_tool,
+    write_chunk_tool,
+    write_relationship_candidate_tool,
+)
 from api.mcp import create_external_mcp
 
 
 class EndpointToolsTest(unittest.TestCase):
-    def test_chunking_agent_has_context_bound_chunk_tools(self) -> None:
-        document = RegisteredDocument(
-            id="doc-1",
-            entry_number=1,
-            content_hash="hash",
-            raw_content="alpha beta alpha",
-            file_name="sample.txt",
-            source_type="txt",
-        )
+    def test_chunking_agent_has_explicit_chunk_tools(self) -> None:
         tools = ChunkingAgent().tools()
         tool_names = {tool.name for tool in tools}
 
-        self.assertEqual(tool_names, {"count_occurrences_tool", "write_chunk_tool"})
-        self._assert_no_runtime_context_schema(tools)
-        context = AgentToolContext(
-            job_id="job-1",
-            document_id=document.id,
-            agent_name="chunking_agent",
-            operation_scope="chunking",
+        self.assertEqual(
+            tool_names,
+            {
+                "check_document_unique_string_tool",
+                "read_document_tool",
+                "write_chunk_tool",
+            },
         )
-        with bind_agent_tool_context(context, raw_content=document.raw_content):
-            self.assertEqual(count_occurrences_tool.invoke({"text": "alpha"}), 2)
+        self._assert_no_runtime_context_schema(tools)
+        with patch(
+            "tools.chunk_tools.get_document_raw_content",
+            return_value="alpha beta alpha",
+        ):
+            self.assertEqual(
+                check_document_unique_string_tool.invoke(
+                    {"document_id": "doc-1", "text": "beta"}
+                ),
+                {
+                    "document_id": "doc-1",
+                    "is_unique": True,
+                    "occurrence_count": 1,
+                    "first_start_char": 6,
+                    "first_end_char": 10,
+                    "text_length": 4,
+                },
+            )
 
-    def test_graph_candidate_agent_has_context_bound_candidate_tools(self) -> None:
+    def test_check_document_unique_string_tool_has_structured_schema(self) -> None:
+        schema = check_document_unique_string_tool.args_schema.model_json_schema()
+
+        self.assertEqual(schema["additionalProperties"], False)
+        self.assertIn("document_id", schema["properties"])
+        self.assertIn("text", schema["properties"])
+        self.assertNotIn("job_id", schema["properties"])
+
+    def test_graph_candidate_agent_has_explicit_candidate_tools(self) -> None:
         tools = GraphCandidateAgent().tools()
         tool_names = {tool.name for tool in tools}
 
@@ -53,17 +73,21 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertNotIn("memgraph_store_edge_candidates", tool_names)
         self._assert_no_runtime_context_schema(tools)
 
-    def test_feedback_judge_agent_has_bound_ingest_state_tool(self) -> None:
+    def test_feedback_judge_agent_has_read_tools(self) -> None:
         tools = FeedbackJudgeAgent().tools()
         tool_names = {tool.name for tool in tools}
 
         self.assertEqual(
             tool_names,
-            {"memgraph_schema_read", "memgraph_read_query", "get_ingest_state_tool"},
+            {
+                "memgraph_schema_read",
+                "memgraph_read_query",
+                "memgraph_graph_traverse",
+            },
         )
         self._assert_no_runtime_context_schema(tools)
 
-    def test_revision_agent_has_context_bound_revision_tool(self) -> None:
+    def test_revision_agent_has_explicit_revision_tool(self) -> None:
         tools = GraphCandidateRevisionAgent().tools()
         tool_names = {tool.name for tool in tools}
 
@@ -86,6 +110,43 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertNotIn("memgraph.write_query", tool_names)
         self.assertNotIn("memgraph.upsert_document_graph", tool_names)
         self.assertNotIn("write_relationship_candidate_tool", tool_names)
+
+    def test_write_chunk_tool_has_structured_chunk_schema(self) -> None:
+        schema = write_chunk_tool.args_schema.model_json_schema()
+        chunk_schema = schema["$defs"]["ChunkWriteInput"]
+        chunk_fields = chunk_schema["properties"]
+
+        self.assertEqual(schema["additionalProperties"], False)
+        self.assertEqual(chunk_schema["additionalProperties"], False)
+        self.assertIn("chunks", schema["properties"])
+        self.assertIn("document_id", schema["properties"])
+        self.assertNotIn("id", chunk_fields)
+        self.assertIn("chunk_index", chunk_fields)
+        self.assertIn("start_unique_string", chunk_fields)
+        self.assertIn("end_unique_string", chunk_fields)
+        self.assertNotIn("job_id", chunk_fields)
+        self.assertNotIn("document_id", chunk_fields)
+
+    def test_write_relationship_candidate_tool_has_structured_edge_schema(self) -> None:
+        schema = write_relationship_candidate_tool.args_schema.model_json_schema()
+        candidate_schema = schema["$defs"]["EdgeCandidateWriteInput"]
+        candidate_fields = candidate_schema["properties"]
+
+        self.assertEqual(schema["additionalProperties"], False)
+        self.assertEqual(candidate_schema["additionalProperties"], False)
+        self.assertIn("candidates", schema["properties"])
+        self.assertIn("left_node", candidate_fields)
+        self.assertIn("right_node", candidate_fields)
+        self.assertIn("relationship_type", candidate_fields)
+        self.assertIn("relationship_direction", candidate_fields)
+        self.assertIn("evidence_text", candidate_fields)
+        self.assertIn("evidence_node_id", candidate_fields)
+        self.assertNotIn("id", candidate_fields)
+        self.assertNotIn("source_chunk_id", candidate_fields)
+        self.assertNotIn("status", candidate_fields)
+        self.assertNotIn("version", candidate_fields)
+        self.assertNotIn("job_id", candidate_fields)
+        self.assertNotIn("document_id", candidate_fields)
 
     def _assert_no_runtime_context_schema(self, tools) -> None:  # noqa: ANN001
         forbidden = {"job_id", "task_id", "dry_run", "mock", "preview", "no_op"}
