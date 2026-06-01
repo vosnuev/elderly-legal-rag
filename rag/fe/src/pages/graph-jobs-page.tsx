@@ -301,7 +301,7 @@ export function GraphJobsPage() {
 
       {/* Advanced Deep Diagnostics Studio Modal (Job Selected Context) */}
       <Dialog open={Boolean(selectedJob)} onOpenChange={(open) => !open && setSelectedJob(null)}>
-        <DialogContent className="sm:max-w-4xl max-h-[88vh] flex flex-col border border-primary/10 shadow-2xl rounded-2xl bg-card/95 backdrop-blur-md overflow-hidden p-0 animate-scale-up">
+        <DialogContent className="sm:max-w-4xl h-[85vh] flex flex-col border border-primary/10 shadow-2xl rounded-2xl bg-card/95 backdrop-blur-md overflow-hidden p-0 animate-scale-up">
           <DialogHeader className="p-6 pb-4.5 bg-muted/15 border-b border-border/45 flex flex-row items-center justify-between gap-3 shrink-0">
             <div className="flex items-center gap-3 min-w-0">
               <div className="flex size-9.5 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 text-primary shadow-sm">
@@ -323,7 +323,7 @@ export function GraphJobsPage() {
             )}
           </DialogHeader>
 
-          <div className="flex-1 min-h-0 overflow-y-auto p-6.5 space-y-6">
+          <div className="flex-1 min-h-0 overflow-hidden flex flex-col p-6.5 gap-4.5">
             {/* A. Graph Current Step (5-stage Timeline flowchart) */}
             {selectedJob && (
               <div className="flex flex-col gap-2.5 bg-muted/10 border border-border/50 rounded-xl p-4.5 select-none">
@@ -388,8 +388,8 @@ export function GraphJobsPage() {
             </div>
 
             {/* B. Transparancy Event Terminal Console */}
-            <div className="flex flex-col gap-2.5">
-              <div className="flex items-center justify-between select-none">
+            <div className="flex-1 flex flex-col gap-2 min-h-0">
+              <div className="flex items-center justify-between select-none shrink-0">
                 <p className="text-[9.5px] font-black text-muted-foreground uppercase tracking-widest leading-none pl-1">
                   Transparency Event Terminal Console
                 </p>
@@ -398,7 +398,7 @@ export function GraphJobsPage() {
                 </Badge>
               </div>
 
-              <ScrollArea className="h-[20rem] rounded-xl border border-primary/10 bg-black/90 p-5 focus-within:ring-1 focus-within:ring-primary/45 transition-all shadow-inner">
+              <ScrollArea className="flex-1 min-h-0 rounded-xl border border-primary/10 bg-black/90 p-5 focus-within:ring-1 focus-within:ring-primary/45 transition-all shadow-inner">
                 <div className="font-mono text-[10.5px] space-y-3.5">
                   {logs.length > 0 ? (
                     logs.map((log) => {
