@@ -391,7 +391,6 @@ export function ReviewJobPage() {
                 onClick={() => {
                   setCurrentPage((prev) => Math.max(prev - 1, 1))
                   setOpenCandidates(undefined)
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
                 disabled={currentPage === 1}
                 className="h-8.5 rounded-lg text-xs font-bold border-primary/10 hover:border-primary/30"
@@ -410,7 +409,6 @@ export function ReviewJobPage() {
                     onClick={() => {
                       setCurrentPage(pageNum)
                       setOpenCandidates(undefined)
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
                     }}
                     className={cn(
                       "size-8.5 rounded-lg text-xs font-bold",
@@ -430,7 +428,6 @@ export function ReviewJobPage() {
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   setOpenCandidates(undefined)
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
                 disabled={currentPage === totalPages}
                 className="h-8.5 rounded-lg text-xs font-bold border-primary/10 hover:border-primary/30"
