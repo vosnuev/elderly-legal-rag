@@ -30,7 +30,23 @@ services:
       QUICK_CONNECT_MG_HOST: memgraph
       QUICK_CONNECT_MG_PORT: 7687
 
+  redis:
+    image: ${REDIS_IMAGE:-redis:7-alpine}
+    container_name: ${REDIS_CONTAINER_NAME:-rag-redis}
+    ports:
+      - "${REDIS_PUBLISH_HOST:-127.0.0.1}:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
 volumes:
   memgraph_lib:
   memgraph_log:
   memgraph_etc:
+  redis_data:

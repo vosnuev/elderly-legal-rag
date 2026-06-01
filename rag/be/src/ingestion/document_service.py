@@ -7,7 +7,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from ingestion.schemas import SUPPORTED_INPUT_SUFFIXES
-from logger import bind_logger
+from observability.logger import bind_logger
 from query.read.inspection import get_document_record
 from query.schema import DocumentNode
 from query.write import register_document

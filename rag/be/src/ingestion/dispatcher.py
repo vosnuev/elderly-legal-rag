@@ -3,7 +3,7 @@ from __future__ import annotations
 from ingestion.schemas import FileIngestStatusResponse
 from pipeline.invocation import GraphIngestInvocation
 from pipeline.schemas import IngestGraphResult, ReviewAction
-from logger import bind_logger
+from observability.logger import bind_logger
 
 
 class IngestionDispatcher:

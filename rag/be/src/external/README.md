@@ -22,7 +22,8 @@ business logic, agent prompt, pipeline orchestration, API route를 두지 않는
 ```text
 external/
 ├── memgraph/     # Memgraph Bolt driver adapter
-└── openrouter/   # OpenRouter-compatible LLM / embedding client adapter
+├── openrouter/   # OpenRouter-compatible LLM / embedding client adapter
+└── redis/        # Redis client adapter for observability streams
 ```
 
 ## `external/memgraph`
@@ -54,6 +55,20 @@ OpenRouter-compatible LangChain client 생성을 담당한다.
 
 - `client.py`: LangChain chat model과 embedding model factory.
 - `__init__.py`: OpenRouter client factory export.
+
+## `external/redis`
+
+Redis asyncio client 생성을 담당한다.
+
+- Redis는 job observability stream 저장/재생 용도로 먼저 사용한다.
+- task queue durability 용도가 아니다.
+- `observability/redis.py`만 Redis client를 직접 import한다.
+- worker, pipeline, API는 Redis client가 아니라 `observability` facade를 사용한다.
+
+파일 역할:
+
+- `client.py`: `redis.asyncio.from_url()` 기반 singleton client factory.
+- `__init__.py`: Redis client factory export.
 
 ## Boundary
 

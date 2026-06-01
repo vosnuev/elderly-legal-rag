@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pipeline.schemas import GraphIngestPhase, IngestGraphResult
-from logger import bind_logger
+from observability.logger import bind_logger
 from query.write import upsert_ingest_job_progress
 
 

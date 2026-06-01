@@ -26,7 +26,7 @@ from ingestion.schemas import (
     StageStatus,
 )
 from pipeline.schemas import IngestGraphResult
-from logger import bind_logger
+from observability.logger import bind_logger
 from query.read.runtime import (
     list_documents,
     list_pending_review_candidates,

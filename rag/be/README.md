@@ -23,7 +23,8 @@ be/
 ├── src/pipeline/               # LangGraph ingest pipeline, subagents, and service nodes
 ├── src/external/memgraph/      # Pure Memgraph Bolt adapter
 ├── src/external/openrouter/    # OpenRouter chat and embedding client adapters
-├── src/logger.py               # Loguru structured logging setup
+├── src/external/redis/         # Redis client adapter for observability streams
+├── src/observability/          # logging, Redis job events, and SSE helpers
 ├── src/query/                  # Memgraph read/write query functions
 ├── src/tools/                  # Singleton LangChain tools and context binding
 ├── src/settings.py             # Environment settings

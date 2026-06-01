@@ -1,3 +1,5 @@
+"""Process-wide structured logging for the RAG backend."""
+
 from __future__ import annotations
 
 import sys

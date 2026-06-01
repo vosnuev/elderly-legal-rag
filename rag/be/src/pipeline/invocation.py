@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from logger import bind_logger
+from observability.logger import bind_logger
 from pipeline.graphs.candidate_review_graph import CandidateReviewGraph
 from pipeline.graphs.document_construction_graph import DocumentConstructionGraph
 from pipeline.schemas import GraphIngestPhase, IngestGraphResult, ReviewAction

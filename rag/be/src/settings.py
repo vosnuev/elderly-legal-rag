@@ -30,6 +30,12 @@ class Settings(BaseSettings):
     memgraph_username: str | None = None
     memgraph_password: SecretStr | None = None
 
+    redis_url: str = "redis://127.0.0.1:6379/0"
+    observability_enabled: bool = True
+    observability_stream_prefix: str = "rag:observability:jobs"
+    observability_stream_maxlen: int = Field(default=2_000, ge=100)
+    observability_xread_block_ms: int = Field(default=15_000, ge=100)
+
     openrouter_api_key: SecretStr | None = None
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     graph_llm_model: str | None = None
