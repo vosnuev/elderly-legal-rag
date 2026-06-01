@@ -61,23 +61,10 @@ def memgraph_graph_traverse(
     )
 
 
-@tool
-def memgraph_probe_existing_context(
-    keyword: str,
-    top_k: int = 20,
-) -> dict[str, Any]:
-    """Probe existing graph context with primitive read methods."""
-    return {
-        "text_index_matches": text_search(keyword, top_k),
-        "schema": schema_read(),
-    }
-
-
-MEMGRAPH_READ_TOOLS: list[BaseTool] = [
+MCP_ASSIGNED_MEMGRAPH_TOOLS: list[BaseTool] = [
     memgraph_read_query,
     memgraph_schema_read,
     memgraph_text_index_search,
     memgraph_vector_search,
     memgraph_graph_traverse,
-    memgraph_probe_existing_context,
 ]

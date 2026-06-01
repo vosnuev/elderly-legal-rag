@@ -42,6 +42,7 @@ tools/
 ├── memgraph_read_tools.py   # query/read를 감싼 read-only agent tools
 ├── chunk_tools.py           # chunk 생성 관련 agent write tools
 ├── candidate_tools.py       # edge candidate 생성/revision 관련 agent write tools
+├── memory_tools.py          # Memory 조회/append tools
 ├── review_context_tools.py  # reviewer note 조회용 tools
 └── README.md
 ```
@@ -57,13 +58,17 @@ tools/
 - text search
 - vector search
 - graph traversal
-- existing context probe
 
-동일한 query/read function은 외부 MCP read tool에서도 재사용할 수 있다.
+`MCP_ASSIGNED_MEMGRAPH_TOOLS`는 LangChain agent에 MCP처럼 할당하는 내부 tool
+bundle이다. 외부 MCP tool 등록 목록은 이 상수를 그대로 쓰지 않고
+`api/mcp/server.py`에서 별도 정의한다.
+단, 두 surface 모두 동일한 query/read function을 재사용할 수 있다.
 
 ### `chunk_tools.py`
 
 `chunking_agent`가 원문 document를 읽고 `Chunk`를 저장하기 위해 사용하는 tool을 둔다.
+`graph_candidate_agent`도 `read_document_tool`, `read_chunk_tool` 같은 read-only tool을
+사용해 document/chunk context를 명시적으로 읽을 수 있다.
 
 이 파일 안의 Pydantic schema는 agent input schema이다. 향후 DB schema가
 `query/schema/`의 `ChunkNode` storage contract를 기준으로 하는 agent-write subset이다.
@@ -92,6 +97,13 @@ retry version을 결정한다.
 
 reviewer note 조회 tool을 둔다. ingest state 조회는 별도 전용 tool을 만들지 않고
 agent가 일반 Memgraph read tool을 통해 필요한 범위만 읽는다.
+
+### `memory_tools.py`
+
+review feedback에서 누적된 단일 `Memory` 문서를 조회하거나 append하는 tool을 둔다.
+memory는 kind별로 나누지 않고 append-only 문서처럼 관리하므로 tool schema에도
+`memory_kind`를 노출하지 않는다. `source_review_note_id`는 선택값이며, 값이 있으면
+해당 `ReviewNote`를 memory provenance로 연결한다.
 
 ## 전체 플로우에서 위치
 

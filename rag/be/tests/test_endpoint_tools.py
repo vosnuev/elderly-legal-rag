@@ -13,7 +13,9 @@ from pipeline.sub_agents.graph_candidate_revision_agent import (
     GraphCandidateRevisionAgent,
 )
 from tools import (
+    append_memory_tool,
     check_document_unique_string_tool,
+    read_memory_tool,
     write_chunk_tool,
     write_relationship_candidate_tool,
 )
@@ -69,9 +71,12 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertIn("memgraph_vector_search", tool_names)
         self.assertIn("memgraph_graph_traverse", tool_names)
         self.assertIn("memgraph_schema_read", tool_names)
-        self.assertIn("memgraph_probe_existing_context", tool_names)
+        self.assertIn("read_document_tool", tool_names)
+        self.assertIn("read_chunk_tool", tool_names)
+        self.assertIn("read_memory_tool", tool_names)
         self.assertIn("write_relationship_candidate_tool", tool_names)
         self.assertIn("get_reviewer_notes_tool", tool_names)
+        self.assertNotIn("append_memory_tool", tool_names)
         self.assertNotIn("memgraph_write_query", tool_names)
         self.assertNotIn("memgraph_store_edge_candidates", tool_names)
         self._assert_no_runtime_context_schema(tools)
@@ -190,6 +195,28 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertNotIn("version", candidate_fields)
         self.assertNotIn("job_id", candidate_fields)
         self.assertNotIn("document_id", candidate_fields)
+
+    def test_read_memory_tool_schema_is_single_document_read(self) -> None:
+        schema = read_memory_tool.args_schema.model_json_schema()
+
+        self.assertEqual(schema["additionalProperties"], False)
+        self.assertIn("scope", schema["properties"])
+        self.assertIn("status", schema["properties"])
+        self.assertNotIn("limit", schema["properties"])
+        self.assertNotIn("memory_kind", schema["properties"])
+        self.assertNotIn("job_id", schema["properties"])
+
+    def test_append_memory_tool_schema_allows_optional_feedback_link(self) -> None:
+        schema = append_memory_tool.args_schema.model_json_schema()
+
+        self.assertEqual(schema["additionalProperties"], False)
+        self.assertIn("entry", schema["properties"])
+        self.assertIn("scope", schema["properties"])
+        self.assertIn("title", schema["properties"])
+        self.assertIn("source_review_note_id", schema["properties"])
+        self.assertIn("source_candidate_id", schema["properties"])
+        self.assertNotIn("memory_kind", schema["properties"])
+        self.assertNotIn("job_id", schema["properties"])
 
     def _assert_no_runtime_context_schema(self, tools) -> None:  # noqa: ANN001
         forbidden = {"job_id", "task_id", "dry_run", "mock", "preview", "no_op"}

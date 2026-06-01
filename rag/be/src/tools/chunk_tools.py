@@ -5,7 +5,11 @@ from typing import Any
 from langchain.tools import tool
 from pydantic import BaseModel, ConfigDict, Field
 
-from query.read.inspection import get_document_raw_content, get_document_record
+from query.read.inspection import (
+    get_document_raw_content,
+    get_document_record,
+    read_chunk_by_id,
+)
 from query.write import write_chunks_for_document
 
 
@@ -82,6 +86,19 @@ class CheckDocumentUniqueStringToolInput(BaseModel):
     )
 
 
+class ReadChunkToolInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    chunk_id: str = Field(
+        min_length=1,
+        description="Chunk node id to inspect.",
+    )
+    include_embedding: bool = Field(
+        default=False,
+        description="Return the full embedding vector only when vector search needs it.",
+    )
+
+
 @tool
 def read_document_tool(document_id: str) -> dict[str, Any]:
     """Read a source Document node from Memgraph by document id."""
@@ -91,6 +108,15 @@ def read_document_tool(document_id: str) -> dict[str, Any]:
         "raw_content": raw_content,
         "content_length": len(raw_content),
     }
+
+
+@tool(args_schema=ReadChunkToolInput)
+def read_chunk_tool(chunk_id: str, include_embedding: bool = False) -> dict[str, Any]:
+    """Read a Chunk node from Memgraph by chunk id."""
+    chunk = read_chunk_by_id(chunk_id)
+    if not include_embedding:
+        chunk.pop("embedding", None)
+    return chunk
 
 
 @tool
@@ -120,7 +146,7 @@ def check_document_unique_string_tool(document_id: str, text: str) -> dict[str, 
 @tool(args_schema=WriteChunkToolInput)
 def write_chunk_tool(document_id: str, chunks: list[ChunkWriteInput]) -> dict[str, Any]:
     """Write generated chunks for a source document and return generated chunk ids."""
-    job_id = _document_job_id(document_id)
+    job_id = _document_ingest_job_id(document_id)
     return write_chunks_for_document(
         document_id=document_id,
         chunks=[_chunk_record(chunk) for chunk in chunks],
@@ -134,7 +160,7 @@ def _chunk_record(chunk: ChunkWriteInput | dict[str, Any]) -> dict[str, Any]:
     return ChunkWriteInput.model_validate(chunk).model_dump()
 
 
-def _document_job_id(document_id: str) -> str:
+def _document_ingest_job_id(document_id: str) -> str:
     document = get_document_record(document_id)
     metadata = document.get("metadata")
     if isinstance(metadata, dict):

@@ -2,7 +2,7 @@ from query.read import (
     get_document_raw_content,
     get_document_record,
     graph_traverse,
-    list_agent_memory,
+    list_memory,
     list_candidate_versions,
     list_candidates_for_document,
     list_candidates_for_job,
@@ -32,6 +32,7 @@ from query.read import (
     vector_search_edges,
 )
 from query.write import (
+    append_memory_entry,
     materialize_candidate_edge,
     register_document,
     store_review_note,
@@ -45,10 +46,11 @@ from query.write import (
 )
 
 __all__ = [
+    "append_memory_entry",
     "get_document_raw_content",
     "get_document_record",
     "graph_traverse",
-    "list_agent_memory",
+    "list_memory",
     "list_candidate_versions",
     "list_candidates_for_document",
     "list_candidates_for_job",

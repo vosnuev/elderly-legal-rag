@@ -9,10 +9,12 @@ from query.write.core import write_query
 from query.write.documents import register_document
 from query.write.edges import materialize_candidate_edge
 from query.write.embeddings import update_chunk_embedding
+from query.write.memory import append_memory_entry
 from query.write.reviews import store_review_note, update_candidate_review_status
 from query.write.runtime import upsert_ingest_job_progress
 
 __all__ = [
+    "append_memory_entry",
     "materialize_candidate_edge",
     "register_document",
     "store_review_note",

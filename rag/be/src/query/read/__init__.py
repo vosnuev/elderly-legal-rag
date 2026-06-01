@@ -11,7 +11,7 @@ from query.read.discovery import (
 from query.read.inspection import (
     get_document_raw_content,
     get_document_record,
-    list_agent_memory,
+    list_memory,
     list_candidate_versions,
     list_candidates_for_document,
     list_candidates_for_job,
@@ -41,7 +41,7 @@ __all__ = [
     "get_document_raw_content",
     "get_document_record",
     "graph_traverse",
-    "list_agent_memory",
+    "list_memory",
     "list_candidate_versions",
     "list_candidates_for_document",
     "list_candidates_for_job",
