@@ -22,9 +22,9 @@ Implementation is split into three boundaries:
 
 - `external/memgraph`: pure Memgraph Bolt client lifecycle and result
   serialization.
-- `query/methods`: Memgraph primitive query methods and procedures.
-- `query/repositories`: project graph-schema reads/writes for documents, chunks,
-  candidates, review notes, and ingest jobs.
+- `query/read`: Memgraph read/query primitive functions and procedures.
+- `query/write`: internal Memgraph write/query functions for raw write Cypher
+  and deterministic original document registration.
 
 ### Success Criteria
 
@@ -44,7 +44,7 @@ Implementation is split into three boundaries:
 
 - Clarify `rag/be/src/query/` query/search wrapper responsibilities.
 - Introduce Memgraph text-search based wrappers.
-- Redefine or deprecate the current `keyword_search` behavior.
+- Remove ambiguous `keyword_search` naming in favor of `text_search`.
 - Define the minimum responsibility of `probe_existing_context`.
 - Align external MCP read-only exposure with internal agent-facing query tools.
 - Keep Memgraph Bolt driver lifecycle outside `query/` under `external/memgraph`.
@@ -80,10 +80,12 @@ tool that reduces agent search freedom.
 
 ### `schema_read`
 
-- Reads graph labels, relationship types, index availability, and query
-  instructions.
+- Reads Memgraph's runtime schema through `SHOW SCHEMA INFO` and returns the
+  tracked node patterns, edge patterns, index availability, constraints, enums,
+  and query instructions.
 - Why: prevents agents from inventing nonexistent labels, relationships, or
-  indexes.
+  indexes while relying on Memgraph's own schema tracking instead of manual
+  graph scans.
 
 ### `read_query`
 
@@ -94,6 +96,8 @@ tool that reduces agent search freedom.
 ### `text_search`
 
 - Uses Memgraph official text-search functionality.
+- The wrapper passes the bounded result limit into the Memgraph text-search
+  procedure instead of post-filtering a larger result set.
 - Targets exact legal/domain terms such as law names, ordinance names, article
   numbers, regions, and organization names.
 - Why: property `CONTAINS` scanning is temporary and does not satisfy indexed
@@ -108,6 +112,8 @@ tool that reduces agent search freedom.
 ### `graph_traverse`
 
 - Reads a bounded neighborhood from a specific node or id.
+- This is only a convenience wrapper. For custom graph traversal plans, agents
+  should use `read_query` and write explicit Cypher traversal queries.
 - Why: after text/vector search finds anchors, agents must inspect legal
   hierarchy, regional scope, and nearby policy context.
 
@@ -134,13 +140,17 @@ tool that reduces agent search freedom.
 - Write operations are exposed to agents only through purpose-specific,
   context-bound write tools in `tools/`, not through generic search methods.
 
-### Repository Split Rationale
+### Read/Write Method Split Rationale
 
-Repositories exist to keep project graph-schema decisions out of primitive query
-methods. Text search, vector search, schema reads, and graph traversal are
-Memgraph capabilities. `Document`, `Chunk`, `RelationshipCandidate`,
-`ReviewNote`, and `IngestJob` are SKN28 graph schema concepts. These two groups
-change for different reasons, so they should not live in the same file.
+Read methods and write methods are both database query methods, but they have
+different exposure rules. Read methods can be wrapped for both internal agent
+tools and external MCP tools. Write methods are internal only and are wrapped by
+purpose-specific agent tools or deterministic task services.
+
+Text search, vector search, schema reads, and graph traversal are Memgraph read
+capabilities. `Document`, `Chunk`, `RelationshipCandidate`, `ReviewNote`, and
+`IngestJob` writes are SKN28 graph schema mutations. These two groups change for
+different reasons, so they live under separate read/write method directories.
 
 Microsoft GraphRAG uses a similar separation in the local reference repository:
 
@@ -160,16 +170,19 @@ strategy, context assembly, and data access as separate responsibilities.
 
 ### QRY-001: Replace Temporary Keyword Search
 
-- Problem: `keyword_search` currently relies on property string `CONTAINS`
-  matching.
-- Requirement: implement Memgraph official text-search wrapper.
+- Status: done.
+- Problem: old keyword-style search behavior was ambiguous and could drift into
+  property string scans.
+- Requirement: use Memgraph official text-search wrappers and expose the method
+  as `text_search`.
 - Why: exact legal/domain term lookup needs index-backed behavior.
 
 ### QRY-002: Clarify Keyword vs Text Naming
 
-- Problem: `keyword_search` and future `text_search` can overlap.
-- Requirement: decide whether `keyword_search` becomes an alias, deprecated
-  wrapper, or separate exact property search.
+- Status: done.
+- Problem: `keyword_search` and `text_search` overlap as agent-facing concepts.
+- Requirement: keep `text_search` only. Do not expose or maintain
+  `keyword_search` as a separate query-service method.
 - Why: tool names must be clear to agents and external MCP consumers.
 
 ### QRY-003: Keep Primitive Methods Exposed

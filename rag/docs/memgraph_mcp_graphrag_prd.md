@@ -215,7 +215,7 @@ Primary code locations:
 
 ```text
 rag/be/src/tools/
-rag/be/src/agents/graph_ingest/sub_agents/
+rag/be/src/pipeline/sub_agents/
 rag/be/src/ingest_tasks/
 ```
 
@@ -253,12 +253,13 @@ as LangChain tool exposure. `tools/` wraps query methods into agent-facing tools
 Core query methods:
 
 - `read_query`: bounded read-only Cypher.
-- `write_query`: internal-only validated write Cypher called from trusted
-  context-bound wrappers.
-- `schema_read`: schema, labels, relationship types, indexes, and instructions.
+- `schema_read`: Memgraph `SHOW SCHEMA INFO` result, including node patterns,
+  edge patterns, indexes, constraints, enums, and instructions.
 - `text_search`: Memgraph official text-search procedures.
 - `vector_search`: Memgraph vector-search procedures.
-- `graph_traverse`: bounded path/neighborhood queries.
+- `graph_traverse`: bounded path/neighborhood convenience queries. Custom
+  traversal remains available through `read_query` so the agent can write its
+  own Cypher plan.
 - `probe_existing_context`: lightweight helper combining primitive reads without
   removing agent search freedom.
 
@@ -349,10 +350,11 @@ Public text documents
 - `rag/be/src/api/`: HTTP API routers and external MCP exposure.
 - `rag/be/src/ingest_tasks/`: task submission, document registration, status,
   and progress management.
-- `rag/be/src/agents/graph_ingest/`: LangGraph orchestration and subagents.
+- `rag/be/src/pipeline/`: LangGraph ingest pipeline and subagents.
 - `rag/be/src/tools/`: singleton LangChain tools and runtime context binding.
-- `rag/be/src/query/`: Memgraph query methods and domain repositories.
+- `rag/be/src/query/`: Memgraph read/write query functions.
 - `rag/be/src/external/memgraph/`: pure Memgraph Bolt driver adapter.
+- `rag/be/src/external/openrouter/`: OpenRouter chat and embedding client adapter.
 - `rag/fe`: independent operations UI.
 - `rag/infra`: Memgraph and Memgraph Lab Compose files.
 
@@ -573,7 +575,5 @@ blog summaries. Official docs to verify before implementation:
 ### Open Decisions
 
 - Final Memgraph schema labels, relationship types, constraints, and indexes.
-- Whether `keyword_search` remains as an alias or is deprecated in favor of
-  `text_search`.
 - Exact OpenRouter chat model for chunking and graph candidate agents.
 - Production deployment topology for RAG backend and Memgraph.

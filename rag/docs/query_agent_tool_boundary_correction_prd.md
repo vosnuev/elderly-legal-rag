@@ -35,8 +35,8 @@ are used by subagents.
 | Area | Current Role | Issue |
 | --- | --- | --- |
 | `be/src/query/client.py` | Connects to Memgraph through a Neo4j-compatible Bolt driver and executes queries. | This is an external Memgraph Bolt adapter, not a query business layer. |
-| `be/src/query/service.py` | Holds read wrappers, raw write wrappers, and domain persistence methods. | Query method wrappers, repositories, and tool policy are mixed. |
-| `be/src/query/guard.py` | Validates read/write Cypher. | Query validation is mixed with agent/tool access policy and task context. |
+| `be/src/query/read`, `be/src/query/write` | Holds direct database query functions. | Query functions must stay database-query only and must not contain prompts, MCP registration, or runner policy. |
+| `be/src/query/guard.py` | Removed. | Token-scanning guard files do not belong in the query layer. |
 | `chunking_agent` tools | Expose read/write/upsert tools directly. | The LLM is asked for `job_id` and `dry_run`, even though the orchestrator already owns context. |
 | `graph_candidate_agent` tools | Expose raw read/write/search/traversal/candidate store tools. | Candidate persistence must be owned by context-bound agent write tools, not duplicated by service nodes. |
 | `review_resume_agent` | Generates a new candidate version after retry. | The name is ambiguous; the agent revises candidates, it does not resume all review logic. |
@@ -50,6 +50,10 @@ are used by subagents.
 - Memgraph read/query basics use Cypher clauses such as `MATCH`, `WHERE`,
   `RETURN`, `UNWIND`, and relationship pattern traversal:
   https://memgraph.com/docs/querying/read-and-modify-data
+- Memgraph runtime schema tracking exposes `SHOW SCHEMA INFO`, which returns
+  nodes, edges, indexes, constraints, and enums when `--schema-info-enabled` is
+  enabled:
+  https://memgraph.com/docs/querying/schema
 - Memgraph text search uses text indexes and the `text_search.search()` /
   `text_search.search_edges()` procedures:
   https://memgraph.com/docs/querying/text-search
@@ -67,10 +71,11 @@ capabilities, not as agent policy.
 
 | Query Method | Official Basis | Target Wrapper Responsibility |
 | --- | --- | --- |
-| Cypher read/write | Memgraph Cypher read/modify clauses | Execute parameterized Cypher through the external Neo4j adapter. |
+| Cypher read and repository writes | Memgraph Cypher read/modify clauses | Execute bounded read queries and purpose-specific repository mutations through the external Memgraph adapter. |
+| Schema read | `SHOW SCHEMA INFO` | Return Memgraph-tracked schema instead of manually scanning labels and relationship types. |
 | Text search | `text_search.search`, `text_search.search_edges` | Execute indexed full-text search; replace temporary property `CONTAINS` scans. |
 | Vector search | `vector_search.search`, `vector_search.search_edges` | Execute indexed semantic search over node/edge embeddings. |
-| Graph traversal | Cypher relationship patterns and bounded path traversal | Execute bounded neighborhood/path queries around anchors. |
+| Graph traversal | Cypher relationship patterns and bounded path traversal | Execute bounded neighborhood/path queries around anchors while allowing agents to use `read_query` for custom traversal Cypher. |
 
 ### Specific Problems
 
@@ -80,8 +85,8 @@ capabilities, not as agent policy.
 
 Current problems:
 
-- `write_query(..., dry_run=True)` and `upsert_document_graph(..., dry_run=True)`
-  default to no-op behavior unless the LLM explicitly overrides them.
+- Runtime write/upsert style tool surfaces can drift into no-op behavior if
+  preview execution is mixed into production code.
 - Exposing `dry_run` in the tool schema asks the model to decide execution
   policy.
 - Preview behavior and production ingest writes are mixed in the same tool.
@@ -100,8 +105,8 @@ Correction:
 Current problems:
 
 - `job_id` is already present in `GraphIngestState` and orchestrator context.
-- It is exposed again in `memgraph_write_query`, `memgraph_store_edge_candidates`,
-  and `memgraph_upsert_document_graph`.
+- Broad write tools can expose `job_id` again even though context already owns
+  it.
 - A model-provided `job_id` can break lineage, and missing values currently fail
   in validation.
 
@@ -118,15 +123,15 @@ Subagents may need write capability, but not a broad generic write tool.
 
 Current problems:
 
-- `memgraph_write_query(query, job_id, purpose, parameters, dry_run)` is too wide.
-- The tool name indicates DB write permission but not the target graph object or
+- A generic raw write tool is too wide for subagent use.
+- A broad DB write permission does not identify the target graph object or
   invariant.
 - Token-level Cypher validation does not enforce domain-level rules.
 
 Correction:
 
 - Prefer purpose-specific write tools.
-- If a raw write escape hatch remains, make it internal-only and context-bound.
+- Do not keep a generic raw write query service method in the runtime path.
 - Do not expose `job_id`, `purpose`, or `dry_run` as LLM parameters.
 
 ## 3. User Experience & Functionality
@@ -213,7 +218,7 @@ and task runtime layers.
 | Layer | Visibility | Owner | Rule |
 | --- | --- | --- | --- |
 | Memgraph external adapter | Internal Python only | `external/memgraph` | Pure Bolt driver connection and query execution. No job/task/agent policy. |
-| Query method/repository service | Internal Python only | `query/` | Memgraph query method wrappers and domain repositories. No LangChain `@tool`. |
+| Query method service | Internal Python only | `query/` | Memgraph read/write database query methods. No LangChain `@tool`. |
 | Agent tool module | Internal agent only | `tools/` | Singleton LangChain `@tool` objects, access composition, context binding. |
 | API/MCP exposure | External callers | `api/` | MCP read-only exposure only. No internal write tools. |
 
@@ -225,8 +230,9 @@ Tool module requirements:
 - Tool composition must be explicit: read-only, chunk-write, candidate-write,
   and review-context tools are selected by each subagent.
 - Tests must whitebox-check exact tool exposure for each agent.
-- `guard.py` should not be the main agent access policy boundary. It can remain
-  as a Cypher sanitizer/validator behind query execution.
+- Token-scanning guard files must not be used as the main agent access policy.
+  External MCP receives read tools only; internal write tools are not registered
+  in MCP.
 
 ### Evaluation Strategy
 
@@ -239,8 +245,8 @@ Tool module requirements:
 - Persistence ownership test: one graph entity type is not written by both an
   agent tool and a service node in the same flow.
 - Audit test: persisted write records include `job_id` from bound context.
-- Negative test: raw write query without trusted context fails before DB
-  execution.
+- Negative test: broad raw write query is absent from runtime tool and query
+  service surfaces.
 
 ## 5. Technical Specifications
 
@@ -251,7 +257,7 @@ FastAPI API
   -> ingest_tasks
        -> document_service writes Document + IngestJob
        -> task_queue starts graph ingest with job_id/document_id
-  -> agents.graph_ingest.orchestrator
+  -> pipeline.pipeline
        -> builds AgentToolContext
        -> imports singleton tools from tools/
        -> runs subagents with context-bound tools
@@ -260,7 +266,7 @@ FastAPI API
        -> singleton LangChain @tool objects and access composition
   -> query/
        -> methods: Memgraph query method wrappers
-       -> repositories: domain persistence/query methods
+       -> methods/write: internal database write query methods
        -> validation helpers only after access is decided
   -> external/memgraph
        -> pure Memgraph Bolt driver adapter
@@ -295,21 +301,19 @@ Target location:
 
 ```text
 be/src/query/
-├── methods/
+├── methods/read/
 │   ├── raw.py
 │   ├── schema.py
 │   ├── text_search.py
 │   ├── vector_search.py
 │   └── traversal.py
-├── repositories/
-│   ├── documents.py
-│   ├── chunks.py
-│   ├── candidates.py
-│   ├── review_notes.py
-│   └── ingest_jobs.py
+├── methods/write/
+│   ├── document_write.py
+│   ├── chunk_write.py
+│   ├── relationship_candidate_write.py
+│   ├── review_note_write.py
+│   └── ingest_job_write.py
 ├── service.py
-├── guard.py
-├── instructions.py
 └── utils.py
 ```
 
@@ -458,9 +462,9 @@ Rules:
 - Removing `dry_run` from runtime tools can cause accidental writes if tool
   composition is wrong.
   - Mitigation: tests must verify exact tool visibility and schemas.
-- Keeping raw write query as an escape hatch can remain too permissive.
-  - Mitigation: do not expose it by default; require context-bound wrappers and
-    denied-operation validation.
+- Reintroducing a broad raw write query can become too permissive.
+  - Mitigation: keep writes behind purpose-specific context-bound tools and
+    repository methods.
 - Agent-owned writes for chunks/candidates may complicate idempotency.
   - Mitigation: require deterministic IDs and merge keys in tool implementation.
 - Service nodes may accidentally reintroduce duplicate chunk/candidate writes.
@@ -491,6 +495,6 @@ Rules:
 
 #### v1.2 Runtime Hardening
 
-- Add stronger raw write guardrails.
+- Add stronger read-query guardrails.
 - Add graph mutation audit records.
 - Add fixture-based ingest flow tests against a disposable Memgraph instance.
