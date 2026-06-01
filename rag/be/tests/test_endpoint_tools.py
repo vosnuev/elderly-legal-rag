@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import asyncio
 import unittest
 from unittest.mock import patch
+
+from mcp.server.fastmcp.exceptions import ToolError
 
 from pipeline.sub_agents.chunking_agent import ChunkingAgent
 from pipeline.sub_agents.feedback_judge_agent import FeedbackJudgeAgent
@@ -62,7 +65,7 @@ class EndpointToolsTest(unittest.TestCase):
         tool_names = {tool.name for tool in tools}
 
         self.assertIn("memgraph_read_query", tool_names)
-        self.assertIn("memgraph_text_search", tool_names)
+        self.assertIn("memgraph_text_index_search", tool_names)
         self.assertIn("memgraph_vector_search", tool_names)
         self.assertIn("memgraph_graph_traverse", tool_names)
         self.assertIn("memgraph_schema_read", tool_names)
@@ -104,12 +107,52 @@ class EndpointToolsTest(unittest.TestCase):
 
         self.assertIn("memgraph.read_query", tool_names)
         self.assertIn("memgraph.schema_read", tool_names)
-        self.assertIn("memgraph.text_search", tool_names)
+        self.assertIn("memgraph.text_index_search", tool_names)
+        self.assertNotIn("memgraph.text_search", tool_names)
         self.assertIn("memgraph.vector_search", tool_names)
         self.assertNotIn("memgraph.keyword_search", tool_names)
         self.assertNotIn("memgraph.write_query", tool_names)
         self.assertNotIn("memgraph.upsert_document_graph", tool_names)
         self.assertNotIn("write_relationship_candidate_tool", tool_names)
+
+    def test_external_mcp_read_query_applies_read_wrapper_limit(self) -> None:
+        tool_manager = create_external_mcp()._tool_manager
+
+        with (
+            patch("api.mcp.server.bounded_limit", return_value=17) as bounded_limit,
+            patch("api.mcp.server.read_query", return_value={"rows": []}) as read_query,
+        ):
+            result = asyncio.run(
+                tool_manager.call_tool(
+                    "memgraph.read_query",
+                    {
+                        "query": "MATCH (n) RETURN n",
+                        "parameters": {"name": "alpha"},
+                    },
+                )
+            )
+
+        self.assertEqual(result, {"rows": []})
+        bounded_limit.assert_called_once_with(None)
+        read_query.assert_called_once_with(
+            "MATCH (n) RETURN n",
+            {"name": "alpha"},
+            17,
+        )
+
+    def test_external_mcp_read_query_rejects_write_cypher(self) -> None:
+        tool_manager = create_external_mcp()._tool_manager
+
+        with patch("api.mcp.server.read_query") as read_query:
+            with self.assertRaisesRegex(ToolError, "read-only Cypher"):
+                asyncio.run(
+                    tool_manager.call_tool(
+                        "memgraph.read_query",
+                        {"query": "MATCH (n) SET n.name = 'blocked' RETURN n"},
+                    )
+                )
+
+        read_query.assert_not_called()
 
     def test_write_chunk_tool_has_structured_chunk_schema(self) -> None:
         schema = write_chunk_tool.args_schema.model_json_schema()

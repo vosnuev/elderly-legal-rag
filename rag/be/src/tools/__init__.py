@@ -16,7 +16,7 @@ from tools.memgraph_read_tools import (
     memgraph_probe_existing_context,
     memgraph_read_query,
     memgraph_schema_read,
-    memgraph_text_search,
+    memgraph_text_index_search,
     memgraph_vector_search,
 )
 from tools.review_context_tools import (
@@ -32,7 +32,7 @@ __all__ = [
     "memgraph_probe_existing_context",
     "memgraph_read_query",
     "memgraph_schema_read",
-    "memgraph_text_search",
+    "memgraph_text_index_search",
     "memgraph_vector_search",
     "read_document_tool",
     "write_candidate_revision_tool",

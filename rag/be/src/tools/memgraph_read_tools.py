@@ -26,12 +26,12 @@ def memgraph_schema_read() -> dict[str, Any]:
 
 
 @tool
-def memgraph_text_search(
+def memgraph_text_index_search(
     keyword: str,
     top_k: int = 20,
     index_name: str | None = None,
 ) -> dict[str, Any]:
-    """Search indexed text in Memgraph using the configured text search wrapper."""
+    """Search Memgraph text indexes; this is not a substring CONTAINS scan."""
     return text_search(keyword, top_k, index_name)
 
 
@@ -68,7 +68,7 @@ def memgraph_probe_existing_context(
 ) -> dict[str, Any]:
     """Probe existing graph context with primitive read methods."""
     return {
-        "text_matches": text_search(keyword, top_k),
+        "text_index_matches": text_search(keyword, top_k),
         "schema": schema_read(),
     }
 
@@ -76,7 +76,7 @@ def memgraph_probe_existing_context(
 MEMGRAPH_READ_TOOLS: list[BaseTool] = [
     memgraph_read_query,
     memgraph_schema_read,
-    memgraph_text_search,
+    memgraph_text_index_search,
     memgraph_vector_search,
     memgraph_graph_traverse,
     memgraph_probe_existing_context,

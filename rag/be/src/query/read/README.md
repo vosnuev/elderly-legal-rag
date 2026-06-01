@@ -56,7 +56,7 @@ read/
 
 | 함수 | 언제 사용하는가 |
 | --- | --- |
-| `text_search` | 법령명, 조례명, 조문 번호, 지역명, 기관명처럼 exact term 또는 text index 기반 anchor를 찾을 때 사용한다. MCP `memgraph.text_search`, internal graph candidate discovery, reviewer note search wrapper의 기반이다. |
+| `text_search` | 법령명, 조례명, 조문 번호, 지역명, 기관명처럼 Memgraph text index 기반 anchor를 찾을 때 사용한다. MCP에는 혼동을 줄이기 위해 `memgraph.text_index_search`로 노출한다. substring `CONTAINS` scan은 `read_query`로 직접 작성한다. internal graph candidate discovery, reviewer note search wrapper의 기반이다. |
 | `text_search_edges` | edge property에 text index가 잡혀 있고, 승인된 relationship metadata나 edge evidence를 text로 찾아야 할 때 사용한다. 기본 MCP surface에는 당장 노출하지 않고, edge index가 준비된 뒤 내부/외부 wrapper에서 선택적으로 감싼다. |
 | `vector_search` | 새 chunk와 의미적으로 가까운 기존 node/chunk/entity를 찾을 때 사용한다. graph candidate agent가 기존 graph placement 후보를 찾는 검색 단계와 MCP `memgraph.vector_search`의 기반이다. |
 | `vector_search_edges` | edge embedding index가 준비되어 있고, 기존 relationship 자체와 의미적으로 유사한 edge를 찾아야 할 때 사용한다. edge vector index가 없는 환경에서는 호출하면 Memgraph procedure/index error가 그대로 드러나야 한다. |

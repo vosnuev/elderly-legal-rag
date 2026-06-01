@@ -1,13 +1,30 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
 from query.read.core import read_query, schema_read
 from query.read.discovery import graph_traverse, text_search, vector_search
+from query.utils import bounded_limit
 
 MCP_INSTRUCTIONS = "External Memgraph tools are read-only."
+
+_FORBIDDEN_CYPHER_OPERATION = re.compile(
+    r"\b("
+    r"CREATE|MERGE|SET|DELETE|DETACH|REMOVE|DROP|ALTER|RENAME|"
+    r"GRANT|DENY|REVOKE|FOREACH|LOAD\s+CSV"
+    r")\b",
+    re.IGNORECASE,
+)
+_FORBIDDEN_PROCEDURE = re.compile(
+    r"\bCALL\s+("
+    r"dbms\b|"
+    r"apoc\.(create|merge|delete|refactor|periodic|load|export|schema)\b"
+    r")",
+    re.IGNORECASE,
+)
 
 
 def _new_mcp(name: str) -> FastMCP:
@@ -29,14 +46,16 @@ def create_external_mcp() -> FastMCP:
 def _register_read_tools(mcp: FastMCP) -> None:
     @mcp.tool(
         name="memgraph.read_query",
-        description="Execute a bounded read Cypher query against Memgraph.",
+        description=(
+            "Execute a bounded, write-restricted read Cypher query against Memgraph."
+        ),
     )
     def memgraph_read_query(
         query: str,
         parameters: dict[str, Any] | None = None,
         max_rows: int | None = None,
     ) -> dict[str, Any]:
-        return read_query(query, parameters, max_rows)
+        return _execute_mcp_read_query(query, parameters, max_rows)
 
     @mcp.tool(
         name="memgraph.vector_search",
@@ -53,10 +72,13 @@ def _register_read_tools(mcp: FastMCP) -> None:
         return vector_search(index_name, embedding, top_k)
 
     @mcp.tool(
-        name="memgraph.text_search",
-        description="Search text-bearing graph nodes with the configured text search wrapper.",
+        name="memgraph.text_index_search",
+        description=(
+            "Search graph nodes through a configured Memgraph text index. "
+            "This is not a substring CONTAINS scan and requires the index to exist."
+        ),
     )
-    def memgraph_text_search(
+    def memgraph_text_index_search(
         keyword: str,
         top_k: int = 20,
         index_name: str | None = None,
@@ -81,3 +103,74 @@ def _register_read_tools(mcp: FastMCP) -> None:
     )
     def memgraph_schema_read() -> dict[str, Any]:
         return schema_read()
+
+
+def _execute_mcp_read_query(
+    query: str,
+    parameters: dict[str, Any] | None,
+    max_rows: int | None,
+) -> dict[str, Any]:
+    _validate_mcp_read_query(query)
+    return read_query(query, parameters, bounded_limit(max_rows))
+
+
+def _validate_mcp_read_query(query: str) -> None:
+    normalized = _remove_cypher_literals_and_comments(query)
+    if _FORBIDDEN_CYPHER_OPERATION.search(normalized):
+        raise ValueError("MCP memgraph.read_query only accepts read-only Cypher.")
+    if _FORBIDDEN_PROCEDURE.search(normalized):
+        raise ValueError(
+            "MCP memgraph.read_query does not allow write-capable procedures."
+        )
+
+
+def _remove_cypher_literals_and_comments(query: str) -> str:
+    output: list[str] = []
+    index = 0
+    length = len(query)
+    quote: str | None = None
+
+    while index < length:
+        char = query[index]
+        next_char = query[index + 1] if index + 1 < length else ""
+
+        if quote is not None:
+            if char == "\\":
+                index += 2
+                output.append(" ")
+                continue
+            if char == quote:
+                quote = None
+            output.append(" ")
+            index += 1
+            continue
+
+        if char in ("'", '"', "`"):
+            quote = char
+            output.append(" ")
+            index += 1
+            continue
+
+        if char == "/" and next_char == "/":
+            while index < length and query[index] not in "\r\n":
+                output.append(" ")
+                index += 1
+            continue
+
+        if char == "/" and next_char == "*":
+            output.extend("  ")
+            index += 2
+            while index + 1 < length and not (
+                query[index] == "*" and query[index + 1] == "/"
+            ):
+                output.append(" ")
+                index += 1
+            if index + 1 < length:
+                output.extend("  ")
+                index += 2
+            continue
+
+        output.append(char)
+        index += 1
+
+    return "".join(output)

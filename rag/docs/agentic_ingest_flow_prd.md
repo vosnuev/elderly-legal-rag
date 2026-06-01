@@ -420,7 +420,7 @@ Allowed query tools:
 
 - `memgraph.schema_read`
 - `memgraph.read_query`
-- `memgraph.text_search`
+- `memgraph.text_index_search`
 - `memgraph.vector_search`
 - `memgraph.graph_traverse`
 - `memgraph.probe_existing_context`
