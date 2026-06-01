@@ -22,8 +22,9 @@ class Settings(BaseSettings):
     output_dir: Path = SERVICE_DIR / "output"
     cache_dir: Path = SERVICE_DIR / "cache"
     llm_model: str | None = None
-    embedding_model: str | None = None
+    embedding_model: str = "openai/text-embedding-3-large"
     embedding_dimensions: int = 3072
+    embedding_worker_count: int = Field(default=5, ge=1)
 
     memgraph_uri: str = "bolt://127.0.0.1:7687"
     memgraph_username: str | None = None
@@ -42,8 +43,12 @@ class Settings(BaseSettings):
     ]
     query_timeout_ms: int = Field(default=30_000, gt=0)
     query_max_rows: int = Field(default=100, gt=0)
-    edge_auto_approve_threshold: float = Field(default=0.85, ge=0.0, le=1.0)
-    edge_review_threshold: float = Field(default=0.65, ge=0.0, le=1.0)
+    text_search_index_name: str = "rag_text_idx"
+    document_text_search_index_name: str = "rag_document_text_idx"
+    review_note_text_search_index_name: str = "rag_review_note_text_idx"
+    graph_candidate_tool_budget: int = Field(default=80, ge=1)
+    log_level: str = "INFO"
+    log_json: bool = True
 
 
 @lru_cache
