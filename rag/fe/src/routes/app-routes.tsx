@@ -3,6 +3,7 @@ import { Navigate } from 'react-router'
 
 import { DocumentsPage } from '@/pages/documents-page'
 import { GraphJobsPage } from '@/pages/graph-jobs-page'
+import { ReviewJobPage } from '@/pages/review-job-page'
 import { ReviewQueuePage } from '@/pages/review-queue-page'
 
 type IndexRoute = {
@@ -22,4 +23,5 @@ export const appRoutes: AppRoute[] = [
   { path: 'documents', element: <DocumentsPage /> },
   { path: 'graph-jobs', element: <GraphJobsPage /> },
   { path: 'review-queue', element: <ReviewQueuePage /> },
+  { path: 'review-queue/:jobId', element: <ReviewJobPage /> },
 ]

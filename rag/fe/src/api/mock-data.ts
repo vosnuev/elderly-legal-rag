@@ -1,7 +1,7 @@
 import type {
   CreateDocumentIngestJobRequest,
   FileIngestStatusResponse,
-  IngestGraphResult,
+  GraphTaskSnapshot,
   RagDocument,
   RelationshipCandidate,
   ReviewDecisionRequest,
@@ -10,6 +10,27 @@ import type {
 
 const nowSuffix = () => new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)
 const mockBaseDate = '2026-05-31T08:30:00.000Z'
+
+function createMockTask(
+  jobId: string,
+  kind: 'construction' | 'review_action',
+  status: GraphTaskSnapshot['status'],
+  candidateId?: string,
+): GraphTaskSnapshot {
+  const idempotencyKey =
+    kind === 'construction'
+      ? `construction:${jobId}`
+      : `review:${jobId}:${candidateId ?? 'candidate'}`
+  return {
+    task_id: `mock-task-${idempotencyKey.replace(/[^a-zA-Z0-9]+/g, '-')}`,
+    kind,
+    status,
+    idempotency_key: idempotencyKey,
+    submitted_at: new Date().toISOString(),
+    finished_at: status === 'succeeded' || status === 'failed' ? new Date().toISOString() : null,
+    error: null,
+  }
+}
 
 const mockDocuments: RagDocument[] = [
   {
@@ -46,7 +67,7 @@ const mockJobs: FileIngestStatusResponse[] = [
   {
     job_id: 'mock-job-001',
     file_name: 'mock-disability-employment.md',
-    current_stage: 'uploaded_to_database',
+    current_stage: 'pending_review',
     completed: false,
     created_at: mockBaseDate,
     updated_at: '2026-05-31T08:40:00.000Z',
@@ -59,13 +80,24 @@ const mockJobs: FileIngestStatusResponse[] = [
       {
         stage: 'uploaded_to_database',
         status: 'success',
-        message: 'Mock document is staged for graph add.',
+        message: 'Mock document stored in database.',
+      },
+      {
+        stage: 'graph_add_started',
+        status: 'success',
+        message: 'Mock graph construction task finished.',
+      },
+      {
+        stage: 'pending_review',
+        status: 'success',
+        message: 'Mock graph ingest produced relationship candidates.',
       },
     ],
     document_id: 'mock-document-001',
     chunk_count: 2,
-    candidate_count: 0,
-    pending_review_count: 0,
+    candidate_count: 5,
+    pending_review_count: 5,
+    current_task: createMockTask('mock-job-001', 'construction', 'succeeded'),
     warning: 'Mock data is being used because the RAG backend is unavailable.',
   },
 ]
@@ -95,6 +127,84 @@ const mockReviewCandidates: RelationshipCandidate[] = [
       target_chunk_text:
         '근로 지원인 서비스는 중증장애인 근로자가 안정적으로 직무를 수행할 수 있도록 보조 인력을 지원하는 제도입니다.',
       confidence: 0.86,
+    },
+  },
+  {
+    id: 'mock-candidate-003',
+    job_id: 'mock-job-001',
+    source_node: '사업주',
+    target_node: '고용 장려금',
+    relationship_type: 'RECEIVES',
+    source_chunk_id: 'mock-chunk-disability-001',
+    evidence_text:
+      '장애인 고용 지원 제도는 사업주와 근로자에게 고용 장려금, 직무 적응 지원, 근로 지원인 서비스를 제공할 수 있습니다.',
+    rationale: '지원 제도에서 사업주에게 고용 장려금을 제공한다는 점이 텍스트에 직관적으로 명시되어 있습니다.',
+    status: 'pending_review',
+    version: 1,
+    metadata: {
+      document_id: 'mock-document-001',
+      document_title: '장애인 고용 지원 제도 안내',
+      file_name: 'mock-disability-employment.md',
+      source_chunk_label: 'Chunk #1',
+      source_chunk_text:
+        '장애인 고용 지원 제도는 사업주와 근로자에게 고용 장려금, 직무 적응 지원, 근로 지원인 서비스를 제공할 수 있습니다.',
+      target_chunk_id: 'mock-chunk-disability-003',
+      target_chunk_label: 'Chunk #3',
+      target_chunk_text:
+        '고용 장려금은 장애인을 신규 채용하거나 고용을 유지하는 사업주에게 지급되는 재정적 인센티브입니다.',
+      confidence: 0.92,
+    },
+  },
+  {
+    id: 'mock-candidate-004',
+    job_id: 'mock-job-001',
+    source_node: '근로자',
+    target_node: '직무 적응 지원',
+    relationship_type: 'BENEFITS_FROM',
+    source_chunk_id: 'mock-chunk-disability-001',
+    evidence_text:
+      '장애인 고용 지원 제도는 사업주와 근로자에게 고용 장려금, 직무 적응 지원, 근로 지원인 서비스를 제공할 수 있습니다.',
+    rationale: '장애인 근로자가 직장에 잘 적응하도록 직무 적응 지원 프로그램이 혜택으로 주어집니다.',
+    status: 'pending_review',
+    version: 1,
+    metadata: {
+      document_id: 'mock-document-001',
+      document_title: '장애인 고용 지원 제도 안내',
+      file_name: 'mock-disability-employment.md',
+      source_chunk_label: 'Chunk #1',
+      source_chunk_text:
+        '장애인 고용 지원 제도는 사업주와 근로자에게 고용 장려금, 직무 적응 지원, 근로 지원인 서비스를 제공할 수 있습니다.',
+      target_chunk_id: 'mock-chunk-disability-004',
+      target_chunk_label: 'Chunk #4',
+      target_chunk_text:
+        '직무 적응 지원은 장애인 근로자가 새로운 업무 환경과 동료 관계에 연착륙하도록 전문가 상담 및 교육을 제공합니다.',
+      confidence: 0.81,
+    },
+  },
+  {
+    id: 'mock-candidate-005',
+    job_id: 'mock-job-001',
+    source_node: '중증장애인 근로자',
+    target_node: '보조 인력',
+    relationship_type: 'ASSISTED_BY',
+    source_chunk_id: 'mock-chunk-disability-002',
+    evidence_text:
+      '근로 지원인 서비스는 중증장애인 근로자가 안정적으로 직무를 수행할 수 있도록 보조 인력을 지원하는 제도입니다.',
+    rationale: '중증장애인 근로자가 안정적으로 직무를 완수할 수 있게 보조 인력을 매칭하는 역학이 서술되어 있습니다.',
+    status: 'pending_review',
+    version: 1,
+    metadata: {
+      document_id: 'mock-document-001',
+      document_title: '장애인 고용 지원 제도 안내',
+      file_name: 'mock-disability-employment.md',
+      source_chunk_label: 'Chunk #2',
+      source_chunk_text:
+        '근로 지원인 서비스는 중증장애인 근로자가 안정적으로 직무를 수행할 수 있도록 보조 인력을 지원하는 제도입니다.',
+      target_chunk_id: 'mock-chunk-disability-005',
+      target_chunk_label: 'Chunk #5',
+      target_chunk_text:
+        '보조 인력(근로 지원인)은 수어 통역, 시각 보조, 서류 대필 등의 세부 전문 조력을 제공합니다.',
+      confidence: 0.95,
     },
   },
   {
@@ -141,7 +251,7 @@ export function createMockIngestJob(
   const job: FileIngestStatusResponse = {
     job_id: jobId,
     file_name: payload.file_name,
-    current_stage: 'uploaded_to_database',
+    current_stage: 'graph_add_started',
     completed: false,
     created_at: now,
     updated_at: now,
@@ -154,13 +264,19 @@ export function createMockIngestJob(
       {
         stage: 'uploaded_to_database',
         status: 'success',
-        message: 'Mock document is staged for graph add.',
+        message: 'Mock document stored in database.',
+      },
+      {
+        stage: 'graph_add_started',
+        status: 'pending',
+        message: 'Mock graph construction task was queued.',
       },
     ],
     document_id: documentId,
     chunk_count: Math.max(1, Math.ceil(payload.content.length / 800)),
     candidate_count: 0,
     pending_review_count: 0,
+    current_task: createMockTask(jobId, 'construction', 'queued'),
     warning: 'Mock data is being used because the RAG backend is unavailable.',
   }
 
@@ -198,6 +314,10 @@ export function startMockGraphAdd(jobId: string): FileIngestStatusResponse {
   const pendingForJob = mockReviewCandidates.filter(
     (candidate) => candidate.job_id === job.job_id && candidate.status === 'pending_review',
   )
+  const constructionTask: GraphTaskSnapshot =
+    job.current_task?.kind === 'construction'
+      ? { ...job.current_task, status: 'succeeded', finished_at: new Date().toISOString() }
+      : createMockTask(job.job_id, 'construction', 'succeeded')
 
   const startedJob: FileIngestStatusResponse = {
     ...job,
@@ -218,6 +338,7 @@ export function startMockGraphAdd(jobId: string): FileIngestStatusResponse {
     ],
     candidate_count: Math.max(job.candidate_count ?? 0, pendingForJob.length),
     pending_review_count: pendingForJob.length,
+    current_task: constructionTask,
     warning: 'Mock data is being used because the RAG backend is unavailable.',
   }
 
@@ -254,7 +375,7 @@ export function getMockReviewCandidates(): ReviewCandidateResponse {
 export function submitMockReviewDecision(
   candidateId: string,
   payload: ReviewDecisionRequest,
-): IngestGraphResult {
+): FileIngestStatusResponse {
   const candidateIndex = mockReviewCandidates.findIndex((candidate) => candidate.id === candidateId)
   const actionStatus = {
     no: 'rejected',
@@ -265,12 +386,14 @@ export function submitMockReviewDecision(
   if (candidateIndex < 0) {
     return {
       job_id: 'mock-review',
-      phase: 'completed',
+      file_name: 'mock-review.txt',
+      current_stage: 'completed',
+      completed: true,
+      stages: [],
       chunk_count: 0,
       candidate_count: mockReviewCandidates.length,
       pending_review_count: countPendingCandidates(),
-      warnings: ['Mock candidate was already reviewed.'],
-      errors: [],
+      warning: 'Mock candidate was already reviewed.',
     }
   }
 
@@ -287,17 +410,41 @@ export function submitMockReviewDecision(
   mockReviewCandidates.splice(candidateIndex, 1, reviewedCandidate)
 
   const jobCandidates = mockReviewCandidates.filter((item) => item.job_id === candidate.job_id)
-
-  return {
+  const pendingReviewCount = jobCandidates.filter((item) => item.status === 'pending_review').length
+  const existingJob = mockJobs.find((job) => job.job_id === candidate.job_id)
+  const stage = pendingReviewCount > 0 ? 'pending_review' : 'completed'
+  const reviewedJob: FileIngestStatusResponse = {
     job_id: candidate.job_id,
-    phase: payload.action === 'retry' ? 'needs_retry' : 'completed',
-    document_id: getStringMetadata(candidate, 'document_id'),
-    chunk_count: 0,
+    file_name:
+      existingJob?.file_name ??
+      getStringMetadata(candidate, 'file_name') ??
+      `${candidate.job_id}.txt`,
+    current_stage: stage,
+    completed: stage === 'completed',
+    stages: [
+      ...(existingJob?.stages ?? []),
+      {
+        stage,
+        status: 'success',
+        message: 'Mock review decision task finished.',
+      },
+    ],
+    document_id: getStringMetadata(candidate, 'document_id') ?? existingJob?.document_id,
+    chunk_count: existingJob?.chunk_count ?? 0,
     candidate_count: jobCandidates.length,
-    pending_review_count: jobCandidates.filter((item) => item.status === 'pending_review').length,
-    warnings: ['Mock data is being used because the RAG backend is unavailable.'],
-    errors: [],
+    pending_review_count: pendingReviewCount,
+    current_task: createMockTask(candidate.job_id, 'review_action', 'succeeded', candidateId),
+    warning: 'Mock data is being used because the RAG backend is unavailable.',
   }
+
+  const existingJobIndex = mockJobs.findIndex((job) => job.job_id === candidate.job_id)
+  if (existingJobIndex >= 0) {
+    mockJobs.splice(existingJobIndex, 1, reviewedJob)
+  } else {
+    mockJobs.unshift(reviewedJob)
+  }
+
+  return reviewedJob
 }
 
 function ensureMockCandidatesForJob(job: FileIngestStatusResponse) {

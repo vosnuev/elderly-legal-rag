@@ -12,6 +12,17 @@ export interface IngestStageResult {
   error?: string | null
 }
 
+export interface GraphTaskSnapshot {
+  task_id: string
+  kind: 'construction' | 'review_action' | string
+  status: 'queued' | 'running' | 'succeeded' | 'failed' | string
+  idempotency_key: string
+  submitted_at: string
+  started_at?: string | null
+  finished_at?: string | null
+  error?: string | null
+}
+
 export interface FileIngestStatusResponse {
   job_id: string
   file_name: string
@@ -26,6 +37,7 @@ export interface FileIngestStatusResponse {
   chunk_count?: number
   candidate_count?: number
   pending_review_count?: number
+  current_task?: GraphTaskSnapshot | null
 }
 
 export interface RagDocument {
@@ -70,15 +82,4 @@ export interface ReviewDecisionRequest {
   action: ReviewAction
   note?: string | null
   reviewer?: string
-}
-
-export interface IngestGraphResult {
-  job_id: string
-  phase: string
-  document_id?: string | null
-  chunk_count: number
-  candidate_count: number
-  pending_review_count: number
-  warnings: string[]
-  errors: string[]
 }

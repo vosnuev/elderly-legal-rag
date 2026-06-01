@@ -7,22 +7,28 @@ import { navigationItems } from '@/routes/navigation'
 
 export function WorkspaceSidebar() {
   return (
-    <aside className="border-r bg-sidebar px-4 py-5 text-sidebar-foreground max-lg:border-b max-lg:border-r-0">
-      <div className="flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-          <BookOpenText className="size-5" aria-hidden="true" />
+    <aside className="flex flex-col rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 max-lg:w-full max-lg:p-4">
+      {/* Brand Logo Header */}
+      <div className="flex items-center gap-3.5">
+        <div className="flex size-11 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-chart-2 text-primary-foreground shadow-lg shadow-primary/20 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+          <BookOpenText className="size-5.5 relative z-10" aria-hidden="true" />
         </div>
         <div>
-          <p className="text-sm font-semibold leading-5">RAG Library</p>
-          <p className="text-xs text-muted-foreground">Memgraph GraphRAG</p>
+          <p className="text-base font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
+            RAG Library
+          </p>
+          <p className="text-xs text-primary/70 font-semibold tracking-wider uppercase">
+            GraphRAG Core
+          </p>
         </div>
       </div>
 
-      <ScrollArea className="mt-8 max-lg:mt-5">
-        <nav className="flex flex-col gap-1 max-lg:flex-row max-lg:overflow-x-auto">
+      <ScrollArea className="mt-8 flex-1 max-lg:mt-4">
+        <nav className="flex flex-col gap-1.5 max-lg:flex-row max-lg:overflow-x-auto">
           {navigationItems.map(({ externalUrl, label, path, icon: Icon }) => {
             const itemClassName =
-              'flex h-10 shrink-0 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+              'flex h-11 shrink-0 items-center gap-3.5 rounded-xl px-4 text-sm font-semibold transition-all duration-300 relative group overflow-hidden'
 
             if (externalUrl) {
               return (
@@ -31,9 +37,12 @@ export function WorkspaceSidebar() {
                   href={externalUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className={itemClassName}
+                  className={cn(
+                    itemClassName,
+                    'text-muted-foreground hover:text-foreground hover:bg-primary/5 hover:translate-x-1 max-lg:hover:translate-x-0'
+                  )}
                 >
-                  <Icon className="size-4" aria-hidden="true" />
+                  <Icon className="size-4.5 text-muted-foreground/80 group-hover:text-primary transition-colors" aria-hidden="true" />
                   <span>{label}</span>
                 </a>
               )
@@ -45,10 +54,15 @@ export function WorkspaceSidebar() {
                 to={path ?? '/'}
                 end
                 className={({ isActive }) =>
-                  cn(itemClassName, isActive && 'bg-sidebar-accent text-sidebar-accent-foreground')
+                  cn(
+                    itemClassName,
+                    isActive
+                      ? 'bg-gradient-to-r from-primary/15 to-chart-2/5 text-primary border-l-3 border-primary shadow-[0_4px_12px_oklch(var(--color-primary)/8%)]'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-primary/5 hover:translate-x-1 max-lg:hover:translate-x-0'
+                  )
                 }
               >
-                <Icon className="size-4" aria-hidden="true" />
+                <Icon className="size-4.5 transition-colors duration-300" aria-hidden="true" />
                 <span>{label}</span>
               </NavLink>
             )

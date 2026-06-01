@@ -11,6 +11,13 @@ export type ReviewCandidateGroup = {
   documentLabel: string
 }
 
+export type ReviewCandidateJobGroup = {
+  candidates: RelationshipCandidate[]
+  documentLabel: string
+  fileName: string | null
+  jobId: string
+}
+
 export function normalizeReviewCandidates(
   response: ReviewCandidateResponse | null,
 ): RelationshipCandidate[] {
@@ -37,6 +44,30 @@ export function groupReviewCandidatesByDocument(
         candidates: [candidate],
         documentKey,
         documentLabel,
+      })
+    }
+  }
+
+  return Array.from(groups.values())
+}
+
+export function groupReviewCandidatesByJob(
+  candidates: RelationshipCandidate[],
+): ReviewCandidateJobGroup[] {
+  const groups = new Map<string, ReviewCandidateJobGroup>()
+
+  for (const candidate of candidates) {
+    const jobId = candidate.job_id
+    const group = groups.get(jobId)
+
+    if (group) {
+      group.candidates.push(candidate)
+    } else {
+      groups.set(jobId, {
+        candidates: [candidate],
+        documentLabel: getCandidateDocumentLabel(candidate),
+        fileName: getMetadataString(candidate, ['file_name']),
+        jobId,
       })
     }
   }

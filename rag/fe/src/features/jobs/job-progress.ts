@@ -28,6 +28,9 @@ export function getJobProgress(job: FileIngestStatusResponse) {
   const currentStage = normalizeStage(job.current_stage)
   const stageText = getJobStageText(job)
 
+  if (job.current_task?.status === 'queued') {
+    return { percent: 24, label: 'Queued' }
+  }
   if (job.completed || currentStage.includes('complete')) {
     return { percent: 100, label: 'Complete' }
   }
@@ -65,6 +68,15 @@ export function getJobRuntimeStatus(job: FileIngestStatusResponse): JobRuntimeSt
   const currentStage = normalizeStage(job.current_stage)
   const stageText = getJobStageText(job)
 
+  if (job.current_task?.status === 'queued') {
+    return 'queued'
+  }
+  if (job.current_task?.status === 'running') {
+    return 'running'
+  }
+  if (job.current_task?.status === 'failed') {
+    return 'needs_retry'
+  }
   if (job.completed || stageText.includes('complete')) {
     return 'complete'
   }

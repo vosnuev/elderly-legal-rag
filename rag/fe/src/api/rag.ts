@@ -1,7 +1,6 @@
 import type {
   CreateDocumentIngestJobRequest,
   FileIngestStatusResponse,
-  IngestGraphResult,
   RagDocument,
   ReviewDecisionRequest,
   ReviewCandidateResponse,
@@ -55,8 +54,8 @@ export async function listReviewCandidates(): Promise<ReviewCandidateResponse> {
 export async function submitReviewDecision(
   candidateId: string,
   payload: ReviewDecisionRequest,
-): Promise<IngestGraphResult> {
-  return retrieve<IngestGraphResult>({
+): Promise<FileIngestStatusResponse> {
+  return retrieve<FileIngestStatusResponse>({
     path: `/api/review/edge-candidates/${encodeURIComponent(candidateId)}/decision`,
     init: {
       method: 'POST',
