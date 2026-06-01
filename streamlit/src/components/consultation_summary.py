@@ -23,7 +23,11 @@ def render_consultation_summary(form_data: dict[str, object]) -> None:
             """,
             ).strip(),
         )
-        if st.button("상담 정보 다시 입력", width="stretch"):
+        if st.button(
+            "상담 정보 다시 입력",
+            key="reset_consultation_button",
+            width="stretch",
+        ):
             clear_consultation_session()
             st.rerun()
 
