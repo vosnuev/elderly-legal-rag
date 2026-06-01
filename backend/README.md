@@ -234,14 +234,42 @@ cp .env.example .env
 | `BACKEND_OPENROUTER_ALLOW_FALLBACKS` | `true` | primary provider 실패 시 OpenRouter fallback 허용 여부 |
 | `BACKEND_API_HOST` | `127.0.0.1` | backend bind host |
 | `BACKEND_API_PORT` | `8000` | backend 서버 포트 |
-| `BACKEND_CORS_ORIGINS` | `["http://localhost:8501","http://127.0.0.1:8501","http://localhost:5173","http://localhost:3000"]` | 허용할 frontend origin |
+| `BACKEND_CORS_ORIGINS` | `["http://localhost:8501","http://127.0.0.1:8501","http://localhost:5173","http://127.0.0.1:5173","http://localhost:3000","http://127.0.0.1:3000"]` | 허용할 frontend origin |
+| `BACKEND_HOST_BIND` | `127.0.0.1` | Docker compose가 host에 공개할 bind 주소 |
+| `BACKEND_HOST_PORT` | `8001` | Docker compose가 host에 공개할 포트 |
 | `BACKEND_LLM_TEMPERATURE` | `0.2` | LLM temperature |
 | `BACKEND_LLM_TIMEOUT_MS` | `60000` | LLM timeout |
 | `BACKEND_LLM_MAX_RETRIES` | `2` | LLM 재시도 횟수 |
 | `BACKEND_RAG_MCP_URL` | `http://127.0.0.1:8010/mcp` | RAG MCP Tool Server URL |
 | `BACKEND_TOOL_TIMEOUT_MS` | `30000` | tool 실행 timeout |
 
-`.env.example`에는 로컬에서 자주 바꿔야 하는 값만 남겼다. 서비스 이름/버전, OpenRouter base URL/app title은 코드 기본값을 사용한다.
+현재 저장소에는 실제 `backend/.env`가 없다. `/health`는 키 없이도 동작하지만 `/chat`은 실제 LLM 호출이므로 `OPENROUTER_API_KEY`가 필요하다.
+
+## 🐳 Docker 실행
+
+다른 계정이나 다른 클라이언트에서 같은 backend에 붙어 개발할 때는 Docker compose로 backend를 띄운다.
+
+```bash
+cd backend
+cp .env.example .env
+# .env의 OPENROUTER_API_KEY를 실제 값으로 채운다.
+docker compose up -d --build
+```
+
+기본값은 host의 `127.0.0.1:8001`을 컨테이너 내부 `8000`에 연결한다. 현재 개발 서버가 `8000`을 쓰고 있지 않다면 `.env`에서 `BACKEND_HOST_PORT=8000`으로 바꿔도 된다. 같은 서버 계정이나 VS Code/SSH port forwarding으로 붙는 개발자는 `127.0.0.1:8001`을 쓰면 된다. 서버 네트워크 인터페이스에 직접 공개해야 한다면 `.env`에서 `BACKEND_HOST_BIND=0.0.0.0`으로 바꾼다.
+
+상태 확인:
+
+```bash
+curl -s http://127.0.0.1:8001/health
+docker compose logs -f backend
+```
+
+종료:
+
+```bash
+docker compose down
+```
 
 ## ✅ 검증 방법
 

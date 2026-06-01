@@ -308,6 +308,16 @@ uv sync
 uv run fastapi dev src/app.py
 ```
 
+Docker로 공유 backend를 띄울 때는 다음 명령을 사용합니다.
+
+```bash
+cd backend
+cp .env.example .env
+# .env의 OPENROUTER_API_KEY를 실제 값으로 채운다.
+docker compose up -d --build
+curl -s http://127.0.0.1:8001/health
+```
+
 ### Streamlit
 
 ```bash
