@@ -28,6 +28,7 @@ import { PageHeader } from '@/components/workspace/page-header'
 import { ReviewCandidateCard } from '@/features/review/review-candidate-card'
 import { groupReviewCandidatesByJob } from '@/features/review/review-candidates'
 import { useRagWorkspace } from '@/features/workspace/use-rag-workspace'
+import { cn } from '@/lib/utils'
 
 export function ReviewJobPage() {
   const { jobId = '' } = useParams()
@@ -133,20 +134,28 @@ export function ReviewJobPage() {
     return null
   }
 
-  const [openCandidate, setOpenCandidate] = useState<string | undefined>()
-  const firstCandidateValue = selectedCandidates[0]
-    ? getAccordionValue(selectedCandidates[0].id)
-    : ''
-  const currentCandidateExists = openCandidate
-    ? selectedCandidates.some((candidate) => getAccordionValue(candidate.id) === openCandidate)
-    : false
-  const accordionValue = openCandidate === undefined
+  const [openCandidates, setOpenCandidates] = useState<string[] | undefined>()
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
+  const totalPages = Math.ceil(selectedCandidates.length / itemsPerPage)
+
+  // Reset to page 1 and close accordion if parent collection length changes
+  useMemo(() => {
+    setCurrentPage(1)
+    setOpenCandidates(undefined)
+  }, [selectedCandidates.length])
+
+  const paginatedCandidates = useMemo(() => {
+    return selectedCandidates.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  }, [selectedCandidates, currentPage])
+
+  const firstCandidateValue = paginatedCandidates[0]
+    ? [getAccordionValue(paginatedCandidates[0].id)]
+    : []
+
+  const accordionValue = openCandidates === undefined
     ? firstCandidateValue
-    : openCandidate === ''
-      ? ''
-      : currentCandidateExists
-        ? openCandidate
-        : firstCandidateValue
+    : openCandidates
 
   if (!selectedJob) {
     return (
@@ -315,13 +324,12 @@ export function ReviewJobPage() {
         </div>
 
         <Accordion
-          type="single"
-          collapsible
+          type="multiple"
           value={accordionValue}
-          onValueChange={setOpenCandidate}
+          onValueChange={setOpenCandidates}
           className="review-job-candidate-list grid gap-2.5"
         >
-          {selectedCandidates.map((candidate) => {
+          {paginatedCandidates.map((candidate) => {
             const sourceLabel =
               getMetadataString(candidate, ['document_title', 'source_document_title', 'file_name']) ??
               candidate.job_id
@@ -358,7 +366,7 @@ export function ReviewJobPage() {
                 checked={Boolean(checkedIds[candidate.id])}
                 onCheckedChange={(checked) => handleCheckedChange(candidate.id, checked)}
                 onDecision={handleSingleDecision}
-                onRequestCollapse={() => setOpenCandidate('')}
+                onRequestCollapse={() => setOpenCandidates(prev => (prev || []).filter(v => v !== getAccordionValue(candidate.id)))}
                 sourceDocument={sourceDoc}
                 targetDocument={targetDoc}
                 confidenceScore={confidenceScore}
@@ -366,6 +374,72 @@ export function ReviewJobPage() {
             )
           })}
         </Accordion>
+
+        {/* Premium Neon Pagination Panel */}
+        {totalPages > 1 && (
+          <div className="flex flex-wrap items-center justify-between gap-4 border border-primary/10 bg-card/45 backdrop-blur-md p-4 rounded-xl shadow-sm mt-3.5 select-none animate-scale-up">
+            <span className="text-[10px] text-muted-foreground/80 font-bold">
+              Showing <span className="text-primary font-extrabold">{((currentPage - 1) * itemsPerPage) + 1}</span> to{' '}
+              <span className="text-primary font-extrabold">{Math.min(currentPage * itemsPerPage, selectedCandidates.length)}</span> of{' '}
+              <span className="text-primary font-extrabold">{selectedCandidates.length}</span> pending candidates
+            </span>
+            <div className="flex items-center gap-1.5">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  setOpenCandidates(undefined)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                disabled={currentPage === 1}
+                className="h-8.5 rounded-lg text-xs font-bold border-primary/10 hover:border-primary/30"
+              >
+                Previous
+              </Button>
+              {Array.from({ length: totalPages }).map((_, index) => {
+                const pageNum = index + 1
+                const isActive = pageNum === currentPage
+                return (
+                  <Button
+                    key={pageNum}
+                    type="button"
+                    variant={isActive ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setCurrentPage(pageNum)
+                      setOpenCandidates(undefined)
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
+                    className={cn(
+                      "size-8.5 rounded-lg text-xs font-bold",
+                      isActive 
+                        ? "bg-primary text-primary-foreground font-black shadow-md shadow-primary/10" 
+                        : "border-primary/10 hover:border-primary/30 text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {pageNum}
+                  </Button>
+                )
+              })}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  setOpenCandidates(undefined)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                disabled={currentPage === totalPages}
+                className="h-8.5 rounded-lg text-xs font-bold border-primary/10 hover:border-primary/30"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   )
