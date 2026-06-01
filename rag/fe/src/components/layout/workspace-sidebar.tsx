@@ -7,7 +7,7 @@ import { navigationItems } from '@/routes/navigation'
 
 export function WorkspaceSidebar() {
   return (
-    <aside className="flex flex-col rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 max-lg:w-full max-lg:p-4">
+    <aside className="flex flex-col rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] max-lg:w-full max-lg:p-4">
       {/* Brand Logo Header */}
       <div className="flex items-center gap-3.5">
         <div className="flex size-11 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-chart-2 text-primary-foreground shadow-lg shadow-primary/20 relative overflow-hidden group">
