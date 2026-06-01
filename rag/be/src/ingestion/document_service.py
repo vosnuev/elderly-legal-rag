@@ -6,12 +6,12 @@ from itertools import count
 from pathlib import Path
 from uuid import uuid4
 
-from pipeline.schemas import RegisteredDocument
+from ingestion.schemas import SUPPORTED_INPUT_SUFFIXES
 from logger import bind_logger
-from query.read import get_document_record
+from query.read.inspection import get_document_record
+from query.schema import DocumentNode
 from query.write import register_document
 
-SUPPORTED_INPUT_SUFFIXES = {".csv", ".json", ".py", ".txt", ".md"}
 _ENTRY_COUNTER = count(1)
 
 
@@ -27,13 +27,13 @@ class DocumentIngestService:
         raw_content: str,
         source_path: str | None = None,
         content_type: str | None = None,
-    ) -> RegisteredDocument:
+    ) -> DocumentNode:
         suffix = _suffix_from_file_name(file_name)
         if suffix not in SUPPORTED_INPUT_SUFFIXES:
             raise ValueError(f"Unsupported input suffix: {suffix}")
 
         normalized = _normalize_for_hash(raw_content)
-        document = RegisteredDocument(
+        document = DocumentNode(
             id=str(uuid4()),
             entry_number=next(_ENTRY_COUNTER),
             document_version=1,
@@ -55,9 +55,9 @@ class DocumentIngestService:
         ).info("document registered")
         return document
 
-    def get_registered_document(self, document_id: str) -> RegisteredDocument:
+    def get_registered_document(self, document_id: str) -> DocumentNode:
         record = get_document_record(document_id)
-        return RegisteredDocument.model_validate(record)
+        return DocumentNode.model_validate(record)
 
 
 def _normalize_for_hash(raw_content: str) -> str:

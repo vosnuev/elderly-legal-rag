@@ -4,13 +4,8 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from query.read import (
-    graph_traverse,
-    read_query,
-    schema_read,
-    text_search,
-    vector_search,
-)
+from query.read.core import read_query, schema_read
+from query.read.discovery import graph_traverse, text_search, vector_search
 
 MCP_INSTRUCTIONS = "External Memgraph tools are read-only."
 
@@ -34,7 +29,7 @@ def create_external_mcp() -> FastMCP:
 def _register_read_tools(mcp: FastMCP) -> None:
     @mcp.tool(
         name="memgraph.read_query",
-        description="Execute a validated read-only Cypher query against Memgraph.",
+        description="Execute a bounded read Cypher query against Memgraph.",
     )
     def memgraph_read_query(
         query: str,

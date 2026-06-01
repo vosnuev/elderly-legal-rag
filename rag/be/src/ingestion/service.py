@@ -3,49 +3,55 @@ from __future__ import annotations
 from pathlib import Path
 from uuid import uuid4
 
-from pipeline.schemas import IngestGraphResult, ReviewDecisionRequest
-from ingest_tasks.document_service import DocumentIngestService, SUPPORTED_INPUT_SUFFIXES
-from ingest_tasks.job_store import (
+from ingestion.dispatcher import IngestionDispatcher
+from ingestion.document_service import DocumentIngestService
+from ingestion.job_store import (
     IngestJobStore,
     apply_graph_ingest_result,
     create_missing_job_response,
     failed_ingest_response,
 )
-from ingest_tasks.queue import IngestTaskQueue
-from ingest_tasks.schemas import (
+from ingestion.schemas import (
+    SUPPORTED_INPUT_SUFFIXES,
     CreateDocumentIngestJobRequest,
     FileIngestStatusResponse,
     IngestStage,
     IngestStageResult,
     RagDocument,
     RagIngestRequest,
+    ReviewDecisionRequest,
     SearchRequest,
     SearchResponse,
     SearchResult,
     StageStatus,
 )
+from pipeline.schemas import IngestGraphResult
 from logger import bind_logger
-from query.read import list_documents, read_query, search_documents
+from query.read.runtime import (
+    list_documents,
+    list_pending_review_candidates,
+    search_documents,
+)
 from settings import settings
 
 
-class IngestTaskService:
+class IngestionService:
     def __init__(
         self,
         store: IngestJobStore | None = None,
         document_service: DocumentIngestService | None = None,
-        task_queue: IngestTaskQueue | None = None,
+        dispatcher: IngestionDispatcher | None = None,
     ) -> None:
         self._store = store or IngestJobStore()
         self._document_service = document_service or DocumentIngestService()
-        self._task_queue = task_queue or IngestTaskQueue()
-        self._logger = bind_logger(component="ingest_task_service")
+        self._dispatcher = dispatcher or IngestionDispatcher()
+        self._logger = bind_logger(component="ingestion_service")
 
     def dependency_summary(self) -> dict[str, object]:
         return {
             "runtime": "Memgraph Agentic GraphRAG Backend",
             "settings": "pydantic-settings",
-            "task_layer": "ingest_tasks",
+            "ingestion": "ingestion",
             "memgraph_uri": settings.memgraph_uri,
             "external_mcp_endpoint": (
                 f"http://{settings.mcp_host}:{settings.mcp_port}{settings.external_mcp_path}"
@@ -138,7 +144,7 @@ class IngestTaskService:
                 )
             )
 
-        result = self._task_queue.start(job)
+        result = self._dispatcher.start(job)
         return apply_graph_ingest_result(job, result, self._store)
 
     def list_documents(self) -> list[RagDocument]:
@@ -156,15 +162,7 @@ class IngestTaskService:
         )
 
     def list_pending_edge_candidates(self, limit: int = 50) -> dict[str, object]:
-        return read_query(
-            """
-            MATCH (candidate:RelationshipCandidate)
-            WHERE coalesce(candidate.status, "pending_review") = "pending_review"
-            RETURN candidate
-            LIMIT $limit
-            """,
-            {"limit": limit},
-        )
+        return list_pending_review_candidates(limit=limit)
 
     def decide_edge_candidate(
         self,
@@ -172,7 +170,7 @@ class IngestTaskService:
         candidate_id: str,
         request: ReviewDecisionRequest,
     ) -> IngestGraphResult:
-        return self._task_queue.apply_review_decision(
+        return self._dispatcher.apply_review_decision(
             candidate_id=candidate_id,
             action=request.action,
             reviewer=request.reviewer,
@@ -234,7 +232,7 @@ class IngestTaskService:
         return self._store.save(response)
 
 
-ingest_task_service = IngestTaskService()
+ingestion_service = IngestionService()
 
 
 def _document_from_record(record: dict[str, object]) -> RagDocument:

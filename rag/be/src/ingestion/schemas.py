@@ -4,6 +4,10 @@ from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
+from pipeline.schemas import ReviewAction
+
+SUPPORTED_INPUT_SUFFIXES = {".csv", ".json", ".py", ".txt", ".md"}
+
 
 class SearchRequest(BaseModel):
     query: str = Field(min_length=1)
@@ -89,3 +93,9 @@ class RagDocument(BaseModel):
     file_type: str
     location: str | None = None
     url: str | None = None
+
+
+class ReviewDecisionRequest(BaseModel):
+    action: ReviewAction
+    note: str | None = None
+    reviewer: str = "system"

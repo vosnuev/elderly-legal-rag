@@ -1,16 +1,16 @@
 from __future__ import annotations
 
+from ingestion.schemas import FileIngestStatusResponse
 from pipeline.invocation import GraphIngestInvocation
 from pipeline.schemas import IngestGraphResult, ReviewAction
-from ingest_tasks.schemas import FileIngestStatusResponse
 from logger import bind_logger
 
 
-class IngestTaskQueue:
-    """In-process task queue boundary for graph ingest jobs.
+class IngestionDispatcher:
+    """Synchronous dispatch boundary for graph ingest jobs.
 
     This keeps API/job orchestration separate from the LangGraph runtime. It is
-    synchronous for MVP, but the caller only passes job/document identifiers.
+    synchronous for MVP, but callers only pass job/document identifiers.
     """
 
     def __init__(
@@ -18,7 +18,7 @@ class IngestTaskQueue:
         graph_invocation: GraphIngestInvocation | None = None,
     ) -> None:
         self._graph_invocation = graph_invocation or GraphIngestInvocation()
-        self._logger = bind_logger(component="ingest_task_queue")
+        self._logger = bind_logger(component="ingestion_dispatcher")
 
     def start(self, job: FileIngestStatusResponse) -> IngestGraphResult:
         if not job.document_id:
@@ -27,7 +27,7 @@ class IngestTaskQueue:
         self._logger.bind(
             job_id=job.job_id,
             document_id=job.document_id,
-        ).info("ingest task started")
+        ).info("graph ingest dispatch started")
         result = self._graph_invocation.start_construction(
             job_id=job.job_id,
             document_id=job.document_id,
@@ -36,7 +36,7 @@ class IngestTaskQueue:
             job_id=job.job_id,
             document_id=job.document_id,
             phase=result.phase.value,
-        ).info("ingest task finished")
+        ).info("graph ingest dispatch finished")
         return result
 
     def apply_review_decision(
@@ -51,7 +51,7 @@ class IngestTaskQueue:
             candidate_id=candidate_id,
             action=action.value,
             reviewer=reviewer,
-        ).info("review task started")
+        ).info("review decision dispatch started")
         result = self._graph_invocation.apply_review_decision(
             candidate_id=candidate_id,
             action=action,
@@ -62,5 +62,5 @@ class IngestTaskQueue:
             candidate_id=candidate_id,
             action=action.value,
             phase=result.phase.value,
-        ).info("review task finished")
+        ).info("review decision dispatch finished")
         return result

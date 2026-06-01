@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from pipeline.schemas import GraphIngestPhase, IngestGraphResult
-from ingest_tasks.schemas import (
+from ingestion.schemas import (
     FileIngestStatusResponse,
     IngestStage,
     IngestStageResult,
     StageStatus,
 )
+from pipeline.schemas import GraphIngestPhase, IngestGraphResult
 
 
 class IngestJobStore:
