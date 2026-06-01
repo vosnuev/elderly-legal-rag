@@ -21,6 +21,10 @@ import { AddDocumentDialog } from '@/features/documents/add-document-dialog'
 import { DocumentCard } from '@/features/documents/document-card'
 import { DocumentSearch } from '@/features/documents/document-search'
 import { useRagWorkspace } from '@/features/workspace/use-rag-workspace'
+import type {
+  FileIngestStatusResponse,
+  RagDocument,
+} from '@/types'
 
 export function DocumentsPage() {
   const {
@@ -80,9 +84,9 @@ export function DocumentsPage() {
 
       <DocumentSearch value={query} onChange={setQuery} />
 
-      <div className="grid gap-3">
+      <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
         {filteredDocuments.length === 0 ? (
-          <Card>
+          <Card className="md:col-span-2 2xl:col-span-3">
             <CardContent className="flex min-h-64 items-center justify-center">
               <div className="text-center">
                 <Upload className="mx-auto size-7 text-muted-foreground" aria-hidden="true" />
@@ -95,6 +99,7 @@ export function DocumentsPage() {
             <DocumentCard
               key={`${document.file_name}-${document.location ?? 'root'}`}
               document={document}
+              job={findDocumentJob(document, jobs)}
             />
           ))
         )}
@@ -109,5 +114,16 @@ export function DocumentsPage() {
         }}
       />
     </div>
+  )
+}
+
+function findDocumentJob(
+  document: RagDocument,
+  jobs: FileIngestStatusResponse[],
+) {
+  return jobs.find((job) =>
+    (document.job_id && job.job_id === document.job_id) ||
+    (document.document_id && job.document_id === document.document_id) ||
+    job.file_name === document.file_name,
   )
 }

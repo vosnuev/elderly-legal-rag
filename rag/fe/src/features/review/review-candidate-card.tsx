@@ -13,7 +13,6 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 import {
-  Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
@@ -40,6 +39,7 @@ const markdownPlugins = [remarkGfm]
 type ReviewDecisionAction = Extract<ReviewAction, 'yes' | 'no'>
 
 type ReviewCandidateCardProps = {
+  accordionValue: string
   candidate: RelationshipCandidate
   disabled?: boolean
   onDecision: (
@@ -47,6 +47,7 @@ type ReviewCandidateCardProps = {
     action: ReviewDecisionAction,
     note: string,
   ) => Promise<void>
+  onRequestCollapse?: () => void
 }
 
 type ChunkNodePanelProps = {
@@ -57,15 +58,15 @@ type ChunkNodePanelProps = {
 }
 
 export function ReviewCandidateCard({
+  accordionValue,
   candidate,
   disabled = false,
   onDecision,
+  onRequestCollapse,
 }: ReviewCandidateCardProps) {
   const noteId = useId()
-  const accordionValue = `candidate-${candidate.id}`
   const [note, setNote] = useState('')
   const [checked, setChecked] = useState(false)
-  const [openCandidate, setOpenCandidate] = useState(accordionValue)
   const [submittingAction, setSubmittingAction] = useState<ReviewDecisionAction | null>(null)
   const isSubmitting = submittingAction !== null
   const sourceChunk = getSourceChunk(candidate)
@@ -74,7 +75,9 @@ export function ReviewCandidateCard({
   const handleCheckedChange = (value: boolean | 'indeterminate') => {
     const nextChecked = value === true
     setChecked(nextChecked)
-    setOpenCandidate(nextChecked ? '' : accordionValue)
+    if (nextChecked) {
+      onRequestCollapse?.()
+    }
   }
 
   const handleDecision = async (action: ReviewDecisionAction) => {
@@ -87,144 +90,140 @@ export function ReviewCandidateCard({
   }
 
   return (
-    <Card>
-      <Accordion
-        type="single"
-        collapsible
-        value={openCandidate}
-        onValueChange={setOpenCandidate}
-      >
-        <AccordionItem value={accordionValue} className="review-candidate-accordion-item">
-          <CardHeader>
-            <AccordionTrigger className="review-candidate-trigger border-0 py-0 hover:no-underline">
-              <span className="review-candidate-trigger-body">
-                <span className="review-candidate-title">
-                  <span>{candidate.source_node}</span>
-                  <Badge variant="outline">{candidate.relationship_type}</Badge>
-                  <span>{candidate.target_node}</span>
-                </span>
-                <span className="review-candidate-meta">
-                  {candidate.id} - job {candidate.job_id} - version {candidate.version}
-                </span>
+    <AccordionItem
+      value={accordionValue}
+      className="review-candidate-accordion-item not-last:border-b-0"
+    >
+      <Card className="review-candidate-card">
+        <CardHeader>
+          <AccordionTrigger className="review-candidate-trigger border-0 py-0 hover:no-underline">
+            <span className="review-candidate-trigger-body">
+              <span className="review-candidate-title">
+                <span>{candidate.source_node}</span>
+                <Badge variant="outline">{candidate.relationship_type}</Badge>
+                <span>{candidate.target_node}</span>
               </span>
-            </AccordionTrigger>
-            <CardAction className="review-header-actions col-start-1 row-start-2 row-span-1 justify-self-start lg:col-start-2 lg:row-start-1 lg:justify-self-end">
-              <Badge variant="secondary">{candidate.status}</Badge>
-              <label className="review-check-control">
-                <Checkbox
-                  checked={checked}
-                  onCheckedChange={handleCheckedChange}
-                  disabled={disabled || isSubmitting}
-                  aria-label="Mark this candidate as checked"
+              <span className="review-candidate-meta">
+                {candidate.id} - job {candidate.job_id} - version {candidate.version}
+              </span>
+            </span>
+          </AccordionTrigger>
+          <CardAction className="review-header-actions col-start-1 row-start-2 row-span-1 justify-self-start lg:col-start-2 lg:row-start-1 lg:justify-self-end">
+            <Badge variant="secondary">{candidate.status}</Badge>
+            <label className="review-check-control">
+              <Checkbox
+                checked={checked}
+                onCheckedChange={handleCheckedChange}
+                disabled={disabled || isSubmitting}
+                aria-label="Mark this candidate as checked"
+              />
+              <span>Checked</span>
+            </label>
+            <Button
+              type="button"
+              size="sm"
+              className="review-approve-update-button"
+              onClick={() => void handleDecision('yes')}
+              disabled={disabled || isSubmitting || !checked}
+            >
+              <CheckIcon data-icon="inline-start" />
+              {submittingAction === 'yes' ? 'Updating' : 'Approve update'}
+            </Button>
+          </CardAction>
+        </CardHeader>
+
+        <AccordionContent className="review-candidate-content">
+          <CardContent className="review-card-content">
+            <div className="review-graph">
+              <div className="review-edge-stage">
+                <ChunkNodePanel
+                  kind="source"
+                  nodeId={sourceChunk.id}
+                  documentLabel={sourceChunk.documentLabel}
+                  text={sourceChunk.text}
                 />
-                <span>Checked</span>
-              </label>
-              <Button
-                type="button"
-                size="sm"
-                className="review-approve-update-button"
-                onClick={() => void handleDecision('yes')}
-                disabled={disabled || isSubmitting || !checked}
-              >
-                <CheckIcon data-icon="inline-start" />
-                {submittingAction === 'yes' ? 'Updating' : 'Approve update'}
-              </Button>
-            </CardAction>
-          </CardHeader>
 
-          <AccordionContent className="review-candidate-content">
-            <CardContent className="review-card-content">
-              <div className="review-graph">
-                <div className="review-edge-stage">
-                  <ChunkNodePanel
-                    kind="source"
-                    nodeId={sourceChunk.id}
-                    documentLabel={sourceChunk.documentLabel}
-                    text={sourceChunk.text}
-                  />
+                <CandidateEdgeBridge candidate={candidate} />
 
-                  <CandidateEdgeBridge candidate={candidate} />
+                <ChunkNodePanel
+                  kind="target"
+                  nodeId={targetChunk.id}
+                  documentLabel={targetChunk.documentLabel}
+                  text={targetChunk.text}
+                />
 
-                  <ChunkNodePanel
-                    kind="target"
-                    nodeId={targetChunk.id}
-                    documentLabel={targetChunk.documentLabel}
-                    text={targetChunk.text}
-                  />
-
-                  <div className="review-edge-details">
-                    <div className="review-evidence-block">
-                      <div className="review-block-title">
-                        <FileText aria-hidden="true" />
-                        <p>RAG Builder Evidence</p>
-                      </div>
-                      <p className="text-sm leading-6">
-                        {candidate.evidence_text || 'No evidence text provided.'}
-                      </p>
+                <div className="review-edge-details">
+                  <div className="review-evidence-block">
+                    <div className="review-block-title">
+                      <FileText aria-hidden="true" />
+                      <p>RAG Builder Evidence</p>
                     </div>
+                    <p className="text-sm leading-6">
+                      {candidate.evidence_text || 'No evidence text provided.'}
+                    </p>
+                  </div>
 
-                    <div className="review-evidence-block">
-                      <div className="review-block-title">
-                        <GitBranch aria-hidden="true" />
-                        <p>LLM Rationale</p>
-                      </div>
-                      <p className="text-sm leading-6">{candidate.rationale || 'No rationale provided.'}</p>
+                  <div className="review-evidence-block">
+                    <div className="review-block-title">
+                      <GitBranch aria-hidden="true" />
+                      <p>LLM Rationale</p>
                     </div>
+                    <p className="text-sm leading-6">{candidate.rationale || 'No rationale provided.'}</p>
+                  </div>
+                </div>
+              </div>
+
+              <aside className="review-note-panel">
+                <div className="review-note-header">
+                  <div className="review-note-avatar" aria-hidden="true">
+                    R
+                  </div>
+                  <div>
+                    <label htmlFor={noteId} className="text-sm font-medium">
+                      Reviewer note
+                    </label>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      Decision comment
+                    </p>
                   </div>
                 </div>
 
-                <aside className="review-note-panel">
-                  <div className="review-note-header">
-                    <div className="review-note-avatar" aria-hidden="true">
-                      R
-                    </div>
-                    <div>
-                      <label htmlFor={noteId} className="text-sm font-medium">
-                        Reviewer note
-                      </label>
-                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                        Decision comment
-                      </p>
-                    </div>
-                  </div>
+                <Textarea
+                  id={noteId}
+                  value={note}
+                  onChange={(event) => setNote(event.target.value)}
+                  placeholder="승인 또는 반려 근거를 남기세요."
+                  className="review-note-textarea"
+                  disabled={disabled || isSubmitting}
+                />
 
-                  <Textarea
-                    id={noteId}
-                    value={note}
-                    onChange={(event) => setNote(event.target.value)}
-                    placeholder="승인 또는 반려 근거를 남기세요."
-                    className="review-note-textarea"
+                <div className="review-decision-actions">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="review-decision-button review-decision-button--deny"
+                    onClick={() => void handleDecision('no')}
                     disabled={disabled || isSubmitting}
-                  />
-
-                  <div className="review-decision-actions">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="review-decision-button review-decision-button--deny"
-                      onClick={() => void handleDecision('no')}
-                      disabled={disabled || isSubmitting}
-                    >
-                      <XIcon data-icon="inline-start" />
-                      {submittingAction === 'no' ? 'Denying' : 'Deny'}
-                    </Button>
-                    <Button
-                      type="button"
-                      className="review-decision-button review-decision-button--approve"
-                      onClick={() => void handleDecision('yes')}
-                      disabled={disabled || isSubmitting}
-                    >
-                      <CheckIcon data-icon="inline-start" />
-                      {submittingAction === 'yes' ? 'Approving' : 'Approve'}
-                    </Button>
-                  </div>
-                </aside>
-              </div>
-            </CardContent>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </Card>
+                  >
+                    <XIcon data-icon="inline-start" />
+                    {submittingAction === 'no' ? 'Denying' : 'Deny'}
+                  </Button>
+                  <Button
+                    type="button"
+                    className="review-decision-button review-decision-button--approve"
+                    onClick={() => void handleDecision('yes')}
+                    disabled={disabled || isSubmitting}
+                  >
+                    <CheckIcon data-icon="inline-start" />
+                    {submittingAction === 'yes' ? 'Approving' : 'Approve'}
+                  </Button>
+                </div>
+              </aside>
+            </div>
+          </CardContent>
+        </AccordionContent>
+      </Card>
+    </AccordionItem>
   )
 }
 

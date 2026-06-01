@@ -9,6 +9,7 @@ import type {
 } from '@/types'
 
 const nowSuffix = () => new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)
+const mockBaseDate = '2026-05-31T08:30:00.000Z'
 
 const mockDocuments: RagDocument[] = [
   {
@@ -17,6 +18,11 @@ const mockDocuments: RagDocument[] = [
     source_title: '장애인 고용 지원 제도 안내',
     file_name: 'mock-disability-employment.md',
     file_type: 'md',
+    created_at: '2026-05-31T08:30:00.000Z',
+    indexed_at: '2026-05-31T08:36:00.000Z',
+    updated_at: '2026-05-31T08:40:00.000Z',
+    document_id: 'mock-document-001',
+    job_id: 'mock-job-001',
     location: 'mock://documents/disability-employment',
     url: 'https://example.local/mock/disability-employment',
   },
@@ -26,6 +32,11 @@ const mockDocuments: RagDocument[] = [
     source_title: '근로기준법 주요 조항 요약',
     file_name: 'mock-labor-standards.json',
     file_type: 'json',
+    created_at: '2026-05-31T08:45:00.000Z',
+    indexed_at: '2026-05-31T08:51:00.000Z',
+    updated_at: '2026-05-31T08:54:00.000Z',
+    document_id: 'mock-document-002',
+    job_id: 'mock-job-002',
     location: 'mock://documents/labor-standards',
     url: 'https://example.local/mock/labor-standards',
   },
@@ -37,6 +48,8 @@ const mockJobs: FileIngestStatusResponse[] = [
     file_name: 'mock-disability-employment.md',
     current_stage: 'uploaded_to_database',
     completed: false,
+    created_at: mockBaseDate,
+    updated_at: '2026-05-31T08:40:00.000Z',
     stages: [
       {
         stage: 'uploaded',
@@ -123,12 +136,15 @@ export function createMockIngestJob(
   const jobId = `mock-job-${suffix}`
   const documentId = `mock-document-${suffix}`
   const fileType = payload.file_name.split('.').pop() || 'txt'
+  const now = new Date().toISOString()
 
   const job: FileIngestStatusResponse = {
     job_id: jobId,
     file_name: payload.file_name,
     current_stage: 'uploaded_to_database',
     completed: false,
+    created_at: now,
+    updated_at: now,
     stages: [
       {
         stage: 'uploaded',
@@ -154,6 +170,11 @@ export function createMockIngestJob(
     source_title: payload.file_name,
     file_name: payload.file_name,
     file_type: fileType,
+    created_at: job.created_at,
+    indexed_at: job.updated_at,
+    updated_at: job.updated_at,
+    document_id: documentId,
+    job_id: jobId,
     location: `mock://documents/${documentId}`,
   })
 

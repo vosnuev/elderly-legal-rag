@@ -50,7 +50,7 @@ export function AddDocumentDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle>Add Document</DialogTitle>
           <DialogDescription>
@@ -104,7 +104,7 @@ export function AddDocumentDialog({
             name="document-content"
             value={content}
             onChange={(event) => setContent(event.target.value)}
-            className="min-h-44 font-mono leading-6"
+            className="min-h-72 font-mono leading-6 lg:min-h-80"
             placeholder="Paste text, JSON, Markdown, or CSV"
           />
         </div>

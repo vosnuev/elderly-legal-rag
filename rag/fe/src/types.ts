@@ -18,6 +18,9 @@ export interface FileIngestStatusResponse {
   current_stage: string
   completed: boolean
   stages: IngestStageResult[]
+  created_at?: string | null
+  updated_at?: string | null
+  completed_at?: string | null
   warning?: string | null
   document_id?: string | null
   chunk_count?: number
@@ -30,6 +33,11 @@ export interface RagDocument {
   source_title: string
   file_name: string
   file_type: string
+  created_at?: string | null
+  indexed_at?: string | null
+  updated_at?: string | null
+  document_id?: string | null
+  job_id?: string | null
   location?: string | null
   url?: string | null
   score?: number
