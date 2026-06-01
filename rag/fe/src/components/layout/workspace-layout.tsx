@@ -10,7 +10,7 @@ export function WorkspaceLayout() {
   const { message, refresh, status } = useRagWorkspace()
 
   return (
-    <main className="relative min-h-screen bg-background text-foreground overflow-hidden">
+    <main className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Futuristic Background Gradients (Atmospheric Glow) */}
       <div className="pointer-events-none absolute -top-[40%] -left-[20%] h-[80%] w-[60%] rounded-full bg-primary/10 blur-[120px] dark:bg-primary/5" />
       <div className="pointer-events-none absolute -bottom-[40%] -right-[10%] h-[80%] w-[60%] rounded-full bg-chart-2/10 blur-[120px] dark:bg-chart-2/5" />
