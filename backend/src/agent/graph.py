@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from functools import lru_cache
 from typing import Any
 from uuid import uuid4
@@ -85,3 +86,60 @@ def run_agent(message: str, session_id: str | None = None) -> str:
 
     logger.warning("agent returned empty answer")
     return "답변을 생성하지 못했습니다. 잠시 후 다시 시도해 주세요."
+
+
+_INTERNAL_STREAM_MARKERS = (
+    "｜DSML｜tool",
+    "tool_calls>",
+    "<tool_calls",
+)
+
+
+def _looks_like_internal_stream_text(text: str) -> bool:
+    return any(marker in text for marker in _INTERNAL_STREAM_MARKERS)
+
+
+def _stream_chunk_to_text(chunk: object) -> str:
+    if isinstance(chunk, tuple) and chunk:
+        chunk = chunk[0]
+
+    message_type = getattr(chunk, "type", "")
+    if message_type not in {"ai", "AIMessageChunk"}:
+        return ""
+
+    if getattr(chunk, "tool_calls", None) or getattr(chunk, "tool_call_chunks", None):
+        return ""
+
+    content = getattr(chunk, "content", None)
+    if isinstance(content, str):
+        return "" if _looks_like_internal_stream_text(content) else content
+
+    if content is None:
+        return ""
+
+    text = _content_to_text(content)
+    return "" if _looks_like_internal_stream_text(text) else text
+
+
+def run_agent_stream(
+    message: str,
+    session_id: str | None = None,
+) -> Iterator[str]:
+    agent = create_main_agent()
+    chunks = agent.stream(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": message,
+                }
+            ]
+        },
+        config=_agent_config(session_id),
+        stream_mode="messages",
+    )
+
+    for chunk in chunks:
+        text = _stream_chunk_to_text(chunk)
+        if text:
+            yield text
