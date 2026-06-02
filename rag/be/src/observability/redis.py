@@ -20,11 +20,13 @@ class RedisStreamObservability:
         *,
         stream_prefix: str,
         maxlen: int,
+        ttl_seconds: int,
         block_ms: int,
         count: int = 50,
     ) -> None:
         self._stream_prefix = stream_prefix.rstrip(":")
         self._maxlen = maxlen
+        self._ttl_seconds = ttl_seconds
         self._block_ms = block_ms
         self._count = count
 
@@ -33,17 +35,24 @@ class RedisStreamObservability:
         return cls(
             stream_prefix=settings.observability_stream_prefix,
             maxlen=settings.observability_stream_maxlen,
+            ttl_seconds=settings.observability_stream_ttl_seconds,
             block_ms=settings.observability_xread_block_ms,
         )
 
     async def publish(self, event: ObservabilityEvent) -> str:
         redis = get_redis_client()
+        key = self._key(event.job_id)
         event_id = await redis.xadd(
-            self._key(event.job_id),
+            key,
             {_EVENT_FIELD: event.model_dump_json(exclude_none=True)},
             maxlen=self._maxlen,
             approximate=True,
         )
+        if self._ttl_seconds > 0:
+            # Redis Streams are per-job debugging artifacts. Refreshing TTL on
+            # every publish keeps active jobs visible while automatically
+            # removing old transcript noise after the configured window.
+            await redis.expire(key, self._ttl_seconds)
         return str(event_id)
 
     async def read(

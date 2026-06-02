@@ -12,6 +12,7 @@ write/
 ├── chunks.py     # Chunk node + Document -> Chunk edge
 ├── candidates.py # RelationshipCandidate node + review artifact links
 ├── reviews.py    # candidate status and ReviewNote
+├── memory.py     # 자유형 Memory document append
 ├── edges.py      # approved candidate -> actual graph edge
 ├── embeddings.py # Chunk embedding/status update
 └── runtime.py    # IngestJob operational progress
@@ -20,7 +21,7 @@ write/
 ## 책임 한도
 
 - `core/`는 Memgraph write transaction 실행만 담당한다.
-- `documents.py`는 최초 원문 저장만 담당한다. 이 단계는 agent가 아니라 ingestion
+- `documents.py`는 최초 원문 저장만 담당한다. 이 단계는 agent가 아니라 knowledge runtime
   service가 수행한다.
 - `chunks.py`와 `candidates.py`는 internal agent가 호출하는 write tool의 persistence
   backend이다. agent가 내용을 생성하고, write layer가 DB id 생성과 schema validation을
@@ -45,12 +46,13 @@ write/
 | 함수 | 언제 사용하는가 |
 | --- | --- |
 | `write_query` | query/write 내부 구현이나 낮은 수준의 maintenance script가 직접 Cypher write를 실행해야 할 때 사용한다. |
-| `register_document` | 사용자가 업로드한 원문을 graph construction 시작 전에 `Document` node로 저장할 때 사용한다. |
-| `write_chunks_for_document` | `chunking_agent`가 만든 chunk payload를 저장하고 generated `chunk_ids`를 받아야 할 때 사용한다. |
+| `register_document` | 사용자가 업로드한 원문을 graph construction 시작 전에 `Document` node로 저장하고 DB-generated `document_id`를 받을 때 사용한다. |
+| `write_chunks_for_document` | `chunking_agent`가 만든 chunk payload를 저장하고 DB-generated `chunk_ids`를 받아야 할 때 사용한다. |
 | `write_relationship_candidates` | `graph_candidate_agent`가 기존 graph와의 proposed edge를 `RelationshipCandidate` node로 저장할 때 사용한다. |
 | `write_candidate_revisions` | retry/revision flow에서 기존 candidate의 새 version을 저장할 때 사용한다. |
 | `update_candidate_review_status` | review graph가 approve/deny/retry 상태를 candidate에 반영할 때 사용한다. |
 | `store_review_note` | 사용자가 candidate review note를 남겼을 때 `ReviewNote` node로 저장할 때 사용한다. |
+| `append_memory_entry` | 자유형 `Memory` 문서 끝에 entry를 추가하고, `source_review_note_id`가 있으면 `EVIDENCES_MEMORY` link를 남길 때 사용한다. |
 | `materialize_candidate_edge` | approve된 `RelationshipCandidate`를 실제 graph relationship으로 반영할 때 사용한다. |
-| `update_chunk_embeddings` | embedding worker/service가 chunk embedding vector와 status를 업데이트할 때 사용한다. |
-| `upsert_ingest_job_progress` | ingestion/pipeline progress를 `IngestJob` operational node로 저장할 때 사용한다. |
+| `update_chunk_embedding` | embedding worker/service가 특정 chunk 하나의 embedding vector와 status를 업데이트할 때 사용한다. |
+| `upsert_ingest_job_progress` | knowledge runtime job progress를 `IngestJob` operational node로 저장할 때 사용한다. |

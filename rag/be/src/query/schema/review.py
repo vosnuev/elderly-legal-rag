@@ -48,7 +48,7 @@ class ReviewNoteNode(BaseModel):
 
     독립 knowledge node가 아니라 `RelationshipCandidate -[:HAS_REVIEW_NOTE]-> ReviewNote`
     형태의 review artifact이다. 장기 memory layer는 이 원본 note들을 직접 모두 읽지
-    않고, 별도 memory update agent가 필터링/요약해서 compact preference로 만든다.
+    않고, memory update 단계가 단일 Memory 문서에 append해서 다음 agent가 읽는다.
     """
 
     id: str

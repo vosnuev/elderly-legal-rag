@@ -7,6 +7,7 @@ from tools.candidate_tools import (
 from tools.chunk_tools import (
     check_document_unique_string_tool,
     count_document_occurrences_tool,
+    read_chunk_context_tool,
     read_chunk_tool,
     read_document_tool,
     write_chunk_tool,
@@ -35,6 +36,7 @@ __all__ = [
     "memgraph_text_index_search",
     "memgraph_vector_search",
     "append_memory_tool",
+    "read_chunk_context_tool",
     "read_chunk_tool",
     "read_document_tool",
     "read_memory_tool",

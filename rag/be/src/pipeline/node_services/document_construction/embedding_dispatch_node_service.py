@@ -1,3 +1,4 @@
+# 역할: construction graph에서 chunk id 목록을 받아 기존 Chunk node에 embedding vector를 채워 넣는 node service이다.
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -9,7 +10,7 @@ from query.write import update_chunk_embedding
 from settings import settings
 
 
-class EmbeddingDispatchService:
+class EmbeddingDispatchNodeService:
     def dispatch(self, *, job_id: str, chunk_ids: list[str]) -> list[str]:
         if not chunk_ids:
             return []
@@ -17,7 +18,7 @@ class EmbeddingDispatchService:
         embeddings = create_openrouter_embeddings()
         if embeddings is None:
             raise RuntimeError(
-                "embedding_dispatch_service requires RAG_OPENROUTER_API_KEY."
+                "embedding_dispatch_node_service requires RAG_OPENROUTER_API_KEY."
             )
 
         # Embed each chunk independently so the pipeline can retry only the

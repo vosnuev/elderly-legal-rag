@@ -80,10 +80,17 @@ Default:
 rag:observability:jobs:{job_id}:events
 ```
 
+Each job stream is a debugging artifact, not durable business state. By default
+the publisher refreshes a 1 hour TTL on every event through
+`RAG_OBSERVABILITY_STREAM_TTL_SECONDS=3600`. Set the value to `0` only when
+local debugging needs streams to remain until manual cleanup.
+
 ## Event Channels
 
-- `agent_transcript`: FE terminal log events for lifecycle, service, and agent
-  output.
+- `agent_transcript`: historical Redis channel name for FE terminal events.
+  Current producer code is `pipeline/agent_runtime/event_stream.py`; it publishes
+  visible LangChain/LangGraph runtime events such as messages, tools, values,
+  lifecycle, and service logs.
 - `worker_metrics`: queue backlog, worker load, lane, and active task count.
 - `lifecycle`, `service`, `error`: reserved channels for future non-FE
   consumers.

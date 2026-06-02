@@ -10,7 +10,7 @@ read/
 ├── core/        # bounded Cypher read, SHOW SCHEMA INFO
 ├── discovery/   # text search, vector search, graph traversal
 ├── inspection/  # internal id-based graph state observation
-└── runtime/     # API/ingestion status and review queue reads
+└── runtime/     # API/knowledge_runtime status and review queue reads
 ```
 
 ## 책임 한도
@@ -32,8 +32,8 @@ read/
   - external MCP에 기본 노출하지 않는다.
 
 - `runtime/`
-  - API/ingestion service가 document/job/review queue 상태를 읽는 계층이다.
-  - FE DTO shape는 만들지 않고, API/ingestion layer가 응답 모델로 변환한다.
+  - API/knowledge_runtime service가 document/job/review queue 상태를 읽는 계층이다.
+  - FE DTO shape는 만들지 않고, API/knowledge_runtime layer가 응답 모델로 변환한다.
 
 ## 노출 규칙
 
@@ -41,7 +41,7 @@ read/
 - Internal tools: agent 역할에 따라 `core`, `discovery`, `inspection`을 LangChain
   `@tool`로 감싼다.
 - Pipeline services: LLM 없이 확인해야 하는 DB state는 `inspection`을 직접 import한다.
-- API/ingestion: job/document/review status는 `runtime`을 import한다.
+- API/knowledge_runtime: job/document/review status는 `runtime`을 import한다.
 
 ## 함수별 사용 시점
 
@@ -72,7 +72,7 @@ read/
 | `read_node_by_id` | label을 알거나 모르는 graph node를 `id` 기준으로 정확히 읽어야 할 때 사용한다. candidate materialization, candidate review graph, agent tool 내부 검증의 기본 read이다. |
 | `read_nodes_by_ids` | agent나 service가 여러 chunk/candidate/entity id 목록을 state로 들고 있고, DB에 실제 존재하는지 한 번에 확인할 때 사용한다. |
 | `read_node_neighborhood` | internal agent/service가 node id 기준 주변 graph를 확인해야 하지만 MCP wrapper를 거치지 않을 때 사용한다. 내부적으로 `discovery.graph_traverse`를 사용한다. |
-| `read_document_by_id` | graph construction 시작 전에 `Document` node가 존재하는지 확인할 때 사용한다. |
+| `read_document_by_id` | DB-generated `document_id`로 graph construction 시작 전에 `Document` node가 존재하는지 확인할 때 사용한다. |
 | `get_document_record` | 기존 callsite compatibility용 document read alias이다. document construction graph와 document service에서 사용한다. |
 | `get_document_raw_content` | chunking agent가 `document_id`만 받은 뒤 원문을 읽어 chunk를 만들 때 사용한다. |
 | `list_chunks_for_document` | document에서 생성된 chunk들이 DB에 저장됐는지, 다음 agent/service가 document 단위 chunk list를 대조해야 할 때 사용한다. |
@@ -83,21 +83,21 @@ read/
 | `list_candidates_for_document` | document에 연결된 chunk/evidence 기준으로 candidate를 다시 모아 document-level review 상태를 확인할 때 사용한다. |
 | `list_candidate_versions` | 사용자가 request update/retry를 선택한 뒤 기존 candidate와 revised candidate version을 함께 확인할 때 사용한다. |
 | `list_review_notes_for_candidate` | 특정 relationship candidate에 붙은 reviewer note를 읽어 retry/revision context로 사용할 때 사용한다. |
-| `list_review_notes_for_job` | job 단위 feedback 기록을 모아 memory update agent 또는 review audit 화면에 전달할 때 사용한다. |
-| `list_agent_memory` | graph candidate/revision agent가 반복되는 reviewer preference나 법령 계층 해석 rule을 읽을 때 사용한다. |
+| `list_review_notes_for_job` | job 단위 feedback 기록을 모아 memory update 단계 또는 review audit 화면에 전달할 때 사용한다. |
+| `list_memory` | graph candidate/revision agent가 reviewer feedback에서 누적된 단일 Memory 문서를 읽을 때 사용한다. kind로 나누지 않고 scope/status만 필터링한다. |
 | `list_materialized_edges_for_candidate` | approve 이후 실제 edge가 생성됐는지, candidate provenance가 edge에 남았는지 확인할 때 사용한다. |
 
 ### `runtime/`
 
-`runtime`은 API/ingestion service가 status와 review queue를 만들기 위해 사용하는 read
-계층이다. FE DTO 변환은 여기서 하지 않고 API/ingestion layer에서 한다.
+`runtime`은 API/knowledge_runtime service가 status와 review queue를 만들기 위해 사용하는 read
+계층이다. FE DTO 변환은 여기서 하지 않고 API/knowledge_runtime layer에서 한다.
 
 | 함수 | 언제 사용하는가 |
 | --- | --- |
 | `list_workspace_documents` | operations UI나 document API가 저장된 document 목록을 보여줘야 할 때 사용한다. |
 | `list_documents` | 기존 callsite compatibility용 workspace document list alias이다. |
 | `search_documents` | document API가 document text index 기반 검색을 제공해야 할 때 사용한다. |
-| `read_ingest_job` | API/ingestion layer가 특정 job의 persisted `IngestJob` 상태를 읽어야 할 때 사용한다. |
+| `read_ingest_job` | API/knowledge_runtime layer가 특정 job의 persisted `IngestJob` 상태를 읽어야 할 때 사용한다. |
 | `summarize_job_progress` | job detail/status 화면에서 document count, candidate count, pending review count를 한 번에 계산해야 할 때 사용한다. |
 | `list_pending_review_candidates` | review queue API가 pending relationship candidate 목록을 반환할 때 사용한다. document/job filter가 있으면 특정 document page나 job page의 review queue로 좁힌다. |
 | `summarize_document_review_queue` | document page에서 chunk count, candidate count, pending count, candidate ids를 accordion/status summary로 보여줘야 할 때 사용한다. |

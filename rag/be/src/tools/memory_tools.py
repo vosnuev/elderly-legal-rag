@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from query.read.inspection import list_memory
 from query.write import append_memory_entry
+from tools.agent_output_sanitize import sanitize_agent_tool_output
 
 
 class ReadMemoryToolInput(BaseModel):
@@ -58,10 +59,12 @@ def read_memory_tool(
     status: str | None = "active",
 ) -> dict[str, Any]:
     """Read the shared append-only Memory document used by agents."""
-    return list_memory(
-        scope=scope,
-        status=status,
-        limit=1,
+    return sanitize_agent_tool_output(
+        list_memory(
+            scope=scope,
+            status=status,
+            limit=1,
+        )
     )
 
 

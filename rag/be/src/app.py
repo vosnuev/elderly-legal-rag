@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.mcp import create_external_mcp
 from api.router import api_router
+from knowledge_runtime.service import knowledge_runtime
 from observability.logger import configure_logging
 from settings import settings
 
@@ -20,7 +21,11 @@ external_mcp_app = external_mcp.streamable_http_app()
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # noqa: ARG001
     async with external_mcp.session_manager.run():
-        yield
+        await knowledge_runtime.start_workers()
+        try:
+            yield
+        finally:
+            await knowledge_runtime.stop_workers()
 
 
 app = FastAPI(title="SKN28 RAG Backend", version="0.1.0", lifespan=lifespan)

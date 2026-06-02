@@ -5,7 +5,11 @@ from query.read.runtime.documents import (
     list_workspace_documents,
     search_documents,
 )
-from query.read.runtime.jobs import read_ingest_job, summarize_job_progress
+from query.read.runtime.jobs import (
+    read_ingest_job,
+    summarize_candidate_review_progress,
+    summarize_job_progress,
+)
 from query.read.runtime.review_queue import (
     list_pending_review_candidates,
     summarize_document_review_queue,
@@ -18,5 +22,6 @@ __all__ = [
     "read_ingest_job",
     "search_documents",
     "summarize_document_review_queue",
+    "summarize_candidate_review_progress",
     "summarize_job_progress",
 ]

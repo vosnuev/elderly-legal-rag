@@ -23,15 +23,13 @@ from query.write import (
 class LiveMemgraphQueryTest(unittest.TestCase):
     def test_query_layer_writes_and_reads_schema_aware_graph(self) -> None:
         suffix = uuid4().hex[:8]
-        document_id = f"live-test-doc-{suffix}"
         job_id = f"live-test-job-{suffix}"
         raw_content = "live memgraph test document"
 
         get_memgraph_bolt_client().verify_connectivity()
 
-        register_document(
+        document_result = register_document(
             DocumentNode(
-                id=document_id,
                 entry_number=0,
                 document_version=1,
                 content_hash=sha256(raw_content.encode("utf-8")).hexdigest(),
@@ -44,6 +42,7 @@ class LiveMemgraphQueryTest(unittest.TestCase):
                 },
             )
         )
+        document_id = document_result["rows"][0]["document_id"]
         chunk_result = write_chunks_for_document(
             document_id=document_id,
             job_id=job_id,

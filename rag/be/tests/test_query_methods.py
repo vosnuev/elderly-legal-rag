@@ -11,12 +11,13 @@ from query.read.inspection import (
     get_document_record,
     list_candidates_for_job,
     list_chunks_for_document,
+    list_memory,
 )
 from query.read.runtime import list_pending_review_candidates
 from pydantic import ValidationError
 
 from query.schema import (
-    AgentMemoryNode,
+    MemoryNode,
     RelationshipCandidateNode,
     RelationshipCandidateStatus,
     ReviewNoteNode,
@@ -25,6 +26,8 @@ from query.write.candidates import write_relationship_candidates
 from query.write.chunks import write_chunks_for_document
 from query.write.core import write_query
 from query.write.documents import register_document
+from query.write.embeddings import update_chunk_embedding
+from query.write.memory import append_memory_entry
 from query.write.reviews import store_review_note
 
 
@@ -110,7 +113,7 @@ class QueryReadMethodsTest(unittest.TestCase):
         self.assertEqual(result["nodes"], schema["nodes"])
         self.assertEqual(result["edges"], schema["edges"])
 
-    def test_document_read_uses_unique_document_id(self) -> None:
+    def test_document_read_uses_database_generated_document_id(self) -> None:
         client = FakeMemgraphClient(
             {
                 "MATCH (node:Document {id: $node_id}) RETURN node LIMIT 1": {
@@ -221,6 +224,21 @@ class QueryReadMethodsTest(unittest.TestCase):
         self.assertEqual(parameters["job_id"], "job-1")
         self.assertEqual(parameters["limit"], 12)
 
+    def test_list_memory_reads_single_memory_without_kind_filter(self) -> None:
+        client = FakeMemgraphClient({"*": {"rows": []}})
+
+        with patch("query.read.inspection.memory.get_memgraph_bolt_client", return_value=client):
+            list_memory(scope="global", status="active", limit=5)
+
+        _, query, parameters = client.calls[0]
+        self.assertIn("MATCH (memory:Memory)", query)
+        self.assertIn("memory.scope = $scope", query)
+        self.assertIn("memory.status = $status", query)
+        self.assertNotIn("memory_kind", query)
+        self.assertEqual(parameters["scope"], "global")
+        self.assertEqual(parameters["status"], "active")
+        self.assertEqual(parameters["limit"], 5)
+
 
 class QueryWriteMethodsTest(unittest.TestCase):
     def test_raw_write_executes_agent_query_without_task_metadata(self) -> None:
@@ -253,9 +271,7 @@ class QueryWriteMethodsTest(unittest.TestCase):
     def test_document_registration_validates_document_schema(self) -> None:
         client = FakeMemgraphClient(
             {
-                "MERGE (document:Document {id: $document_id}) ON CREATE SET document.created_at = localDateTime() SET document += $document, document.updated_at = localDateTime() RETURN document.id AS document_id": {
-                    "rows": [{"document_id": "doc-1"}],
-                }
+                "*": {"rows": [{"document_id": "42"}]}
             }
         )
 
@@ -273,9 +289,12 @@ class QueryWriteMethodsTest(unittest.TestCase):
             register_document(document)
 
         _, query, parameters = client.calls[0]
-        self.assertIn("MERGE (document:Document {id: $document_id})", query)
+        self.assertIn("CREATE (document:Document)", query)
+        self.assertIn("document.id = randomUUID()", query)
+        self.assertIn("RETURN document.id AS document_id", query)
         self.assertNotIn("IngestJob", query)
-        self.assertEqual(parameters["document_id"], "doc-1")
+        self.assertNotIn("document_id", parameters)
+        self.assertNotIn("id", parameters["document"])
         self.assertEqual(parameters["document"]["raw_content"], "original text")
 
     def test_chunk_write_generates_ids_and_validates_storage_schema(self) -> None:
@@ -308,10 +327,48 @@ class QueryWriteMethodsTest(unittest.TestCase):
 
         _, query, parameters = client.calls[0]
         chunk = parameters["chunks"][0]
+        self.assertIn("MATCH (d:Document {id: $document_id})", query)
+        self.assertIn("last_ingest_job_id: $job_id", query)
+        self.assertIn("DETACH DELETE old", query)
+        self.assertIn("CREATE (c:Chunk)", query)
+        self.assertIn("c.id = randomUUID()", query)
         self.assertIn("MERGE (d)-[:HAS_CHUNK]->(c)", query)
+        self.assertIn("collect(c.id) AS chunk_ids", query)
+        self.assertEqual(parameters["document_id"], "doc-1")
+        self.assertNotIn("document_id_value", parameters)
         self.assertEqual(chunk["document_id"], "doc-1")
         self.assertEqual(chunk["embedding_status"], "pending")
-        self.assertTrue(chunk["id"])
+        self.assertNotIn("id", chunk)
+
+    def test_chunk_embedding_update_sets_vector_on_existing_chunk(self) -> None:
+        client = FakeMemgraphClient(
+            {
+                "*": {
+                    "rows": [
+                        {
+                            "chunk_id": "chunk-1",
+                        }
+                    ]
+                }
+            }
+        )
+
+        with patch("query.write.core.cypher.get_memgraph_bolt_client", return_value=client):
+            update_chunk_embedding(
+                job_id="job-1",
+                chunk_id="chunk-1",
+                embedding=[0.1, 0.2],
+                embedding_model="embedding-model",
+            )
+
+        _, query, parameters = client.calls[0]
+        self.assertIn("MATCH (c:Chunk {id: $chunk_id})", query)
+        self.assertIn("c.embedding = $embedding", query)
+        self.assertIn('c.embedding_status = "embedded"', query)
+        self.assertIn("c.updated_at = localDateTime()", query)
+        self.assertEqual(parameters["chunk_id"], "chunk-1")
+        self.assertEqual(parameters["embedding"], [0.1, 0.2])
+        self.assertEqual(parameters["embedding_model"], "embedding-model")
 
     def test_relationship_candidate_write_uses_review_artifact_links(self) -> None:
         client = FakeMemgraphClient(
@@ -429,6 +486,36 @@ class QueryWriteMethodsTest(unittest.TestCase):
         self.assertIn("HAS_REVIEW_NOTE", query)
         self.assertEqual(parameters["note"]["relationship_candidate_id"], "candidate-1")
 
+    def test_memory_append_uses_optional_review_note_link_and_db_id(self) -> None:
+        client = FakeMemgraphClient(
+            {
+                "*": {
+                    "rows": [
+                        {
+                            "memory_id": "memory-1",
+                            "source_review_note_id": "note-1",
+                            "version": 1,
+                        }
+                    ]
+                }
+            }
+        )
+
+        with patch("query.write.core.cypher.get_memgraph_bolt_client", return_value=client):
+            append_memory_entry(
+                entry="## Review feedback\n- note: keep it narrow",
+                source_review_note_id="note-1",
+            )
+
+        _, query, parameters = client.calls[0]
+        self.assertIn("OPTIONAL MATCH (note:ReviewNote {id: $source_review_note_id})", query)
+        self.assertIn("MERGE (memory:Memory {scope: $scope})", query)
+        self.assertIn("memory.id = randomUUID()", query)
+        self.assertIn("EVIDENCES_MEMORY", query)
+        self.assertIn("memory.content + $separator + $entry", query)
+        self.assertEqual(parameters["source_review_note_id"], "note-1")
+        self.assertEqual(parameters["scope"], "global")
+
 
 class QuerySchemaContractsTest(unittest.TestCase):
     def test_review_note_belongs_to_relationship_candidate(self) -> None:
@@ -442,16 +529,16 @@ class QuerySchemaContractsTest(unittest.TestCase):
 
         self.assertEqual(note.relationship_candidate_id, "candidate-1")
 
-    def test_agent_memory_is_evidence_backed_artifact(self) -> None:
-        memory = AgentMemoryNode(
+    def test_memory_is_evidence_backed_artifact(self) -> None:
+        memory = MemoryNode(
             id="memory-1",
             content="사용자는 지역 scope가 명확하지 않은 관계 candidate를 거절하는 경향이 있다.",
             evidence_review_note_ids=["note-1"],
             evidence_relationship_candidate_ids=["candidate-1"],
         )
 
-        self.assertEqual(memory.memory_kind, "review_preference")
-        self.assertEqual(memory.author_agent, "memory_update_agent")
+        self.assertEqual(memory.scope, "global")
+        self.assertEqual(memory.author, "memory_node_service")
         self.assertEqual(memory.evidence_review_note_ids, ["note-1"])
 
 

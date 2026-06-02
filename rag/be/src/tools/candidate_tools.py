@@ -78,6 +78,9 @@ class WriteCandidateRevisionToolInput(BaseModel):
     )
 
 
+
+## above schema, below tools
+
 @tool(args_schema=WriteEdgeCandidatesToolInput)
 def write_relationship_candidate_tool(
     candidates: list[EdgeCandidateWriteInput],
@@ -141,7 +144,12 @@ def _node_job_id(node_id: str) -> str:
         return ""
     metadata = node.get("metadata")
     if isinstance(metadata, dict):
-        return str(metadata.get("last_ingest_job_id") or "")
+        metadata_job_id = str(metadata.get("last_ingest_job_id") or "")
+        if metadata_job_id:
+            return metadata_job_id
+    # Chunk.last_ingest_job_id is stored as a top-level property by the chunk
+    # write query. Do not stop at empty metadata, otherwise RelationshipCandidate
+    # nodes lose their job provenance and disappear from job-scoped status counts.
     return str(node.get("last_ingest_job_id") or "")
 
 

@@ -14,7 +14,6 @@ class GraphIngestPhase(StrEnum):
     EMBEDDING_DISPATCHED = "embedding_dispatched"
     CANDIDATES_GENERATED = "candidates_generated"
     PENDING_REVIEW = "pending_review"
-    NEEDS_RETRY = "needs_retry"
     COMPLETED = "completed"
     FAILED = "failed"
 
@@ -23,12 +22,6 @@ class ReviewAction(StrEnum):
     YES = "yes"
     NO = "no"
     RETRY = "retry"
-
-
-class FeedbackJudgeResult(BaseModel):
-    ready_for_review: bool
-    incomplete: bool = False
-    reason: str = ""
 
 
 class IngestGraphResult(BaseModel):

@@ -11,6 +11,7 @@ from query.read.inspection import (
     read_chunk_by_id,
 )
 from query.write import write_chunks_for_document
+from tools.agent_output_sanitize import sanitize_agent_tool_output
 
 
 class ChunkWriteInput(BaseModel):
@@ -99,6 +100,15 @@ class ReadChunkToolInput(BaseModel):
     )
 
 
+class ReadChunkContextToolInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    chunk_id: str = Field(
+        min_length=1,
+        description="Chunk node id to inspect without returning the raw embedding vector.",
+    )
+
+
 @tool
 def read_document_tool(document_id: str) -> dict[str, Any]:
     """Read a source Document node from Memgraph by document id."""
@@ -109,7 +119,7 @@ def read_document_tool(document_id: str) -> dict[str, Any]:
         "content_length": len(raw_content),
     }
 
-
+# Deprecated: LLM-facing read tools should not expose the full embedding vector.
 @tool(args_schema=ReadChunkToolInput)
 def read_chunk_tool(chunk_id: str, include_embedding: bool = False) -> dict[str, Any]:
     """Read a Chunk node from Memgraph by chunk id."""
@@ -117,6 +127,16 @@ def read_chunk_tool(chunk_id: str, include_embedding: bool = False) -> dict[str,
     if not include_embedding:
         chunk.pop("embedding", None)
     return chunk
+
+
+@tool(args_schema=ReadChunkContextToolInput)
+def read_chunk_context_tool(chunk_id: str) -> dict[str, Any]:
+    """Read Chunk text/metadata for agent reasoning without raw embedding vectors."""
+    chunk = read_chunk_by_id(chunk_id)
+    # Embedding vectors are large and should stay in deterministic vector-search
+    # code paths. LLM agents only need the text, summary, tags, and status fields.
+    chunk.pop("embedding", None)
+    return sanitize_agent_tool_output(chunk)
 
 
 @tool

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from typing import Any
-from uuid import uuid4
 
 from query.schema import ChunkNode
-from query.utils import graph_properties
+from query.utils import db_generated_id_expression, graph_properties
 from query.write.core import write_query
 
 
@@ -21,15 +20,26 @@ def write_chunks_for_document(
     if not records:
         return {"stored_count": 0, "chunk_ids": []}
 
+    # 같은 ingest job에서 agent가 write를 재시도하면 이전 chunk를 교체한다.
+    # 이렇게 해야 단일 큰 chunk를 먼저 저장한 뒤 세분화 chunk를 다시 쓰는 경우
+    # stale chunk가 downstream shared state나 guard query에 섞이지 않는다.
     result = write_query(
-        """
-        MATCH (d:Document {id: $document_id})
+        f"""
+        MATCH (d:Document {{id: $document_id}})
+        OPTIONAL MATCH (d)-[:HAS_CHUNK]->(
+            old:Chunk {{document_id: $document_id, last_ingest_job_id: $job_id}}
+        )
+        WITH d, collect(old) AS old_chunks
+        FOREACH (old IN old_chunks | DETACH DELETE old)
+        WITH d
         UNWIND $chunks AS chunk
-        MERGE (c:Chunk {id: chunk.id})
-        ON CREATE SET c.created_at = localDateTime()
+        CREATE (c:Chunk)
         SET c += chunk,
+            c.id = {db_generated_id_expression()},
             c.document_id = $document_id,
-            c.last_ingest_job_id = $job_id
+            c.last_ingest_job_id = $job_id,
+            c.created_at = localDateTime(),
+            c.updated_at = localDateTime()
         MERGE (d)-[:HAS_CHUNK]->(c)
         RETURN count(c) AS stored_count,
                collect(c.id) AS chunk_ids
@@ -50,13 +60,14 @@ def _chunk_record(
     chunk: ChunkNode | dict[str, Any],
 ) -> dict[str, Any]:
     if isinstance(chunk, ChunkNode):
-        source = chunk.model_dump()
+        source = chunk.model_dump(exclude_none=True)
     else:
         source = dict(chunk)
-    source.setdefault("id", str(uuid4()))
     source["document_id"] = document_id
     source.setdefault("embedding_status", "pending")
-    return ChunkNode.model_validate(source).model_dump()
+    record = ChunkNode.model_validate(source).model_dump(exclude_none=True)
+    record.pop("id", None)
+    return record
 
 
 def _require_expected_write_count(

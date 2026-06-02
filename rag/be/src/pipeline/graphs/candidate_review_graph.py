@@ -5,12 +5,16 @@ from typing import Literal
 from langgraph.graph import END, START, StateGraph
 
 from pipeline.schemas import GraphIngestPhase, IngestGraphResult, ReviewAction
-from pipeline.services.actual_edge_materialization_service import (
-    ActualEdgeMaterializationService,
+from pipeline.node_services.candidate_review.actual_edge_materialization_node_service import (
+    ActualEdgeMaterializationNodeService,
 )
-from pipeline.services.ingest_progress_service import IngestProgressService
-from pipeline.services.preference_memory_service import PreferenceMemoryService
-from pipeline.services.review_status_service import ReviewStatusService
+from pipeline.node_services.candidate_review.memory_node_service import MemoryNodeService
+from pipeline.node_services.candidate_review.review_note_node_service import (
+    ReviewNoteNodeService,
+)
+from pipeline.node_services.candidate_review.review_status_node_service import (
+    ReviewStatusNodeService,
+)
 from pipeline.state import CandidateReviewActionState
 from pipeline.sub_agents.graph_candidate_revision_agent import (
     GraphCandidateRevisionAgent,
@@ -22,10 +26,10 @@ class CandidateReviewGraph:
     """User review decision graph for pending relationship candidates."""
 
     def __init__(self) -> None:
-        self._actual_edge_materialization_service = ActualEdgeMaterializationService()
-        self._preference_memory_service = PreferenceMemoryService()
-        self._review_status_service = ReviewStatusService()
-        self._ingest_progress_service = IngestProgressService()
+        self._actual_edge_materialization_node_service = ActualEdgeMaterializationNodeService()
+        self._memory_node_service = MemoryNodeService()
+        self._review_note_node_service = ReviewNoteNodeService()
+        self._review_status_node_service = ReviewStatusNodeService()
         self._graph_candidate_revision_agent = GraphCandidateRevisionAgent()
         self._graph = self._build_graph()
 
@@ -49,30 +53,30 @@ class CandidateReviewGraph:
 
     def _build_graph(self):
         builder = StateGraph(CandidateReviewActionState)
-        builder.add_node("load_candidate_context_service", self._load_candidate_context)
-        builder.add_node("actual_edge_materialization_service", self._materialize_edge)
-        builder.add_node("review_status_service", self._apply_review_status)
+        builder.add_node("load_candidate_context_node_service", self._load_candidate_context)
+        builder.add_node("actual_edge_materialization_node_service", self._materialize_edge)
+        builder.add_node("review_status_node_service", self._apply_review_status)
         builder.add_node(
             "graph_candidate_revision_agent",
             self._run_graph_candidate_revision_agent,
         )
-        builder.add_node("preference_memory_service", self._store_preference_note)
-        builder.add_node("ingest_progress_service", self._mark_review_progress)
-        builder.add_edge(START, "load_candidate_context_service")
+        builder.add_node("review_note_node_service", self._store_review_note)
+        builder.add_node("memory_node_service", self._append_memory)
+        builder.add_edge(START, "load_candidate_context_node_service")
         builder.add_conditional_edges(
-            "load_candidate_context_service",
+            "load_candidate_context_node_service",
             self._route_review_action,
             {
-                "yes": "actual_edge_materialization_service",
-                "no": "review_status_service",
+                "yes": "actual_edge_materialization_node_service",
+                "no": "review_status_node_service",
                 "retry": "graph_candidate_revision_agent",
             },
         )
-        builder.add_edge("actual_edge_materialization_service", "review_status_service")
-        builder.add_edge("graph_candidate_revision_agent", "review_status_service")
-        builder.add_edge("review_status_service", "preference_memory_service")
-        builder.add_edge("preference_memory_service", "ingest_progress_service")
-        builder.add_edge("ingest_progress_service", END)
+        builder.add_edge("actual_edge_materialization_node_service", "review_status_node_service")
+        builder.add_edge("graph_candidate_revision_agent", "review_status_node_service")
+        builder.add_edge("review_status_node_service", "review_note_node_service")
+        builder.add_edge("review_note_node_service", "memory_node_service")
+        builder.add_edge("memory_node_service", END)
         return builder.compile()
 
     def _load_candidate_context(
@@ -92,7 +96,7 @@ class CandidateReviewGraph:
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        self._actual_edge_materialization_service.materialize(
+        self._actual_edge_materialization_node_service.materialize(
             candidate_id=state["candidate_id"],
             reviewer=state["reviewer"],
         )
@@ -102,7 +106,7 @@ class CandidateReviewGraph:
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        self._review_status_service.apply(
+        self._review_status_node_service.apply(
             candidate_id=state["candidate_id"],
             action=state["action"],
             reviewer=state["reviewer"],
@@ -119,31 +123,29 @@ class CandidateReviewGraph:
         )
         return {"edge_candidate_ids": edge_candidate_ids}
 
-    def _store_preference_note(
+    def _store_review_note(
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        self._preference_memory_service.store_note(
+        result = self._review_note_node_service.store_note(
             candidate_id=state["candidate_id"],
             action=state["action"].value,
             reviewer=state["reviewer"],
             note=state.get("note"),
         )
-        return {}
+        return {"review_note": _review_note_from_result(result)}
 
-    def _mark_review_progress(
+    def _append_memory(
         self,
         state: CandidateReviewActionState,
     ) -> dict[str, object]:
-        candidate_props = _candidate_properties(state)
-        self._ingest_progress_service.mark(
-            job_id=str(candidate_props.get("job_id") or ""),
-            phase=state.get("phase", GraphIngestPhase.COMPLETED),
-            document_id=None,
-            chunk_count=0,
-            candidate_count=len(state.get("edge_candidate_ids", [])),
+        result = self._memory_node_service.append_from_review_note(
+            review_note=state.get("review_note"),
         )
-        return {}
+        rows = result.get("rows") if isinstance(result, dict) else None
+        if not rows:
+            return {}
+        return {"memory_id": rows[0].get("memory_id")}
 
     def _state_to_result(
         self,
@@ -165,3 +167,15 @@ def _candidate_properties(state: CandidateReviewActionState) -> dict[str, object
     if isinstance(properties, dict):
         return properties
     return candidate
+
+
+def _review_note_from_result(result: dict[str, object] | None) -> dict[str, object] | None:
+    if not result:
+        return None
+    rows = result.get("rows")
+    if not isinstance(rows, list) or not rows:
+        return None
+    note = rows[0].get("note")
+    if isinstance(note, dict):
+        return note
+    return None

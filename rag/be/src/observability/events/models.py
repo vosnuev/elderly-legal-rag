@@ -15,6 +15,8 @@ def utc_now() -> datetime:
 
 class ObservabilityChannel(StrEnum):
     LIFECYCLE = "lifecycle"
+    # Historical FE channel name. Producer code now lives under
+    # pipeline/agent_runtime/event_stream.py.
     AGENT_TRANSCRIPT = "agent_transcript"
     WORKER_METRICS = "worker_metrics"
     SERVICE = "service"

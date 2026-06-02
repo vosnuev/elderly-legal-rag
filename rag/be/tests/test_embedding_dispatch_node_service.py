@@ -3,7 +3,9 @@ from __future__ import annotations
 import unittest
 from unittest.mock import patch
 
-from pipeline.services.embedding_dispatch_service import EmbeddingDispatchService
+from pipeline.node_services.document_construction.embedding_dispatch_node_service import (
+    EmbeddingDispatchNodeService,
+)
 
 
 class FakeEmbeddings:
@@ -16,7 +18,7 @@ class FakeEmbeddings:
         return [[float(len(text)), 1.0]]
 
 
-class EmbeddingDispatchServiceTest(unittest.TestCase):
+class EmbeddingDispatchNodeServiceTest(unittest.TestCase):
     def test_dispatch_embeds_and_updates_each_chunk_individually(self) -> None:
         embeddings = FakeEmbeddings()
         update_calls: list[dict[str, object]] = []
@@ -27,19 +29,19 @@ class EmbeddingDispatchServiceTest(unittest.TestCase):
 
         with (
             patch(
-                "pipeline.services.embedding_dispatch_service.create_openrouter_embeddings",
+                "pipeline.node_services.document_construction.embedding_dispatch_node_service.create_openrouter_embeddings",
                 return_value=embeddings,
             ),
             patch(
-                "pipeline.services.embedding_dispatch_service.read_chunk_by_id",
+                "pipeline.node_services.document_construction.embedding_dispatch_node_service.read_chunk_by_id",
                 side_effect=lambda chunk_id: _chunk_record(chunk_id=chunk_id),
             ),
             patch(
-                "pipeline.services.embedding_dispatch_service.update_chunk_embedding",
+                "pipeline.node_services.document_construction.embedding_dispatch_node_service.update_chunk_embedding",
                 side_effect=update_chunk_embedding,
             ),
         ):
-            result = EmbeddingDispatchService().dispatch(
+            result = EmbeddingDispatchNodeService().dispatch(
                 job_id="job-1",
                 chunk_ids=["chunk-1", "chunk-2"],
             )
@@ -61,19 +63,19 @@ class EmbeddingDispatchServiceTest(unittest.TestCase):
 
         with (
             patch(
-                "pipeline.services.embedding_dispatch_service.create_openrouter_embeddings",
+                "pipeline.node_services.document_construction.embedding_dispatch_node_service.create_openrouter_embeddings",
                 return_value=embeddings,
             ),
             patch(
-                "pipeline.services.embedding_dispatch_service.read_chunk_by_id",
+                "pipeline.node_services.document_construction.embedding_dispatch_node_service.read_chunk_by_id",
                 side_effect=lambda chunk_id: _chunk_record(chunk_id=chunk_id),
             ),
             patch(
-                "pipeline.services.embedding_dispatch_service.update_chunk_embedding",
+                "pipeline.node_services.document_construction.embedding_dispatch_node_service.update_chunk_embedding",
                 side_effect=update_chunk_embedding,
             ),
         ):
-            result = EmbeddingDispatchService().dispatch(
+            result = EmbeddingDispatchNodeService().dispatch(
                 job_id="job-1",
                 chunk_ids=["chunk-1", "chunk-2"],
             )

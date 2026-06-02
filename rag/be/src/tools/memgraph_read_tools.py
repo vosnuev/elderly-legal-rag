@@ -7,6 +7,10 @@ from langchain_core.tools import BaseTool
 
 from query.read.core import read_query, schema_read
 from query.read.discovery import graph_traverse, text_search, vector_search
+from query.utils import bounded_limit
+from tools.agent_output_sanitize import sanitize_agent_tool_output
+
+_AGENT_RAW_CYPHER_MAX_ROWS = 20
 
 
 @tool
@@ -16,7 +20,10 @@ def memgraph_read_query(
     max_rows: int | None = None,
 ) -> dict[str, Any]:
     """Execute a bounded read-only Cypher query against Memgraph."""
-    return read_query(query, parameters, max_rows)
+    # Agent-facing raw Cypher is useful, but its result must not carry full
+    # Document.raw_content, Chunk.embedding, or unbounded rows into message state.
+    row_limit = min(bounded_limit(max_rows), _AGENT_RAW_CYPHER_MAX_ROWS)
+    return sanitize_agent_tool_output(read_query(query, parameters, row_limit))
 
 
 @tool
@@ -32,7 +39,7 @@ def memgraph_text_index_search(
     index_name: str | None = None,
 ) -> dict[str, Any]:
     """Search Memgraph text indexes; this is not a substring CONTAINS scan."""
-    return text_search(keyword, top_k, index_name)
+    return sanitize_agent_tool_output(text_search(keyword, top_k, index_name))
 
 
 @tool
@@ -42,7 +49,7 @@ def memgraph_vector_search(
     top_k: int = 5,
 ) -> dict[str, Any]:
     """Run Memgraph vector search over a configured vector index."""
-    return vector_search(index_name, embedding, top_k)
+    return sanitize_agent_tool_output(vector_search(index_name, embedding, top_k))
 
 
 @tool
@@ -53,11 +60,13 @@ def memgraph_graph_traverse(
     max_rows: int = 50,
 ) -> dict[str, Any]:
     """Traverse a bounded graph neighborhood from a node id property."""
-    return graph_traverse(
-        node_id,
-        id_property,
-        max_depth,
-        max_rows,
+    return sanitize_agent_tool_output(
+        graph_traverse(
+            node_id,
+            id_property,
+            max_depth,
+            min(bounded_limit(max_rows), _AGENT_RAW_CYPHER_MAX_ROWS),
+        )
     )
 
 
