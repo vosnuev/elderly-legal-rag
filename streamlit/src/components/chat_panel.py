@@ -14,11 +14,11 @@ def render_example_chat() -> None:
 
 
 def render_chat_history() -> None:
-    for message in st.session_state.get("consultation_messages", []):
+    for index, message in enumerate(st.session_state.get("consultation_messages", [])):
         with st.chat_message(str(message["role"])):
             response = message.get("response")
             if isinstance(response, dict):
-                render_chat_response(response)
+                render_chat_response(response, key_prefix=f"chat_response_{index}")
                 continue
 
             result = message.get("result")
