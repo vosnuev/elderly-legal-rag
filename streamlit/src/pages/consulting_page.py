@@ -20,7 +20,7 @@ def render_consulting_page() -> None:
     render_page_hero(
         eyebrow="상담 시작하기",
         title="법률 상담소",
-        copy="법을 몰라도 괜찮습니다. 내가 겪은 상황을 적으면 관련 법령·정보·판례를 알려드립니다",
+        copy="법을 몰라도 괜찮습니다. 내가 겪은 상황을 적으면 관련 법령·정보·판례를 알려드립니다.",
     )
 
     form_data = render_consultation_form_gate()

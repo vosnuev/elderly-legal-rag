@@ -73,17 +73,10 @@
 }
 
 [data-testid="stSidebar"][aria-expanded="false"] {
-    width: var(--sidebar-rail-width) !important;
-    min-width: var(--sidebar-rail-width) !important;
-    transform: translateX(0) !important;
-}
-
-[data-testid="stSidebar"][aria-expanded="false"]:hover,
-[data-testid="stSidebar"][aria-expanded="false"]:focus-within,
-body:has(button[data-testid="stExpandSidebarButton"]:hover) [data-testid="stSidebar"][aria-expanded="false"],
-body:has(button[data-testid="stExpandSidebarButton"]:focus-visible) [data-testid="stSidebar"][aria-expanded="false"] {
-    width: var(--sidebar-width) !important;
-    min-width: var(--sidebar-width) !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    border-right: 0;
+    transform: translateX(-100%) !important;
 }
 
 [data-testid="stSidebarNav"] {
@@ -412,6 +405,10 @@ div[class*="st-key-consultation_form_card"] {
     margin-top: -0.35rem;
 }
 
+div[class*="st-key-consultation_summary_card"] {
+    margin-top: 1.25rem;
+}
+
 div[class*="st-key-consultation_form_card"] div[data-testid="stVerticalBlockBorderWrapper"],
 div[class*="st-key-consultation_summary_card"] div[data-testid="stVerticalBlockBorderWrapper"] {
     width: 100%;
@@ -556,7 +553,7 @@ div[data-testid="stTextArea"] label {
 }
 
 .location-field-spacer {
-    height: 1.25rem;
+    height: 1.75rem;
 }
 
 div[data-testid="stButton"] button,
@@ -580,6 +577,14 @@ div[data-testid="stButton"] button:hover {
     background: #E8E6DC !important;
     color: #3a2010 !important;
     box-shadow: none;
+}
+
+div[class*="st-key-reset_consultation_button"] button {
+    background: #FFFDF7 !important;
+}
+
+div[class*="st-key-reset_consultation_button"] button:hover {
+    background: #E8E6DC !important;
 }
 
 div[data-testid="stFormSubmitButton"] button,
