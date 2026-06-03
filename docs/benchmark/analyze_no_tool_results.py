@@ -437,6 +437,7 @@ def save_charts(plt, provider_summary, data, output_dir: Path) -> None:
         print("matplotlib is not installed; skipped chart generation.")
         return
     from matplotlib.patches import Patch
+    from matplotlib.transforms import Bbox
 
     plt.rcParams.update(
         {
@@ -574,7 +575,7 @@ def save_charts(plt, provider_summary, data, output_dir: Path) -> None:
     )
 
     scatter_data = chart_data.sort_values("display_id")
-    fig, ax = plt.subplots(figsize=(13, 8))
+    fig, ax = plt.subplots(figsize=(15, 9))
     ax.scatter(
         scatter_data["avg_total_cost_usd"],
         scatter_data["avg_latency_ms"],
@@ -585,38 +586,12 @@ def save_charts(plt, provider_summary, data, output_dir: Path) -> None:
         alpha=0.92,
         zorder=3,
     )
-    label_offsets = [
-        (14, 12),
-        (16, -18),
-        (16, 14),
-        (-78, 12),
-        (-80, -18),
-        (16, 16),
-        (-86, 12),
-        (16, -20),
-        (-78, -18),
-        (14, 18),
-        (-86, 16),
-        (14, -20),
-    ]
-    for index, row in enumerate(scatter_data.itertuples(index=False)):
-        offset = label_offsets[index % len(label_offsets)]
-        ax.annotate(
-            f"#{int(row.display_id)} {row.primary_provider_slug}",
-            (row.avg_total_cost_usd, row.avg_latency_ms),
-            xytext=offset,
-            textcoords="offset points",
-            fontsize=10,
-            color="#111827",
-            fontweight="bold",
-            arrowprops={"arrowstyle": "-", "color": "#9CA3AF", "lw": 0.6},
-        )
     ax.set_title("Provider Cost vs Latency")
     ax.set_xlabel("Average cost per question (USD)")
     ax.set_ylabel("Average latency (ms)")
     ax.grid(color="#E5E7EB", linewidth=0.8)
     ax.set_axisbelow(True)
-    ax.legend(
+    legend = ax.legend(
         handles=legend_handles,
         title="model",
         loc="upper left",
@@ -628,9 +603,126 @@ def save_charts(plt, provider_summary, data, output_dir: Path) -> None:
     x_max = float(scatter_data["avg_total_cost_usd"].max())
     y_min = float(scatter_data["avg_latency_ms"].min())
     y_max = float(scatter_data["avg_latency_ms"].max())
-    ax.set_xlim(max(0, x_min - (x_max - x_min) * 0.12), x_max + (x_max - x_min) * 0.18)
-    ax.set_ylim(max(0, y_min - (y_max - y_min) * 0.12), y_max + (y_max - y_min) * 0.14)
+    ax.set_xlim(max(0, x_min - (x_max - x_min) * 0.16), x_max + (x_max - x_min) * 0.28)
+    ax.set_ylim(max(0, y_min - (y_max - y_min) * 0.16), y_max + (y_max - y_min) * 0.22)
     fig.tight_layout()
+
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    occupied_boxes = [legend.get_window_extent(renderer).expanded(1.04, 1.08)]
+    for row in scatter_data.itertuples(index=False):
+        x_px, y_px = ax.transData.transform((row.avg_total_cost_usd, row.avg_latency_ms))
+        occupied_boxes.append(Bbox.from_bounds(x_px - 15, y_px - 15, 30, 30))
+
+    label_offsets = [
+        (18, 16),
+        (18, -16),
+        (-18, 16),
+        (-18, -16),
+        (36, 34),
+        (36, -34),
+        (-36, 34),
+        (-36, -34),
+        (0, 48),
+        (0, -48),
+        (68, 0),
+        (-68, 0),
+        (92, 28),
+        (92, -28),
+        (-92, 28),
+        (-92, -28),
+        (0, 74),
+        (0, -74),
+        (132, 0),
+        (-132, 0),
+    ]
+    figure_box = fig.bbox.expanded(0.98, 0.98)
+
+    def text_align(offset):
+        x_offset, y_offset = offset
+        if x_offset < 0:
+            ha = "right"
+        elif x_offset > 0:
+            ha = "left"
+        else:
+            ha = "center"
+        if y_offset < 0:
+            va = "top"
+        elif y_offset > 0:
+            va = "bottom"
+        else:
+            va = "center"
+        return ha, va
+
+    def overflow_score(box) -> float:
+        return (
+            max(0, figure_box.x0 - box.x0)
+            + max(0, box.x1 - figure_box.x1)
+            + max(0, figure_box.y0 - box.y0)
+            + max(0, box.y1 - figure_box.y1)
+        )
+
+    def overlap_score(box) -> float:
+        score = overflow_score(box) * 100
+        for occupied in occupied_boxes:
+            if box.overlaps(occupied):
+                score += 1
+                score += (
+                    max(0, min(box.x1, occupied.x1) - max(box.x0, occupied.x0))
+                    * max(0, min(box.y1, occupied.y1) - max(box.y0, occupied.y0))
+                )
+        return score
+
+    for row in scatter_data.itertuples(index=False):
+        label = f"#{int(row.display_id)} {row.primary_provider_slug}"
+        best_offset = label_offsets[0]
+        best_box = None
+        best_score = float("inf")
+        for offset in label_offsets:
+            ha, va = text_align(offset)
+            annotation = ax.annotate(
+                label,
+                (row.avg_total_cost_usd, row.avg_latency_ms),
+                xytext=offset,
+                textcoords="offset points",
+                ha=ha,
+                va=va,
+                fontsize=10,
+                color="#111827",
+                fontweight="bold",
+                annotation_clip=False,
+                zorder=4,
+            )
+            fig.canvas.draw()
+            box = annotation.get_window_extent(renderer).expanded(1.08, 1.2)
+            annotation.remove()
+            score = overlap_score(box)
+            if score == 0:
+                best_offset = offset
+                best_box = box
+                break
+            if score < best_score:
+                best_offset = offset
+                best_box = box
+                best_score = score
+        if best_box is not None:
+            ha, va = text_align(best_offset)
+            ax.annotate(
+                label,
+                (row.avg_total_cost_usd, row.avg_latency_ms),
+                xytext=best_offset,
+                textcoords="offset points",
+                ha=ha,
+                va=va,
+                fontsize=10,
+                color="#111827",
+                fontweight="bold",
+                arrowprops={"arrowstyle": "-", "color": "#9CA3AF", "lw": 0.6},
+                annotation_clip=False,
+                zorder=4,
+            )
+            occupied_boxes.append(best_box)
+
     fig.savefig(charts_dir / "cost_vs_latency_scatter.png", dpi=160)
     plt.close(fig)
 

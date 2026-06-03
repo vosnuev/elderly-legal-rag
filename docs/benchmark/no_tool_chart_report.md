@@ -1,6 +1,4 @@
-# no_tool Benchmark 통합 분석 리포트
-
-작성일: 2026-06-03
+# Model by provider Benchmark(no_tool) 통합 분석 리포트
 
 이 문서 하나에서 no_tool benchmark의 계산 기준, 입력 데이터, 차트, 실패 리포트, 후보 판단을 모두 확인한다.
 
@@ -9,9 +7,9 @@
 - 이 리포트는 tool을 연결하지 않은 **no_tool** benchmark 결과를 분석한다.
 - 동일한 360개 testcase를 model/provider별로 실행한 CSV를 기준으로 token, 비용, latency, 실패 여부, routing 검증만 비교한다.
 - 실제 RAG tool은 연결하지 않았고, 각 모델은 system prompt와 testcase 질문만 보고 답했다.
-- `with_tool` 결과와 섞어 비교하면 안 된다.
-- 답변 품질 평가는 별도 단계이며, 최종 provider 결정에는 품질 평가 결과를 함께 반영해야 한다.
+- `with_tool` 결과와 섞어 비교하지 않는다.
 - Qwen 3.7 Max는 비용 문제로 후보군에서 제외했고, 현재 분석 CSV에도 포함하지 않는다.
+- 답변 품질 평가는 별도 단계이며, 최종 provider 결정에는 품질 평가 결과를 함께 반영해야 한다.
 
 ## 입력 데이터
 
@@ -42,20 +40,19 @@ openai_gpt_oss_120b_cerebras_fp16.csv
 
 결과 CSV는 아래 주요 컬럼을 사용한다.
 
-```text
-timestamp, testcase_id, query_reference, answer,
-input_price_per_1m, output_price_per_1m,
-input_tokens, output_tokens, used_tokens,
-input_cost_usd, output_cost_usd, total_cost_usd,
-batch, difficulty, special_case,
-model_id, provider_order, primary_provider_slug,
-primary_provider_quantization, actual_provider, allow_fallbacks,
-endpoint_tools_supported, context_length, max_completion_tokens,
-quantization, openrouter_generation_id, latency_ms,
-langsmith_project, langsmith_tags, status, error
-```
+`timestamp`, `testcase_id`, `query_reference`, `answer`,
+`input_price_per_1m`, `output_price_per_1m`,
+`input_tokens`, `output_tokens`, `used_tokens`,
+`input_cost_usd`, `output_cost_usd`, `total_cost_usd`,
+`batch`, `difficulty`, `special_case`,
+`model_id`, `provider_order`, `primary_provider_slug`,
+`primary_provider_quantization`,`actual_provider`, `allow_fallbacks`,
+`endpoint_tools_supported`, `context_length`, `max_completion_tokens`,
+`quantization`, `openrouter_generation_id`, `latency_ms`,
+`langsmith_project`, `langsmith_tags`, `status`, `error`
 
-`query_reference`에는 기존 `query`, `expected_keywords`, `reference`, `judge_criteria`를 한 컬럼으로 묶었다. 이 기준은 후속 답변 품질 평가에 쓰는 참고값이고, 현재 no_tool 운영 지표 계산에는 token/비용/latency/실패/routing 값만 사용한다.
+- `query_reference` = 기존 `query`, `expected_keywords`, `reference`, `judge_criteria`를 한 컬럼으로 묶었다.
+- 이 기준은 후속 답변 품질 평가에 쓰는 참고값이고, 현재 no_tool 운영 지표 계산에는 token/비용/latency/실패/routing 값만 사용한다.
 
 ## 전처리와 계산 원칙
 
@@ -353,6 +350,12 @@ docs/benchmark/charts/*.png
 
 이 차트는 input과 output을 합친 평균 used token 수를 보여준다. 미세한 차이를 보기 위해 y축을 확대했다.
 
+- 평균 used token이 적은 1위는 `#2 deepseek-v4-flash / deepinfra`, `1,462.2`이다.
+- 평균 used token이 적은 2위는 `#1 gpt-oss-120b / cerebras`, `1,974.5`이다.
+- 평균 used token이 적은 3위는 `#5 deepseek-v4-flash / gmicloud`, `2,097.9`이다.
+- 평균 used token이 적은 4위는 `#4 deepseek-v4-flash / siliconflow`, `2,123.9`이다.
+- 평균 used token이 적은 5위는 `#3 deepseek-v4-flash / deepseek`, `2,159.4`이다.
+
 주의:
 
 - token 수가 낮다고 무조건 좋은 것은 아니다.
@@ -431,6 +434,8 @@ docs/benchmark/charts/*.png
 | #12 | `deepseek-v4-pro / atlas-cloud` | ✅ |  |  |  |  |  | 1 | 11 |
 | #7 | `deepseek-v4-pro / deepseek` |  |  |  |  |  |  | 0 | 12 |
 
+`#7 deepseek-v4-pro / deepseek`는 실패 `1`건이 있어서 성공률 100% 조건을 통과하지 못했다. 평균 비용 `0.00130400`은 `$0.001`보다 높고, 평균 latency `34,204ms`는 `20초`보다 높고, p95 latency `56,152ms`는 `30초`보다 높고, 평균 used token `2,408.9`는 `2,200`보다 높다. 그래서 체크가 0개다.
+
 ## 현재 결론
 
 no_tool strict 기준으로만 보면 후보 우선순위는 체크리스트 순위를 따른다.
@@ -445,9 +450,3 @@ no_tool strict 기준으로만 보면 후보 우선순위는 체크리스트 순
    - 평균 latency `1,411ms`, 평균 비용 `0.00112336`, 평균 used token `1,974.5`
 5. `#6 deepseek-v4-pro / streamlake`
    - 평균 latency `17,393ms`, 평균 비용 `0.00496864`, 평균 used token `2,432.3`
-
-최종 결정 전에 반드시 해야 할 일:
-
-- `query_reference`의 `expected_keywords`, `reference`, `judge_criteria`를 기준으로 답변 품질 점수를 붙인다.
-- `with_tool` benchmark를 별도로 돌려 no_tool 결과와 섞지 않고 비교한다.
-- 품질, 평균 비용, p95 latency, 실패율을 합산한 최종 ranking table을 만든다.
