@@ -158,6 +158,40 @@ class ObservabilityService:
             )
         )
 
+    def service_from_thread(
+        self,
+        *,
+        job_id: str | None = None,
+        task_id: str | None = None,
+        kind: str | None = None,
+        service_name: str,
+        log: str,
+        stage: str | None = None,
+        edge: str | None = None,
+        data: dict[str, Any] | None = None,
+    ) -> str | None:
+        """Publish non-LLM node service progress from sync graph code."""
+        context = get_observability_context()
+        resolved_job_id = job_id or context.job_id
+        if not resolved_job_id:
+            return None
+        return self.publish_from_thread(
+            ObservabilityEvent(
+                job_id=resolved_job_id,
+                task_id=task_id or context.task_id,
+                kind=kind or context.kind,
+                channel=ObservabilityChannel.AGENT_TRANSCRIPT,
+                payload={
+                    "type": VisibilityEventType.SERVICE.value,
+                    "stage": stage,
+                    "edge": edge,
+                    "log": log,
+                    "serviceName": service_name,
+                    **(data or {}),
+                },
+            )
+        )
+
     async def agent(
         self,
         *,

@@ -6,11 +6,11 @@ from pydantic import BaseModel, Field
 
 
 class MemoryNode(BaseModel):
-    """agent가 재사용할 단일 append-only memory node.
+    """agent가 재사용할 단일 memory document node.
 
     이 노드는 semantic knowledge graph의 지식 노드가 아니다. `ReviewNote`와
-    `RelationshipCandidate` 같은 review evidence를 근거로 누적되는 agent용 판단
-    근거이다.
+    `RelationshipCandidate` 같은 review evidence를 근거로 계속 재정리되는 agent용
+    판단 근거 문서이다.
     """
 
     id: str

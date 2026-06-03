@@ -100,9 +100,9 @@ transaction에서 실패하므로 `external.memgraph.MemgraphBoltClient.execute_
 | `register_document` | `DocumentNode`를 저장 | DB-generated `document_id` 반환, raw content 저장 |
 | `write_chunks_for_document` | saved document에 chunk payload 저장 | DB-generated `chunk_ids`, `HAS_CHUNK` edge |
 | `write_relationship_candidates` | existing left/right node로 candidate 저장 | generated `edge_candidate_ids`, candidate status `pending_review` |
-| `write_candidate_revisions` | previous candidate id와 revised candidate 저장 | `previous_candidate_id`, incremented version 저장 |
 | `store_review_note` | candidate에 reviewer note 저장 | `ReviewNote`, `HAS_REVIEW_NOTE` edge |
 | `update_candidate_review_status` | candidate status update | enum value만 저장 가능 |
+| `update_memory_document` | job-level review note context를 반영해 단일 Memory 문서 갱신 | version 증가, `EVIDENCES_MEMORY` edge |
 | `materialize_candidate_edge` | approved candidate를 actual edge로 반영 | actual relationship, edge provenance, candidate approved |
 | `update_chunk_embedding` | embedded chunk update | `embedding_status`, `embedding_model`, `embedding` 저장 |
 | `upsert_ingest_job_progress` | job progress 저장 | `IngestJob` node upsert |
@@ -112,7 +112,7 @@ transaction에서 실패하므로 `external.memgraph.MemgraphBoltClient.execute_
 - `left_node`, `right_node`는 필수이고 DB에 실제 존재해야 한다.
 - `evidence_node_id`는 optional이다. 다른 문서/청크가 두 endpoint의 관계를 언급했을 때
   provenance anchor로만 사용한다.
-- `status`는 `pending_review`, `approved`, `rejected`, `retry` 중 하나만 허용한다.
+- `status`는 `pending_review`, `approved`, `rejected` 중 하나만 허용한다.
 - `relationship_direction`은 `left_to_right`, `right_to_left`, `bidirectional` 중 하나만
   허용한다.
 
@@ -389,7 +389,7 @@ LIMIT 100;
 - `RelationshipCandidate write stored 0 rows`
   - `left_node` 또는 `right_node` id가 DB에 존재하지 않는다.
 - `RelationshipCandidateStatus` validation error
-  - status가 `pending_review`, `approved`, `rejected`, `retry` 중 하나가 아니다.
+  - status가 `pending_review`, `approved`, `rejected` 중 하나가 아니다.
 - `Unsafe Cypher identifier`
   - materialized edge의 `relationship_type`이 Cypher identifier로 안전하지 않다.
 - Memgraph procedure/index error

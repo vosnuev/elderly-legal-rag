@@ -18,6 +18,8 @@ _TEXT_PROPERTY_KEYS = {
     "content",
     "evidence_text",
     "rationale",
+    "chunk_name",
+    "chunk_description",
     "summary",
     "reason",
     "description",

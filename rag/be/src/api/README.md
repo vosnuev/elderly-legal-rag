@@ -8,7 +8,8 @@ Memgraph query 구현은 각각 `knowledge_runtime/`, `pipeline/`, `query/`,
 
 - FastAPI HTTP router를 구성한다.
 - FastMCP server를 mount할 수 있는 MCP surface를 제공한다.
-- FE가 호출하는 document job, status 조회, review decision endpoint를 제공한다.
+- FE가 호출하는 document job, status 조회, review decision, Memory 설정 endpoint를
+  제공한다.
 - 개발/검증용으로 document 등록 후 chunking까지만 실행하는 preview endpoint를 제공한다.
 - 외부 agent가 호출하는 read-only MCP endpoint를 제공한다.
 
@@ -59,8 +60,10 @@ FastMCP는 FastAPI router가 아니므로 `api/mcp`에서 server를 만들고 `a
 - 원문 text/file 입력을 job으로 만들고 원문 문서를 database에 먼저 등록한다.
 - job status/progress 조회도 같은 lifecycle에 속하므로 이 surface에 둔다.
 - 사용자가 manual start를 누르면 `knowledge_runtime.service.documents`로 넘긴다.
-- candidate review 조회와 approve/reject/retry decision도 `knowledge_runtime.service.reviews`
+- candidate review 조회와 approve/reject decision도 `knowledge_runtime.service.reviews`
   로 넘긴다.
+- FE review 화면은 `/api/review/jobs/{job_id}/decisions`로 job 단위 decision batch를
+  보내고, backend는 이를 review task 하나로 queue에 넣는다.
 - API가 직접 pipeline node를 실행하지 않고 `knowledge_runtime -> pipeline`
   경계를 탄다.
 
@@ -77,12 +80,13 @@ api/ingest/
 - `router.py`: ingest 하위 router를 하나로 묶는다.
 - `debug.py`: FE/개발자가 chunking_agent transcript와 chunk id 반환을 확인하는 preview endpoint.
 - `jobs.py`: document upload, job creation, graph add start, job status 조회.
-- `review.py`: pending edge candidate 조회와 approve/reject/retry decision 적용.
+- `review.py`: pending edge candidate 조회와 job-level approve/reject decision batch 적용.
 
 ### `api/operations`
 
 - RAG 운영 FE가 보는 조회성 API surface이다.
 - 현재 database에 올라간 document 목록과 document search를 제공한다.
+- shared agent Memory document 조회/수정을 제공한다.
 - system health/dependency 조회를 제공한다.
 - job status/progress 조회는 FE에서 사용하더라도 `api/ingest` 소유이다.
 - background work를 진행시키는 command endpoint는 `api/ingest`에 둔다.
@@ -91,6 +95,7 @@ api/ingest/
 api/operations/
 ├── router.py     # operations HTTP router aggregator
 ├── documents.py  # stored document list/search endpoints
+├── memory.py     # shared agent Memory document endpoints
 ├── search.py     # legacy search compatibility endpoint
 └── health.py     # health/dependency endpoints
 ```
@@ -99,6 +104,7 @@ api/operations/
 
 - `router.py`: operations 하위 router를 하나로 묶는다.
 - `documents.py`: 저장된 document 목록과 document 조회.
+- `memory.py`: `Memory(scope=global)` 문서 조회와 FE manual update.
 - `search.py`: FE 검색 화면 또는 legacy compatibility용 search endpoint.
 - `health.py`: service health와 dependency 상태 조회.
 

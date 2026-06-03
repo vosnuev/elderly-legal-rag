@@ -119,7 +119,7 @@ PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
 | `RAG_GRAPH_LLM_MAX_RETRIES` | `2` | LangChain/OpenAI transport retry count per provider route |
 | `RAG_GRAPH_CANDIDATE_WORKER_COUNT` | `8` | concurrent chunk-level graph candidate agent runs per build job, bounded by chunk count |
 | `RAG_KNOWLEDGE_BUILD_WORKER_COUNT` | `1` | build worker lane size |
-| `RAG_KNOWLEDGE_REVIEW_WORKER_COUNT` | `2` | review worker lane size |
+| `RAG_KNOWLEDGE_REVIEW_WORKER_COUNT` | `1` | review worker lane size |
 | `RAG_KNOWLEDGE_TASK_QUEUE_MAX_SIZE` | `100` | bounded queue size per task lane |
 
 External MCP tools:

@@ -34,6 +34,8 @@ class ChunkNode(BaseModel):
     id: str | None = None
     document_id: str
     chunk_index: int
+    chunk_name: str = ""
+    chunk_description: str = ""
     text: str
     tags: list[str] = Field(default_factory=list)
     summary: str = ""

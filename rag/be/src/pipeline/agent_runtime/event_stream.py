@@ -42,9 +42,20 @@ class AgentEventStreamLogger:
     넣고, 화면에서 어떻게 보여줄지는 FE가 결정한다.
     """
 
-    def __init__(self, logger: Any, *, agent_name: str = "agent") -> None:
+    def __init__(
+        self,
+        logger: Any,
+        *,
+        agent_name: str = "agent",
+        agent_context: dict[str, Any] | None = None,
+    ) -> None:
         self._logger = logger
         self._agent_name = agent_name
+        self._agent_context = {
+            key: str(value)
+            for key, value in (agent_context or {}).items()
+            if value is not None
+        }
 
     def run(
         self,
@@ -125,12 +136,16 @@ class AgentEventStreamLogger:
         # The module/class names use "event_stream" to avoid implying hidden
         # chain-of-thought capture.
         observer.agent_from_thread(
+            job_id=self._agent_context.get("job_id"),
+            task_id=self._agent_context.get("task_id"),
+            kind=self._agent_context.get("kind"),
             agent_name=self._agent_name,
             stage="agent_stream",
             log=_agent_event_log(event),
             token=_agent_event_token(event),
             tool_usage=_agent_event_tool_usage(event),
             data={
+                **self._agent_context,
                 "streamChannel": event.channel,
                 "payload": event.payload,
             },
@@ -496,6 +511,16 @@ def _summarize_tool_arguments(value: Any) -> Any:
                     for chunk in chunks[:_MAX_EVENT_ITEMS]
                     if isinstance(chunk, dict)
                 ],
+                # Tool argument observability must stay bounded, but developers
+                # still need to inspect whether the agent made sensible chunk
+                # boundaries. Keep a short per-chunk preview instead of only
+                # exposing aggregate counts.
+                "chunk_previews": [
+                    _summarize_chunk_write_item(chunk)
+                    for chunk in chunks[:_MAX_EVENT_ITEMS]
+                    if isinstance(chunk, dict)
+                ],
+                "omitted_chunk_count": max(len(chunks) - _MAX_EVENT_ITEMS, 0),
                 "text_total_chars": sum(
                     len(str(chunk.get("text") or ""))
                     for chunk in chunks
@@ -525,6 +550,31 @@ def _summarize_tool_arguments(value: Any) -> Any:
         max_text=_MAX_EVENT_TEXT_CHARS,
         max_items=_MAX_EVENT_ITEMS,
     )
+
+
+def _summarize_chunk_write_item(chunk: dict[str, Any]) -> dict[str, Any]:
+    result: dict[str, Any] = {
+        "chunk_index": chunk.get("chunk_index"),
+        "chunk_name": _text_summary(chunk.get("chunk_name"), include_full=True),
+        "chunk_description": _text_summary(
+            chunk.get("chunk_description"),
+            include_full=True,
+        ),
+        "text": _text_summary(chunk.get("text"), include_full=True),
+    }
+    for key in (
+        "summary",
+        "boundary_reason",
+        "start_unique_string",
+        "end_unique_string",
+    ):
+        if key in chunk:
+            result[key] = _text_summary(chunk.get(key), include_full=True)
+    if "tags" in chunk:
+        result["tags"] = _summarize_tool_arguments(chunk.get("tags"))
+    if "metadata" in chunk:
+        result["metadata"] = _summarize_tool_arguments(chunk.get("metadata"))
+    return result
 
 
 def _summarize_tool_output(value: Any) -> Any:
@@ -589,13 +639,18 @@ def _summarize_structured_response(value: Any) -> Any:
     return _summarize_tool_arguments(value)
 
 
-def _text_summary(value: Any) -> dict[str, Any]:
+def _text_summary(value: Any, *, include_full: bool = False) -> dict[str, Any]:
     text = "" if value is None else str(value)
-    return {
+    result = {
         "type": "text",
         "chars": len(text),
         "preview": _truncate_text(text, _MAX_PREVIEW_CHARS),
     }
+    if len(text) > _MAX_PREVIEW_CHARS:
+        result["truncated_chars"] = len(text) - _MAX_PREVIEW_CHARS
+    if include_full:
+        result["full"] = text
+    return result
 
 
 def _truncate_text(value: str, max_chars: int = _MAX_EVENT_TEXT_CHARS) -> str:
@@ -715,6 +770,17 @@ def _agent_event_log(event: AgentEventStreamEvent) -> str:
     token = _agent_event_token(event)
     if token:
         return f"{event.channel}: model token"
+    if event.channel == "messages" and isinstance(event.payload, dict):
+        event_name = event.payload.get("event")
+        if event_name:
+            return f"{event.channel}: {event_name}"
+    if event.channel == "values" and isinstance(event.payload, dict):
+        message_count = event.payload.get("message_count")
+        structured_response = event.payload.get("structured_response")
+        if isinstance(structured_response, dict):
+            return f"{event.channel}: structured response"
+        if isinstance(message_count, int):
+            return f"{event.channel}: {message_count} messages"
     return f"{event.channel}: agent event"
 
 

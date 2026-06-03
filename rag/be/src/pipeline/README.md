@@ -30,7 +30,7 @@ LangGraph 실행 흐름을 담는다. HTTP API, MCP 노출, Memgraph client adap
   - 새 문서가 DB에 등록된 뒤 graph construction을 시작한다.
   - 호출 위치는 `knowledge_runtime/workers/runner.py`이다.
 - `GraphIngestInvocation.apply_review_decision(candidate_id, action, reviewer, note)`
-  - 사용자가 pending candidate에 대해 `yes`, `no`, `retry` 결정을 내렸을 때
+  - 사용자가 pending candidate에 대해 `yes`, `no` 결정을 내렸을 때
     review graph에 decision을 적용한다.
   - 호출 위치는 `knowledge_runtime/workers/runner.py`이다.
 
@@ -81,8 +81,8 @@ graph 실행 method만 노출한다.
 ### `graphs/candidate_review_graph.py`
 
 사용자의 edge candidate review decision을 반영하는 LangGraph를 정의한다. 승인 시
-actual edge materialization을 수행하고, 거절/재시도 시 candidate status와 reviewer
-note를 반영한다.
+actual edge materialization과 candidate approved 상태 반영을 수행하고, 거절 시
+candidate rejected 상태와 reviewer note를 반영한다.
 
 ### `state.py`
 
@@ -127,7 +127,7 @@ LLM 판단이 필요 없는 deterministic graph node service를 둔다. graph im
 섞이지 않도록 `document_construction/`과 `candidate_review/` 하위 패키지로 나눈다.
 예를 들어 construction graph에는 embedding dispatch, review graph에는 approved
 candidate materialization, review status update, review note persistence, memory
-append 같은 작업이 있다. `IngestJob` 같은 job-level 상태는 graph node가 직접 쓰지
+update 같은 작업이 있다. `IngestJob` 같은 job-level 상태는 graph node가 직접 쓰지
 않고 `knowledge_runtime`의 progress modifier가 쓴다.
 
 ## Construction Graph
@@ -187,17 +187,22 @@ Construction graph는 `IngestGraphResult`만 반환한다. `IngestJob.phase`를
 
 ## Review Graph
 
-사용자가 `RelationshipCandidate`에 대해 승인, 거절, 재시도를 선택했을 때 실행된다.
+사용자가 `RelationshipCandidate`에 대해 승인 또는 거절을 선택했을 때 실행된다.
 construction graph와 분리되어 있으므로 UI는 pending review 상태에서 멈춘 뒤,
-사용자 결정이 들어오면 이 graph를 별도로 호출한다.
+사용자 결정 batch가 들어오면 이 graph를 job 단위 review task로 호출한다.
 구현 파일은 `graphs/candidate_review_graph.py`이다.
+
+FE는 같은 job의 decision들을 `/api/review/jobs/{job_id}/decisions`로 한 번에 보내는
+것을 기본 경로로 사용한다. batch 실행에서는 candidate별 approve/reject와 ReviewNote
+저장을 순서대로 처리한 뒤, 마지막에 `memory_node_service`를 한 번만 실행한다.
+candidate별 legacy invocation도 가능하지만, race와 중복 Memory update를 피하려면
+job-level batch를 사용한다.
 
 ```mermaid
 flowchart TD
     start([START])
     load[load_candidate_context_node_service]
     materialize[actual_edge_materialization_node_service]
-    revise[graph_candidate_revision_agent]
     status[review_status_node_service]
     note[review_note_node_service]
     memory[memory_node_service]
@@ -206,9 +211,7 @@ flowchart TD
     start --> load
     load -- yes --> materialize
     load -- no --> status
-    load -- retry --> revise
-    materialize --> status
-    revise --> status
+    materialize --> note
     status --> note
     note --> memory
     memory --> finish
@@ -218,31 +221,29 @@ flowchart TD
 
 - `load_candidate_context_node_service`
   - `RelationshipCandidate` 노드를 `candidate_id`로 읽는다.
-  - 사용자의 `ReviewAction` 값에 따라 `yes`, `no`, `retry`로 routing한다.
+  - 사용자의 `ReviewAction` 값에 따라 `yes`, `no`로 routing한다.
 
 - `actual_edge_materialization_node_service`
   - `yes`인 경우 candidate의 `left_node`, `right_node`, `relationship_type`,
     `relationship_direction`을 사용해서 실제 graph edge를 만든다.
   - candidate status도 승인 상태로 갱신한다.
 
-- `graph_candidate_revision_agent`
-  - `retry`인 경우 기존 candidate, 사용자 note, 주변 graph context를 바탕으로
-    revised candidate를 생성한다.
-  - `write_candidate_revision_tool`로 새 candidate version을 저장한다.
-
 - `review_status_node_service`
-  - `yes`, `no`, `retry` 결과를 candidate status에 반영한다.
-  - 승인 materialization 이후에도 review status를 한 번 더 정리한다.
+  - `no` 결과를 candidate rejected 상태로 반영한다.
+  - `yes` 결과는 actual edge materialization 단계에서 candidate approved 상태로
+    함께 반영한다.
 
 - `review_note_node_service`
   - 사용자가 note를 남긴 경우 `RelationshipCandidate`에 붙는 `ReviewNote` 노드로
     저장한다.
 
 - `memory_node_service`
-  - 저장된 `ReviewNote` node를 근거로 단일 `Memory` 문서 끝에 feedback entry를
-    append한다. Memory는 포스트잇 같은 자유형 append-only 문서로 다룬다.
-  - `ReviewNote -[:EVIDENCES_MEMORY]-> Memory` link를 남겨 memory가 어떤
-    user feedback에서 왔는지 추적할 수 있게 한다.
+  - 같은 `job_id`에 저장된 `ReviewNote`, candidate, endpoint/evidence context를
+    모아 `memory_update_agent`에 전달한다.
+  - agent는 현재 `Memory`와 새 review context를 바탕으로 단일 Memory 문서 전체를
+    갱신한다.
+  - `ReviewNote -[:EVIDENCES_MEMORY]-> Memory` link를 남겨 memory가 어떤 user
+    feedback에서 왔는지 추적할 수 있게 한다.
 
 Review graph도 `IngestGraphResult`만 반환한다. review action 이후 남은
 `RelationshipCandidate.status = pending_review` count를 확인해서 job을 계속

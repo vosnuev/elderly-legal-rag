@@ -112,8 +112,18 @@ class FakeNoisyRawEventStream:
                             "args": {
                                 "document_id": "doc-1",
                                 "chunks": [
-                                    {"chunk_index": 1, "text": "a" * 2_000},
-                                    {"chunk_index": 2, "text": "b" * 3_000},
+                                    {
+                                        "chunk_index": 1,
+                                        "chunk_name": "제1조 목적",
+                                        "chunk_description": "목적 조항",
+                                        "text": "a" * 2_000,
+                                    },
+                                    {
+                                        "chunk_index": 2,
+                                        "chunk_name": "제2조 정의",
+                                        "chunk_description": "정의 조항",
+                                        "text": "b" * 3_000,
+                                    },
                                 ],
                             },
                         },
@@ -246,6 +256,7 @@ class AgentEventStreamLoggerTest(unittest.TestCase):
             result = AgentEventStreamLogger(
                 FakeLogger(),
                 agent_name="chunking_agent",
+                agent_context={"job_id": "job-1", "document_id": "doc-1"},
             ).run_with_events(
                 agent=FakeAgent(),
                 agent_input={"messages": []},
@@ -255,8 +266,10 @@ class AgentEventStreamLoggerTest(unittest.TestCase):
         self.assertEqual(result.output, {"structured_response": {"chunk_ids": ["chunk-1"]}})
         self.assertEqual([event.channel for event in result.events], ["messages", "tool_calls", "values"])
         self.assertEqual(len(fake_observer.events), 3)
+        self.assertEqual(fake_observer.events[0]["job_id"], "job-1")
         self.assertEqual(fake_observer.events[0]["agent_name"], "chunking_agent")
         self.assertEqual(fake_observer.events[0]["token"], "토큰")
+        self.assertEqual(fake_observer.events[0]["data"]["document_id"], "doc-1")
         self.assertEqual(
             fake_observer.events[1]["tool_usage"],
             {"tool_name": "write_chunk_tool", "input": {"x": 1}},
@@ -329,16 +342,26 @@ class AgentEventStreamLoggerTest(unittest.TestCase):
             ["messages", "messages", "tools", "tools", "values"],
         )
         finish_payload = result.events[1].payload
+        chunk_args = finish_payload["tool_call"]["args"]
+        self.assertEqual(chunk_args["type"], "chunk_write_args")
+        self.assertEqual(chunk_args["document_id"], "doc-1")
+        self.assertEqual(chunk_args["chunk_count"], 2)
+        self.assertEqual(chunk_args["chunk_indexes"], [1, 2])
+        self.assertEqual(chunk_args["text_total_chars"], 5_000)
+        self.assertEqual(chunk_args["omitted_chunk_count"], 0)
+        self.assertEqual(len(chunk_args["chunk_previews"]), 2)
         self.assertEqual(
-            finish_payload["tool_call"]["args"],
-            {
-                "type": "chunk_write_args",
-                "document_id": "doc-1",
-                "chunk_count": 2,
-                "chunk_indexes": [1, 2],
-                "text_total_chars": 5_000,
-            },
+            chunk_args["chunk_previews"][0]["chunk_name"]["full"],
+            "제1조 목적",
         )
+        self.assertEqual(
+            chunk_args["chunk_previews"][0]["chunk_description"]["full"],
+            "목적 조항",
+        )
+        self.assertEqual(chunk_args["chunk_previews"][0]["text"]["chars"], 2_000)
+        self.assertEqual(chunk_args["chunk_previews"][0]["text"]["full"], "a" * 2_000)
+        self.assertEqual(chunk_args["chunk_previews"][1]["text"]["chars"], 3_000)
+        self.assertEqual(chunk_args["chunk_previews"][1]["text"]["full"], "b" * 3_000)
         tool_output = result.events[2].payload["data"]["output"]
         self.assertEqual(tool_output["type"], "document")
         self.assertEqual(tool_output["raw_content_chars"], 5_011)

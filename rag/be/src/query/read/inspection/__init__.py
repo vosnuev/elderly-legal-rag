@@ -3,7 +3,6 @@ from __future__ import annotations
 from query.read.inspection.candidates import (
     list_candidates_for_document,
     list_candidates_for_job,
-    list_candidate_versions,
     read_relationship_candidate,
 )
 from query.read.inspection.chunks import (
@@ -31,7 +30,6 @@ from query.read.inspection.reviews import (
 __all__ = [
     "get_document_raw_content",
     "get_document_record",
-    "list_candidate_versions",
     "list_candidates_for_document",
     "list_candidates_for_job",
     "list_chunks_for_document",

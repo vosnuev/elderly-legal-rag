@@ -21,6 +21,20 @@ class ChunkWriteInput(BaseModel):
         ge=1,
         description="One-based chunk order inside the source document.",
     )
+    chunk_name: str = Field(
+        default="",
+        description=(
+            "Short human-readable display name for this chunk, such as an "
+            "article title, section heading, or concise topic label."
+        ),
+    )
+    chunk_description: str = Field(
+        default="",
+        description=(
+            "One or two short human-readable sentences explaining this chunk's "
+            "role in the original document."
+        ),
+    )
     text: str = Field(
         min_length=1,
         description="Exact source text copied from the original document.",
@@ -111,7 +125,7 @@ class ReadChunkContextToolInput(BaseModel):
 
 @tool
 def read_document_tool(document_id: str) -> dict[str, Any]:
-    """Read a source Document node from Memgraph by document id."""
+    """Read full source Document.raw_content for chunking only."""
     raw_content = get_document_raw_content(document_id)
     return {
         "document_id": document_id,
@@ -122,7 +136,7 @@ def read_document_tool(document_id: str) -> dict[str, Any]:
 # Deprecated: LLM-facing read tools should not expose the full embedding vector.
 @tool(args_schema=ReadChunkToolInput)
 def read_chunk_tool(chunk_id: str, include_embedding: bool = False) -> dict[str, Any]:
-    """Read a Chunk node from Memgraph by chunk id."""
+    """Read a Chunk node by id; deprecated for LLM agents because embedding can be large."""
     chunk = read_chunk_by_id(chunk_id)
     if not include_embedding:
         chunk.pop("embedding", None)
@@ -131,7 +145,7 @@ def read_chunk_tool(chunk_id: str, include_embedding: bool = False) -> dict[str,
 
 @tool(args_schema=ReadChunkContextToolInput)
 def read_chunk_context_tool(chunk_id: str) -> dict[str, Any]:
-    """Read Chunk text/metadata for agent reasoning without raw embedding vectors."""
+    """Read existing Chunk text/name/description/summary/tags without embedding vectors."""
     chunk = read_chunk_by_id(chunk_id)
     # Embedding vectors are large and should stay in deterministic vector-search
     # code paths. LLM agents only need the text, summary, tags, and status fields.
@@ -141,14 +155,14 @@ def read_chunk_context_tool(chunk_id: str) -> dict[str, Any]:
 
 @tool
 def count_document_occurrences_tool(document_id: str, text: str) -> int:
-    """Count exact occurrences of text in a source Document raw content."""
+    """Count exact occurrences of text inside source Document.raw_content."""
     source = get_document_raw_content(document_id)
     return source.count(text)
 
 
 @tool(args_schema=CheckDocumentUniqueStringToolInput)
 def check_document_unique_string_tool(document_id: str, text: str) -> dict[str, Any]:
-    """Check whether text appears exactly once in a source Document raw content."""
+    """Check whether a boundary marker appears exactly once in source Document.raw_content."""
     source = get_document_raw_content(document_id)
     occurrence_count = source.count(text)
     first_start_char = source.find(text)
@@ -165,7 +179,7 @@ def check_document_unique_string_tool(document_id: str, text: str) -> dict[str, 
 
 @tool(args_schema=WriteChunkToolInput)
 def write_chunk_tool(document_id: str, chunks: list[ChunkWriteInput]) -> dict[str, Any]:
-    """Write generated chunks for a source document and return generated chunk ids."""
+    """Write semantic chunks for a source document and return DB-generated chunk ids."""
     job_id = _document_ingest_job_id(document_id)
     return write_chunks_for_document(
         document_id=document_id,

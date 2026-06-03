@@ -74,3 +74,33 @@ class GraphIngestInvocation:
                 phase=GraphIngestPhase.FAILED,
                 errors=[str(exc)],
             )
+
+    def apply_review_decisions(
+        self,
+        *,
+        job_id: str,
+        reviewer: str,
+        decisions: list[dict[str, object]],
+    ) -> IngestGraphResult:
+        try:
+            self._logger.bind(
+                job_id=job_id,
+                reviewer=reviewer,
+                decision_count=len(decisions),
+            ).info("candidate review batch invoked")
+            return self._candidate_review_graph.invoke_batch(
+                job_id=job_id,
+                reviewer=reviewer,
+                decisions=decisions,
+            )
+        except Exception as exc:  # noqa: BLE001
+            self._logger.bind(
+                job_id=job_id,
+                reviewer=reviewer,
+                decision_count=len(decisions),
+            ).exception("candidate review batch failed")
+            return IngestGraphResult(
+                job_id=job_id,
+                phase=GraphIngestPhase.FAILED,
+                errors=[str(exc)],
+            )

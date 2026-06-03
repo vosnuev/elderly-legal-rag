@@ -94,6 +94,46 @@ class OpenRouterClientTest(unittest.TestCase):
 
         self.assertIsNone(chat_openai.call_args.kwargs["extra_body"])
 
+    def test_chat_model_uses_explicit_agent_route(self) -> None:
+        fake_settings = SimpleNamespace(
+            openrouter_api_key=SecretStr("test-key"),
+            graph_llm_model="openai/gpt-oss-120b",
+            llm_model=None,
+            openrouter_base_url="https://openrouter.ai/api/v1",
+            query_timeout_ms=30_000,
+            graph_llm_provider="groq",
+            graph_llm_provider_allow_fallbacks=False,
+            graph_llm_thinking="",
+            graph_llm_request_timeout_seconds=60,
+            graph_llm_stream_chunk_timeout_seconds=60,
+            graph_llm_max_retries=2,
+        )
+
+        with (
+            patch("external.openrouter.client.settings", fake_settings),
+            patch("external.openrouter.client.ChatOpenAI") as chat_openai,
+        ):
+            client.create_openrouter_chat_model(
+                model_name="deepseek/deepseek-v4-pro",
+                use_default_provider=False,
+                provider="deepseek",
+                allow_provider_fallbacks=True,
+                thinking="disabled",
+            )
+
+        kwargs = chat_openai.call_args.kwargs
+        self.assertEqual(kwargs["model"], "deepseek/deepseek-v4-pro")
+        self.assertEqual(
+            kwargs["extra_body"],
+            {
+                "provider": {
+                    "order": ["deepseek"],
+                    "allow_fallbacks": True,
+                },
+                "thinking": {"type": "disabled"},
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

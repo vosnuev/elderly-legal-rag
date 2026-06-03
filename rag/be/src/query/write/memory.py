@@ -1,4 +1,4 @@
-# 역할: 자유형 Memory 문서를 append 방식으로 업데이트하고 필요한 provenance link를 남기는 write query이다.
+# 역할: memory update agent가 정리한 단일 Memory 문서를 versioned document로 갱신한다.
 from __future__ import annotations
 
 from typing import Any
@@ -7,87 +7,93 @@ from query.utils import db_generated_id_expression, graph_properties
 from query.write.core import write_query
 
 DEFAULT_MEMORY_SCOPE = "global"
-DEFAULT_MEMORY_TITLE = "Reviewer feedback memory"
+DEFAULT_MEMORY_TITLE = "Candidate extraction memory"
 
 
-def append_memory_entry(
+def update_memory_document(
     *,
-    entry: str,
+    content: str,
     scope: str = DEFAULT_MEMORY_SCOPE,
     title: str = DEFAULT_MEMORY_TITLE,
-    source_review_note_id: str | None = None,
-    source_candidate_id: str | None = None,
-    author: str = "memory_node_service",
+    update_summary: str = "",
+    evidence_review_note_ids: list[str] | None = None,
+    evidence_candidate_ids: list[str] | None = None,
+    author: str = "memory_update_agent",
 ) -> dict[str, Any]:
-    if not entry.strip():
+    if not content.strip():
         return {"stored": False}
 
-    query = f"""
-    OPTIONAL MATCH (note:ReviewNote {{id: $source_review_note_id}})
-    WITH note
-    WHERE $source_review_note_id IS NULL OR note IS NOT NULL
-    WITH note, coalesce(note.relationship_candidate_id, $source_candidate_id) AS candidate_id
-    MERGE (memory:Memory {{scope: $scope}})
-    ON CREATE SET memory.id = {db_generated_id_expression()},
-                  memory.title = $title,
-                  memory.content = "",
-                  memory.status = "active",
-                  memory.version = 0,
-                  memory.evidence_review_note_ids = [],
-                  memory.evidence_relationship_candidate_ids = [],
-                  memory.evidence_node_ids = [],
-                  memory.metadata = $metadata,
-                  memory.created_at = localDateTime()
-    SET memory.content = CASE
-            WHEN coalesce(memory.content, "") = "" THEN $entry
-            ELSE memory.content + $separator + $entry
-        END,
-        memory.title = coalesce($title, memory.title),
-        memory.author = $author,
-        memory.status = "active",
-        memory.version = coalesce(memory.version, 0) + 1,
-        memory.evidence_review_note_ids = CASE
-            WHEN note IS NULL THEN coalesce(memory.evidence_review_note_ids, [])
-            WHEN note.id IN coalesce(memory.evidence_review_note_ids, []) THEN coalesce(memory.evidence_review_note_ids, [])
-            ELSE coalesce(memory.evidence_review_note_ids, []) + [note.id]
-        END,
-        memory.evidence_relationship_candidate_ids = CASE
-            WHEN candidate_id IS NULL THEN coalesce(memory.evidence_relationship_candidate_ids, [])
-            WHEN candidate_id IN coalesce(memory.evidence_relationship_candidate_ids, []) THEN coalesce(memory.evidence_relationship_candidate_ids, [])
-            ELSE coalesce(memory.evidence_relationship_candidate_ids, []) + [candidate_id]
-        END,
-        memory.updated_at = localDateTime()
-    FOREACH (_ IN CASE WHEN note IS NULL THEN [] ELSE [1] END |
-        MERGE (note)-[:EVIDENCES_MEMORY]->(memory)
-    )
-    RETURN memory.id AS memory_id,
-           note.id AS source_review_note_id,
-           candidate_id AS source_candidate_id,
-           memory.version AS version,
-           memory.content AS content
-    """
+    review_note_ids = _unique_ids(evidence_review_note_ids)
+    candidate_ids = _unique_ids(evidence_candidate_ids)
     result = write_query(
-        query,
+        f"""
+        MERGE (memory:Memory {{scope: $scope}})
+        ON CREATE SET memory.id = {db_generated_id_expression()},
+                      memory.created_at = localDateTime(),
+                      memory.version = 0,
+                      memory.evidence_review_note_ids = [],
+                      memory.evidence_relationship_candidate_ids = [],
+                      memory.evidence_node_ids = []
+        SET memory.content = $content,
+            memory.title = $title,
+            memory.status = "active",
+            memory.author = $author,
+            memory.version = coalesce(memory.version, 0) + 1,
+            memory.evidence_review_note_ids = reduce(
+                acc = [],
+                item IN coalesce(memory.evidence_review_note_ids, []) + $review_note_ids |
+                CASE
+                    WHEN item IS NULL OR item IN acc THEN acc
+                    ELSE acc + [item]
+                END
+            ),
+            memory.evidence_relationship_candidate_ids = reduce(
+                acc = [],
+                item IN coalesce(memory.evidence_relationship_candidate_ids, []) + $candidate_ids |
+                CASE
+                    WHEN item IS NULL OR item IN acc THEN acc
+                    ELSE acc + [item]
+                END
+            ),
+            memory.metadata = $metadata,
+            memory.updated_at = localDateTime()
+        WITH memory
+        UNWIND $review_note_ids AS review_note_id
+        OPTIONAL MATCH (note:ReviewNote {{id: review_note_id}})
+        WITH memory, [note IN collect(note) WHERE note IS NOT NULL] AS notes
+        FOREACH (note IN notes |
+            MERGE (note)-[:EVIDENCES_MEMORY]->(memory)
+        )
+        RETURN memory.id AS memory_id,
+               memory.version AS version,
+               memory.content AS content,
+               memory.evidence_review_note_ids AS evidence_review_note_ids,
+               memory.evidence_relationship_candidate_ids AS evidence_candidate_ids
+        """,
         {
-            "entry": entry.strip(),
-            "separator": "\n\n",
-            "scope": scope,
-            "title": title,
-            "source_review_note_id": _optional_id(source_review_note_id),
-            "source_candidate_id": _optional_id(source_candidate_id),
+            "content": content.strip(),
+            "scope": scope.strip() or DEFAULT_MEMORY_SCOPE,
+            "title": title.strip() or DEFAULT_MEMORY_TITLE,
             "author": author,
+            "review_note_ids": review_note_ids,
+            "candidate_ids": candidate_ids,
             "metadata": graph_properties(
-                {"metadata": {"format": "append_only_markdown"}}
+                {
+                    "metadata": {
+                        "format": "curated_markdown",
+                        "last_update_summary": update_summary.strip(),
+                    }
+                }
             )["metadata"],
         },
     )
-    if source_review_note_id and not result.get("rows"):
-        raise ValueError(f"ReviewNote not found: {source_review_note_id}")
     return result
 
 
-def _optional_id(value: str | None) -> str | None:
-    if value is None:
-        return None
-    normalized = value.strip()
-    return normalized or None
+def _unique_ids(values: list[str] | None) -> list[str]:
+    result: list[str] = []
+    for value in values or []:
+        normalized = str(value).strip()
+        if normalized and normalized not in result:
+            result.append(normalized)
+    return result

@@ -23,7 +23,7 @@ class WorkerPool:
         observer: ObservabilityService,
         runner: PipelineRunner,
         build_worker_count: int = 1,
-        review_worker_count: int = 2,
+        review_worker_count: int = 1,
         queue_max_size: int = 100,
     ) -> None:
         self._task_store = task_store

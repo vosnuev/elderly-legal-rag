@@ -19,17 +19,30 @@ def write_chunks_for_document(
     ]
     if not records:
         return {"stored_count": 0, "chunk_ids": []}
+    chunk_indexes = [
+        int(record["chunk_index"])
+        for record in records
+        if "chunk_index" in record
+    ]
+    replace_existing = 1 in chunk_indexes
 
-    # 같은 ingest job에서 agent가 write를 재시도하면 이전 chunk를 교체한다.
-    # 이렇게 해야 단일 큰 chunk를 먼저 저장한 뒤 세분화 chunk를 다시 쓰는 경우
-    # stale chunk가 downstream shared state나 guard query에 섞이지 않는다.
+    # chunking_agent는 긴 문서에서 write_chunk_tool을 여러 번 호출할 수 있다.
+    # 첫 batch(chunk_index=1)는 같은 job의 기존 chunk를 모두 reset하고, 이후
+    # batch는 같은 chunk_index만 교체한다. 이렇게 하면 작은 batch append와
+    # batch-level retry를 모두 허용하면서 stale duplicate index를 막을 수 있다.
     result = write_query(
         f"""
         MATCH (d:Document {{id: $document_id}})
         OPTIONAL MATCH (d)-[:HAS_CHUNK]->(
             old:Chunk {{document_id: $document_id, last_ingest_job_id: $job_id}}
         )
-        WITH d, collect(old) AS old_chunks
+        WITH d, collect(old) AS candidate_old_chunks
+        WITH d,
+             [
+               old IN candidate_old_chunks
+               WHERE old IS NOT NULL
+                 AND ($replace_existing OR old.chunk_index IN $chunk_indexes)
+             ] AS old_chunks
         FOREACH (old IN old_chunks | DETACH DELETE old)
         WITH d
         UNWIND $chunks AS chunk
@@ -47,6 +60,8 @@ def write_chunks_for_document(
         {
             "job_id": job_id,
             "document_id": document_id,
+            "chunk_indexes": chunk_indexes,
+            "replace_existing": replace_existing,
             "chunks": [graph_properties(record) for record in records],
         },
     )

@@ -15,6 +15,13 @@ from pipeline.agent_runtime import (
     AgentEventStreamLogger,
     keep_going_tool_errors,
 )
+from pipeline.sub_agents.llm_settings import (
+    agent_model_name,
+    agent_provider,
+    agent_provider_allow_fallbacks,
+    agent_retry_without_provider,
+    agent_thinking,
+)
 from query.read.inspection import list_chunks_for_document
 from query.utils import node_properties
 from settings import settings
@@ -34,11 +41,17 @@ SYSTEM_PROMPT = """
 일반 작업 순서:
 1. read_document_tool(document_id)로 원문을 읽는다.
 2. 문서 길이와 의미 구조를 먼저 보고 chunk 개수와 경계를 정한다.
-3. 각 chunk에 tags, summary, boundary reason을 작성한다.
+3. 각 chunk에 chunk_name, chunk_description, tags, summary, boundary reason을 작성한다.
+   - chunk_name은 review queue와 agent log에서 사람이 빠르게 식별할 수 있는 짧은 이름이다.
+   - chunk_description은 이 chunk가 전체 원문에서 어떤 역할을 하는지 설명하는 1~2문장이다.
+   - 법령/조례 문서라면 조문명, 장/절 제목, 부칙, 별표/서식명처럼 문서 구조가 드러나는
+     이름을 우선 사용한다.
 4. start_unique_string/end_unique_string은 chunk의 시작과 끝을 식별할 수 있는
    원문 일부를 그대로 사용한다. 이번 flow에서는 별도 boundary 검증 tool을 호출하지 않는다.
-5. 모든 chunk payload가 준비된 뒤 write_chunk_tool을 한 번만 호출해 저장한다.
-6. write_chunk_tool 성공 결과를 확인하고 저장 완료를 한국어로 짧게 요약한다.
+5. chunk payload를 문서 순서대로 작은 batch로 나눠 write_chunk_tool에 저장한다.
+   권장 batch 크기는 1~4개 chunk이며, 긴 chunk text는 1개씩 저장해도 된다.
+6. 모든 batch 저장이 끝나면 write_chunk_tool 성공 결과들을 확인하고 저장 완료를
+   한국어로 짧게 요약한다.
 
 chunk 분할 기준:
 - raw_content가 1,500자 이하인 짧은 문서가 아니면 문서 전체를 단일 chunk로 저장하지 않는다.
@@ -52,12 +65,17 @@ chunk 분할 기준:
 - 긴 조문은 조/항/호/목 단위로 나누되, 각 chunk text는 원문에 실제 존재하는
   연속 문자열이어야 한다.
 - chunk_index는 1부터 시작하고 문서 순서대로 빠짐없이 증가해야 한다.
+- chunk_name은 5~40자 정도의 한국어 display label로 작성한다.
+- chunk_description은 review 사용자가 chunk id를 몰라도 의미를 이해할 수 있게 작성한다.
 - metadata에는 필요하면 section, article, paragraph, source_key 같은 경로 정보를 넣는다.
 
 규칙:
 - chunk id를 직접 만들거나 추측하지 않는다. chunk id는 DB 저장 결과에서만 온다.
-- chunk 전체 목록을 확정하기 전에는 write_chunk_tool을 호출하지 않는다.
-- write_chunk_tool은 원칙적으로 한 번만 호출한다. 여러 번 나눠서 append 저장하지 않는다.
+- 먼저 문서 전체 구조와 chunk_index 순서 계획을 세운 뒤, chunk_index 순서대로 저장한다.
+- write_chunk_tool은 여러 번 호출할 수 있다. 첫 호출은 chunk_index=1부터 시작하고,
+  이후 호출은 이어지는 index만 보낸다.
+- 같은 chunk_index를 다시 보내면 tool 내부에서 해당 index를 교체할 수 있다. 단,
+  이미 성공적으로 저장된 이전 batch를 불필요하게 반복해서 다시 보내지 않는다.
 - tool이 error JSON 또는 Tool error message를 반환하면 같은 입력을 반복하지 말고,
   현재 가능한 다른 입력이나 더 작은 chunk 경계로 수정해서 계속 진행한다.
 - 최종 응답은 DB 저장 성공 여부와 chunk 개수만 짧게 요약한다. chunk id 전달은 graph
@@ -117,7 +135,22 @@ class ChunkingAgent:
         use_default_provider: bool = True,
     ) -> Runnable | None:
         model = create_openrouter_chat_model(
-            use_default_provider=use_default_provider,
+            model_name=agent_model_name(settings, "chunking_agent_llm_model"),
+            use_default_provider=False,
+            provider=(
+                agent_provider(settings, "chunking_agent_llm_provider")
+                if use_default_provider
+                else None
+            ),
+            allow_provider_fallbacks=(
+                agent_provider_allow_fallbacks(
+                    settings,
+                    "chunking_agent_llm_provider_allow_fallbacks",
+                )
+                if use_default_provider
+                else None
+            ),
+            thinking=agent_thinking(settings, "chunking_agent_llm_thinking"),
         )
         if model is None:
             return None
@@ -162,6 +195,10 @@ class ChunkingAgent:
                 event_stream_run = AgentEventStreamLogger(
                     attempt_logger,
                     agent_name="chunking_agent",
+                    agent_context={
+                        "job_id": job_id,
+                        "document_id": document_id,
+                    },
                 ).run_with_events(
                     agent=agent,
                     agent_input=_agent_input(document_id),
@@ -269,9 +306,12 @@ def _agent_input(document_id: str) -> dict[str, list[dict[str, str]]]:
                     "Call read_document_tool first, then persist chunks "
                     "through write_chunk_tool using this "
                     "same document_id. Do not provide chunk ids yourself. "
-                    "Plan the full chunk list before writing, and call "
-                    "write_chunk_tool only once with the final full chunks "
-                    "array. Do not append chunks through multiple write calls. "
+                    "Plan the document structure and chunk index order before "
+                    "writing. You may call write_chunk_tool multiple times in "
+                    "small batches of 1 to 4 chunks. Start the first write with "
+                    "chunk_index=1, then continue with the next indexes. Do not "
+                    "resend previously stored chunks unless you intentionally "
+                    "restart from chunk_index=1. "
                     "If the source document is longer than 10000 characters, "
                     "you must create at least 8 chunks and must not store the "
                     "entire document as one chunk. Target 800 to 2200 "
@@ -280,11 +320,13 @@ def _agent_input(document_id: str) -> dict[str, list[dict[str, str]]]:
                     "basic information, articles, article units, addenda, "
                     "tables/forms, and then by paragraph/list item when a "
                     "section is long. Chunk text must be exact contiguous "
-                    "source text, never a summary. "
+                    "source text, never a summary. Give every chunk a short "
+                    "Korean chunk_name and a human-readable chunk_description "
+                    "that explains its role in the original document. "
                     "Do not call any boundary verification tool in this flow. "
                     "Only call provided tool names. Never call commentary, "
                     "analysis, final, final_answer, answer, or response as tools. "
-                    "After write_chunk_tool returns, briefly summarize the "
+                    "After all write_chunk_tool calls return, briefly summarize the "
                     "stored chunk count in Korean. The graph runtime will read "
                     "stored chunk ids from the database, so do not force a "
                     "structured final output.\n"
@@ -296,14 +338,17 @@ def _agent_input(document_id: str) -> dict[str, list[dict[str, str]]]:
 
 
 def _chunking_agent_attempts() -> list[_ChunkingAgentAttempt]:
-    provider = (settings.graph_llm_provider or "").strip()
+    provider = agent_provider(settings, "chunking_agent_llm_provider") or ""
     attempts = [
         _ChunkingAgentAttempt(
             name=provider or "openrouter-default-provider",
             use_default_provider=True,
         )
     ]
-    if provider and settings.graph_llm_retry_without_provider:
+    if provider and agent_retry_without_provider(
+        settings,
+        "chunking_agent_llm_retry_without_provider",
+    ):
         attempts.append(
             _ChunkingAgentAttempt(
                 name="openrouter-default-provider",

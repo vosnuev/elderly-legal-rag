@@ -26,11 +26,11 @@
 - `Chunk`: document에서 agent가 생성한 semantic chunk node.
 - `RelationshipCandidate` 또는 `EdgeCandidate`: user review 전 단계의 proposed edge
   candidate node.
-- `ReviewNote`: 특정 `RelationshipCandidate` review에 붙는 user approval/rejection/retry
+- `ReviewNote`: 특정 `RelationshipCandidate` review에 붙는 user approval/rejection
   note. 독립 knowledge node가 아니라 `RelationshipCandidate -[:HAS_REVIEW_NOTE]->
   ReviewNote` 형태의 review artifact node이다.
 - `Memory`: review note와 candidate feedback을 근거로 memory update 단계가 만든
-  단일 append-only memory node. semantic knowledge graph의 지식 노드가 아니라 agent가
+  단일 curated memory node. semantic knowledge graph의 지식 노드가 아니라 agent가
   다음 판단에서 참고할 memory artifact이다.
 - `IngestJob`: document ingest와 graph construction progress marker. semantic knowledge
   graph가 아니라 pipeline 상태 조회를 위한 operational node이다.
@@ -47,7 +47,7 @@ flowchart TD
     Chunk["Chunk<br/>semantic chunk"]
     Candidate["RelationshipCandidate<br/>review 전 proposed edge"]
     ReviewNote["ReviewNote<br/>candidate review feedback"]
-    Memory["Memory<br/>single append-only memory document"]
+    Memory["Memory<br/>single curated memory document"]
     IngestJob["IngestJob<br/>operational progress marker"]
     Left["left_node<br/>any graph node"]
     Right["right_node<br/>any graph node"]
@@ -73,10 +73,8 @@ flowchart TD
   두 endpoint 사이의 관계를 언급할 때만 별도로 사용한다.
 - `RelationshipCandidate.job_id`는 이 candidate가 어떤 document ingest run에서
   생성됐는지 묶는 runtime provenance field이다. semantic knowledge property가 아니다.
-- `RelationshipCandidate.previous_candidate_id`는 retry/revision flow에서 원본 candidate와
-  새 candidate version을 연결하기 위한 review workflow property이다.
-- `RelationshipCandidate.status`는 `pending_review`, `approved`, `rejected`, `retry`
-  중 하나만 허용한다.
+- `RelationshipCandidate.status`는 `pending_review`, `approved`, `rejected` 중 하나만
+  허용한다.
 - `ReviewNote`는 `RelationshipCandidate` review에 붙는 event성 artifact이다.
 - `Memory`는 semantic KG 지식 노드가 아니라, review feedback을 누적한 단일
   agent용 memory artifact이다.
@@ -107,16 +105,16 @@ agent가 판단할 수 있는 필드만 받아야 한다.
 
 `ReviewNote`는 먼저 relationship candidate에 대한 개별 reviewer feedback으로 저장한다.
 장기 memory layer는 `ReviewNote`를 직접 전부 context에 넣는 방식이 아니라, 별도
-memory update 단계가 review note를 단일 `Memory` node의 본문 끝에 append하는
-방식으로 둔다.
+memory update 단계가 현재 Memory와 review note context를 종합해 단일 `Memory` node의
+본문 전체를 다시 정리하는 방식으로 둔다.
 
 권장 방향:
 
 - `ReviewNote`: 원본 reviewer feedback event.
 - `Memory`: 반복되는 사용자 선호, 거절 패턴, 승인 기준, 법령 계층 해석 규칙을
-  누적한 단일 append-only memory.
-- candidate generation/revision agent: 원본 note 전체가 아니라 단일 Memory를 먼저
-  읽고, 필요한 경우 관련 note만 추가 조회한다.
+  정리한 단일 curated memory.
+- candidate generation agent: tool call 여부와 무관하게 runtime이 단일 Memory를
+  context로 주입하고, 필요한 경우 관련 note만 추가 조회한다.
 
 ## 전체 플로우에서 위치
 

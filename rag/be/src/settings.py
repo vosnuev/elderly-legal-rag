@@ -47,6 +47,24 @@ class Settings(BaseSettings):
     graph_llm_stream_chunk_timeout_seconds: float = Field(default=60.0, gt=0)
     graph_llm_max_retries: int = Field(default=2, ge=0)
     graph_llm_thinking: str | None = None
+    chunking_agent_llm_model: str | None = None
+    chunking_agent_llm_provider: str | None = None
+    chunking_agent_llm_provider_allow_fallbacks: bool | None = None
+    chunking_agent_llm_retry_without_provider: bool | None = None
+    chunking_agent_llm_thinking: str | None = None
+    graph_candidate_agent_llm_model: str | None = None
+    graph_candidate_agent_llm_provider: str | None = None
+    graph_candidate_agent_llm_provider_allow_fallbacks: bool | None = None
+    graph_candidate_agent_llm_thinking: str | None = None
+    memory_update_agent_llm_model: str | None = None
+    memory_update_agent_llm_provider: str | None = None
+    memory_update_agent_llm_provider_allow_fallbacks: bool | None = None
+    memory_update_agent_llm_thinking: str | None = None
+    firecrawl_api_key: SecretStr | None = None
+    firecrawl_request_timeout_ms: int = Field(default=15_000, gt=0)
+    firecrawl_search_default_limit: int = Field(default=5, ge=1)
+    firecrawl_search_max_limit: int = Field(default=10, ge=1)
+    firecrawl_search_markdown_char_limit: int = Field(default=1_200, ge=100)
 
     mcp_host: str = "127.0.0.1"
     mcp_port: int = 8010
@@ -54,6 +72,8 @@ class Settings(BaseSettings):
     cors_allowed_origins: list[str] = [
         "http://127.0.0.1:5173",
         "http://localhost:5173",
+        "http://127.0.0.1:5174",
+        "http://localhost:5174",
     ]
     query_timeout_ms: int = Field(default=30_000, gt=0)
     query_max_rows: int = Field(default=100, gt=0)
@@ -62,12 +82,13 @@ class Settings(BaseSettings):
     review_note_text_search_index_name: str = "rag_review_note_text_idx"
     chunking_agent_tool_budget: int = Field(default=80, ge=1)
     graph_candidate_tool_budget: int = Field(default=80, ge=1)
+    memory_update_agent_tool_budget: int = Field(default=40, ge=1)
     graph_candidate_worker_count: int = Field(default=8, ge=1)
     knowledge_build_worker_count: int = Field(default=1, ge=1)
-    knowledge_review_worker_count: int = Field(default=2, ge=1)
+    knowledge_review_worker_count: int = Field(default=1, ge=1)
     knowledge_task_queue_max_size: int = Field(default=100, ge=1)
     graph_construction_worker_count: int = Field(default=1, ge=1)
-    graph_review_worker_count: int = Field(default=2, ge=1)
+    graph_review_worker_count: int = Field(default=1, ge=1)
     graph_task_queue_max_size: int = Field(default=100, ge=1)
     log_level: str = "INFO"
     log_json: bool = True

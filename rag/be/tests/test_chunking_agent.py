@@ -109,11 +109,17 @@ class ChunkingAgentRunTest(unittest.TestCase):
         self.assertIn("800~2,200자", SYSTEM_PROMPT)
         self.assertIn("3,000자를 넘기지 않는다", SYSTEM_PROMPT)
         self.assertIn("조문단위", SYSTEM_PROMPT)
+        self.assertIn("chunk_name", SYSTEM_PROMPT)
+        self.assertIn("chunk_description", SYSTEM_PROMPT)
+        self.assertIn("review queue", SYSTEM_PROMPT)
         self.assertIn("at least 8 chunks", user_content)
         self.assertIn("Target 800 to 2200", user_content)
         self.assertIn("must not store the entire document as one chunk", user_content)
-        self.assertIn("write_chunk_tool only once", user_content)
-        self.assertIn("여러 번 나눠서 append 저장하지 않는다", SYSTEM_PROMPT)
+        self.assertIn("chunk_name", user_content)
+        self.assertIn("chunk_description", user_content)
+        self.assertIn("multiple times in small batches", user_content)
+        self.assertIn("chunk_index=1", user_content)
+        self.assertIn("write_chunk_tool은 여러 번 호출할 수 있다", SYSTEM_PROMPT)
 
     def test_tools_exclude_boundary_verification_tool(self) -> None:
         tool_names = [tool.name for tool in ChunkingAgent().tools()]

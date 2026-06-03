@@ -12,6 +12,7 @@ from query.read.inspection import (
     list_candidates_for_job,
     list_chunks_for_document,
     list_memory,
+    list_review_notes_for_job,
 )
 from query.read.runtime import list_pending_review_candidates
 from pydantic import ValidationError
@@ -27,7 +28,7 @@ from query.write.chunks import write_chunks_for_document
 from query.write.core import write_query
 from query.write.documents import register_document
 from query.write.embeddings import update_chunk_embedding
-from query.write.memory import append_memory_entry
+from query.write.memory import update_memory_document
 from query.write.reviews import store_review_note
 
 
@@ -214,15 +215,27 @@ class QueryReadMethodsTest(unittest.TestCase):
             "query.read.runtime.review_queue.get_memgraph_bolt_client",
             return_value=client,
         ):
-            list_pending_review_candidates(document_id="doc-1", job_id="job-1", limit=12)
+            list_pending_review_candidates(
+                document_id="doc-1",
+                job_id="job-1",
+                limit=12,
+                status_filter="finished",
+            )
 
         _, query, parameters = client.calls[0]
         self.assertIn("coalesce(candidate.status, \"pending_review\") = \"pending_review\"", query)
         self.assertIn("source_node: coalesce(candidate.source_node, candidate.left_node)", query)
         self.assertIn("target_node: coalesce(candidate.target_node, candidate.right_node)", query)
+        self.assertIn("OPTIONAL MATCH (source_chunk:Chunk)", query)
+        self.assertIn("source_chunk_name", query)
+        self.assertIn("source_chunk_description", query)
+        self.assertIn("source_chunk_label", query)
+        self.assertIn("target_chunk_name", query)
+        self.assertIn("evidence_chunk_name", query)
         self.assertEqual(parameters["document_id"], "doc-1")
         self.assertEqual(parameters["job_id"], "job-1")
         self.assertEqual(parameters["limit"], 12)
+        self.assertEqual(parameters["status_filter"], "finished")
 
     def test_list_memory_reads_single_memory_without_kind_filter(self) -> None:
         client = FakeMemgraphClient({"*": {"rows": []}})
@@ -238,6 +251,22 @@ class QueryReadMethodsTest(unittest.TestCase):
         self.assertEqual(parameters["scope"], "global")
         self.assertEqual(parameters["status"], "active")
         self.assertEqual(parameters["limit"], 5)
+
+    def test_review_notes_for_job_include_candidate_and_endpoint_context(self) -> None:
+        client = FakeMemgraphClient({"*": {"rows": []}})
+
+        with patch("query.read.inspection.reviews.get_memgraph_bolt_client", return_value=client):
+            list_review_notes_for_job(job_id="job-1", limit=13)
+
+        _, query, parameters = client.calls[0]
+        self.assertIn("MATCH (candidate:RelationshipCandidate {job_id: $job_id})", query)
+        self.assertIn("HAS_REVIEW_NOTE", query)
+        self.assertIn("OPTIONAL MATCH (left {id: candidate.left_node})", query)
+        self.assertIn("OPTIONAL MATCH (right {id: candidate.right_node})", query)
+        self.assertIn("OPTIONAL MATCH (evidence {id: candidate.evidence_node_id})", query)
+        self.assertIn("candidate.id AS candidate_id", query)
+        self.assertEqual(parameters["job_id"], "job-1")
+        self.assertEqual(parameters["limit"], 13)
 
 
 class QueryWriteMethodsTest(unittest.TestCase):
@@ -318,6 +347,8 @@ class QueryWriteMethodsTest(unittest.TestCase):
                 chunks=[
                     {
                         "chunk_index": 1,
+                        "chunk_name": "제1조 목적",
+                        "chunk_description": "문서의 목적 조항을 담은 청크",
                         "text": "제1조 목적",
                         "start_unique_string": "제1조",
                         "end_unique_string": "목적",
@@ -329,16 +360,53 @@ class QueryWriteMethodsTest(unittest.TestCase):
         chunk = parameters["chunks"][0]
         self.assertIn("MATCH (d:Document {id: $document_id})", query)
         self.assertIn("last_ingest_job_id: $job_id", query)
+        self.assertIn("$replace_existing OR old.chunk_index IN $chunk_indexes", query)
         self.assertIn("DETACH DELETE old", query)
         self.assertIn("CREATE (c:Chunk)", query)
         self.assertIn("c.id = randomUUID()", query)
         self.assertIn("MERGE (d)-[:HAS_CHUNK]->(c)", query)
         self.assertIn("collect(c.id) AS chunk_ids", query)
         self.assertEqual(parameters["document_id"], "doc-1")
+        self.assertEqual(parameters["chunk_indexes"], [1])
+        self.assertTrue(parameters["replace_existing"])
         self.assertNotIn("document_id_value", parameters)
         self.assertEqual(chunk["document_id"], "doc-1")
+        self.assertEqual(chunk["chunk_name"], "제1조 목적")
+        self.assertEqual(chunk["chunk_description"], "문서의 목적 조항을 담은 청크")
         self.assertEqual(chunk["embedding_status"], "pending")
         self.assertNotIn("id", chunk)
+
+    def test_chunk_write_appends_later_batch_without_resetting_all_chunks(self) -> None:
+        client = FakeMemgraphClient(
+            {
+                "*": {
+                    "rows": [
+                        {
+                            "stored_count": 1,
+                            "chunk_ids": ["generated-chunk-2"],
+                        }
+                    ]
+                }
+            }
+        )
+
+        with patch("query.write.core.cypher.get_memgraph_bolt_client", return_value=client):
+            write_chunks_for_document(
+                document_id="doc-1",
+                job_id="job-1",
+                chunks=[
+                    {
+                        "chunk_index": 2,
+                        "text": "제2조 정의",
+                        "start_unique_string": "제2조",
+                        "end_unique_string": "정의",
+                    }
+                ],
+            )
+
+        _, _, parameters = client.calls[0]
+        self.assertEqual(parameters["chunk_indexes"], [2])
+        self.assertFalse(parameters["replace_existing"])
 
     def test_chunk_embedding_update_sets_vector_on_existing_chunk(self) -> None:
         client = FakeMemgraphClient(
@@ -486,7 +554,7 @@ class QueryWriteMethodsTest(unittest.TestCase):
         self.assertIn("HAS_REVIEW_NOTE", query)
         self.assertEqual(parameters["note"]["relationship_candidate_id"], "candidate-1")
 
-    def test_memory_append_uses_optional_review_note_link_and_db_id(self) -> None:
+    def test_memory_update_replaces_document_and_links_evidence(self) -> None:
         client = FakeMemgraphClient(
             {
                 "*": {
@@ -502,19 +570,26 @@ class QueryWriteMethodsTest(unittest.TestCase):
         )
 
         with patch("query.write.core.cypher.get_memgraph_bolt_client", return_value=client):
-            append_memory_entry(
-                entry="## Review feedback\n- note: keep it narrow",
-                source_review_note_id="note-1",
+            update_memory_document(
+                content="## Reviewer feedback memory\n- 지역 범위를 좁혀 판단한다.",
+                update_summary="지역 범위 기준을 갱신함",
+                evidence_review_note_ids=["note-1", "note-1"],
+                evidence_candidate_ids=["candidate-1"],
             )
 
         _, query, parameters = client.calls[0]
-        self.assertIn("OPTIONAL MATCH (note:ReviewNote {id: $source_review_note_id})", query)
+        self.assertIn("UNWIND $review_note_ids AS review_note_id", query)
+        self.assertIn("OPTIONAL MATCH (note:ReviewNote {id: review_note_id})", query)
         self.assertIn("MERGE (memory:Memory {scope: $scope})", query)
         self.assertIn("memory.id = randomUUID()", query)
+        self.assertIn("memory.content = $content", query)
+        self.assertIn("memory.version = coalesce(memory.version, 0) + 1", query)
         self.assertIn("EVIDENCES_MEMORY", query)
-        self.assertIn("memory.content + $separator + $entry", query)
-        self.assertEqual(parameters["source_review_note_id"], "note-1")
+        self.assertNotIn("memory.content + $separator + $entry", query)
+        self.assertEqual(parameters["review_note_ids"], ["note-1"])
+        self.assertEqual(parameters["candidate_ids"], ["candidate-1"])
         self.assertEqual(parameters["scope"], "global")
+        self.assertIn("지역 범위를 좁혀 판단한다", parameters["content"])
 
 
 class QuerySchemaContractsTest(unittest.TestCase):

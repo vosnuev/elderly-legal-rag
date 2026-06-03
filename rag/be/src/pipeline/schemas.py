@@ -21,7 +21,6 @@ class GraphIngestPhase(StrEnum):
 class ReviewAction(StrEnum):
     YES = "yes"
     NO = "no"
-    RETRY = "retry"
 
 
 class IngestGraphResult(BaseModel):

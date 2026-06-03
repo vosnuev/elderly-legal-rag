@@ -86,11 +86,11 @@ service/documents.py
     -> TaskSubmitter.submit_build(...)
 
 service/reviews.py
-  decide
-    -> TaskSubmitter.submit_review(...)
+  decide/decide_job
+    -> TaskSubmitter.submit_review(...) 또는 submit_review_batch(...)
 
 tasks/submitter.py
-  submit_build / submit_review
+  submit_build / submit_review / submit_review_batch
     -> TaskStore.submit(...)          # task_id 생성 + idempotency dedupe
     -> WorkerPool.enqueue(task)       # queue append
     -> observer.lifecycle(...)        # task.queued event
@@ -125,9 +125,9 @@ workers/runner.py
 ```
 
 `build` lane과 `review` lane은 서로 다른 queue를 가진다. `WorkerPool.start()`는
-각 lane마다 설정된 worker 수만큼 `asyncio.create_task()`를 만들기 때문에, 같은
-lane 안에서는 worker 수만큼 병렬로 `queue.get()`을 기다리고, 서로 다른 lane은
-서로 막지 않는다.
+각 lane마다 설정된 worker 수만큼 `asyncio.create_task()`를 만든다. 현재 기본 설정은
+review lane worker를 1개로 두어 같은 job의 review decision batch와 Memory update가
+서로 겹쳐 쓰지 않게 한다.
 
 ## Flow Diagrams
 
@@ -208,10 +208,16 @@ flowchart TD
 The first runtime uses in-process async queues:
 
 - `build` lane: one worker by default.
-- `review` lane: two workers by default.
+- `review` lane: one worker by default.
 - Queue size comes from settings.
 - Blocking pipeline calls should be wrapped in `asyncio.to_thread()` from the
   worker runner.
+
+Review decisions should normally enter through the job-level batch endpoint.
+The batch task applies candidate decisions in order and runs Memory update once
+after the batch, so the default single review worker is intentional. It avoids
+two review tasks for the same job reading and rewriting the same Memory document
+at the same time during early development.
 
 If durable replay or multi-process workers become required, the queue adapter
 can move behind `tasks.submitter` and `workers.pool` without changing API routes.

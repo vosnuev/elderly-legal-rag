@@ -9,6 +9,7 @@ from knowledge_runtime.jobs.progress import JobProgressModifier
 from knowledge_runtime.jobs.store import JobStore
 from knowledge_runtime.service.catalog import CatalogService
 from knowledge_runtime.service.documents import DocumentWorkService
+from knowledge_runtime.service.memory import MemoryService
 from knowledge_runtime.service.reviews import ReviewWorkService
 from knowledge_runtime.service.status import StatusService
 from knowledge_runtime.service.system import SystemService
@@ -27,6 +28,7 @@ class KnowledgeRuntime:
         documents: DocumentWorkService,
         catalog: CatalogService,
         reviews: ReviewWorkService,
+        memory: MemoryService,
         status: StatusService,
         system: SystemService,
         worker_pool: WorkerPool,
@@ -34,6 +36,7 @@ class KnowledgeRuntime:
         self.documents = documents
         self.catalog = catalog
         self.reviews = reviews
+        self.memory = memory
         self.status = status
         self.system = system
         self._worker_pool = worker_pool
@@ -71,6 +74,7 @@ class KnowledgeRuntime:
                 submitter=submitter,
                 projector=projector,
             ),
+            memory=MemoryService(),
             status=StatusService(
                 projector=projector,
                 observer=observer,

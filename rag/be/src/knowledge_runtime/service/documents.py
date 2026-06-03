@@ -16,6 +16,7 @@ from knowledge_runtime.schemas import (
     SUPPORTED_DOCUMENT_SUFFIXES,
 )
 from knowledge_runtime.tasks.submitter import TaskSubmitter
+from query.write import upsert_ingest_job_progress
 
 
 class DocumentWorkService:
@@ -146,6 +147,16 @@ class DocumentWorkService:
             file_name=file_name,
             document_id=document.document_id,
             stages=stages,
+        )
+        # Persist the durable job seed immediately. JobStore/TaskStore are process
+        # overlays, so FE job lists must be able to recover this row after restart.
+        upsert_ingest_job_progress(
+            job_id=job_id,
+            phase=JobPhase.STORED.value,
+            document_id=document.document_id,
+            chunk_count=0,
+            candidate_count=0,
+            pending_review_count=0,
         )
         await self._submitter.submit_build(
             job_id=job_id,

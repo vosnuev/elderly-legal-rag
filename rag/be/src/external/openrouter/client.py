@@ -11,6 +11,7 @@ def create_openrouter_chat_model(
     use_default_provider: bool = True,
     provider: str | None = None,
     allow_provider_fallbacks: bool | None = None,
+    thinking: str | None = None,
 ) -> ChatOpenAI | None:
     api_key = _openrouter_api_key()
     selected_model = model_name or settings.graph_llm_model or settings.llm_model
@@ -32,6 +33,7 @@ def create_openrouter_chat_model(
             use_default_provider=use_default_provider,
             provider=provider,
             allow_provider_fallbacks=allow_provider_fallbacks,
+            thinking=thinking,
         ),
     )
 
@@ -61,6 +63,7 @@ def _provider_routing_body(
     use_default_provider: bool = True,
     provider: str | None = None,
     allow_provider_fallbacks: bool | None = None,
+    thinking: str | None = None,
 ) -> dict[str, object] | None:
     body: dict[str, object] = {}
     selected_provider = provider
@@ -79,10 +82,11 @@ def _provider_routing_body(
                 else allow_provider_fallbacks
             ),
         }
-    thinking = (settings.graph_llm_thinking or "").strip()
-    if thinking:
+    selected_thinking = settings.graph_llm_thinking if thinking is None else thinking
+    thinking_type = (selected_thinking or "").strip()
+    if thinking_type:
         # DeepSeek V4 defaults to thinking mode. LangChain agents can send
         # tool_choice values that DeepSeek rejects in thinking mode, so this is
         # configurable per graph model.
-        body["thinking"] = {"type": thinking}
+        body["thinking"] = {"type": thinking_type}
     return body or None

@@ -12,7 +12,6 @@ from query.read.inspection import (
     get_document_raw_content,
     get_document_record,
     list_memory,
-    list_candidate_versions,
     list_candidates_for_document,
     list_candidates_for_job,
     list_chunks_for_document,
@@ -28,6 +27,7 @@ from query.read.inspection import (
     read_relationship_candidate,
 )
 from query.read.runtime import (
+    list_ingest_job_progress,
     list_documents,
     list_pending_review_candidates,
     list_workspace_documents,
@@ -42,11 +42,11 @@ __all__ = [
     "get_document_raw_content",
     "get_document_record",
     "graph_traverse",
-    "list_candidate_versions",
     "list_candidates_for_document",
     "list_candidates_for_job",
     "list_chunks_for_document",
     "list_documents",
+    "list_ingest_job_progress",
     "list_materialized_edges_for_candidate",
     "list_memory",
     "list_pending_review_candidates",

@@ -6,6 +6,9 @@ selection rules.
 
 from __future__ import annotations
 
+from hashlib import sha256
+import json
+
 from knowledge_runtime.tasks.models import TaskKind, TaskSubmission
 from knowledge_runtime.tasks.store import TaskStore
 from knowledge_runtime.workers.pool import WorkerPool
@@ -54,16 +57,44 @@ class TaskSubmitter:
         reviewer: str,
         note: str | None,
     ) -> TaskSubmission:
+        return await self.submit_review_batch(
+            job_id=job_id,
+            reviewer=reviewer,
+            decisions=[
+                {
+                    "candidate_id": candidate_id,
+                    "action": action,
+                    "note": note,
+                }
+            ],
+            idempotency_key=f"review:{job_id}:{candidate_id}",
+        )
+
+    async def submit_review_batch(
+        self,
+        *,
+        job_id: str,
+        reviewer: str,
+        decisions: list[dict[str, object]],
+        idempotency_key: str | None = None,
+    ) -> TaskSubmission:
+        normalized_decisions = [
+            {
+                "candidate_id": str(decision["candidate_id"]),
+                "action": str(decision["action"]),
+                "note": decision.get("note"),
+            }
+            for decision in decisions
+        ]
         submission = self._task_store.submit(
             kind=TaskKind.REVIEW,
             job_id=job_id,
-            idempotency_key=f"review:{job_id}:{candidate_id}",
+            idempotency_key=idempotency_key
+            or f"review:{job_id}:batch:{_decision_batch_hash(normalized_decisions)}",
             payload={
                 "job_id": job_id,
-                "candidate_id": candidate_id,
-                "action": action,
                 "reviewer": reviewer,
-                "note": note,
+                "decisions": normalized_decisions,
             },
         )
         if submission.accepted:
@@ -76,6 +107,12 @@ class TaskSubmitter:
                 stage="task_queue",
                 edge="candidate_to_queue",
                 log="Review task queued.",
+                data={"decision_count": len(normalized_decisions)},
             )
             await self._worker_pool.publish_metrics(submission.task)
         return submission
+
+
+def _decision_batch_hash(decisions: list[dict[str, object]]) -> str:
+    serialized = json.dumps(decisions, ensure_ascii=False, sort_keys=True)
+    return sha256(serialized.encode("utf-8")).hexdigest()[:16]

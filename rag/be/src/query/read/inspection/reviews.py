@@ -31,7 +31,15 @@ def list_review_notes_for_job(
     return get_memgraph_bolt_client().execute_read(
         """
         MATCH (candidate:RelationshipCandidate {job_id: $job_id})-[:HAS_REVIEW_NOTE]->(note:ReviewNote)
-        RETURN candidate.id AS candidate_id, note
+        OPTIONAL MATCH (left {id: candidate.left_node})
+        OPTIONAL MATCH (right {id: candidate.right_node})
+        OPTIONAL MATCH (evidence {id: candidate.evidence_node_id})
+        RETURN candidate.id AS candidate_id,
+               candidate,
+               note,
+               left,
+               right,
+               evidence
         ORDER BY note.created_at DESC, note.id DESC
         LIMIT $limit
         """,

@@ -23,6 +23,9 @@ class StatusService:
     def get(self, job_id: str) -> JobStatusResponse:
         return self._projector.status(job_id)
 
+    def list(self, *, limit: int = 50) -> list[JobStatusResponse]:
+        return self._projector.list(limit=limit)
+
     def events(self, job_id: str, *, last_event_id: str = "0-0") -> StreamingResponse:
         return observability_stream_response(
             self._observer,

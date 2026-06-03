@@ -34,13 +34,29 @@ class PipelineRunner:
 
     async def _run_review(self, payload: dict[str, Any]) -> IngestGraphResult:
         invocation = self._get_invocation()
-        result = await asyncio.to_thread(
-            invocation.apply_review_decision,
-            candidate_id=str(payload["candidate_id"]),
-            action=ReviewAction(str(payload["action"])),
-            reviewer=str(payload["reviewer"]),
-            note=payload.get("note"),
-        )
+        if "decisions" in payload:
+            decisions = [
+                {
+                    "candidate_id": str(decision["candidate_id"]),
+                    "action": ReviewAction(str(decision["action"])),
+                    "note": decision.get("note"),
+                }
+                for decision in payload.get("decisions", [])
+            ]
+            result = await asyncio.to_thread(
+                invocation.apply_review_decisions,
+                job_id=str(payload["job_id"]),
+                reviewer=str(payload["reviewer"]),
+                decisions=decisions,
+            )
+        else:
+            result = await asyncio.to_thread(
+                invocation.apply_review_decision,
+                candidate_id=str(payload["candidate_id"]),
+                action=ReviewAction(str(payload["action"])),
+                reviewer=str(payload["reviewer"]),
+                note=payload.get("note"),
+            )
         if result.job_id:
             return result
         return result.model_copy(update={"job_id": str(payload["job_id"])})

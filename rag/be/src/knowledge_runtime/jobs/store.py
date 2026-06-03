@@ -34,6 +34,15 @@ class JobStore:
             record = self._jobs.get(job_id)
             return record.model_copy(deep=True) if record else None
 
+    def list(self, *, limit: int = 50) -> list[JobRecord]:
+        with self._lock:
+            records = sorted(
+                self._jobs.values(),
+                key=lambda record: record.updated_at,
+                reverse=True,
+            )
+            return [record.model_copy(deep=True) for record in records[:limit]]
+
     def create_stored(
         self,
         *,

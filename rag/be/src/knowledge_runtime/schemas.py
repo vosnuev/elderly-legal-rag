@@ -6,12 +6,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from knowledge_runtime.jobs.models import JobPhase, JobStage
 from pipeline.schemas import ReviewAction
 
-SUPPORTED_DOCUMENT_SUFFIXES = {".csv", ".json", ".py", ".txt", ".md"}
+SUPPORTED_DOCUMENT_SUFFIXES = {".csv", ".json", ".py", ".txt", ".md", ".toon"}
 
 
 class SearchRequest(BaseModel):
@@ -89,10 +89,97 @@ class JobStatusResponse(BaseModel):
     current_task: TaskSnapshot | None = None
 
 
+class RelationshipCandidateSnapshot(BaseModel):
+    """FE-facing review queue candidate projection."""
+
+    model_config = ConfigDict(extra="allow")
+
+    id: str = ""
+    job_id: str = ""
+    left_node: str = ""
+    right_node: str = ""
+    source_node: str = ""
+    target_node: str = ""
+    relationship_type: str = ""
+    relationship_direction: str = ""
+    evidence_node_id: str | None = None
+    evidence_text: str = ""
+    rationale: str = ""
+    source_chunk_id: str = ""
+    source_chunk_name: str | None = None
+    source_chunk_description: str | None = None
+    source_chunk_summary: str | None = None
+    source_chunk_text: str | None = None
+    source_chunk_index: int | None = None
+    source_chunk_label: str | None = None
+    target_chunk_id: str | None = None
+    target_chunk_name: str | None = None
+    target_chunk_description: str | None = None
+    target_chunk_summary: str | None = None
+    target_chunk_text: str | None = None
+    target_chunk_index: int | None = None
+    target_chunk_label: str | None = None
+    evidence_chunk_name: str | None = None
+    evidence_chunk_description: str | None = None
+    evidence_chunk_summary: str | None = None
+    evidence_chunk_index: int | None = None
+    review_note: str | None = None
+    review_action: str | None = None
+    reviewer: str | None = None
+    reviewed_at: str | None = None
+    status: str = "pending_review"
+    version: int = 1
+    metadata: dict[str, Any] | str | None = Field(default_factory=dict)
+
+
+class ReviewCandidateRow(BaseModel):
+    candidate: RelationshipCandidateSnapshot
+
+
+class ReviewCandidateListResponse(BaseModel):
+    columns: list[str] = Field(default_factory=lambda: ["candidate"])
+    rows: list[ReviewCandidateRow] = Field(default_factory=list)
+    row_count: int = 0
+    elapsed_ms: float | None = None
+
+
 class ReviewDecisionRequest(BaseModel):
     action: ReviewAction
     note: str | None = None
     reviewer: str = "system"
+
+
+class ReviewJobDecision(BaseModel):
+    candidate_id: str = Field(min_length=1)
+    action: ReviewAction
+    note: str | None = None
+
+
+class ReviewJobDecisionRequest(BaseModel):
+    decisions: list[ReviewJobDecision] = Field(min_length=1)
+    reviewer: str = "system"
+
+
+class MemoryDocumentResponse(BaseModel):
+    exists: bool = False
+    id: str | None = None
+    scope: str = "global"
+    title: str = "Candidate extraction memory"
+    content: str = ""
+    version: int = 0
+    status: str = "empty"
+    author: str | None = None
+    updated_at: str | None = None
+    metadata: dict[str, Any] | str | None = Field(default_factory=dict)
+    evidence_review_note_ids: list[str] = Field(default_factory=list)
+    evidence_candidate_ids: list[str] = Field(default_factory=list)
+
+
+class MemoryDocumentUpdateRequest(BaseModel):
+    content: str = Field(min_length=1)
+    title: str = Field(default="Candidate extraction memory", min_length=1)
+    update_summary: str = ""
+    author: str = "user_memory_settings"
 
 
 class RuntimeDependencySummary(BaseModel):

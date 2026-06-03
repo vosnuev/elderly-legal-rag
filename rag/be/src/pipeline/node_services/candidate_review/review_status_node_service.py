@@ -24,6 +24,4 @@ class ReviewStatusNodeService:
 def _to_query_status(action: ReviewAction) -> RelationshipCandidateStatus:
     if action is ReviewAction.YES:
         return RelationshipCandidateStatus.APPROVED
-    if action is ReviewAction.NO:
-        return RelationshipCandidateStatus.REJECTED
-    return RelationshipCandidateStatus.RETRY
+    return RelationshipCandidateStatus.REJECTED

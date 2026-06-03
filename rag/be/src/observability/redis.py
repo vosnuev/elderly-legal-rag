@@ -7,6 +7,8 @@ import json
 from collections.abc import AsyncIterator
 from typing import Any
 
+from redis.exceptions import TimeoutError as RedisTimeoutError
+
 from external.redis import get_redis_client
 from observability.events.models import ObservabilityEvent
 from settings import settings
@@ -65,11 +67,17 @@ class RedisStreamObservability:
         current_id = last_event_id
         key = self._key(job_id)
         while True:
-            response = await redis.xread(
-                streams={key: current_id},
-                count=self._count,
-                block=self._block_ms,
-            )
+            try:
+                response = await redis.xread(
+                    streams={key: current_id},
+                    count=self._count,
+                    block=self._block_ms,
+                )
+            except RedisTimeoutError:
+                # A blocking XREAD can hit the client socket timeout before a new
+                # event arrives. That is an idle poll, not a broken SSE stream.
+                await asyncio.sleep(0)
+                continue
             if not response:
                 await asyncio.sleep(0)
                 continue

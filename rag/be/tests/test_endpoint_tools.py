@@ -12,19 +12,16 @@ from pipeline.sub_agents.chunking_agent import ChunkingAgent
 from pipeline.sub_agents.graph_candidate_agent import GraphCandidateAgent
 from pipeline.sub_agents.graph_candidate_agent import SYSTEM_PROMPT as GRAPH_CANDIDATE_PROMPT
 from pipeline.sub_agents.graph_candidate_agent import _candidate_worker_count
-from pipeline.sub_agents.graph_candidate_revision_agent import (
-    GraphCandidateRevisionAgent,
-)
-from pipeline.sub_agents.graph_candidate_revision_agent import (
-    SYSTEM_PROMPT as GRAPH_CANDIDATE_REVISION_PROMPT,
+from pipeline.sub_agents.memory_update_agent import MemoryUpdateAgent
+from pipeline.sub_agents.memory_update_agent import (
+    SYSTEM_PROMPT as MEMORY_UPDATE_PROMPT,
 )
 from tools import (
-    append_memory_tool,
     check_document_unique_string_tool,
     memgraph_read_query,
     read_chunk_context_tool,
-    read_memory_tool,
     write_chunk_tool,
+    write_memory_document_tool,
     write_relationship_candidate_tool,
 )
 from api.mcp import create_external_mcp
@@ -107,18 +104,19 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertNotIn("read_document_tool", tool_names)
         self.assertIn("read_chunk_context_tool", tool_names)
         self.assertNotIn("read_chunk_tool", tool_names)
-        self.assertIn("read_memory_tool", tool_names)
+        self.assertNotIn("read_memory_tool", tool_names)
+        self.assertIn("web_search_firecrawl_tool", tool_names)
         self.assertIn("write_relationship_candidate_tool", tool_names)
-        self.assertIn("get_reviewer_notes_tool", tool_names)
-        self.assertNotIn("append_memory_tool", tool_names)
+        self.assertNotIn("get_reviewer_notes_tool", tool_names)
+        self.assertNotIn("write_memory_document_tool", tool_names)
         self.assertNotIn("memgraph_write_query", tool_names)
         self.assertNotIn("memgraph_store_edge_candidates", tool_names)
         self._assert_no_runtime_context_schema(tools)
 
     def test_graph_candidate_prompts_forbid_unknown_tool_names(self) -> None:
-        for prompt in (GRAPH_CANDIDATE_PROMPT, GRAPH_CANDIDATE_REVISION_PROMPT):
+        for prompt in (GRAPH_CANDIDATE_PROMPT, MEMORY_UPDATE_PROMPT):
             self.assertIn("commentary", prompt)
-            self.assertIn("tools 목록에 실제로 제공된 tool 이름만 호출", prompt)
+            self.assertIn("제공된 tool 이름만 호출", prompt)
 
     def test_graph_candidate_prompt_forbids_original_document_context(self) -> None:
         tool_names = {tool.name for tool in GraphCandidateAgent().tools()}
@@ -126,6 +124,10 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertIn("Document.raw_content", GRAPH_CANDIDATE_PROMPT)
         self.assertIn("document_id를 시작점", GRAPH_CANDIDATE_PROMPT)
         self.assertIn("memgraph_read_query", GRAPH_CANDIDATE_PROMPT)
+        self.assertIn("web_search_firecrawl_tool", GRAPH_CANDIDATE_PROMPT)
+        self.assertIn("Agent Memory Context", GRAPH_CANDIDATE_PROMPT)
+        self.assertNotIn("MCP_ASSIGNED_MEMGRAPH_TOOLS", GRAPH_CANDIDATE_PROMPT)
+        self.assertNotIn("get_reviewer_notes_tool", GRAPH_CANDIDATE_PROMPT)
         self.assertIn("memgraph_query", GRAPH_CANDIDATE_PROMPT)
         self.assertNotIn("read_document_tool", tool_names)
 
@@ -141,9 +143,10 @@ class EndpointToolsTest(unittest.TestCase):
             job_id: str,
             document_id: str,
             chunk_id: str,
+            memory_context: dict[str, object],
         ) -> None:
             nonlocal active_count, max_active_count
-            _ = (job_id, document_id)
+            _ = (job_id, document_id, memory_context)
             with lock:
                 active_count += 1
                 max_active_count = max(max_active_count, active_count)
@@ -157,6 +160,10 @@ class EndpointToolsTest(unittest.TestCase):
             patch(
                 "pipeline.sub_agents.graph_candidate_agent._stored_candidate_ids",
                 side_effect=[["old-candidate"], ["old-candidate", "new-candidate"]],
+            ),
+            patch(
+                "pipeline.sub_agents.graph_candidate_agent._memory_context",
+                return_value={"content": "prefer narrow candidates"},
             ),
             patch.object(agent, "_run_for_chunk", side_effect=fake_run_for_chunk),
         ):
@@ -178,8 +185,9 @@ class EndpointToolsTest(unittest.TestCase):
             job_id: str,
             document_id: str,
             chunk_id: str,
+            memory_context: dict[str, object],
         ) -> None:
-            _ = (job_id, document_id)
+            _ = (job_id, document_id, memory_context)
             if chunk_id == "chunk-2":
                 raise RuntimeError("provider rejected wrong tool name")
 
@@ -188,6 +196,10 @@ class EndpointToolsTest(unittest.TestCase):
             patch(
                 "pipeline.sub_agents.graph_candidate_agent._stored_candidate_ids",
                 side_effect=[["old-candidate"], ["old-candidate", "new-candidate"]],
+            ),
+            patch(
+                "pipeline.sub_agents.graph_candidate_agent._memory_context",
+                return_value={"content": "prefer narrow candidates"},
             ),
             patch.object(agent, "_run_for_chunk", side_effect=fake_run_for_chunk),
         ):
@@ -208,6 +220,10 @@ class EndpointToolsTest(unittest.TestCase):
                 "pipeline.sub_agents.graph_candidate_agent._stored_candidate_ids",
                 side_effect=[[], []],
             ),
+            patch(
+                "pipeline.sub_agents.graph_candidate_agent._memory_context",
+                return_value={"content": "prefer narrow candidates"},
+            ),
             patch.object(
                 agent,
                 "_run_for_chunk",
@@ -226,14 +242,19 @@ class EndpointToolsTest(unittest.TestCase):
             self.assertEqual(_candidate_worker_count(2), 2)
             self.assertEqual(_candidate_worker_count(0), 1)
 
-    def test_revision_agent_has_explicit_revision_tool(self) -> None:
-        tools = GraphCandidateRevisionAgent().tools()
+    def test_memory_update_agent_has_explicit_memory_write_tool(self) -> None:
+        tools = MemoryUpdateAgent().tools()
         tool_names = {tool.name for tool in tools}
 
         self.assertIn("memgraph_read_query", tool_names)
+        self.assertIn("memgraph_schema_read", tool_names)
+        self.assertIn("memgraph_text_index_search", tool_names)
+        self.assertIn("memgraph_vector_search", tool_names)
         self.assertIn("memgraph_graph_traverse", tool_names)
-        self.assertIn("write_candidate_revision_tool", tool_names)
-        self.assertIn("get_reviewer_notes_tool", tool_names)
+        self.assertIn("read_chunk_context_tool", tool_names)
+        self.assertIn("write_memory_document_tool", tool_names)
+        self.assertNotIn("read_document_tool", tool_names)
+        self.assertNotIn("write_relationship_candidate_tool", tool_names)
         self.assertNotIn("memgraph_write_query", tool_names)
         self._assert_no_runtime_context_schema(tools)
 
@@ -357,6 +378,8 @@ class EndpointToolsTest(unittest.TestCase):
         self.assertIn("document_id", schema["properties"])
         self.assertNotIn("id", chunk_fields)
         self.assertIn("chunk_index", chunk_fields)
+        self.assertIn("chunk_name", chunk_fields)
+        self.assertIn("chunk_description", chunk_fields)
         self.assertIn("start_unique_string", chunk_fields)
         self.assertIn("end_unique_string", chunk_fields)
         self.assertNotIn("job_id", chunk_fields)
@@ -417,25 +440,16 @@ class EndpointToolsTest(unittest.TestCase):
         written = write_candidates.call_args.args[0][0]
         self.assertEqual(written["job_id"], "job-1")
 
-    def test_read_memory_tool_schema_is_single_document_read(self) -> None:
-        schema = read_memory_tool.args_schema.model_json_schema()
+    def test_write_memory_document_tool_schema_replaces_single_memory_document(self) -> None:
+        schema = write_memory_document_tool.args_schema.model_json_schema()
 
         self.assertEqual(schema["additionalProperties"], False)
-        self.assertIn("scope", schema["properties"])
-        self.assertIn("status", schema["properties"])
-        self.assertNotIn("limit", schema["properties"])
-        self.assertNotIn("memory_kind", schema["properties"])
-        self.assertNotIn("job_id", schema["properties"])
-
-    def test_append_memory_tool_schema_allows_optional_feedback_link(self) -> None:
-        schema = append_memory_tool.args_schema.model_json_schema()
-
-        self.assertEqual(schema["additionalProperties"], False)
-        self.assertIn("entry", schema["properties"])
+        self.assertIn("content", schema["properties"])
         self.assertIn("scope", schema["properties"])
         self.assertIn("title", schema["properties"])
-        self.assertIn("source_review_note_id", schema["properties"])
-        self.assertIn("source_candidate_id", schema["properties"])
+        self.assertIn("update_summary", schema["properties"])
+        self.assertIn("evidence_review_note_ids", schema["properties"])
+        self.assertIn("evidence_candidate_ids", schema["properties"])
         self.assertNotIn("memory_kind", schema["properties"])
         self.assertNotIn("job_id", schema["properties"])
 

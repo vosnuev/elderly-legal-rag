@@ -27,7 +27,7 @@ read/
 
 - `inspection/`
   - internal agent와 non-LLM pipeline service가 DB state를 확인하는 계층이다.
-  - document raw content, chunk list, candidate detail/version, review note,
+  - document raw content, chunk list, candidate detail, review note,
     materialized edge, agent memory를 id 기준으로 읽는다.
   - external MCP에 기본 노출하지 않는다.
 
@@ -50,7 +50,7 @@ read/
 | 함수 | 언제 사용하는가 |
 | --- | --- |
 | `read_query` | agent 또는 MCP caller가 직접 Cypher read query를 작성해서 실행해야 할 때 사용한다. internal agent의 자유 탐색용 read tool과 external MCP `memgraph.read_query`의 기반이다. |
-| `schema_read` | agent가 현재 Memgraph label, relationship, index 구조를 확인해야 할 때 사용한다. external MCP `memgraph.schema_read`, feedback judge, graph candidate agent의 schema 확인에 사용한다. |
+| `schema_read` | agent가 현재 Memgraph label, relationship, index 구조를 확인해야 할 때 사용한다. external MCP `memgraph.schema_read`, graph candidate agent, memory update agent의 schema 확인에 사용한다. |
 
 ### `discovery/`
 
@@ -81,10 +81,9 @@ read/
 | `read_relationship_candidate` | review graph가 candidate decision을 적용하기 전에 candidate detail을 정확히 읽을 때 사용한다. |
 | `list_candidates_for_job` | job 단위로 candidate 생성 결과, pending/rejected/approved 상태를 확인할 때 사용한다. |
 | `list_candidates_for_document` | document에 연결된 chunk/evidence 기준으로 candidate를 다시 모아 document-level review 상태를 확인할 때 사용한다. |
-| `list_candidate_versions` | 사용자가 request update/retry를 선택한 뒤 기존 candidate와 revised candidate version을 함께 확인할 때 사용한다. |
-| `list_review_notes_for_candidate` | 특정 relationship candidate에 붙은 reviewer note를 읽어 retry/revision context로 사용할 때 사용한다. |
+| `list_review_notes_for_candidate` | 특정 relationship candidate에 붙은 reviewer note를 audit/detail context로 읽을 때 사용한다. |
 | `list_review_notes_for_job` | job 단위 feedback 기록을 모아 memory update 단계 또는 review audit 화면에 전달할 때 사용한다. |
-| `list_memory` | graph candidate/revision agent가 reviewer feedback에서 누적된 단일 Memory 문서를 읽을 때 사용한다. kind로 나누지 않고 scope/status만 필터링한다. |
+| `list_memory` | graph candidate agent runtime context 주입과 memory update agent가 reviewer feedback에서 정리된 단일 Memory 문서를 읽을 때 사용한다. kind로 나누지 않고 scope/status만 필터링한다. |
 | `list_materialized_edges_for_candidate` | approve 이후 실제 edge가 생성됐는지, candidate provenance가 edge에 남았는지 확인할 때 사용한다. |
 
 ### `runtime/`

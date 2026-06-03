@@ -1,4 +1,4 @@
-# 역할: agent가 자유형 Memory 문서를 읽거나 append할 때 사용하는 tool wrapper이다.
+# 역할: memory_update_agent가 정리한 Memory 문서 전체를 저장하는 write tool wrapper이다.
 from __future__ import annotations
 
 from typing import Any
@@ -6,82 +6,56 @@ from typing import Any
 from langchain.tools import tool
 from pydantic import BaseModel, ConfigDict, Field
 
-from query.read.inspection import list_memory
-from query.write import append_memory_entry
-from tools.agent_output_sanitize import sanitize_agent_tool_output
+from query.write import update_memory_document
 
 
-class ReadMemoryToolInput(BaseModel):
+class WriteMemoryDocumentToolInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    scope: str | None = Field(
-        default="global",
-        description="Memory scope. The default reads the single shared memory document.",
-    )
-    status: str | None = Field(
-        default="active",
-        description="Memory status filter.",
-    )
-
-
-class AppendMemoryToolInput(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    entry: str = Field(
+    content: str = Field(
         min_length=1,
-        description="Free-form markdown/text entry to append at the bottom of Memory.content.",
+        description="Full updated Memory markdown document content.",
     )
     scope: str = Field(
         default="global",
         min_length=1,
-        description="Memory scope. Use the default shared memory unless a workflow owns a separate scope.",
+        description="Memory document scope. Use global for the shared agent memory.",
     )
     title: str = Field(
-        default="Reviewer feedback memory",
+        default="Candidate extraction memory",
         min_length=1,
-        description="Memory document title used when creating the Memory node.",
+        description="Memory document title.",
     )
-    source_review_note_id: str | None = Field(
-        default=None,
-        min_length=1,
-        description="Optional ReviewNote node id to link as feedback provenance.",
+    update_summary: str = Field(
+        default="",
+        description="Short Korean summary of what changed in this memory update.",
     )
-    source_candidate_id: str | None = Field(
-        default=None,
-        min_length=1,
-        description="Optional RelationshipCandidate id when no ReviewNote node is available.",
+    evidence_review_note_ids: list[str] = Field(
+        default_factory=list,
+        description="ReviewNote ids that support this memory update.",
     )
-
-
-@tool(args_schema=ReadMemoryToolInput)
-def read_memory_tool(
-    scope: str | None = "global",
-    status: str | None = "active",
-) -> dict[str, Any]:
-    """Read the shared append-only Memory document used by agents."""
-    return sanitize_agent_tool_output(
-        list_memory(
-            scope=scope,
-            status=status,
-            limit=1,
-        )
+    evidence_candidate_ids: list[str] = Field(
+        default_factory=list,
+        description="RelationshipCandidate ids that support this memory update.",
     )
 
 
-@tool(args_schema=AppendMemoryToolInput)
-def append_memory_tool(
-    entry: str,
+@tool(args_schema=WriteMemoryDocumentToolInput)
+def write_memory_document_tool(
+    content: str,
     scope: str = "global",
-    title: str = "Reviewer feedback memory",
-    source_review_note_id: str | None = None,
-    source_candidate_id: str | None = None,
+    title: str = "Candidate extraction memory",
+    update_summary: str = "",
+    evidence_review_note_ids: list[str] | None = None,
+    evidence_candidate_ids: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Append a free-form entry to Memory and optionally link source feedback."""
-    return append_memory_entry(
-        entry=entry,
+    """Replace the shared Memory document with a curated updated version."""
+    return update_memory_document(
+        content=content,
         scope=scope,
         title=title,
-        source_review_note_id=source_review_note_id,
-        source_candidate_id=source_candidate_id,
-        author="append_memory_tool",
+        update_summary=update_summary,
+        evidence_review_note_ids=evidence_review_note_ids or [],
+        evidence_candidate_ids=evidence_candidate_ids or [],
+        author="memory_update_agent",
     )
