@@ -237,12 +237,13 @@ docs/benchmark/charts/*.png
 ![Average cost per question](charts/avg_cost_per_question.png)
 
 이 차트는 성공 질문 1개당 평균 비용을 보여준다. 같은 색은 같은 모델 계열이다.
+아래의 `후보 #번호`는 전체 요약표와 차트 x축에서 쓰는 고정 후보 ID다.
 
-- 비용 #1: `#2 deepseek-v4-flash / deepinfra` `0.00019778`
-- 비용 #2: `#5 deepseek-v4-flash / gmicloud` `0.00030621`
-- 비용 #3: `#3 deepseek-v4-flash / deepseek` `0.00035059`
-- 비용 #4: `#4 deepseek-v4-flash / siliconflow` `0.00039211`
-- 비용 #5: `#1 gpt-oss-120b / cerebras` `0.00112336`
+- 비용 1위는 후보 `#2 deepseek-v4-flash / deepinfra`, `0.00019778`이다.
+- 비용 2위는 후보 `#5 deepseek-v4-flash / gmicloud`, `0.00030621`이다.
+- 비용 3위는 후보 `#3 deepseek-v4-flash / deepseek`, `0.00035059`이다.
+- 비용 4위는 후보 `#4 deepseek-v4-flash / siliconflow`, `0.00039211`이다.
+- 비용 5위는 후보 `#1 gpt-oss-120b / cerebras`, `0.00112336`이다.
 
 ## 2. 평균 latency 비교
 
@@ -250,11 +251,11 @@ docs/benchmark/charts/*.png
 
 이 차트는 성공 질문 1개당 평균 응답 시간을 보여준다. 막대 위 숫자는 초 단위 평균 latency다.
 
-- 속도 #1: `#1 gpt-oss-120b / cerebras` `1,411ms`
-- 속도 #2: `#3 deepseek-v4-flash / deepseek` `12,385ms`
-- 속도 #3: `#4 deepseek-v4-flash / siliconflow` `14,452ms`
-- 속도 #4: `#5 deepseek-v4-flash / gmicloud` `16,603ms`
-- 속도 #5: `#6 deepseek-v4-pro / streamlake` `17,393ms`
+- 속도 1위는 후보 `#1 gpt-oss-120b / cerebras`, `1,411ms`이다.
+- 속도 2위는 후보 `#3 deepseek-v4-flash / deepseek`, `12,385ms`이다.
+- 속도 3위는 후보 `#4 deepseek-v4-flash / siliconflow`, `14,452ms`이다.
+- 속도 4위는 후보 `#5 deepseek-v4-flash / gmicloud`, `16,603ms`이다.
+- 속도 5위는 후보 `#6 deepseek-v4-pro / streamlake`, `17,393ms`이다.
 
 ## 3. 평균 input token 비교
 
@@ -262,11 +263,11 @@ docs/benchmark/charts/*.png
 
 이 차트는 provider별 평균 input token을 보여준다. input token이 크면 같은 답변 길이라도 기본 비용이 올라간다.
 
-- input token 많음 #1: `#8 deepseek-v4-pro / gmicloud` `941.8`
-- input token 많음 #2: `#5 deepseek-v4-flash / gmicloud` `938.4`
-- input token 많음 #3: `#10 deepseek-v4-pro / novita` `938.0`
-- input token 많음 #4: `#7 deepseek-v4-pro / deepseek` `936.5`
-- input token 많음 #5: `#2 deepseek-v4-flash / deepinfra` `936.4`
+- 평균 input token이 많은 1위는 후보 `#8 deepseek-v4-pro / gmicloud`, `941.8`이다.
+- 평균 input token이 많은 2위는 후보 `#5 deepseek-v4-flash / gmicloud`, `938.4`이다.
+- 평균 input token이 많은 3위는 후보 `#10 deepseek-v4-pro / novita`, `938.0`이다.
+- 평균 input token이 많은 4위는 후보 `#7 deepseek-v4-pro / deepseek`, `936.5`이다.
+- 평균 input token이 많은 5위는 후보 `#2 deepseek-v4-flash / deepinfra`, `936.4`이다.
 
 ## 4. 평균 output token 비교
 
@@ -274,11 +275,11 @@ docs/benchmark/charts/*.png
 
 이 차트는 provider별 평균 output token을 보여준다. output token은 비용과 답변 길이에 직접 영향을 준다.
 
-- output token 많음 #1: `#9 deepseek-v4-pro / alibaba` `1,542.5`
-- output token 많음 #2: `#6 deepseek-v4-pro / streamlake` `1,495.8`
-- output token 많음 #3: `#10 deepseek-v4-pro / novita` `1,476.6`
-- output token 많음 #4: `#7 deepseek-v4-pro / deepseek` `1,472.4`
-- output token 많음 #5: `#12 deepseek-v4-pro / atlas-cloud` `1,471.1`
+- 평균 output token이 많은 1위는 후보 `#9 deepseek-v4-pro / alibaba`, `1,542.5`이다.
+- 평균 output token이 많은 2위는 후보 `#6 deepseek-v4-pro / streamlake`, `1,495.8`이다.
+- 평균 output token이 많은 3위는 후보 `#10 deepseek-v4-pro / novita`, `1,476.6`이다.
+- 평균 output token이 많은 4위는 후보 `#7 deepseek-v4-pro / deepseek`, `1,472.4`이다.
+- 평균 output token이 많은 5위는 후보 `#12 deepseek-v4-pro / atlas-cloud`, `1,471.1`이다.
 
 ## 5. 평균 used token 비교
 
