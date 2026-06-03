@@ -205,7 +205,7 @@ button[data-testid="stExpandSidebarButton"]::before {
     margin: 0;
     color: #FFFFFF;
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 760;
     line-height: 1.25;
 }
 
@@ -358,7 +358,7 @@ button[data-testid="stExpandSidebarButton"]::before {
 .search-hero h1 {
     margin: 0.22rem 0 0.58rem;
     color: var(--text);
-    font-size: 2rem;
+    font-size: 1.875rem;
     font-weight: 800;
     line-height: 1.2;
     letter-spacing: 0;
@@ -486,6 +486,7 @@ div[data-testid="stChatInput"] textarea,
 div[data-testid="stChatInput"] textarea:focus {
     border: 0 !important;
     border-color: transparent !important;
+    font-size: 1.0625rem !important;
     outline: 0 !important;
     box-shadow: none !important;
 }
@@ -505,6 +506,10 @@ div[data-testid="stTextArea"] {
     margin-bottom: 0.45rem;
     padding-bottom: 0.05rem;
     overflow: visible;
+}
+
+div[class*="st-key-consultation_extra_info"] {
+    margin-top: -0.55rem;
 }
 
 div[data-testid="stTextInput"] label,
@@ -580,7 +585,7 @@ div[data-testid="stButton"] button:hover {
 }
 
 div[class*="st-key-reset_consultation_button"] button {
-    background: #FFFDF7 !important;
+    background: #FFFFFC !important;
 }
 
 div[class*="st-key-reset_consultation_button"] button:hover {
@@ -721,8 +726,38 @@ div[class*="st-key-start_consultation_button"] button:active {
 
 [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]),
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-    border: 1px solid rgba(214, 199, 182, 0.22) !important;
-    box-shadow: none !important;
+    border: 1px solid #D6C7B6 !important;
+    border-radius: 12px !important;
+    background: #F9F5F3 !important;
+    box-shadow: 0 3px 14px rgba(74, 46, 26, 0.06) !important;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+    border: 1px solid #D6C7B6 !important;
+    border-top: 1.5px solid #4A2E1A !important;
+    border-radius: 12px !important;
+    background: #F9F5F3 !important;
+    box-shadow: 0 3px 14px rgba(74, 46, 26, 0.08) !important;
+    padding-right: 1.15rem !important;
+    overflow: hidden;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) div[data-testid="stMarkdownContainer"],
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) div[data-testid="stMarkdownContainer"] {
+    min-width: 0;
+    max-width: 100%;
+    padding-right: 0.35rem;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    line-break: strict;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) div[data-testid="stMarkdownContainer"] h2,
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) div[data-testid="stMarkdownContainer"] h3,
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) div[data-testid="stMarkdownContainer"] h2,
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) div[data-testid="stMarkdownContainer"] h3 {
+    font-size: 1.5625rem;
 }
 
 @keyframes chat-shimmer {
@@ -791,6 +826,18 @@ div[data-testid="stDataFrame"] {
     border-radius: 10px;
 }
 
+div[data-testid="stDataFrame"] [role="columnheader"],
+div[data-testid="stDataFrame"] [role="gridcell"],
+div[data-testid="stTable"] table th,
+div[data-testid="stTable"] table td,
+div[data-testid="stMarkdownContainer"] table th,
+div[data-testid="stMarkdownContainer"] table td {
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    line-break: strict;
+}
+
 .law-table-card {
     width: 100%;
     overflow: hidden;
@@ -816,6 +863,10 @@ div[data-testid="stDataFrame"] {
     font-size: 0.9rem;
     font-weight: 800;
     text-align: center;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    line-break: strict;
 }
 
 .law-summary-table td {
@@ -825,7 +876,10 @@ div[data-testid="stDataFrame"] {
     font-size: 0.96rem;
     line-height: 1.5;
     vertical-align: top;
+    white-space: normal;
     word-break: keep-all;
+    overflow-wrap: normal;
+    line-break: strict;
 }
 
 .law-summary-table tbody tr:last-child td {
@@ -855,10 +909,12 @@ div[data-testid="stDataFrame"] {
 
 .law-category-badge,
 .law-article-chip {
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
     max-width: 100%;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    line-break: strict;
 }
 
 .law-category-badge {
@@ -942,7 +998,7 @@ div[data-testid="stMarkdownContainer"] li {
 .law-card-heading h3 {
     margin: 0;
     color: var(--text);
-    font-size: 1.45rem;
+    font-size: 1.325rem;
     line-height: 1.25;
     letter-spacing: 0;
 }
@@ -983,6 +1039,6 @@ div[data-testid="stMarkdownContainer"] li {
     }
 
     .search-hero h1 {
-        font-size: 1.85rem;
+        font-size: 1.725rem;
     }
 }

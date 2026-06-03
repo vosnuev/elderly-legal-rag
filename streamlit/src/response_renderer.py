@@ -29,6 +29,18 @@ ELIGIBILITY_LABELS = {
 
 HTML_TAG_PATTERN = re.compile(r"<[^<>\n]{1,120}>")
 LINE_BREAK_TAG_PATTERN = re.compile(r"<\s*br\s*/?\s*>", re.IGNORECASE)
+KEYCAP_NUMBER_PATTERN = re.compile(r"([0-9])\ufe0f?\u20e3")
+CIRCLED_NUMBER_MAP = {
+    "①": "1.",
+    "②": "2.",
+    "③": "3.",
+    "④": "4.",
+    "⑤": "5.",
+    "⑥": "6.",
+    "⑦": "7.",
+    "⑧": "8.",
+    "⑨": "9.",
+}
 
 
 def render_agent_markdown(value: str, target: Any | None = None) -> None:
@@ -43,7 +55,15 @@ def _sanitize_agent_markdown(value: str) -> str:
             return "<br>"
         return html.escape(tag)
 
-    return HTML_TAG_PATTERN.sub(replace_tag, value)
+    normalized = _normalize_number_icons(value)
+    return HTML_TAG_PATTERN.sub(replace_tag, normalized)
+
+
+def _normalize_number_icons(value: str) -> str:
+    normalized = KEYCAP_NUMBER_PATTERN.sub(r"\1.", value)
+    for icon, text_number in CIRCLED_NUMBER_MAP.items():
+        normalized = normalized.replace(icon, text_number)
+    return normalized
 
 
 def _render_table(table_data: dict[str, Any]) -> None:
@@ -114,9 +134,9 @@ def _render_eligibility(eligibility: dict[str, Any] | None) -> None:
             st.markdown(f"- {item}")
 
 
-def render_chat_response(response: dict[str, Any]) -> None:
+def render_chat_response(response: dict[str, Any], *, key_prefix: str = "chat_response") -> None:
     if response.get("answer"):
-        _render_backend_answer(response)
+        _render_backend_answer(response, key_prefix=key_prefix)
         return
 
     logger.info(
@@ -127,13 +147,7 @@ def render_chat_response(response: dict[str, Any]) -> None:
         option_count=len(response.get("options") or []),
     )
 
-    with st.container(border=True, key="chat_response_card"):
-        kind = response.get("kind")
-        if kind == "clarification":
-            st.subheader("상황을 조금만 더 좁혀주세요")
-        else:
-            st.subheader("상담 답변")
-
+    with st.container(border=True, key=f"{key_prefix}_card"):
         summary = response.get("summary")
         if summary:
             st.info(str(summary))
@@ -180,15 +194,14 @@ def render_chat_response(response: dict[str, Any]) -> None:
             st.warning(str(warning))
 
 
-def _render_backend_answer(response: dict[str, Any]) -> None:
+def _render_backend_answer(response: dict[str, Any], *, key_prefix: str) -> None:
     logger.info(
         "backend_chat_response_rendered",
         tool_call_count=len(response.get("tool_calls") or []),
         source_count=len(response.get("sources") or []),
     )
 
-    with st.container(border=True, key="chat_response_card"):
-        st.subheader("상담 답변")
+    with st.container(border=True, key=f"{key_prefix}_card"):
         render_agent_markdown(str(response["answer"]))
 
         tool_calls = response.get("tool_calls") or []

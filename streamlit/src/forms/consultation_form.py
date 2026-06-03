@@ -65,6 +65,7 @@ def render_consultation_form_gate() -> dict[str, object] | None:
     st.session_state["backend_chat_session_id"] = f"streamlit-{uuid4()}"
     st.session_state["backend_context_seeded"] = False
     st.session_state["initial_consultation_pending"] = True
+    st.session_state["consultation_scroll_top_pending"] = True
     logger.info(
         "consultation_form_completed",
         has_age=form_data.age is not None,
@@ -138,7 +139,7 @@ def _render_consultation_form() -> tuple[ConsultationFormData | None, bool]:
 
     with st.container(border=True, key="consultation_form_card"):
         st.markdown("#### 상담 기본 정보")
-        st.caption("첫 질문에는 이 정보가 상담 컨텍스트로 함께 전달됩니다. 이후 대화는 같은 세션에서 이어집니다.")
+        st.caption("첫 질문에 입력하신 기본 정보가 상담 컨텍스트로 함께 전달됩니다. 이후 대화는 같은 세션에서 이어집니다.")
 
         age_col, region_col, location_col = st.columns(
             [0.9, 1.9, 0.85],

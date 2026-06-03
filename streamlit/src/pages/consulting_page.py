@@ -22,6 +22,7 @@ def render_consulting_page() -> None:
         title="법률 상담소",
         copy="법을 몰라도 괜찮습니다. 내가 겪은 상황을 적으면 관련 법령·정보·판례를 알려드립니다.",
     )
+    _scroll_to_top_once()
 
     form_data = render_consultation_form_gate()
     if not form_data:
@@ -31,7 +32,8 @@ def render_consulting_page() -> None:
 
     if st.session_state.pop("initial_consultation_pending", False):
         submit_initial_consultation(form_data=form_data)
-        st.rerun()
+        render_chat_prompt()
+        return
 
     with st.container(key="example_section"):
         if not st.session_state.get("consultation_messages"):
@@ -49,4 +51,20 @@ def render_consulting_page() -> None:
             question_text,
             form_data=form_data,
         )
-        st.rerun()
+
+
+def _scroll_to_top_once() -> None:
+    if not st.session_state.pop("consultation_scroll_top_pending", False):
+        return
+
+    st.html(
+        """
+        <script>
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        window.setTimeout(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        }, 120);
+        </script>
+        """,
+        unsafe_allow_javascript=True,
+    )

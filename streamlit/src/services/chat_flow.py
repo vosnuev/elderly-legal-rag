@@ -64,7 +64,7 @@ def submit_initial_consultation(
         return
 
     _submit_backend_message(
-        display_message="상담 기본 정보를 바탕으로 상담을 시작해 주세요.",
+        display_message="아래 박스에 상담내용을 적어주세요. 상담 기본 정보를 바탕으로 상담 진행됩니다.",
         backend_message=build_initial_consultation_prompt(form_data),
         context_seeded=True,
         turn_kind="initial_context",
