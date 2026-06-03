@@ -245,6 +245,28 @@ data: {"answer": "신청은 주민센터에서 할 수 있습니다.", "tool_cal
 
 현재 `src/agent/tool.py`에는 MCP 연결 전 placeholder인 `rag_search_tool`만 있다. 실제 RAG 연결은 위의 `RAG/MCP 연결 위치` 섹션 기준으로 `src/agent/tool.py`에서 MCP tools를 가져오도록 바꾸면 된다.
 
+## 📊 벤치마크 결과 위치
+
+backend 안의 `scripts/`는 현재 수동 `/chat` 테스트용 `manual_chat.py`만 유지한다. 벤치마크 실행/변환/LangSmith 검증용 임시 스크립트는 GitHub에 계속 둘 필요가 없어 제거했고, 결과 확인용 산출물은 repo 루트의 `docs/benchmark/`에 정리했다.
+
+주요 산출물:
+
+| 파일 | 내용 |
+| --- | --- |
+| `../docs/benchmark/no_tool_chart_report.md` | model/provider별 no_tool 통합 분석 리포트 |
+| `../docs/benchmark/artifacts/no_tool_combined_results.csv` | strict 기준으로 합친 원본 benchmark CSV |
+| `../docs/benchmark/artifacts/no_tool_provider_summary.csv` | model/provider별 평균 token, 비용, latency 요약 |
+| `../docs/benchmark/artifacts/no_tool_question_summary.csv` | 질문별 평균 token, 비용, latency 요약 |
+| `../docs/benchmark/charts/*.png` | 비용, latency, token 비교 차트 |
+| `../docs/benchmark/results/benchmark_all_model_by_provider.xlsx` | 전체 결과를 묶은 Excel 파일 |
+
+비교 범위:
+
+- no_tool 상태에서 동일한 360개 질문을 model/provider별로 비교했다.
+- Qwen은 비용 문제로 제외했다.
+- 비교한 항목은 성공/실패 수, input/output/used token, 질문당 평균 비용, 총 비용, 평균 latency, p95 latency, routing 일치 여부다.
+- 답변 품질 평가는 별도 단계이므로, 현재 리포트는 비용/속도/token 중심의 운영 지표 비교로 봐야 한다.
+
 ## 🔐 환경 변수
 
 `.env`는 `backend/.env`에 둔다. 커밋하지 않는다.
@@ -257,10 +279,12 @@ cp .env.example .env
 
 | 변수 | 기본값 | 설명 |
 | --- | --- | --- |
-| `OPENROUTER_API_KEY` | 빈 값 | 실제 `/chat` 호출에 필요한 OpenRouter API 키 |
+| `BACKEND_OPENROUTER_API_KEY` | 빈 값 | 실제 `/chat` 호출에 필요한 OpenRouter API 키. `OPENROUTER_API_KEY`도 호환된다. |
 | `BACKEND_OPENROUTER_MODEL` | `openai/gpt-oss-120b` | 사용할 LLM 모델 |
-| `BACKEND_OPENROUTER_PROVIDER_ORDER` | `["cerebras"]` | 우선 시도할 OpenRouter provider 순서 |
-| `BACKEND_OPENROUTER_ALLOW_FALLBACKS` | `true` | primary provider 실패 시 OpenRouter fallback 허용 여부 |
+| `BACKEND_OPENROUTER_PROVIDER_ORDER` | `["cerebras/fp16"]` | 우선 시도할 OpenRouter provider 순서 |
+| `BACKEND_OPENROUTER_ALLOW_FALLBACKS` | `false` | primary provider 실패 시 OpenRouter fallback 허용 여부. benchmark 기준과 맞추기 위해 기본값은 `false` |
+| `BACKEND_OPENROUTER_BASE_URL` | `https://openrouter.ai/api/v1` | OpenRouter API base URL |
+| `BACKEND_OPENROUTER_REQUIRE_PARAMETERS` | `false` | provider가 요청 parameter를 지원해야 하는지 여부 |
 | `BACKEND_API_HOST` | `127.0.0.1` | backend bind host |
 | `BACKEND_API_PORT` | `8000` | backend 서버 포트 |
 | `BACKEND_CORS_ORIGINS` | `["http://localhost:8501","http://127.0.0.1:8501","http://localhost:5173","http://127.0.0.1:5173","http://localhost:3000","http://127.0.0.1:3000"]` | 허용할 frontend origin |
@@ -269,10 +293,11 @@ cp .env.example .env
 | `BACKEND_LLM_TEMPERATURE` | `0.2` | LLM temperature |
 | `BACKEND_LLM_TIMEOUT_MS` | `60000` | LLM timeout |
 | `BACKEND_LLM_MAX_RETRIES` | `2` | LLM 재시도 횟수 |
+| `BACKEND_LLM_REASONING_EFFORT` | 빈 값 | 비워두면 OpenRouter 요청에서 `reasoning_effort`를 생략 |
 | `BACKEND_RAG_MCP_URL` | `http://127.0.0.1:8010/mcp` | RAG MCP Tool Server URL |
 | `BACKEND_TOOL_TIMEOUT_MS` | `30000` | tool 실행 timeout |
 
-현재 저장소에는 실제 `backend/.env`가 없다. `/health`는 키 없이도 동작하지만 `/chat`은 실제 LLM 호출이므로 `OPENROUTER_API_KEY`가 필요하다.
+실제 `backend/.env`는 Git에 커밋하지 않는다. `/health`는 키 없이도 동작하지만 `/chat`은 실제 LLM 호출이므로 `BACKEND_OPENROUTER_API_KEY`가 필요하다.
 
 ## 🐳 Docker 실행
 
@@ -281,7 +306,7 @@ cp .env.example .env
 ```bash
 cd backend
 cp .env.example .env
-# .env의 OPENROUTER_API_KEY를 실제 값으로 채운다.
+# .env의 BACKEND_OPENROUTER_API_KEY를 실제 값으로 채운다.
 docker compose up -d --build
 ```
 
@@ -360,7 +385,7 @@ curl -s http://127.0.0.1:8000/health
 
 ### 6. chat curl 확인
 
-실제 LLM 호출이므로 `.env`에 `OPENROUTER_API_KEY`가 필요하다.
+실제 LLM 호출이므로 `.env`에 `BACKEND_OPENROUTER_API_KEY`가 필요하다.
 
 ```bash
 curl -s http://127.0.0.1:8000/chat \
@@ -382,7 +407,7 @@ curl -s http://127.0.0.1:8000/chat \
 
 ### 7. chat stream curl 확인
 
-실제 LLM 호출이므로 `.env`에 `OPENROUTER_API_KEY`가 필요하다. `--no-buffer`를 붙이면 curl이 받은 chunk를 바로 출력한다.
+실제 LLM 호출이므로 `.env`에 `BACKEND_OPENROUTER_API_KEY`가 필요하다. `--no-buffer`를 붙이면 curl이 받은 chunk를 바로 출력한다.
 
 ```bash
 curl --no-buffer http://127.0.0.1:8000/chat/stream \
@@ -425,7 +450,7 @@ PYTHONPATH=src uv run python scripts/manual_chat.py
 
 | 증상 | 확인할 것 |
 | --- | --- |
-| `/chat`이 500을 반환 | `.env`의 `OPENROUTER_API_KEY` 설정 여부 |
+| `/chat`이 500을 반환 | `.env`의 `BACKEND_OPENROUTER_API_KEY` 설정 여부 |
 | `/chat/stream`이 404를 반환 | 최신 backend 코드로 실행 중인지, 서버를 재시작했는지 확인 |
 | `/chat/stream`이 한 번에만 출력됨 | 질문이 너무 짧은지 확인하고, `curl --no-buffer --trace-time`으로 실제 수신 chunk를 확인 |
 | `/health` 연결 실패 | uvicorn이 켜져 있는지, 포트가 `8000`인지 확인 |

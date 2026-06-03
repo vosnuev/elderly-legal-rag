@@ -1,0 +1,13 @@
+model_id,primary_provider_slug,source_file,row_count,success_count,failed_count,allow_fallbacks_values,actual_provider_values,fallback_true_count,actual_provider_missing_count,actual_provider_mismatch_count,success_actual_provider_missing_count,success_actual_provider_mismatch_count,routing_eligible,routing_issue
+deepseek/deepseek-v4-flash,deepinfra,deepseek_v4_flash_deepinfra.csv,360,360,0,False,deepinfra,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-flash,deepseek,deepseek_v4_flash_deepseek.csv,360,360,0,False,deepseek,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-flash,gmicloud,deepseek_v4_flash_gmicloud.csv,360,360,0,False,gmicloud,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-flash,siliconflow,deepseek_v4_flash_siliconflow.csv,360,360,0,False,siliconflow,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-pro,alibaba,deepseek_v4_pro_alibaba.csv,360,360,0,False,alibaba,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-pro,atlas-cloud,deepseek_v4_pro_atlas_cloud.csv,360,360,0,False,atlas-cloud,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-pro,deepseek,deepseek_v4_pro_deepseek.csv,360,359,1,False,deepseek,0,1,0,0,0,True,ok
+deepseek/deepseek-v4-pro,gmicloud,deepseek_v4_pro_gmicloud.csv,360,360,0,False,gmicloud,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-pro,novita,deepseek_v4_pro_novita.csv,360,360,0,False,novita,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-pro,siliconflow,deepseek_v4_pro_siliconflow.csv,360,360,0,False,siliconflow,0,0,0,0,0,True,ok
+deepseek/deepseek-v4-pro,streamlake,deepseek_v4_pro_streamlake.csv,360,360,0,False,streamlake,0,0,0,0,0,True,ok
+openai/gpt-oss-120b,cerebras,openai_gpt_oss_120b_cerebras_fp16.csv,360,360,0,False,cerebras,0,0,0,0,0,True,ok
