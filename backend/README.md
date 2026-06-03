@@ -245,6 +245,29 @@ data: {"answer": "신청은 주민센터에서 할 수 있습니다.", "tool_cal
 
 현재 `src/agent/tool.py`에는 MCP 연결 전 placeholder인 `rag_search_tool`만 있다. 실제 RAG 연결은 위의 `RAG/MCP 연결 위치` 섹션 기준으로 `src/agent/tool.py`에서 MCP tools를 가져오도록 바꾸면 된다.
 
+## 📊 벤치마크 결과 위치
+
+backend 안의 `scripts/`는 현재 수동 `/chat` 테스트용 `manual_chat.py`만 유지한다. 벤치마크 실행/변환/LangSmith 검증용 임시 스크립트는 GitHub에 계속 둘 필요가 없어 제거했고, 결과 확인용 산출물은 repo 루트의 `docs/benchmark/`에 정리했다.
+
+주요 산출물:
+
+| 파일 | 내용 |
+| --- | --- |
+| `../docs/benchmark/no_tool_chart_report.md` | model/provider별 no_tool 차트 분석 리포트 |
+| `../docs/benchmark/no_tool_provider_analysis.md` | provider별 결과 분석 메모 |
+| `../docs/benchmark/artifacts/no_tool_combined_results.csv` | strict 기준으로 합친 원본 benchmark CSV |
+| `../docs/benchmark/artifacts/no_tool_provider_summary.csv` | model/provider별 평균 token, 비용, latency 요약 |
+| `../docs/benchmark/artifacts/no_tool_question_summary.csv` | 질문별 평균 token, 비용, latency 요약 |
+| `../docs/benchmark/charts/*.png` | 비용, latency, token 비교 차트 |
+| `../docs/benchmark/results/benchmark_all_model_by_provider.xlsx` | 전체 결과를 묶은 Excel 파일 |
+
+비교 범위:
+
+- no_tool 상태에서 동일한 360개 질문을 model/provider별로 비교했다.
+- Qwen은 비용 문제로 제외했다.
+- 비교한 항목은 성공/실패 수, input/output/used token, 질문당 평균 비용, 총 비용, 평균 latency, p95 latency, routing 일치 여부다.
+- 답변 품질 평가는 별도 단계이므로, 현재 리포트는 비용/속도/token 중심의 운영 지표 비교로 봐야 한다.
+
 ## 🔐 환경 변수
 
 `.env`는 `backend/.env`에 둔다. 커밋하지 않는다.

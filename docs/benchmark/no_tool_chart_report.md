@@ -226,11 +226,11 @@ docs/benchmark/charts/*.png
 
 핵심만 보면:
 
-- `#1 gpt-oss-120b / cerebras`가 평균 latency `1,411ms`로 가장 빠르다.
-- `#2 deepseek-v4-flash / deepinfra`가 평균 비용 `0.00019778`로 가장 저렴하다.
-- `#2 deepseek-v4-flash / deepinfra`가 평균 used token `1,462.2`로 가장 적다.
-- `#8 deepseek-v4-pro / gmicloud`가 평균 input token `941.8`로 가장 많다.
-- `#9 deepseek-v4-pro / alibaba`가 평균 output token `1,542.5`로 가장 많다.
+- 평균 latency가 빠른 모델은 `#1 gpt-oss-120b / cerebras`, `1,411ms`이다.
+- 평균 비용이 저렴한 모델은 `#2 deepseek-v4-flash / deepinfra`, `0.00019778`이다.
+- 평균 used token이 적은 모델은 `#2 deepseek-v4-flash / deepinfra`, `1,462.2`이다.
+- 평균 input token이 많은 모델은 `#8 deepseek-v4-pro / gmicloud`, `941.8`이다.
+- 평균 output token이 많은 모델은 `#9 deepseek-v4-pro / alibaba`, `1,542.5`이다.
 
 ## 1. 평균 비용 비교
 
@@ -266,7 +266,7 @@ docs/benchmark/charts/*.png
 - input token 많음 #2: `#5 deepseek-v4-flash / gmicloud` `938.4`
 - input token 많음 #3: `#10 deepseek-v4-pro / novita` `938.0`
 - input token 많음 #4: `#7 deepseek-v4-pro / deepseek` `936.5`
-- input token 많음 #5: `#6 deepseek-v4-pro / streamlake` `936.4`
+- input token 많음 #5: `#2 deepseek-v4-flash / deepinfra` `936.4`
 
 ## 4. 평균 output token 비교
 
