@@ -6,17 +6,15 @@ from external.memgraph import get_memgraph_bolt_client
 from query.utils import bounded_limit
 
 
-def list_agent_memory(
-    scope: str | None = None,
-    memory_kind: str | None = None,
+def list_memory(
+    scope: str | None = "global",
     status: str | None = "active",
     limit: int = 100,
 ) -> dict[str, Any]:
     return get_memgraph_bolt_client().execute_read(
         """
-        MATCH (memory:AgentMemory)
+        MATCH (memory:Memory)
         WHERE ($scope IS NULL OR memory.scope = $scope)
-          AND ($memory_kind IS NULL OR memory.memory_kind = $memory_kind)
           AND ($status IS NULL OR memory.status = $status)
         RETURN memory
         ORDER BY memory.version DESC, memory.id DESC
@@ -24,7 +22,6 @@ def list_agent_memory(
         """,
         {
             "scope": scope,
-            "memory_kind": memory_kind,
             "status": status,
             "limit": bounded_limit(limit),
         },

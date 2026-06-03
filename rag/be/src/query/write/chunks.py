@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from typing import Any
-from uuid import uuid4
 
 from query.schema import ChunkNode
-from query.utils import graph_properties
+from query.utils import db_generated_id_expression, graph_properties
 from query.write.core import write_query
 
 
@@ -20,16 +19,40 @@ def write_chunks_for_document(
     ]
     if not records:
         return {"stored_count": 0, "chunk_ids": []}
+    chunk_indexes = [
+        int(record["chunk_index"])
+        for record in records
+        if "chunk_index" in record
+    ]
+    replace_existing = 1 in chunk_indexes
 
+    # chunking_agent는 긴 문서에서 write_chunk_tool을 여러 번 호출할 수 있다.
+    # 첫 batch(chunk_index=1)는 같은 job의 기존 chunk를 모두 reset하고, 이후
+    # batch는 같은 chunk_index만 교체한다. 이렇게 하면 작은 batch append와
+    # batch-level retry를 모두 허용하면서 stale duplicate index를 막을 수 있다.
     result = write_query(
-        """
-        MATCH (d:Document {id: $document_id})
+        f"""
+        MATCH (d:Document {{id: $document_id}})
+        OPTIONAL MATCH (d)-[:HAS_CHUNK]->(
+            old:Chunk {{document_id: $document_id, last_ingest_job_id: $job_id}}
+        )
+        WITH d, collect(old) AS candidate_old_chunks
+        WITH d,
+             [
+               old IN candidate_old_chunks
+               WHERE old IS NOT NULL
+                 AND ($replace_existing OR old.chunk_index IN $chunk_indexes)
+             ] AS old_chunks
+        FOREACH (old IN old_chunks | DETACH DELETE old)
+        WITH d
         UNWIND $chunks AS chunk
-        MERGE (c:Chunk {id: chunk.id})
-        ON CREATE SET c.created_at = localDateTime()
+        CREATE (c:Chunk)
         SET c += chunk,
+            c.id = {db_generated_id_expression()},
             c.document_id = $document_id,
-            c.last_ingest_job_id = $job_id
+            c.last_ingest_job_id = $job_id,
+            c.created_at = localDateTime(),
+            c.updated_at = localDateTime()
         MERGE (d)-[:HAS_CHUNK]->(c)
         RETURN count(c) AS stored_count,
                collect(c.id) AS chunk_ids
@@ -37,6 +60,8 @@ def write_chunks_for_document(
         {
             "job_id": job_id,
             "document_id": document_id,
+            "chunk_indexes": chunk_indexes,
+            "replace_existing": replace_existing,
             "chunks": [graph_properties(record) for record in records],
         },
     )
@@ -50,13 +75,14 @@ def _chunk_record(
     chunk: ChunkNode | dict[str, Any],
 ) -> dict[str, Any]:
     if isinstance(chunk, ChunkNode):
-        source = chunk.model_dump()
+        source = chunk.model_dump(exclude_none=True)
     else:
         source = dict(chunk)
-    source.setdefault("id", str(uuid4()))
     source["document_id"] = document_id
     source.setdefault("embedding_status", "pending")
-    return ChunkNode.model_validate(source).model_dump()
+    record = ChunkNode.model_validate(source).model_dump(exclude_none=True)
+    record.pop("id", None)
+    return record
 
 
 def _require_expected_write_count(

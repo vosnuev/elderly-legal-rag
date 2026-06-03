@@ -1,0 +1,23 @@
+# 역할: review graph에서 reviewer decision note를 RelationshipCandidate의 ReviewNote node로 저장하는 node service이다.
+from __future__ import annotations
+
+from query.write import store_review_note
+
+
+class ReviewNoteNodeService:
+    def store_note(
+        self,
+        *,
+        candidate_id: str,
+        action: str,
+        reviewer: str,
+        note: str | None,
+    ) -> dict[str, object]:
+        if not note or not note.strip():
+            return {"stored": False}
+        return store_review_note(
+            candidate_id=candidate_id,
+            action=action,
+            reviewer=reviewer,
+            note=note,
+        )

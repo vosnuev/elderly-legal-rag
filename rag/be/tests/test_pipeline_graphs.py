@@ -6,9 +6,7 @@ from unittest.mock import patch
 from pipeline.graphs.candidate_review_graph import CandidateReviewGraph
 from pipeline.graphs.document_construction_graph import DocumentConstructionGraph
 from pipeline.schemas import (
-    FeedbackJudgeResult,
     GraphIngestPhase,
-    IngestGraphResult,
     ReviewAction,
 )
 
@@ -22,7 +20,7 @@ class FakeChunkingAgent:
         return ["chunk-1"]
 
 
-class FakeEmbeddingDispatchService:
+class FakeEmbeddingDispatchNodeService:
     def __init__(self, events: list[str]) -> None:
         self.events = events
 
@@ -42,49 +40,14 @@ class FakeGraphCandidateAgent:
         return [f"candidate-{self.call_count}"]
 
 
-class FakeFeedbackJudgeAgent:
-    def __init__(self, events: list[str], *, retry_once: bool = False) -> None:
-        self.events = events
-        self.retry_once = retry_once
-        self.call_count = 0
-
-    def run(self, *, job_id, document_id, chunk_ids, edge_candidate_ids):  # noqa: ANN001, ANN201
+class FakeNoCandidateAgent(FakeGraphCandidateAgent):
+    def run(self, *, job_id, document_id, chunk_ids):  # noqa: ANN001, ANN201
         self.call_count += 1
-        self.events.append(f"judge:{job_id}:{self.call_count}:{len(edge_candidate_ids)}")
-        if self.retry_once and self.call_count == 1:
-            return FeedbackJudgeResult(
-                ready_for_review=False,
-                incomplete=True,
-                reason="force retry",
-            )
-        return FeedbackJudgeResult(ready_for_review=True)
+        self.events.append(f"candidate:{job_id}:{self.call_count}")
+        return []
 
 
-class FakeIngestProgressService:
-    def __init__(self, events: list[str]) -> None:
-        self.events = events
-        self.mark_calls: list[dict[str, object]] = []
-
-    def mark(self, **kwargs):  # noqa: ANN003, ANN201
-        self.events.append(f"progress:{kwargs['job_id']}:{kwargs['phase'].value}")
-        self.mark_calls.append(kwargs)
-        return IngestGraphResult(
-            job_id=kwargs["job_id"],
-            phase=kwargs["phase"],
-            document_id=kwargs.get("document_id"),
-            chunk_count=kwargs.get("chunk_count", 0),
-            candidate_count=kwargs.get("candidate_count", 0),
-            pending_review_count=(
-                kwargs.get("candidate_count", 0)
-                if kwargs["phase"] is GraphIngestPhase.PENDING_REVIEW
-                else 0
-            ),
-            warnings=kwargs.get("warnings") or [],
-            errors=kwargs.get("errors") or [],
-        )
-
-
-class FakeMaterializationService:
+class FakeActualEdgeMaterializationNodeService:
     def __init__(self, events: list[str]) -> None:
         self.events = events
 
@@ -92,7 +55,7 @@ class FakeMaterializationService:
         self.events.append(f"materialize:{candidate_id}:{reviewer}")
 
 
-class FakeReviewStatusService:
+class FakeReviewStatusNodeService:
     def __init__(self, events: list[str]) -> None:
         self.events = events
 
@@ -100,22 +63,36 @@ class FakeReviewStatusService:
         self.events.append(f"status:{candidate_id}:{action.value}:{reviewer}")
 
 
-class FakePreferenceMemoryService:
+class FakeReviewNoteNodeService:
     def __init__(self, events: list[str]) -> None:
         self.events = events
 
     def store_note(self, *, candidate_id, action, reviewer, note):  # noqa: ANN001, ANN201
-        self.events.append(f"memory:{candidate_id}:{action}:{reviewer}:{note or ''}")
+        self.events.append(f"review-note:{candidate_id}:{action}:{reviewer}:{note or ''}")
+        if not note:
+            return {"stored": False}
+        return {
+            "rows": [
+                {
+                    "note": {
+                        "id": f"note-{candidate_id}",
+                        "relationship_candidate_id": candidate_id,
+                        "action": action,
+                        "reviewer": reviewer,
+                        "note": note,
+                    }
+                }
+            ]
+        }
 
 
-class FakeRevisionAgent:
+class FakeMemoryNodeService:
     def __init__(self, events: list[str]) -> None:
         self.events = events
 
-    def run(self, *, original_candidate, note):  # noqa: ANN001, ANN201
-        props = original_candidate.get("properties", original_candidate)
-        self.events.append(f"revise:{props['id']}:{note or ''}")
-        return ["candidate-2"]
+    def update_from_job_review_notes(self, *, job_id):  # noqa: ANN001, ANN201
+        self.events.append(f"memory-job:{job_id}")
+        return {"rows": [{"memory_id": "memory-1", "version": 2}]}
 
 
 class DocumentConstructionGraphTest(unittest.TestCase):
@@ -123,10 +100,8 @@ class DocumentConstructionGraphTest(unittest.TestCase):
         events: list[str] = []
         graph = DocumentConstructionGraph()
         graph._chunking_agent = FakeChunkingAgent(events)
-        graph._embedding_dispatch_service = FakeEmbeddingDispatchService(events)
+        graph._embedding_dispatch_node_service = FakeEmbeddingDispatchNodeService(events)
         graph._graph_candidate_agent = FakeGraphCandidateAgent(events)
-        graph._feedback_judge_agent = FakeFeedbackJudgeAgent(events)
-        graph._ingest_progress_service = FakeIngestProgressService(events)
 
         with patch(
             "pipeline.graphs.document_construction_graph.get_document_record",
@@ -145,20 +120,16 @@ class DocumentConstructionGraphTest(unittest.TestCase):
                 "chunk:job-1:doc-1",
                 "embed:job-1:1",
                 "candidate:job-1:1",
-                "judge:job-1:1:1",
-                "progress:job-1:pending_review",
             ],
         )
 
-    def test_document_construction_marks_needs_retry_without_internal_retry(self) -> None:
+    def test_document_construction_completes_when_no_candidates_are_created(self) -> None:
         events: list[str] = []
-        candidate_agent = FakeGraphCandidateAgent(events)
+        candidate_agent = FakeNoCandidateAgent(events)
         graph = DocumentConstructionGraph()
         graph._chunking_agent = FakeChunkingAgent(events)
-        graph._embedding_dispatch_service = FakeEmbeddingDispatchService(events)
+        graph._embedding_dispatch_node_service = FakeEmbeddingDispatchNodeService(events)
         graph._graph_candidate_agent = candidate_agent
-        graph._feedback_judge_agent = FakeFeedbackJudgeAgent(events, retry_once=True)
-        graph._ingest_progress_service = FakeIngestProgressService(events)
 
         with patch(
             "pipeline.graphs.document_construction_graph.get_document_record",
@@ -167,18 +138,19 @@ class DocumentConstructionGraphTest(unittest.TestCase):
             result = graph.invoke(job_id="job-1", document_id="doc-1")
 
         self.assertEqual(candidate_agent.call_count, 1)
-        self.assertEqual(result.phase, GraphIngestPhase.NEEDS_RETRY)
+        self.assertEqual(result.phase, GraphIngestPhase.COMPLETED)
 
 
 class CandidateReviewGraphTest(unittest.TestCase):
     def test_yes_review_materializes_edge_and_records_preference(self) -> None:
         events: list[str] = []
         graph = CandidateReviewGraph()
-        graph._actual_edge_materialization_service = FakeMaterializationService(events)
-        graph._review_status_service = FakeReviewStatusService(events)
-        graph._preference_memory_service = FakePreferenceMemoryService(events)
-        graph._ingest_progress_service = FakeIngestProgressService(events)
-        graph._graph_candidate_revision_agent = FakeRevisionAgent(events)
+        graph._actual_edge_materialization_node_service = (
+            FakeActualEdgeMaterializationNodeService(events)
+        )
+        graph._review_status_node_service = FakeReviewStatusNodeService(events)
+        graph._review_note_node_service = FakeReviewNoteNodeService(events)
+        graph._memory_node_service = FakeMemoryNodeService(events)
 
         with patch(
             "pipeline.graphs.candidate_review_graph.read_relationship_candidate",
@@ -197,20 +169,20 @@ class CandidateReviewGraphTest(unittest.TestCase):
             events,
             [
                 "materialize:candidate-1:tester",
-                "status:candidate-1:yes:tester",
-                "memory:candidate-1:yes:tester:approved",
-                "progress:job-1:completed",
+                "review-note:candidate-1:yes:tester:approved",
+                "memory-job:job-1",
             ],
         )
 
-    def test_retry_review_runs_revision_agent_without_materialization(self) -> None:
+    def test_no_review_rejects_candidate_without_materialization(self) -> None:
         events: list[str] = []
         graph = CandidateReviewGraph()
-        graph._actual_edge_materialization_service = FakeMaterializationService(events)
-        graph._review_status_service = FakeReviewStatusService(events)
-        graph._preference_memory_service = FakePreferenceMemoryService(events)
-        graph._ingest_progress_service = FakeIngestProgressService(events)
-        graph._graph_candidate_revision_agent = FakeRevisionAgent(events)
+        graph._actual_edge_materialization_node_service = (
+            FakeActualEdgeMaterializationNodeService(events)
+        )
+        graph._review_status_node_service = FakeReviewStatusNodeService(events)
+        graph._review_note_node_service = FakeReviewNoteNodeService(events)
+        graph._memory_node_service = FakeMemoryNodeService(events)
 
         with patch(
             "pipeline.graphs.candidate_review_graph.read_relationship_candidate",
@@ -218,16 +190,70 @@ class CandidateReviewGraphTest(unittest.TestCase):
         ):
             result = graph.invoke(
                 candidate_id="candidate-1",
-                action=ReviewAction.RETRY,
+                action=ReviewAction.NO,
                 reviewer="tester",
-                note="target should be broader",
+                note="scope is too broad",
             )
 
         self.assertEqual(result.job_id, "job-1")
         self.assertEqual(result.phase, GraphIngestPhase.COMPLETED)
-        self.assertEqual(result.candidate_count, 1)
         self.assertNotIn("materialize:candidate-1:tester", events)
-        self.assertEqual(events[0], "revise:candidate-1:target should be broader")
+        self.assertEqual(
+            events,
+            [
+                "status:candidate-1:no:tester",
+                "review-note:candidate-1:no:tester:scope is too broad",
+                "memory-job:job-1",
+            ],
+        )
+
+    def test_batch_review_updates_memory_once_after_all_decisions(self) -> None:
+        events: list[str] = []
+        graph = CandidateReviewGraph()
+        graph._actual_edge_materialization_node_service = (
+            FakeActualEdgeMaterializationNodeService(events)
+        )
+        graph._review_status_node_service = FakeReviewStatusNodeService(events)
+        graph._review_note_node_service = FakeReviewNoteNodeService(events)
+        graph._memory_node_service = FakeMemoryNodeService(events)
+
+        with patch(
+            "pipeline.graphs.candidate_review_graph.read_relationship_candidate",
+            side_effect=[
+                _candidate_record("candidate-1"),
+                _candidate_record("candidate-2"),
+            ],
+        ):
+            result = graph.invoke_batch(
+                job_id="job-1",
+                reviewer="tester",
+                decisions=[
+                    {
+                        "candidate_id": "candidate-1",
+                        "action": ReviewAction.YES,
+                        "note": "approved",
+                    },
+                    {
+                        "candidate_id": "candidate-2",
+                        "action": ReviewAction.NO,
+                        "note": "too broad",
+                    },
+                ],
+            )
+
+        self.assertEqual(result.job_id, "job-1")
+        self.assertEqual(result.phase, GraphIngestPhase.COMPLETED)
+        self.assertEqual(result.candidate_count, 2)
+        self.assertEqual(
+            events,
+            [
+                "materialize:candidate-1:tester",
+                "review-note:candidate-1:yes:tester:approved",
+                "status:candidate-2:no:tester",
+                "review-note:candidate-2:no:tester:too broad",
+                "memory-job:job-1",
+            ],
+        )
 
 
 def _document_record() -> dict[str, object]:
@@ -243,9 +269,9 @@ def _document_record() -> dict[str, object]:
     }
 
 
-def _candidate_record() -> dict[str, object]:
+def _candidate_record(candidate_id: str = "candidate-1") -> dict[str, object]:
     return {
-        "id": "candidate-1",
+        "id": candidate_id,
         "job_id": "job-1",
         "left_node": "chunk-1",
         "right_node": "law-1",

@@ -6,6 +6,7 @@ from typing import Any
 
 from neo4j import GraphDatabase, RoutingControl
 from neo4j.graph import Node, Path, Relationship
+from neo4j.time import Date, DateTime, Duration, Time
 
 from settings import settings
 
@@ -149,7 +150,7 @@ def _serialize_value(value: Any) -> Any:
             "type": "node",
             "element_id": value.element_id,
             "labels": sorted(value.labels),
-            "properties": dict(value),
+            "properties": _serialize_value(dict(value)),
         }
 
     if isinstance(value, Relationship):
@@ -159,7 +160,7 @@ def _serialize_value(value: Any) -> Any:
             "relationship_type": value.type,
             "start_node_id": value.start_node.element_id,
             "end_node_id": value.end_node.element_id,
-            "properties": dict(value),
+            "properties": _serialize_value(dict(value)),
         }
 
     if isinstance(value, Path):
@@ -177,6 +178,12 @@ def _serialize_value(value: Any) -> Any:
 
     if isinstance(value, list):
         return [_serialize_value(item) for item in value]
+
+    if isinstance(value, (Date, DateTime, Time)):
+        return value.iso_format()
+
+    if isinstance(value, Duration):
+        return str(value)
 
     if isinstance(value, tuple):
         return [_serialize_value(item) for item in value]

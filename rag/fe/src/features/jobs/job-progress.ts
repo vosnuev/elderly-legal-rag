@@ -17,54 +17,67 @@ export const pipelineSteps: PipelineStep[] = [
 
 export type JobRuntimeStatus = 'queued' | 'running' | 'waiting_review' | 'complete' | 'needs_retry'
 
-export type WorkerGroupKey =
-  | 'ingest-workers'
-  | 'chunk-workers'
-  | 'graph-builders'
-  | 'review-handoff'
-  | 'archive-sync'
+export function getJobPhase(job: FileIngestStatusResponse) {
+  return job.current_phase ?? job.current_stage ?? 'received'
+}
+
+export function getStagePhase(stage: FileIngestStatusResponse['stages'][number]) {
+  return stage.phase ?? stage.stage ?? 'received'
+}
 
 export function getJobProgress(job: FileIngestStatusResponse) {
-  const currentStage = normalizeStage(job.current_stage)
+  const currentStage = normalizeStage(getJobPhase(job))
   const stageText = getJobStageText(job)
 
+  if (job.current_task?.status === 'queued') {
+    return { stepIndex: 1, label: 'Queued' }
+  }
   if (job.completed || currentStage.includes('complete')) {
-    return { percent: 100, label: 'Complete' }
+    return { stepIndex: 5, label: 'Complete' }
   }
   if (isJobWaitingReview(job)) {
-    return { percent: 78, label: 'Waiting review' }
+    return { stepIndex: 4, label: 'Waiting review' }
   }
   if (
     currentStage.includes('embedding') ||
     currentStage.includes('chunk') ||
     currentStage.includes('split')
   ) {
-    return { percent: 46, label: 'Chunk and embed' }
+    return { stepIndex: 2, label: 'Chunk and embed' }
   }
   if (currentStage.includes('graph') || currentStage.includes('candidate')) {
-    return { percent: 62, label: 'Graph builder' }
+    return { stepIndex: 3, label: 'Graph builder' }
   }
   if (
     currentStage.includes('uploaded') ||
     currentStage.includes('stored') ||
     currentStage.includes('index')
   ) {
-    return { percent: 24, label: 'Queued' }
+    return { stepIndex: 1, label: 'Queued' }
   }
   if (stageText.includes('embedding') || stageText.includes('chunk') || stageText.includes('split')) {
-    return { percent: 46, label: 'Chunk and embed' }
+    return { stepIndex: 2, label: 'Chunk and embed' }
   }
   if (stageText.includes('graph') || stageText.includes('candidate')) {
-    return { percent: 62, label: 'Graph builder' }
+    return { stepIndex: 3, label: 'Graph builder' }
   }
 
-  return { percent: 8, label: 'Queued' }
+  return { stepIndex: 1, label: 'Queued' }
 }
 
 export function getJobRuntimeStatus(job: FileIngestStatusResponse): JobRuntimeStatus {
-  const currentStage = normalizeStage(job.current_stage)
+  const currentStage = normalizeStage(getJobPhase(job))
   const stageText = getJobStageText(job)
 
+  if (job.current_task?.status === 'queued') {
+    return 'queued'
+  }
+  if (job.current_task?.status === 'running') {
+    return 'running'
+  }
+  if (job.current_task?.status === 'failed') {
+    return 'needs_retry'
+  }
   if (job.completed || stageText.includes('complete')) {
     return 'complete'
   }
@@ -102,51 +115,121 @@ export function getRuntimeStatusLabel(status: JobRuntimeStatus) {
   }
 }
 
-export function getWorkerGroupLabel(job: FileIngestStatusResponse): WorkerGroupKey {
-  const currentStage = normalizeStage(job.current_stage)
-  const stageText = getJobStageText(job)
+export type JobTaskTiming = {
+  detailLabel: string
+  finishedLabel: string
+  isLive: boolean
+  primaryLabel: string
+  queueWaitLabel: string
+  runtimeLabel: string
+  startedLabel: string
+  totalLabel: string
+}
 
-  if (job.completed) {
-    return 'archive-sync'
-  }
-  if (isJobWaitingReview(job)) {
-    return 'review-handoff'
-  }
-  if (currentStage.includes('graph') || currentStage.includes('candidate')) {
-    return 'graph-builders'
-  }
-  if (currentStage.includes('chunk') || currentStage.includes('embedding')) {
-    return 'chunk-workers'
-  }
-  if (stageText.includes('running') && stageText.includes('embedding')) {
-    return 'chunk-workers'
+export function getJobTaskTiming(
+  job: FileIngestStatusResponse,
+  nowMs = Date.now(),
+): JobTaskTiming {
+  const task = job.current_task
+  const submittedMs = parseTimeMs(task?.submitted_at)
+  const startedMs = parseTimeMs(task?.started_at)
+  const finishedMs = parseTimeMs(task?.finished_at)
+  const runtimeStatus = getJobRuntimeStatus(job)
+  const endMs = finishedMs ?? nowMs
+
+  const queueWaitMs = submittedMs && startedMs ? Math.max(0, startedMs - submittedMs) : null
+  const runtimeMs = startedMs ? Math.max(0, endMs - startedMs) : null
+  const totalMs = submittedMs ? Math.max(0, endMs - submittedMs) : null
+  const isLive = Boolean(task && !finishedMs && (runtimeStatus === 'queued' || runtimeStatus === 'running'))
+
+  const queueWaitLabel = queueWaitMs === null ? 'Not picked up' : formatDuration(queueWaitMs)
+  const runtimeLabel = runtimeMs === null ? 'Not started' : formatDuration(runtimeMs)
+  const totalLabel = totalMs === null ? 'No task clock' : formatDuration(totalMs)
+  const startedLabel = startedMs ? formatTime(startedMs) : 'Waiting'
+  const finishedLabel = finishedMs ? formatTime(finishedMs) : isLive ? 'Live' : 'Pending'
+
+  if (!task) {
+    return {
+      detailLabel: 'No task clock',
+      finishedLabel,
+      isLive: false,
+      primaryLabel: 'No timer',
+      queueWaitLabel,
+      runtimeLabel,
+      startedLabel,
+      totalLabel,
+    }
   }
 
-  return 'ingest-workers'
+  if (runtimeStatus === 'queued' && submittedMs) {
+    return {
+      detailLabel: 'waiting in queue',
+      finishedLabel,
+      isLive,
+      primaryLabel: `Queued ${formatDuration(Math.max(0, nowMs - submittedMs))}`,
+      queueWaitLabel,
+      runtimeLabel,
+      startedLabel,
+      totalLabel,
+    }
+  }
+
+  if (runtimeStatus === 'running') {
+    return {
+      detailLabel: startedMs ? `picked ${startedLabel}` : 'pickup pending',
+      finishedLabel,
+      isLive,
+      primaryLabel: `Run ${runtimeLabel}`,
+      queueWaitLabel,
+      runtimeLabel,
+      startedLabel,
+      totalLabel,
+    }
+  }
+
+  if (runtimeStatus === 'needs_retry') {
+    return {
+      detailLabel: `failed after ${runtimeLabel}`,
+      finishedLabel,
+      isLive,
+      primaryLabel: `Fail ${runtimeLabel}`,
+      queueWaitLabel,
+      runtimeLabel,
+      startedLabel,
+      totalLabel,
+    }
+  }
+
+  return {
+    detailLabel: `queue ${queueWaitLabel}`,
+    finishedLabel,
+    isLive,
+    primaryLabel: `Task ${runtimeLabel}`,
+    queueWaitLabel,
+    runtimeLabel,
+    startedLabel,
+    totalLabel,
+  }
 }
 
 export function isJobWaitingReview(job: FileIngestStatusResponse) {
   return (
     (job.pending_review_count ?? 0) > 0 ||
-    normalizeStage(job.current_stage).includes('pending_review')
+    normalizeStage(getJobPhase(job)).includes('pending_review')
   )
 }
 
 export function isPipelineStepDone(job: FileIngestStatusResponse, step: PipelineStepKey) {
-  const progress = getJobProgress(job).percent
+  const stepIndex = getJobProgress(job).stepIndex
+  const targetIndex = {
+    chunked: 2,
+    complete: 5,
+    built: 3,
+    review: 4,
+    staged: 1,
+  } satisfies Record<PipelineStepKey, number>
 
-  switch (step) {
-    case 'staged':
-      return progress >= 24
-    case 'chunked':
-      return progress >= 46
-    case 'built':
-      return progress >= 62
-    case 'review':
-      return progress >= 78
-    case 'complete':
-      return progress >= 100
-  }
+  return stepIndex >= targetIndex[step]
 }
 
 export function formatStageName(stage: string) {
@@ -155,13 +238,48 @@ export function formatStageName(stage: string) {
 
 function getJobStageText(job: FileIngestStatusResponse) {
   return [
-    job.current_stage,
-    ...job.stages.flatMap((stage) => [stage.stage, stage.status, stage.message]),
+    getJobPhase(job),
+    ...job.stages.flatMap((stage) => [getStagePhase(stage), stage.status, stage.message]),
   ]
     .map(normalizeStage)
     .join(' ')
 }
 
-function normalizeStage(stage: string) {
+function normalizeStage(stage: string | null | undefined) {
+  if (!stage) {
+    return ''
+  }
+
   return stage.trim().toLowerCase()
+}
+
+function parseTimeMs(value: string | null | undefined) {
+  if (!value) {
+    return null
+  }
+  const timestamp = new Date(value).getTime()
+  return Number.isNaN(timestamp) ? null : timestamp
+}
+
+function formatDuration(durationMs: number) {
+  const totalSeconds = Math.max(0, Math.floor(durationMs / 1000))
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`
+  }
+  if (minutes > 0) {
+    return `${minutes}m ${seconds.toString().padStart(2, '0')}s`
+  }
+  return `${seconds}s`
+}
+
+function formatTime(timestampMs: number) {
+  return new Intl.DateTimeFormat('ko-KR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).format(new Date(timestampMs))
 }

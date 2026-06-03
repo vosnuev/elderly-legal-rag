@@ -62,21 +62,3 @@ def list_candidates_for_document(
             "limit": bounded_limit(limit),
         },
     )
-
-
-def list_candidate_versions(
-    candidate_id: str,
-    limit: int = 50,
-) -> dict[str, Any]:
-    return get_memgraph_bolt_client().execute_read(
-        """
-        MATCH (candidate:RelationshipCandidate {id: $candidate_id})
-        OPTIONAL MATCH (revision:RelationshipCandidate {previous_candidate_id: $candidate_id})
-        RETURN candidate, collect(revision) AS revisions
-        LIMIT $limit
-        """,
-        {
-            "candidate_id": candidate_id,
-            "limit": bounded_limit(limit),
-        },
-    )

@@ -24,4 +24,6 @@ class CandidateReviewActionState(TypedDict):
     note: NotRequired[str | None]
     candidate: NotRequired[dict[str, Any]]
     edge_candidate_ids: NotRequired[list[str]]
+    review_note: NotRequired[dict[str, Any] | None]
+    memory_id: NotRequired[str | None]
     phase: NotRequired[GraphIngestPhase]

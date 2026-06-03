@@ -194,7 +194,7 @@ Allowed tool surface:
 - `memgraph.read_query`: validated bounded read-only Cypher.
 - `memgraph.schema_read`: labels, relationship types, key properties, indexes,
   vector index names, and instructions.
-- `memgraph.text_search`: Memgraph official text-search wrapper.
+- `memgraph.text_index_search`: Memgraph official text-index search wrapper.
 - `memgraph.vector_search`: Memgraph vector-search wrapper.
 - `memgraph.graph_traverse`: bounded graph neighborhood/path traversal.
 
@@ -224,7 +224,7 @@ Agent-facing tools:
 - Read/query group:
   - `memgraph.schema_read`
   - `memgraph.read_query`
-  - `memgraph.text_search`
+  - `memgraph.text_index_search`
   - `memgraph.vector_search`
   - `memgraph.graph_traverse`
   - `memgraph.probe_existing_context`

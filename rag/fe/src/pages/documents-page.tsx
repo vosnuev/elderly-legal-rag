@@ -51,7 +51,7 @@ export function DocumentsPage() {
   }, [documents, query])
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex h-full min-h-0 flex-col gap-5">
       <PageHeader
         title="Documents"
         description="Stored RAG documents and ingest status."
@@ -84,9 +84,17 @@ export function DocumentsPage() {
 
       <DocumentSearch value={query} onChange={setQuery} />
 
-      <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+      <div className="min-h-0 flex-1 overflow-y-auto pr-1
+        [&::-webkit-scrollbar]:w-1.5
+        [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-track]:bg-muted/10
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-primary/15
+        hover:[&::-webkit-scrollbar-thumb]:bg-primary/35"
+      >
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {filteredDocuments.length === 0 ? (
-          <Card className="md:col-span-2 2xl:col-span-3">
+          <Card className="sm:col-span-2 xl:col-span-4">
             <CardContent className="flex min-h-64 items-center justify-center">
               <div className="text-center">
                 <Upload className="mx-auto size-7 text-muted-foreground" aria-hidden="true" />
@@ -103,6 +111,7 @@ export function DocumentsPage() {
             />
           ))
         )}
+        </div>
       </div>
 
       <AddDocumentDialog

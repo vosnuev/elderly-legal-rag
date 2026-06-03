@@ -12,7 +12,7 @@ class DocumentNode(BaseModel):
     이 노드의 `id`를 시작점으로 chunk 생성과 relationship candidate 생성을 진행한다.
     """
 
-    id: str
+    id: str | None = None
     entry_number: int
     document_version: int = 1
     content_hash: str
@@ -31,9 +31,11 @@ class ChunkNode(BaseModel):
     embedding vector와 model 정보는 이 노드에 저장한다.
     """
 
-    id: str
+    id: str | None = None
     document_id: str
     chunk_index: int
+    chunk_name: str = ""
+    chunk_description: str = ""
     text: str
     tags: list[str] = Field(default_factory=list)
     summary: str = ""

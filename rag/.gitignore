@@ -12,20 +12,16 @@ __pycache__/
 .venv/
 venv/
 
-# Data / generated artifacts
-.data/
-
-data/
-
-workspace/
-input/
-output/
-cache/
-
-
-outputs/
-artifacts/
-graphrag_workspace/
+# Data / generated artifacts in rag project root
+/.data/
+/data/
+/workspace/
+/input/
+/output/
+/cache/
+/outputs/
+/artifacts/
+/graphrag_workspace/
 
 # Logs
 *.log

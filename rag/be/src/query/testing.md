@@ -81,7 +81,8 @@ transaction에서 실패하므로 `external.memgraph.MemgraphBoltClient.execute_
 | `text_search` | text index가 준비된 DB에서 exact term 검색 | Memgraph `text_search.search` procedure 호출 |
 | `vector_search` | vector index와 embedding이 준비된 DB에서 검색 | Memgraph `vector_search.search` procedure 호출 |
 | `graph_traverse` | known node id 기준 traversal | bounded path rows 반환 |
-| `read_node_by_id` | generated `document_id`, `chunk_id`, `candidate_id` 조회 | node properties 반환 |
+| `read_document_by_id` | DB-generated `document_id` 조회 | document properties 반환 |
+| `read_node_by_id` | generated `chunk_id`, `candidate_id` 조회 | node properties 반환 |
 | `list_chunks_for_document` | smoke document id로 조회 | `HAS_CHUNK`로 연결된 chunk 반환 |
 | `list_candidates_for_job` | smoke job id로 조회 | 해당 job의 `RelationshipCandidate` 반환 |
 | `list_review_notes_for_candidate` | approved smoke candidate id로 조회 | `HAS_REVIEW_NOTE` note 반환 |
@@ -96,14 +97,14 @@ transaction에서 실패하므로 `external.memgraph.MemgraphBoltClient.execute_
 
 | 함수 | 검증 방법 | 기대 결과 |
 | --- | --- | --- |
-| `register_document` | `DocumentNode`를 저장 | `Document.id` 반환, raw content 저장 |
-| `write_chunks_for_document` | saved document에 chunk payload 저장 | generated `chunk_ids`, `HAS_CHUNK` edge |
+| `register_document` | `DocumentNode`를 저장 | DB-generated `document_id` 반환, raw content 저장 |
+| `write_chunks_for_document` | saved document에 chunk payload 저장 | DB-generated `chunk_ids`, `HAS_CHUNK` edge |
 | `write_relationship_candidates` | existing left/right node로 candidate 저장 | generated `edge_candidate_ids`, candidate status `pending_review` |
-| `write_candidate_revisions` | previous candidate id와 revised candidate 저장 | `previous_candidate_id`, incremented version 저장 |
 | `store_review_note` | candidate에 reviewer note 저장 | `ReviewNote`, `HAS_REVIEW_NOTE` edge |
 | `update_candidate_review_status` | candidate status update | enum value만 저장 가능 |
+| `update_memory_document` | job-level review note context를 반영해 단일 Memory 문서 갱신 | version 증가, `EVIDENCES_MEMORY` edge |
 | `materialize_candidate_edge` | approved candidate를 actual edge로 반영 | actual relationship, edge provenance, candidate approved |
-| `update_chunk_embeddings` | embedded chunk update | `embedding_status`, `embedding_model`, `embedding` 저장 |
+| `update_chunk_embedding` | embedded chunk update | `embedding_status`, `embedding_model`, `embedding` 저장 |
 | `upsert_ingest_job_progress` | job progress 저장 | `IngestJob` node upsert |
 
 `RelationshipCandidate` write 규칙:
@@ -111,7 +112,7 @@ transaction에서 실패하므로 `external.memgraph.MemgraphBoltClient.execute_
 - `left_node`, `right_node`는 필수이고 DB에 실제 존재해야 한다.
 - `evidence_node_id`는 optional이다. 다른 문서/청크가 두 endpoint의 관계를 언급했을 때
   provenance anchor로만 사용한다.
-- `status`는 `pending_review`, `approved`, `rejected`, `retry` 중 하나만 허용한다.
+- `status`는 `pending_review`, `approved`, `rejected` 중 하나만 허용한다.
 - `relationship_direction`은 `left_to_right`, `right_to_left`, `bidirectional` 중 하나만
   허용한다.
 
@@ -178,11 +179,9 @@ json.loads(raw_content)
 now = datetime.now(UTC)
 suffix = now.strftime("%Y%m%d%H%M%S")
 job_id = f"manual-smoke-job-{suffix}"
-document_id = f"manual-smoke-document-{suffix}"
 chunk_text = raw_content[:600]
 
 document = DocumentNode(
-    id=document_id,
     entry_number=int(now.timestamp()),
     document_version=1,
     content_hash=sha256(raw_content.encode("utf-8")).hexdigest(),
@@ -197,7 +196,8 @@ document = DocumentNode(
     },
 )
 
-register_document(document)
+document_result = register_document(document)
+document_id = document_result["rows"][0]["document_id"]
 
 chunk_result = write_chunks_for_document(
     document_id=document_id,
@@ -389,7 +389,7 @@ LIMIT 100;
 - `RelationshipCandidate write stored 0 rows`
   - `left_node` 또는 `right_node` id가 DB에 존재하지 않는다.
 - `RelationshipCandidateStatus` validation error
-  - status가 `pending_review`, `approved`, `rejected`, `retry` 중 하나가 아니다.
+  - status가 `pending_review`, `approved`, `rejected` 중 하나가 아니다.
 - `Unsafe Cypher identifier`
   - materialized edge의 `relationship_type`이 Cypher identifier로 안전하지 않다.
 - Memgraph procedure/index error

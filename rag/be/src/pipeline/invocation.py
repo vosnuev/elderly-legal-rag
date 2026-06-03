@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from logger import bind_logger
+from observability.logger import bind_logger
 from pipeline.graphs.candidate_review_graph import CandidateReviewGraph
 from pipeline.graphs.document_construction_graph import DocumentConstructionGraph
 from pipeline.schemas import GraphIngestPhase, IngestGraphResult, ReviewAction
-from pipeline.services.ingest_progress_service import IngestProgressService
 
 
 class GraphIngestInvocation:
@@ -13,7 +12,6 @@ class GraphIngestInvocation:
     def __init__(self) -> None:
         self._document_construction_graph = DocumentConstructionGraph()
         self._candidate_review_graph = CandidateReviewGraph()
-        self._ingest_progress_service = IngestProgressService()
         self._logger = bind_logger(component="graph_ingest_invocation")
 
     def start_construction(
@@ -36,7 +34,7 @@ class GraphIngestInvocation:
                 job_id=job_id,
                 document_id=document_id,
             ).exception("graph construction failed")
-            return self._ingest_progress_service.mark(
+            return IngestGraphResult(
                 job_id=job_id,
                 phase=GraphIngestPhase.FAILED,
                 document_id=document_id,
@@ -73,6 +71,36 @@ class GraphIngestInvocation:
             ).exception("candidate review action failed")
             return IngestGraphResult(
                 job_id="",
+                phase=GraphIngestPhase.FAILED,
+                errors=[str(exc)],
+            )
+
+    def apply_review_decisions(
+        self,
+        *,
+        job_id: str,
+        reviewer: str,
+        decisions: list[dict[str, object]],
+    ) -> IngestGraphResult:
+        try:
+            self._logger.bind(
+                job_id=job_id,
+                reviewer=reviewer,
+                decision_count=len(decisions),
+            ).info("candidate review batch invoked")
+            return self._candidate_review_graph.invoke_batch(
+                job_id=job_id,
+                reviewer=reviewer,
+                decisions=decisions,
+            )
+        except Exception as exc:  # noqa: BLE001
+            self._logger.bind(
+                job_id=job_id,
+                reviewer=reviewer,
+                decision_count=len(decisions),
+            ).exception("candidate review batch failed")
+            return IngestGraphResult(
+                job_id=job_id,
                 phase=GraphIngestPhase.FAILED,
                 errors=[str(exc)],
             )

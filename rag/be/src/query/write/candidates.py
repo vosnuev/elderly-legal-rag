@@ -50,19 +50,6 @@ def write_relationship_candidates(
     return result
 
 
-def write_candidate_revisions(
-    *,
-    previous_candidate_id: str,
-    candidates: list[RelationshipCandidateNode | dict[str, Any]],
-) -> dict[str, Any]:
-    records: list[dict[str, Any]] = []
-    for candidate in candidates:
-        record = _candidate_record(candidate)
-        record["previous_candidate_id"] = previous_candidate_id
-        records.append(record)
-    return write_relationship_candidates(records)
-
-
 def _candidate_record(
     candidate: RelationshipCandidateNode | dict[str, Any],
 ) -> dict[str, Any]:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from query.schema import IngestJobNode
+from query.schema import IngestJobNode, IngestJobPhase
 from query.utils import graph_properties
 from query.write.core import write_query
 
@@ -10,7 +10,7 @@ from query.write.core import write_query
 def upsert_ingest_job_progress(
     *,
     job_id: str,
-    phase: str,
+    phase: IngestJobPhase | str,
     document_id: str | None,
     chunk_count: int,
     candidate_count: int,
@@ -21,7 +21,7 @@ def upsert_ingest_job_progress(
     job = IngestJobNode(
         id=job_id,
         job_id=job_id,
-        phase=phase,
+        phase=IngestJobPhase.normalize(phase),
         document_id=document_id,
         chunk_count=chunk_count,
         candidate_count=candidate_count,
@@ -38,6 +38,6 @@ def upsert_ingest_job_progress(
         """,
         {
             "job_id": job_id,
-            "progress": graph_properties(job.model_dump()),
+            "progress": graph_properties(job.model_dump(mode="json")),
         },
     )

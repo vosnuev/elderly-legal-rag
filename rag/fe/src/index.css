@@ -46,6 +46,58 @@
   overflow: hidden;
 }
 
+@keyframes edge-flow {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 oklch(0.68 0.21 285 / 40%);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px oklch(0.68 0.21 285 / 0%);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 oklch(0.68 0.21 285 / 0%);
+  }
+}
+
+@keyframes neon-glow {
+  from {
+    box-shadow: 0 0 4px oklch(0.78 0.16 205 / 20%), 0 0 12px oklch(0.78 0.16 205 / 10%);
+  }
+  to {
+    box-shadow: 0 0 12px oklch(0.78 0.16 205 / 40%), 0 0 20px oklch(0.78 0.16 205 / 20%);
+  }
+}
+
+@utility animate-edge-flow {
+  animation: edge-flow 1.2s linear infinite;
+}
+
+@utility animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@utility animate-neon-glow {
+  animation: neon-glow 2s ease-in-out infinite alternate;
+}
+
+@utility bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, oklch(var(--color-border) / 20%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(var(--color-border) / 20%) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 @theme inline {
   --font-heading:
       var(--font-sans);
@@ -130,158 +182,257 @@
 }
 
 :root {
-  --background:
-      oklch(1 0 0);
-  --foreground:
-      oklch(0.145 0 0);
-  --card:
-      oklch(1 0 0);
-  --card-foreground:
-      oklch(0.145 0 0);
-  --popover:
-      oklch(1 0 0);
-  --popover-foreground:
-      oklch(0.145 0 0);
-  --primary:
-      oklch(0.205 0 0);
-  --primary-foreground:
-      oklch(0.985 0 0);
-  --secondary:
-      oklch(0.97 0 0);
-  --secondary-foreground:
-      oklch(0.205 0 0);
-  --muted:
-      oklch(0.97 0 0);
-  --muted-foreground:
-      oklch(0.556 0 0);
-  --accent:
-      oklch(0.97 0 0);
-  --accent-foreground:
-      oklch(0.205 0 0);
-  --destructive:
-      oklch(0.577 0.245 27.325);
-  --border:
-      oklch(0.922 0 0);
-  --input:
-      oklch(0.922 0 0);
-  --ring:
-      oklch(0.708 0 0);
-  --chart-1:
-      oklch(0.87 0 0);
-  --chart-2:
-      oklch(0.556 0 0);
-  --chart-3:
-      oklch(0.439 0 0);
-  --chart-4:
-      oklch(0.371 0 0);
-  --chart-5:
-      oklch(0.269 0 0);
-  --radius:
-      0.625rem;
-  --sidebar:
-      oklch(0.985 0 0);
-  --sidebar-foreground:
-      oklch(0.145 0 0);
-  --sidebar-primary:
-      oklch(0.205 0 0);
-  --sidebar-primary-foreground:
-      oklch(0.985 0 0);
-  --sidebar-accent:
-      oklch(0.97 0 0);
-  --sidebar-accent-foreground:
-      oklch(0.205 0 0);
-  --sidebar-border:
-      oklch(0.922 0 0);
-  --sidebar-ring:
-      oklch(0.708 0 0);
-  --review-chunk-accent:
-      oklch(0.56 0.14 230);
-  --review-candidate-accent:
-      oklch(0.68 0.16 78);
-  --review-approve-accent:
-      oklch(0.56 0.15 145);
-  --review-approve-foreground:
-      oklch(0.985 0 0);
-  --review-note-accent:
-      oklch(0.86 0.12 82);
+  --background: oklch(0.96 0.01 40); /* Streamlit Warm Cocoa Beige (#f5efed) */
+  --foreground: oklch(0.18 0.08 285); /* Streamlit Deep Violet Black (#1E1245) */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.08 285);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.08 285);
+  --primary: oklch(0.32 0.08 45); /* Streamlit Espresso Brown (#4A2E1A) */
+  --primary-foreground: oklch(0.98 0.005 45);
+  --secondary: oklch(0.82 0.12 355); /* Streamlit Rose Pink (#FFB3C6) */
+  --secondary-foreground: oklch(0.3 0.08 355);
+  --muted: oklch(0.94 0.02 285); /* Lavender Soft (#F3EEFF) */
+  --muted-foreground: oklch(0.55 0.01 285);
+  --accent: oklch(0.64 0.22 285); /* Streamlit Active Lavender Violet (#977DFF) */
+  --accent-foreground: oklch(0.99 0.005 285);
+  --destructive: oklch(0.58 0.22 20);
+  --border: oklch(0.88 0.04 285); /* Lavender Line (#977DFF 20%) */
+  --input: oklch(0.88 0.04 285);
+  --ring: oklch(0.64 0.22 285 / 50%);
+  --chart-1: oklch(0.32 0.08 45); /* Espresso Brown */
+  --chart-2: oklch(0.64 0.22 285); /* Lavender Violet */
+  --chart-3: oklch(0.82 0.12 355); /* Rose Pink */
+  --chart-4: oklch(0.55 0.12 285);
+  --chart-5: oklch(0.4 0.08 45);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.26 0.06 45); /* Espresso Sidebar Background (#3e2723) */
+  --sidebar-foreground: oklch(0.96 0.01 45);
+  --sidebar-primary: oklch(0.82 0.12 355); /* Active Rose Pink (#FFB3C6) */
+  --sidebar-primary-foreground: oklch(0.26 0.06 45);
+  --sidebar-accent: oklch(0.32 0.07 45);
+  --sidebar-accent-foreground: oklch(0.96 0.01 45);
+  --sidebar-border: oklch(0.32 0.07 45 / 40%);
+  --sidebar-ring: oklch(0.82 0.12 355 / 30%);
+  --review-chunk-accent: oklch(0.32 0.08 45); /* Espresso Brown */
+  --review-candidate-accent: oklch(0.64 0.22 285); /* Lavender Violet */
+  --review-approve-accent: oklch(0.82 0.12 355); /* Rose Pink */
+  --review-approve-foreground: oklch(0.26 0.06 45);
+  --review-note-accent: oklch(0.82 0.12 355);
 }
 
 .dark {
-  --background:
-      oklch(0.145 0 0);
-  --foreground:
-      oklch(0.985 0 0);
-  --card:
-      oklch(0.205 0 0);
-  --card-foreground:
-      oklch(0.985 0 0);
-  --popover:
-      oklch(0.205 0 0);
-  --popover-foreground:
-      oklch(0.985 0 0);
-  --primary:
-      oklch(0.922 0 0);
-  --primary-foreground:
-      oklch(0.205 0 0);
-  --secondary:
-      oklch(0.269 0 0);
-  --secondary-foreground:
-      oklch(0.985 0 0);
-  --muted:
-      oklch(0.269 0 0);
-  --muted-foreground:
-      oklch(0.708 0 0);
-  --accent:
-      oklch(0.269 0 0);
-  --accent-foreground:
-      oklch(0.985 0 0);
-  --destructive:
-      oklch(0.704 0.191 22.216);
-  --border:
-      oklch(1 0 0 / 10%);
-  --input:
-      oklch(1 0 0 / 15%);
-  --ring:
-      oklch(0.556 0 0);
-  --chart-1:
-      oklch(0.87 0 0);
-  --chart-2:
-      oklch(0.556 0 0);
-  --chart-3:
-      oklch(0.439 0 0);
-  --chart-4:
-      oklch(0.371 0 0);
-  --chart-5:
-      oklch(0.269 0 0);
-  --sidebar:
-      oklch(0.205 0 0);
-  --sidebar-foreground:
-      oklch(0.985 0 0);
-  --sidebar-primary:
-      oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground:
-      oklch(0.985 0 0);
-  --sidebar-accent:
-      oklch(0.269 0 0);
-  --sidebar-accent-foreground:
-      oklch(0.985 0 0);
-  --sidebar-border:
-      oklch(1 0 0 / 10%);
-  --sidebar-ring:
-      oklch(0.556 0 0);
-  --review-chunk-accent:
-      oklch(0.73 0.12 230);
-  --review-candidate-accent:
-      oklch(0.78 0.15 78);
-  --review-approve-accent:
-      oklch(0.71 0.13 145);
-  --review-approve-foreground:
-      oklch(0.145 0 0);
-  --review-note-accent:
-      oklch(0.8 0.12 82);
+  --background: oklch(0.12 0.03 45); /* Deep Espresso Chocolate Dark Background */
+  --foreground: oklch(0.96 0.01 45);
+  --card: oklch(0.17 0.04 45);
+  --card-foreground: oklch(0.96 0.01 45);
+  --popover: oklch(0.16 0.04 45);
+  --popover-foreground: oklch(0.96 0.01 45);
+  --primary: oklch(0.82 0.12 355); /* Glowing Rose Pink */
+  --primary-foreground: oklch(0.12 0.03 45);
+  --secondary: oklch(0.24 0.05 45);
+  --secondary-foreground: oklch(0.88 0.06 355);
+  --muted: oklch(0.2 0.04 45);
+  --muted-foreground: oklch(0.65 0.02 45);
+  --accent: oklch(0.68 0.22 285); /* Neon Lavender */
+  --accent-foreground: oklch(0.98 0.005 285);
+  --destructive: oklch(0.65 0.21 22);
+  --border: oklch(0.26 0.04 45);
+  --input: oklch(0.26 0.04 45);
+  --ring: oklch(0.82 0.12 355 / 50%);
+  --chart-1: oklch(0.82 0.12 355); /* Rose Pink */
+  --chart-2: oklch(0.68 0.22 285); /* Neon Lavender */
+  --chart-3: oklch(0.78 0.16 145); /* Neon Emerald */
+  --chart-4: oklch(0.55 0.08 45);
+  --chart-5: oklch(0.35 0.05 45);
+  --sidebar: oklch(0.14 0.03 45);
+  --sidebar-foreground: oklch(0.94 0.01 45);
+  --sidebar-primary: oklch(0.82 0.12 355);
+  --sidebar-primary-foreground: oklch(0.14 0.03 45);
+  --sidebar-accent: oklch(0.22 0.04 45);
+  --sidebar-accent-foreground: oklch(0.94 0.01 45);
+  --sidebar-border: oklch(0.22 0.04 45 / 45%);
+  --sidebar-ring: oklch(0.82 0.12 355 / 30%);
+  --review-chunk-accent: oklch(0.82 0.12 355); /* Rose Pink */
+  --review-candidate-accent: oklch(0.68 0.22 285); /* Neon Lavender */
+  --review-approve-accent: oklch(0.78 0.16 145); /* Neon Emerald */
+  --review-approve-foreground: oklch(0.12 0.03 45);
+  --review-note-accent: oklch(0.68 0.22 285);
 }
 
 @layer components {
+  .review-job-context {
+    display: grid;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in oklch, var(--review-chunk-accent), transparent 92%),
+        transparent 48%
+      );
+    padding: 1.25rem 0;
+  }
+
+  .review-job-context-main {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    gap: 0.875rem;
+  }
+
+  .review-job-context-icon,
+  .review-job-candidates-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in oklch, var(--review-chunk-accent), var(--border) 58%);
+    border-radius: var(--radius-lg);
+    background: color-mix(in oklch, var(--review-chunk-accent), transparent 89%);
+    color: color-mix(in oklch, var(--review-chunk-accent), var(--foreground) 18%);
+  }
+
+  .review-job-context-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .review-job-context-icon svg,
+  .review-job-candidates-icon svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .review-job-context-label {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1rem;
+    text-transform: uppercase;
+  }
+
+  .review-job-context-title {
+    margin-top: 0.25rem;
+    color: var(--foreground);
+    font-size: clamp(1.25rem, 1.2vw + 1rem, 1.875rem);
+    font-weight: 720;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+  }
+
+  .review-job-context-file {
+    margin-top: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .review-job-context-meta {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .review-job-context-fact {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.625rem;
+    border: 1px solid var(--border);
+    border-left: 0.25rem solid color-mix(in oklch, var(--review-chunk-accent), var(--border) 20%);
+    border-radius: var(--radius-md);
+    background: color-mix(in oklch, var(--background), var(--muted) 34%);
+    padding: 0.625rem 0.75rem;
+  }
+
+  .review-job-context-fact p {
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 0.875rem;
+    text-transform: uppercase;
+  }
+
+  .review-job-context-fact strong {
+    display: block;
+    margin-top: 0.125rem;
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 650;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .review-job-candidates {
+    display: grid;
+    gap: 0.875rem;
+  }
+
+  .review-candidate-workspace-grid {
+    align-items: stretch;
+  }
+
+  .review-candidate-queue-shell,
+  .review-candidate-detail-shell {
+    min-height: 18rem;
+  }
+
+  .review-job-candidates-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 0.25rem;
+  }
+
+  .review-job-candidates-heading {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .review-job-candidates-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .review-job-candidates-heading h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .review-job-candidates-heading p {
+    margin-top: 0.125rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .review-job-candidate-list {
+    position: relative;
+    display: grid;
+    gap: 0.75rem;
+    padding-left: 1rem;
+  }
+
+  .review-job-candidate-list::before {
+    position: absolute;
+    top: 0.375rem;
+    bottom: 0.375rem;
+    left: 0.25rem;
+    width: 0.125rem;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--review-candidate-accent), transparent 54%);
+    content: "";
+  }
+
   .review-header-actions {
     display: flex;
     max-width: 24rem;
@@ -503,6 +654,25 @@
     background: var(--background);
   }
 
+  .review-candidate-detail .review-node--chunk {
+    min-height: 0;
+  }
+
+  .review-candidate-detail .review-document-scroll {
+    margin-top: 0;
+    height: min(16rem, 36vh);
+    min-height: 0;
+    max-height: 16rem;
+    flex: 0 1 auto;
+  }
+
+  .review-candidate-detail .review-document-scroll--expanded {
+    height: auto;
+    min-height: 12rem;
+    max-height: none;
+    flex: 1 1 auto;
+  }
+
   .review-document-scroll [data-slot="scroll-area-viewport"] {
     padding: 0.75rem;
   }
@@ -693,6 +863,17 @@
     white-space: nowrap;
   }
 
+  .review-insight-panel {
+    border-color: color-mix(in oklch, var(--review-candidate-accent), var(--border) 56%);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--review-candidate-accent), transparent 91%),
+        var(--background) 42%
+      );
+    box-shadow: 0 10px 22px color-mix(in oklch, var(--foreground), transparent 95%);
+  }
+
   .review-edge-details {
     display: grid;
     gap: 0.75rem;
@@ -771,6 +952,15 @@
   }
 
   @media (min-width: 1280px) {
+    .review-job-context {
+      grid-template-columns: minmax(0, 1fr) minmax(28rem, 0.62fr);
+      align-items: center;
+    }
+
+    .review-job-context-meta {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .review-graph {
       grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.28fr);
       align-items: stretch;
@@ -790,5 +980,23 @@
       min-height: 18rem;
     }
 
+  }
+
+  @media (min-width: 1536px) {
+    .review-candidate-workspace-grid {
+      height: calc(100dvh - 12rem);
+      min-height: 34rem;
+    }
+
+    .review-candidate-queue-shell,
+    .review-candidate-detail-shell {
+      height: 100%;
+      min-height: 0;
+    }
+
+    .review-candidate-detail-shell > .review-candidate-detail,
+    .review-candidate-detail-shell > .review-candidate-empty-state {
+      min-height: 0;
+    }
   }
 }

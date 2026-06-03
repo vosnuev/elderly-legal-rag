@@ -5,6 +5,12 @@ from typing import Any
 
 from settings import settings
 
+DB_GENERATED_ID_EXPRESSION = "randomUUID()"
+
+
+def db_generated_id_expression() -> str:
+    return DB_GENERATED_ID_EXPRESSION
+
 
 def bounded_limit(value: int | None) -> int:
     if value is None:

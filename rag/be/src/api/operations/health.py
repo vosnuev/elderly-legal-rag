@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from ingestion.service import ingestion_service
+from knowledge_runtime.service import knowledge_runtime
 
 router = APIRouter(tags=["system"])
 
@@ -17,4 +17,4 @@ def health() -> dict[str, str]:
 
 @router.get("/api/system/dependencies")
 def dependencies() -> dict[str, object]:
-    return ingestion_service.dependency_summary()
+    return knowledge_runtime.system.dependency_summary().model_dump()

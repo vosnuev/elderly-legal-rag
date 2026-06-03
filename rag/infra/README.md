@@ -2,9 +2,10 @@
 
 RAG 로컬 개발용 인프라 실행 파일을 관리합니다.
 
-## Memgraph
+## Services
 
-공식 Memgraph Docker Compose 및 Memgraph Lab Docker 문서 기준으로 `memgraph/memgraph-mage`와 `memgraph/lab`을 함께 실행합니다.
+로컬 개발용 Compose stack은 Memgraph, Memgraph Lab, Redis를 함께 실행합니다.
+Redis는 RAG backend job observability stream 용도로 사용합니다.
 
 ```bash
 cp infra/.env.example infra/.env
@@ -16,6 +17,7 @@ docker compose --env-file infra/.env -f infra/docker-compose.yml up -d
 - Memgraph Bolt: `127.0.0.1:${MEMGRAPH_BOLT_PORT:-7687}`
 - Memgraph logs for Lab: `${MEMGRAPH_LOG_PORT:-7444}`
 - Memgraph Lab: `http://127.0.0.1:${MEMGRAPH_LAB_PORT:-3000}`
+- Redis: `127.0.0.1:${REDIS_PORT:-6379}`
 
 Compose는 기본적으로 host publish를 `127.0.0.1`에만 바인딩합니다. 원격 서버에서 작업할 때는 client에서 아래 포트를 포워딩해서 사용합니다.
 
@@ -31,6 +33,7 @@ RAG 서버는 기본적으로 아래 값으로 Memgraph에 접속합니다.
 
 ```bash
 RAG_MEMGRAPH_URI=bolt://127.0.0.1:7687
+RAG_REDIS_URL=redis://127.0.0.1:6379/0
 ```
 
 ## Check
