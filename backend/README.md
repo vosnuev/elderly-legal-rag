@@ -253,8 +253,7 @@ backend 안의 `scripts/`는 현재 수동 `/chat` 테스트용 `manual_chat.py`
 
 | 파일 | 내용 |
 | --- | --- |
-| `../docs/benchmark/no_tool_chart_report.md` | model/provider별 no_tool 차트 분석 리포트 |
-| `../docs/benchmark/no_tool_provider_analysis.md` | provider별 결과 분석 메모 |
+| `../docs/benchmark/no_tool_chart_report.md` | model/provider별 no_tool 통합 분석 리포트 |
 | `../docs/benchmark/artifacts/no_tool_combined_results.csv` | strict 기준으로 합친 원본 benchmark CSV |
 | `../docs/benchmark/artifacts/no_tool_provider_summary.csv` | model/provider별 평균 token, 비용, latency 요약 |
 | `../docs/benchmark/artifacts/no_tool_question_summary.csv` | 질문별 평균 token, 비용, latency 요약 |

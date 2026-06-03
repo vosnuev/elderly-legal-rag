@@ -1,26 +1,92 @@
-# Benchmark(model by provider) 차트 분석 리포트
+# no_tool Benchmark 통합 분석 리포트
+
+작성일: 2026-06-03
+
+이 문서 하나에서 no_tool benchmark의 계산 기준, 입력 데이터, 차트, 실패 리포트, 후보 판단을 모두 확인한다.
 
 ## 분석 범위
 
 - 이 리포트는 tool을 연결하지 않은 **no_tool** benchmark 결과를 분석한다.
 - 동일한 360개 testcase를 model/provider별로 실행한 CSV를 기준으로 token, 비용, latency, 실패 여부, routing 검증만 비교한다.
+- 실제 RAG tool은 연결하지 않았고, 각 모델은 system prompt와 testcase 질문만 보고 답했다.
+- `with_tool` 결과와 섞어 비교하면 안 된다.
 - 답변 품질 평가는 별도 단계이며, 최종 provider 결정에는 품질 평가 결과를 함께 반영해야 한다.
 - Qwen 3.7 Max는 비용 문제로 후보군에서 제외했고, 현재 분석 CSV에도 포함하지 않는다.
 
-strict 비교 기준:
+## 입력 데이터
+
+분석 대상 폴더:
+
+```text
+docs/benchmark/results
+```
+
+현재 분석 대상 CSV:
+
+```text
+deepseek_v4_flash_deepinfra.csv
+deepseek_v4_flash_deepseek.csv
+deepseek_v4_flash_gmicloud.csv
+deepseek_v4_flash_siliconflow.csv
+deepseek_v4_pro_alibaba.csv
+deepseek_v4_pro_atlas_cloud.csv
+deepseek_v4_pro_deepseek.csv
+deepseek_v4_pro_gmicloud.csv
+deepseek_v4_pro_novita.csv
+deepseek_v4_pro_siliconflow.csv
+deepseek_v4_pro_streamlake.csv
+openai_gpt_oss_120b_cerebras_fp16.csv
+```
+
+## CSV 구조
+
+결과 CSV는 아래 주요 컬럼을 사용한다.
+
+```text
+timestamp, testcase_id, query_reference, answer,
+input_price_per_1m, output_price_per_1m,
+input_tokens, output_tokens, used_tokens,
+input_cost_usd, output_cost_usd, total_cost_usd,
+batch, difficulty, special_case,
+model_id, provider_order, primary_provider_slug,
+primary_provider_quantization, actual_provider, allow_fallbacks,
+endpoint_tools_supported, context_length, max_completion_tokens,
+quantization, openrouter_generation_id, latency_ms,
+langsmith_project, langsmith_tags, status, error
+```
+
+`query_reference`에는 기존 `query`, `expected_keywords`, `reference`, `judge_criteria`를 한 컬럼으로 묶었다. 이 기준은 후속 답변 품질 평가에 쓰는 참고값이고, 현재 no_tool 운영 지표 계산에는 token/비용/latency/실패/routing 값만 사용한다.
+
+## 전처리와 계산 원칙
+
+1. `docs/benchmark/results/*.csv`를 읽되 `summary`, `qwen`, `smoke`, `raw` 파일은 제외한다.
+2. 숫자 컬럼은 `pd.to_numeric(..., errors="coerce")`로 변환한다.
+3. 평균 token, 비용, latency는 `status == "success"` row 기준으로 계산한다.
+4. 실패 row는 평균 계산에서 제외하되, `failed_count`와 `failure_report`에는 남긴다.
+5. provider별 순수 비교는 routing 검증을 통과한 provider만 기준으로 본다.
+6. routing 검증 통과 조건은 `allow_fallbacks=false`이고, 성공 row의 `actual_provider`가 `primary_provider_slug`와 일치하는 것이다.
+7. `p95_latency_ms`, `p95_used_tokens`는 `numpy.percentile(..., 95)` 기본값인 linear 보간 방식으로 계산한다.
+
+이 문서에서 strict 후보로 인정하는 조건은 다음과 같다.
 
 - `allow_fallbacks=false`
 - 성공 row의 `actual_provider`가 `primary_provider_slug`와 일치
 - 평균, 비용, p95는 `status=success` row 기준
-- p95는 `numpy.percentile(..., 95)` linear 보간 방식
+
+## 분석 스크립트
+
+```bash
+cd /home/vosnuevo/workspace/SKN28-3rd-1Team/backend
+uv run python ../docs/benchmark/analyze_no_tool_results.py --results-dir ../docs/benchmark/results
+```
+
+## 분석 산출물
 
 차트 범주 색상:
 
 - 파란색: `gpt-oss-120b`
 - 초록색: `deepseek-v4-flash`
 - 주황색: `deepseek-v4-pro`
-
-분석 산출물:
 
 ```text
 docs/benchmark/artifacts/no_tool_all_results.csv
@@ -237,13 +303,13 @@ docs/benchmark/charts/*.png
 ![Average cost per question](charts/avg_cost_per_question.png)
 
 이 차트는 성공 질문 1개당 평균 비용을 보여준다. 같은 색은 같은 모델 계열이다.
-아래의 `후보 #번호`는 전체 요약표와 차트 x축에서 쓰는 고정 후보 ID다.
 
-- 비용 1위는 후보 `#2 deepseek-v4-flash / deepinfra`, `0.00019778`이다.
-- 비용 2위는 후보 `#5 deepseek-v4-flash / gmicloud`, `0.00030621`이다.
-- 비용 3위는 후보 `#3 deepseek-v4-flash / deepseek`, `0.00035059`이다.
-- 비용 4위는 후보 `#4 deepseek-v4-flash / siliconflow`, `0.00039211`이다.
-- 비용 5위는 후보 `#1 gpt-oss-120b / cerebras`, `0.00112336`이다.
+
+- 비용 1위는 `#2 deepseek-v4-flash / deepinfra`, `0.00019778`이다.
+- 비용 2위는 `#5 deepseek-v4-flash / gmicloud`, `0.00030621`이다.
+- 비용 3위는 `#3 deepseek-v4-flash / deepseek`, `0.00035059`이다.
+- 비용 4위는 `#4 deepseek-v4-flash / siliconflow`, `0.00039211`이다.
+- 비용 5위는 `#1 gpt-oss-120b / cerebras`, `0.00112336`이다.
 
 ## 2. 평균 latency 비교
 
@@ -251,11 +317,11 @@ docs/benchmark/charts/*.png
 
 이 차트는 성공 질문 1개당 평균 응답 시간을 보여준다. 막대 위 숫자는 초 단위 평균 latency다.
 
-- 속도 1위는 후보 `#1 gpt-oss-120b / cerebras`, `1,411ms`이다.
-- 속도 2위는 후보 `#3 deepseek-v4-flash / deepseek`, `12,385ms`이다.
-- 속도 3위는 후보 `#4 deepseek-v4-flash / siliconflow`, `14,452ms`이다.
-- 속도 4위는 후보 `#5 deepseek-v4-flash / gmicloud`, `16,603ms`이다.
-- 속도 5위는 후보 `#6 deepseek-v4-pro / streamlake`, `17,393ms`이다.
+- 속도 1위는 `#1 gpt-oss-120b / cerebras`, `1,411ms`이다.
+- 속도 2위는 `#3 deepseek-v4-flash / deepseek`, `12,385ms`이다.
+- 속도 3위는 `#4 deepseek-v4-flash / siliconflow`, `14,452ms`이다.
+- 속도 4위는 `#5 deepseek-v4-flash / gmicloud`, `16,603ms`이다.
+- 속도 5위는 `#6 deepseek-v4-pro / streamlake`, `17,393ms`이다.
 
 ## 3. 평균 input token 비교
 
@@ -263,11 +329,11 @@ docs/benchmark/charts/*.png
 
 이 차트는 provider별 평균 input token을 보여준다. input token이 크면 같은 답변 길이라도 기본 비용이 올라간다.
 
-- 평균 input token이 많은 1위는 후보 `#8 deepseek-v4-pro / gmicloud`, `941.8`이다.
-- 평균 input token이 많은 2위는 후보 `#5 deepseek-v4-flash / gmicloud`, `938.4`이다.
-- 평균 input token이 많은 3위는 후보 `#10 deepseek-v4-pro / novita`, `938.0`이다.
-- 평균 input token이 많은 4위는 후보 `#7 deepseek-v4-pro / deepseek`, `936.5`이다.
-- 평균 input token이 많은 5위는 후보 `#2 deepseek-v4-flash / deepinfra`, `936.4`이다.
+- 평균 input token이 많은 1위는 `#8 deepseek-v4-pro / gmicloud`, `941.8`이다.
+- 평균 input token이 많은 2위는 `#5 deepseek-v4-flash / gmicloud`, `938.4`이다.
+- 평균 input token이 많은 3위는 `#10 deepseek-v4-pro / novita`, `938.0`이다.
+- 평균 input token이 많은 4위는 `#7 deepseek-v4-pro / deepseek`, `936.5`이다.
+- 평균 input token이 많은 5위는 `#2 deepseek-v4-flash / deepinfra`, `936.4`이다.
 
 ## 4. 평균 output token 비교
 
@@ -275,11 +341,11 @@ docs/benchmark/charts/*.png
 
 이 차트는 provider별 평균 output token을 보여준다. output token은 비용과 답변 길이에 직접 영향을 준다.
 
-- 평균 output token이 많은 1위는 후보 `#9 deepseek-v4-pro / alibaba`, `1,542.5`이다.
-- 평균 output token이 많은 2위는 후보 `#6 deepseek-v4-pro / streamlake`, `1,495.8`이다.
-- 평균 output token이 많은 3위는 후보 `#10 deepseek-v4-pro / novita`, `1,476.6`이다.
-- 평균 output token이 많은 4위는 후보 `#7 deepseek-v4-pro / deepseek`, `1,472.4`이다.
-- 평균 output token이 많은 5위는 후보 `#12 deepseek-v4-pro / atlas-cloud`, `1,471.1`이다.
+- 평균 output token이 많은 1위는 `#9 deepseek-v4-pro / alibaba`, `1,542.5`이다.
+- 평균 output token이 많은 2위는 `#6 deepseek-v4-pro / streamlake`, `1,495.8`이다.
+- 평균 output token이 많은 3위는 `#10 deepseek-v4-pro / novita`, `1,476.6`이다.
+- 평균 output token이 많은 4위는 `#7 deepseek-v4-pro / deepseek`, `1,472.4`이다.
+- 평균 output token이 많은 5위는 `#12 deepseek-v4-pro / atlas-cloud`, `1,471.1`이다.
 
 ## 5. 평균 used token 비교
 
@@ -309,7 +375,7 @@ docs/benchmark/charts/*.png
 
 질문별 요약은 `no_tool_question_summary.csv`에서 확인한다.
 
-평균 latency가 높은 질문:
+### 평균 latency가 높은 질문:
 
 | testcase_id | avg_latency_ms | 질문 요약 |
 | --- | ---: | --- |
@@ -319,8 +385,8 @@ docs/benchmark/charts/*.png
 | `RAG-Q-015` | 67,096 | 수원시 노인일자리 사회활동 지원사업 자료에서 뭘 확인할 수 있어? |
 | `RAG-Q-182` | 44,725 | 울산 북구 시설 정보가 필요한데 시설명만 말고 위치나 운영 정보도 있으면 같이 알려줘. |
 
-평균 비용이 높은 질문:
 
+### 평균 비용이 높은 질문:
 | testcase_id | avg_cost_usd | 질문 요약 |
 | --- | ---: | --- |
 | `RAG-Q-015` | 0.01918348 | 수원시 노인일자리 사회활동 지원사업 자료에서 뭘 확인할 수 있어? |
