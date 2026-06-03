@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+from textwrap import dedent
+
 import streamlit as st
 
 
 def render_page_hero(*, eyebrow: str, title: str, copy: str | None = None) -> None:
     copy_html = f'<p class="hero-copy">{copy}</p>' if copy else ""
-    st.markdown(
-        f"""
+    st.html(
+        dedent(
+            f"""
         <section class="search-hero">
             <div class="page-header">
                 <div class="page-header-content">
@@ -17,5 +20,5 @@ def render_page_hero(*, eyebrow: str, title: str, copy: str | None = None) -> No
             </div>
         </section>
         """,
-        unsafe_allow_html=True,
+        ).strip(),
     )

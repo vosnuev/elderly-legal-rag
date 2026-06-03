@@ -199,7 +199,7 @@ def _render_consultation_form() -> tuple[ConsultationFormData | None, bool]:
             value=format_extra_info(st.session_state.get("form_conditions", [])),
             placeholder="예: 국가유공자, 장애인 등록 완료, 근로자",
             key="consultation_extra_info",
-            height=200,
+            height=96,
         )
         conditions = parse_extra_info(extra_info)
         st.session_state["form_conditions"] = conditions

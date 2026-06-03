@@ -127,7 +127,7 @@ def render_chat_response(response: dict[str, Any]) -> None:
         option_count=len(response.get("options") or []),
     )
 
-    with st.container(border=True):
+    with st.container(border=True, key="chat_response_card"):
         kind = response.get("kind")
         if kind == "clarification":
             st.subheader("상황을 조금만 더 좁혀주세요")
@@ -187,7 +187,7 @@ def _render_backend_answer(response: dict[str, Any]) -> None:
         source_count=len(response.get("sources") or []),
     )
 
-    with st.container(border=True):
+    with st.container(border=True, key="chat_response_card"):
         st.subheader("상담 답변")
         render_agent_markdown(str(response["answer"]))
 

@@ -12,32 +12,42 @@ _GEOLOCATION_BUTTON = st.components.v2.component(
     css="""
 #use-location {
     width: 100%;
-    min-height: 44px;
+    min-height: 42px;
     padding: 0 0.9rem;
-    border: 1px solid #DDE3EE;
+    border: 1.5px solid #4A2E1A;
     border-radius: 8px;
-    background: #FFFFFF;
-    color: #1F2937;
-    font-family: inherit;
-    font-size: 0.92rem;
-    font-weight: 800;
+    background: #FFFDF7;
+    color: #4A2E1A;
+    font-family: "Noto Sans KR", system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
     line-height: 1.2;
     white-space: nowrap;
     cursor: pointer;
+    box-shadow: none;
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        color 0.16s ease;
 }
 
 #use-location:hover:not(:disabled) {
-    background: #F8FAFC;
-    border-color: #CBD5E1;
+    background: #E8E6DC;
+    border-color: #3a2010;
+    color: #3a2010;
+    box-shadow: none;
 }
 
 #use-location:focus-visible {
-    outline: 3px solid rgba(139, 92, 246, 0.22);
+    outline: 2px solid #4A2E1A;
     outline-offset: 2px;
 }
 
 #use-location:disabled {
-    color: #94A3B8;
+    border-color: #8F7A6A;
+    background: #E8E6DC;
+    color: #8F7A6A;
     cursor: wait;
 }
 """,

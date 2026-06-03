@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from textwrap import dedent
+
 import streamlit as st
 
 from forms import build_form_display_items
@@ -11,16 +13,21 @@ def render_consultation_summary(form_data: dict[str, object]) -> None:
             f'<span class="consultation-summary-item">{item}</span>'
             for item in build_form_display_items(form_data)
         )
-        st.markdown(
-            f"""
+        st.html(
+            dedent(
+                f"""
             <div class="consultation-summary-header">
                 <p class="consultation-summary-title">입력된 상담 정보</p>
                 <div class="consultation-summary-items">{form_items}</div>
             </div>
             """,
-            unsafe_allow_html=True,
+            ).strip(),
         )
-        if st.button("상담 정보 다시 입력", width="stretch"):
+        if st.button(
+            "상담 정보 다시 입력",
+            key="reset_consultation_button",
+            width="stretch",
+        ):
             clear_consultation_session()
             st.rerun()
 

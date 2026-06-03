@@ -1,47 +1,67 @@
 import type {
   CreateDocumentIngestJobRequest,
   FileIngestStatusResponse,
+  IngestGraphResult,
   RagDocument,
+  ReviewDecisionRequest,
   ReviewCandidateResponse,
-} from '../types'
-
-const API_BASE_URL = import.meta.env.VITE_RAG_API_BASE_URL ?? 'http://127.0.0.1:8010'
+} from '@/types'
+import {
+  createMockIngestJob,
+  getMockDocuments,
+  getMockReviewCandidates,
+  startMockGraphAdd,
+  submitMockReviewDecision,
+} from '@/api/mock-data'
+import { retrieve } from '@/api/retrieve'
 
 export async function listDocuments(): Promise<RagDocument[]> {
-  return request<RagDocument[]>('/api/documents')
+  return retrieve<RagDocument[]>({
+    path: '/api/documents',
+    mock: getMockDocuments,
+  })
 }
 
 export async function createIngestJob(
   payload: CreateDocumentIngestJobRequest,
 ): Promise<FileIngestStatusResponse> {
-  return request<FileIngestStatusResponse>('/api/ingest/jobs', {
-    method: 'POST',
-    body: JSON.stringify(payload),
+  return retrieve<FileIngestStatusResponse>({
+    path: '/api/ingest/jobs',
+    init: {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    },
+    mock: () => createMockIngestJob(payload),
   })
 }
 
 export async function startGraphAdd(jobId: string): Promise<FileIngestStatusResponse> {
-  return request<FileIngestStatusResponse>(`/api/ingest/jobs/${jobId}/start`, {
-    method: 'POST',
+  return retrieve<FileIngestStatusResponse>({
+    path: `/api/ingest/jobs/${jobId}/start`,
+    init: {
+      method: 'POST',
+    },
+    mock: () => startMockGraphAdd(jobId),
   })
 }
 
 export async function listReviewCandidates(): Promise<ReviewCandidateResponse> {
-  return request<ReviewCandidateResponse>('/api/review/edge-candidates')
+  return retrieve<ReviewCandidateResponse>({
+    path: '/api/review/edge-candidates',
+    mock: getMockReviewCandidates,
+  })
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...init?.headers,
+export async function submitReviewDecision(
+  candidateId: string,
+  payload: ReviewDecisionRequest,
+): Promise<IngestGraphResult> {
+  return retrieve<IngestGraphResult>({
+    path: `/api/review/edge-candidates/${encodeURIComponent(candidateId)}/decision`,
+    init: {
+      method: 'POST',
+      body: JSON.stringify(payload),
     },
-    ...init,
+    mock: () => submitMockReviewDecision(candidateId, payload),
   })
-
-  if (!response.ok) {
-    throw new Error(`RAG API request failed: ${response.status}`)
-  }
-
-  return response.json() as Promise<T>
 }

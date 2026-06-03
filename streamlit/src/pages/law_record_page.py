@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-import pandas as pd
+from html import escape
+from textwrap import dedent
+
 import streamlit as st
 
 from components import render_page_hero
@@ -10,17 +12,40 @@ from structured_logging import get_logger
 logger = get_logger(__name__)
 
 
-def _laws_table() -> pd.DataFrame:
-    return pd.DataFrame(
-        [
-            {
-                "분야": law["category"],
-                "법령": law["name"],
-                "주요 조항": law["articles"],
-                "핵심 내용": law["summary"],
-            }
-            for law in LAW_SUMMARIES
-        ]
+def _render_laws_table() -> None:
+    rows = "\n".join(
+        dedent(
+            f"""
+            <tr>
+                <td><span class="law-category-badge">{escape(law["category"])}</span></td>
+                <td class="law-table-name">{escape(law["name"])}</td>
+                <td><span class="law-article-chip">{escape(law["articles"])}</span></td>
+                <td class="law-table-summary">{escape(law["summary"])}</td>
+            </tr>
+            """
+        ).strip()
+        for law in LAW_SUMMARIES
+    )
+    st.html(
+        dedent(
+            f"""
+            <div class="law-table-card">
+                <table class="law-summary-table">
+                    <thead>
+                        <tr>
+                            <th>분야</th>
+                            <th>법령</th>
+                            <th>주요 조항</th>
+                            <th>핵심 내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            </div>
+            """
+        ).strip()
     )
 
 
@@ -52,19 +77,19 @@ def render_law_record_page() -> None:
 
         for law in laws:
             with st.container(border=True):
-                st.markdown(
-                    f"""
+                st.html(
+                    dedent(
+                        f"""
                     <div class="law-card-heading">
                         <p>{law["category"]}</p>
                         <h3>{law["name"]}</h3>
                     </div>
                     """,
-                    unsafe_allow_html=True,
+                    ).strip(),
                 )
                 st.write(law["summary"])
-                st.markdown(
-                    f'<div class="law-article-box"><strong>주요 조항</strong> {law["articles"]}</div>',
-                    unsafe_allow_html=True,
+                st.html(
+                    f'<div class="law-article-box"><strong>주요 조항</strong> {law["articles"]}</div>'
                 )
 
                 with st.expander("상세 내용"):
@@ -73,4 +98,4 @@ def render_law_record_page() -> None:
 
         st.divider()
         st.subheader("법령 표")
-        st.dataframe(_laws_table(), width="stretch", hide_index=True)
+        _render_laws_table()

@@ -1,329 +1,410 @@
-# SKN28-3rd-1Team
+# 🧭 SKN28-3rd-1Team
 
-Python 기반 RAG, 백엔드, 프론트엔드, Streamlit 프로토타입, 문서 웹 작업을 함께 관리하는 모노레포입니다.
+> 노인·고령층을 위한 법률 정보를 쉽고 신뢰할 수 있게 찾도록 돕는 Agentic RAG + GraphRAG 기반 상담 서비스
 
-## 팀 소개
+![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-Settings-E92063?logo=pydantic&logoColor=white)
+![uv](https://img.shields.io/badge/uv-Python%20Tooling-6E56CF)
+![LangChain](https://img.shields.io/badge/LangChain-Agent-1C3C3C?logo=langchain&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-1C3C3C?logo=langchain&logoColor=white)
+![OpenRouter](https://img.shields.io/badge/OpenRouter-LLM%20Gateway-111827)
+![LangSmith](https://img.shields.io/badge/LangSmith-Tracing-1C3C3C?logo=langchain&logoColor=white)
+![React](https://img.shields.io/badge/React-UI-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-Style-06B6D4?logo=tailwindcss&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-Prototype-FF4B4B?logo=streamlit&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white)
+![Memgraph](https://img.shields.io/badge/Memgraph-GraphRAG-FF6B35?logo=memgraph&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Infra-2496ED?logo=docker&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-Collaboration-181717?logo=github&logoColor=white)
+![Linear](https://img.shields.io/badge/Linear-Project%20Tracking-5E6AD2?logo=linear&logoColor=white)
+![Notion](https://img.shields.io/badge/Notion-Docs-000000?logo=notion&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-Communication-5865F2?logo=discord&logoColor=white)
 
-### 1) 팀명
+## 1. 👥 팀 소개 및 일정 계획
 
-(팀명 작성)
+### 1) 팀 소개
 
-### 2) 팀원 및 역할 소개
+| 이름 | 역할 | 한 일 |
+| --- | --- | --- |
+| 👑 이원빈 | 팀장 | 전체 일정 관리, 작업 방향 컨펌, 파트별 진행 상황 확인 |
+| 📚 김지효 | RAG | 노인·고령층 관련 법령 데이터 확인, 문서 전처리와 임베딩 흐름 정리 |
+| 🖥️ 송윤경 | 프론트엔드 | 사용자 질문 화면 구성, API 연결 흐름 설계, 결과 화면 UX 정리 |
+| ⚙️ 전하영 | 백엔드 | FastAPI `/chat` 구성, LangGraph Agent 실행 구조 정리, MCP tool 연동 준비 |
+| 🧭 양도영 | 기획·문서 | 전체 서비스 흐름 정리, README와 발표 자료 구성, 팀 산출물 내용 정리 |
 
-| 이름 | 역할 |
-|:---:|---|
-| 이원빈 | 팀장 — 전체 컨펌 및 총괄 관리 |
-| 김지효 | RAG 담당 — 임베딩, 문서 전처리 |
-| 송윤경 | 프론트엔드 — 엔드포인트 연결, UI 구현 |
-| 전하영 | 백엔드 — MCP 툴 연동, API/엔드포인트 구현 |
-| 양도영 | 전체 플로우 정리 — PPT 제작, 전체 내용 정리 |
+### 2) 일정 계획
 
----
+| 기간 | 주요 작업 | 상태 |
+| --- | --- | --- |
+| 2026-05-22 ~ 2026-05-26 | 주제 범위 확정, 고령층 법령 데이터 후보 정리 | 완료 |
+| 2026-05-27 ~ 2026-05-29 | Backend API 계약, RAG POC, 화면 UX 설계 | 완료 |
+| 2026-06-01 ~ 2026-06-03 | Backend, Streamlit, RAG MCP 연결 흐름 통합 검증 | 진행 예정 |
+| 2026-06-04 | 전체 기능 연동, 통합 테스트, 발표와 시연 준비 | 목표 마감 |
 
-## 팀 소개 및 그라운드 롤
+## 2. 📌 프로젝트 소개
 
-- 회의 방식
-- 의사결정 방식
-- 작업 공유 방식
-- Git/GitHub 사용 규칙
-- 일정 공유 방식(개인 일정으로 인한 불참 등)
-- 작업 지연 시 공유 방식
-- 문서 정리 방식
-- 발표 준비 방식
+### 1) 주제
 
-## 1. 주제
+이 프로젝트는 노인과 고령층이 법률, 기초연금, 고령자 고용, 근로 관련 정보를 자연어로 질문하고, 실제 공공 문서와 법령을 근거로 답변을 받을 수 있도록 만드는 RAG 기반 상담 서비스입니다.
 
-장애인·취약계층 복지/법률 RAG Agent
+노인복지법, 기초연금법, 고령자고용촉진 관련 법령, 근로기준법 같은 문서는 국가법령정보센터와 관련 기관 자료에 흩어져 있습니다. 또한 법률·행정 문서는 용어가 어렵고 조건이 복잡해 사용자가 본인에게 맞는 정보를 빠르게 찾기 어렵습니다.
 
-### 주제 선정 이유
+이 서비스는 문서 검색(Retrieval)과 LLM 답변 생성(Generation)을 결합해 사용자가 이해하기 쉬운 말로 답변하고 근거 문서까지 함께 확인할 수 있도록 설계합니다.
 
-- **정보의 파편화와 높은 진입장벽**: 취약계층을 위한 복지 혜택과 노동권 보호 법령은 보건복지부, 고용노동부, 지자체 등 여러 기관에 분산되어 있습니다. 이로 인해 정작 정보가 가장 절실한 당사자들이 자신에게 맞는 혜택을 찾지 못하는 '정보 사각지대'가 발생합니다.
-- **법률·행정 용어의 높은 난이도**: 공식 문서나 법령에 사용되는 전문 용어는 일반인이 이해하기 매우 어렵습니다. 복잡한 조건문(예: "중위소득 X% 이하이면서 장애 정도가...")으로 얽혀 있어 본인이 대상자인지 판단하기 쉽지 않습니다.
-- **실시간 최신성 및 신뢰성 보장의 필요성**: 복지 급여 기준과 고용장려금 비율 등은 매해 개정됩니다. 일반 LLM을 사용할 경우 과거 데이터 기반의 할루시네이션으로 잘못된 정보를 안내할 위험이 큽니다. 정확한 최신 법령·지침 문서에 기반하여 신뢰할 수 있는 출처와 함께 답변을 제공하는 RAG 시스템이 가장 필요한 분야라고 판단하여 본 주제를 선정했습니다.
+### 2) 핵심 목표
 
-### 주요 사용자
-
-- **1차 사용자: 장애인 및 취약계층 당사자와 그 가족**
-    - 복지 혜택을 신청하고 싶거나, 직장 내 부당 처우(차별, 부당해고 등)에 직면해 긴급한 법률·행정적 도움이 필요한 정보 약자.
-- **2차 사용자: 중소기업 인사담당자 및 고용주**
-    - 장애인 의무고용 비율을 준수해야 하거나 장애인 고용장려금 신청 조건, 직장 내 정당한 편의 제공 기준 등을 명확히 확인하고 싶은 기업 운영자.
-- **3차 사용자: 현장 복지사 및 상담원**
-    - 민원인의 복잡한 케이스에 맞는 법적 근거와 세부 지침을 빠르게 조회하여 정확한 상담을 제공하고자 하는 실무자.
-
-### 사용자가 이 시스템을 통해 해결하려는 문제
-
-- **"내가 받을 수 있는 혜택인가?"에 대한 즉각적인 판단**
-    - 수많은 조건문으로 구성된 복지 지침을 일일이 읽지 않고, 사용자의 상황(장애 유형, 소득 수준 등)을 자연어로 입력하면 해당되는 복지 급여와 신청 자격을 한눈에 확인합니다.
-- **부당한 상황에서의 신속한 권리 구제 가이드라인 확보**
-    - 직장 내 차별이나 고용 불이익을 당했을 때, "어디에, 어떤 서류를 갖추어, 어떻게 신고해야 하는지" 행정·법률적 대응 절차를 쉽고 직관적인 언어로 안내받아 골든타임을 놓치지 않도록 합니다.
-- **정확한 수치 정보 탐색 오류 해결**
-    - 매년 바뀌는 고용 부담금 비율, 장려금 액수 등을 잘못 파악해 기업이나 개인이 불이익을 받거나 행정적 혼선을 겪는 문제를 '최신 공식 문서 기반의 RAG 조회'를 통해 원천 차단합니다.
-
-## 2. RAG 주제로 적합한 이유
-
-1. 프로젝트 주제가 문서 기반 질의응답 시스템에 적합한가? ✅
-
-2. 사용할 수 있는 문서나 데이터가 실제로 존재하는가? ✅
-
-| 출처 | 내용 |
+| 목표 | 설명 |
 | --- | --- |
-| 국가법령정보센터 (law.go.kr) | 장애인복지법, 장애인고용촉진법 등 |
-| 한국장애인고용공단 (kead.or.kr) | 의무고용 비율, 고용장려금 기준 |
-| 복지로 (bokjiro.go.kr) | 복지 급여 조건, 신청 방법 |
-| 고용노동부 | 노동권익 관련 법령·지침 |
+| 🔎 문서 기반 검색 | 노인·고령층 관련 법령과 행정 안내문을 검색 가능한 형태로 정리합니다. |
+| 🧠 Agentic RAG 답변 | Main Agent가 질문을 판단하고 필요한 경우 RAG MCP Tool을 호출합니다. |
+| 🧾 근거 중심 응답 | RAG 검색 결과와 출처를 바탕으로 답변합니다. |
+| 💬 상담형 화면 | Streamlit 프로토타입으로 질문 입력부터 답변 확인까지 검증합니다. |
+| 📈 추적 가능성 | LangSmith로 LLM 호출과 tool calling 과정을 확인합니다. |
 
-3. 사용자가 질문할 만한 내용이 충분히 있는가? ✅
+## 3. 🎯 해결하려는 문제
 
-- "중소기업 장애인 의무고용 비율이 몇 %야?"
-- "장애인 고용장려금 신청 조건이 뭐야?"
-- "부당해고 당했을 때 장애인은 어떻게 대응해?"
+### 1) 정보 접근 문제
 
-4. 일반 LLM 답변이 아니라 RAG 구조가 필요한 주제인가? ✅
-
-- 복지 기준·고용 비율은 **매년 개정**돼서 LLM 학습 데이터로는 최신 정보 보장 불가
-- 잘못된 법령 정보는 **실제 불이익**으로 이어질 수 있어서 환각 방지가 핵심
-- RAG 구조를 사용하면 실제 문서를 근거로 답변 가능
-- 출처 문서 제공을 통해 신뢰성 향상 가능
-
-5. 발표일까지 구현 가능한 범위인가? ✅
-6. 팀 내 진행 규칙과 일정이 어느 정도 정리되었는가? ✅
-
-## 3. 사용할 문서/데이터 후보
-
-- 장애인고용촉진 및 직업재활법(법률)(제21138호)(20260512).pdf
-- 장애인복지법(법률)(제21114호)(20260512).pdf
-- [RAG 시스템 자료 목록 (장애인·취약계층 복지/고용)](https://www.notion.so/9eeeb84baf164d77a9e4b29cc48612ab?pvs=21)
-
-## 4. 사용자 질문 예시
-
-- "중소기업 장애인 의무고용 비율이 몇 %야?"
-- "장애인 고용장려금 신청 조건이 뭐야?"
-- "부당해고 당했을 때 장애인은 어떻게 대응해?"
-
-## 6. 일정 계획 초안
-
-https://linear.app/skn28-3rd/team/SKN/all
-
-[Linear](https://linear.app/skn28-3rd/team/SKN/all)
-
-| 기간 | 주요 목표 |
+| 문제 | 설명 |
 | --- | --- |
-|  | ~~주제 확정~~, ~~데이터 후보 정리~~, ~~질문 예시 작성, 그라운드룰 수립~~ |
-|  | 데이터 수집 및 전처리, 문서 로딩 방식 결정 |
-|  | 청크 분할, 임베딩, 벡터 DB 저장 |
-|  | LangChain 기반 RAG 체인 구현 |
-|  | 서비스 UI 구현 |
-|  | 테스트, 개선, 발표 자료 및 시연 준비 |
-|  | 최종 발표 |
+| 정보가 흩어져 있음 | 노인복지, 기초연금, 고령자 고용, 근로 관련 정보가 여러 기관에 나뉘어 있어 한 번에 찾기 어렵습니다. |
+| 용어가 어려움 | 법령과 행정 문서는 일반 사용자가 바로 이해하기 어렵습니다. |
+| 최신성이 중요함 | 연금 기준, 지원 금액, 고용 기준은 바뀔 수 있어 최신 문서 확인이 필요합니다. |
+| 잘못된 답변 위험 | 복지·법률 정보는 잘못 안내되면 실제 불이익으로 이어질 수 있습니다. |
 
-## 7. 현재 고민되는 점
+### 2) RAG가 필요한 이유
 
-아직 확정하지 못한 부분이나 피드백받고 싶은 내용을 작성해 주세요。
+일반 LLM은 학습된 지식만으로 답변하기 때문에 최신 법령, 기초연금 신청 기준, 고령자 고용 기준을 정확히 보장하기 어렵습니다. 이 프로젝트는 실제 문서를 먼저 찾고, 그 문서를 바탕으로 답변하는 구조를 사용합니다.
 
-## 8. 작업 공유 방식
+## 4. 🙋 주요 사용자
 
-- 문서, 노트, 디자인 파일은 Notion에 공유
-- 코드 변경 사항은 PR에 정리
-- 중요한 파일은 README 또는 docs에 요약 기록
+### 1) 사용자 유형
 
-## 9. Git/GitHub 사용 규칙
+| 사용자 | 필요한 정보 |
+| --- | --- |
+| 👵 노인·고령층 당사자와 가족 | 기초연금, 노인복지, 신청 조건, 권리 보호 절차 |
+| 🧑‍💼 복지사 및 상담 실무자 | 상담 중 빠르게 확인할 수 있는 법령, 지침, 공공 문서 근거 |
+| 🏢 고령자 고용 관련 실무자 | 고령자 고용, 연령차별, 근로 기준 관련 법령 |
 
-- `main` 브랜치에 직접 푸시하지 않음
-- 기능/수정/문서 브랜치로 분리하여 작업
-- 커밋 메시지는 한국어로 간결하게 작성
-- PR 제목과 본문에 변경 사항 요약 작성
+### 2) 질문 예시
 
-## 10. 일정/지연 공유 방식
+```text
+"65세 이상 노인이 받을 수 있는 혜택은 뭐가 있어?"
+"기초연금 신청 방법과 준비 서류를 알려줘."
+"노인일자리 신청은 어디에서 할 수 있어?"
+"고령자가 나이 때문에 채용에서 차별받으면 어떻게 대응해야 해?"
+"퇴직금을 못 받았을 때 어떤 법을 확인해야 해?"
+```
 
-- 개인 일정으로 불참 시 사전에 슬랙/Notion 또는 팀 채널에 공유
-- 작업 지연 시 원인과 예상 완료 일정을 빠르게 공유
+## 5. 🧭 서비스 흐름
 
-### 프로젝트 개요
-
-본 프로젝트는 장애인 및 취약계층을 위한 복지·노동·고용 관련 정보를 보다 쉽게 제공하기 위한 RAG(Retrieval-Augmented Generation) 기반 질의응답 시스템입니다.
-
-복지 제도와 노동 관련 법령은 여러 기관에 분산되어 있으며, 법률·행정 용어의 난이도가 높아 실제 필요한 사람들이 정보를 찾기 어렵습니다. 또한 복지 기준과 고용 관련 수치는 매년 개정되기 때문에 최신성과 신뢰성이 중요합니다.
-
-따라서 본 프로젝트는 최신 공공기관 문서를 기반으로 검색을 수행하고, 관련 법령과 지침을 근거로 자연어 답변을 제공하는 시스템 구축을 목표로 합니다.
-
-### 프로젝트가 해결하려는 문제
-
-- 복지·법률 정보의 분산으로 인한 정보 접근 어려움
-- 복잡한 법률·행정 용어로 인한 높은 진입장벽
-- 최신 기준 미반영으로 인한 잘못된 정보 제공 위험
-- 실제 지원 대상 여부 판단의 어려움
-
-### 주요 사용자
-
-#### 1) 장애인 및 취약계층 당사자와 가족
-
-- 복지 혜택 조회
-- 노동권 보호 절차 확인
-- 지원 대상 여부 확인
-
-#### 2) 중소기업 인사담당자 및 고용주
-
-- 장애인 의무고용 기준 확인
-- 고용장려금 관련 정보 확인
-
-#### 3) 복지사 및 상담 실무자
-
-- 법적 근거 빠른 조회
-- 최신 지침 확인
-
-### RAG 주제로 적합한 이유
-
-#### 1. 문서 기반 질의응답 시스템에 적합
-
-본 프로젝트는 법령, 복지 지침, 행정 안내문 등 비정형 문서를 기반으로 사용자 질문에 답변하는 구조입니다.
-
-사용자는 자연어로 질문하지만, 답변은 반드시 실제 법령 및 공공기관 문서를 기반으로 해야 합니다. 따라서 검색(Retrieval)과 생성(Generation)을 결합한 RAG 구조가 적합합니다.
-
-#### 2. 실제 사용할 수 있는 문서 존재
-
-| 출처 | 내용 |
-|---|---|
-| 국가법령정보센터 | 장애인복지법, 장애인고용촉진법 |
-| 복지로 | 복지 급여 및 신청 기준 |
-| 한국장애인고용공단 | 의무고용 비율, 고용장려금 |
-| 고용노동부 | 노동권 관련 법령 및 지침 |
-
-#### 3. 최신성과 신뢰성이 중요
-
-복지 기준과 노동 관련 법령은 매년 개정되므로 일반 LLM만으로는 최신 정보 보장이 어렵습니다.
-
-잘못된 법률 정보는 실제 불이익으로 이어질 수 있기 때문에, 실제 문서를 기반으로 응답하는 RAG 구조가 필요합니다.
-
-### 시스템 구조
+### 1) 전체 흐름
 
 ```text
 사용자 질문
-→ 문서 임베딩
-→ Vector DB 검색
-→ 관련 문서 추출
-→ LLM 기반 답변 생성
-→ 출처 제공
+  -> Frontend 또는 Streamlit 화면
+  -> Backend FastAPI /chat
+  -> LangChain + LangGraph Agent
+  -> RAG MCP Tool Server
+  -> Memgraph 기반 문서 검색
+  -> OpenRouter LLM 답변 생성
+  -> 출처와 함께 화면에 표시
 ```
 
-### 문서 전처리 전략
+### 2) 역할 분리
 
-법률 문서를 그대로 사용하는 것이 아니라 조항 단위 기반으로 분할하여 검색 품질을 높이는 방향으로 구성합니다.
+| 영역 | 역할 |
+| --- | --- |
+| Frontend / Streamlit | 사용자가 질문하고 답변을 확인하는 인터페이스 |
+| Backend | API 서버와 Main Agent Orchestrator 역할 |
+| RAG Backend | Backend 내부 모듈이 아닌 별도 서비스로 동작하며 문서 ingest, 검색 API, MCP endpoint 제공 |
+| Memgraph | GraphRAG 검색을 위한 그래프 데이터 저장 |
+| Docs Web | 프로젝트 소개와 파트별 진행 방향 문서화 |
 
-- PDF 기반 문서 로딩
-- 조항 단위 Chunk 분리
-- 문서 메타데이터 저장
-- 법령명 및 카테고리 태깅
+### 3) 아키텍처 원칙
 
-예시:
+| 원칙 | 설명 |
+| --- | --- |
+| 🧩 영역 분리 | Frontend, Backend, RAG를 독립된 영역으로 나누어 책임을 분리합니다. |
+| 🐳 컨테이너 기반 실행 | 각 영역은 독립적인 Docker Container로 구성하고, 전체 실행은 Docker Compose로 묶는 방향입니다. |
+| 🧠 Main Agent 중심 | Backend의 Main Agent가 사용자 요청을 판단하고 답변 흐름을 조율합니다. |
+| 🛠️ MCP Tool 호출 | Main Agent는 RAG 내부 구현을 직접 알지 않고 MCP Tool 형태로 검색 기능을 호출합니다. |
+| 🕸️ GraphRAG 확장 | RAG 영역은 문서 검색뿐 아니라 Memgraph 기반 관계 검색까지 확장할 수 있도록 설계합니다. |
 
-```json
-{
-  "source": "장애인복지법",
-  "article": "제15조",
-  "category": "복지지원"
-}
-```
+## 6. ✨ 주요 기능
 
-### 사용자 질문 예시
+### 1) 사용자 기능
+
+| 기능 | 설명 |
+| --- | --- |
+| 💬 자연어 상담 | 사용자가 어려운 법률 용어 없이 질문할 수 있습니다. |
+| 🧾 근거 문서 제공 | 답변과 함께 관련 법령, 문서, 출처를 확인할 수 있도록 설계합니다. |
+| 🔎 문서 검색 | 공공 문서와 법령을 기반으로 관련 정보를 찾습니다. |
+| 📚 추가 판단 요소 안내 | 조건이 부족하면 추가 확인이 필요한 부분을 안내합니다. |
+
+### 2) 개발 기능
+
+| 기능 | 설명 |
+| --- | --- |
+| FastAPI `/chat` | 프론트엔드가 호출하는 메인 채팅 API입니다. |
+| LangGraph Agent | `session_id` 기반으로 대화 흐름을 이어갈 수 있도록 구성합니다. |
+| OpenRouter LLM | OpenRouter compatible `ChatOpenAI`로 LLM을 호출합니다. |
+| MCP Tool | RAG 검색 기능을 Agent tool로 연결하기 위한 구조입니다. |
+| LangSmith | LLM 호출과 tool calling trace를 검증합니다. |
+
+## 7. ✅ 현재 구현 상태
+
+### 1) 완료 및 진행 현황
+
+| 영역 | 상태 |
+| --- | --- |
+| Backend `/chat` API | FastAPI에서 사용자 메시지를 받아 Agent 답변을 반환합니다. |
+| OpenRouter 연동 | `langchain-openai`의 `ChatOpenAI`를 OpenRouter base URL로 사용합니다. |
+| LangGraph Agent | `create_agent()`와 `InMemorySaver` 기반 session/thread 처리를 사용합니다. |
+| LangSmith 검증 | LLM 호출 trace와 mock tool call trace를 확인했습니다. |
+| RAG Backend | 문서 ingest, 검색 API, read-only MCP endpoint 구조가 있습니다. |
+| RAG Frontend | 문서 목록, ingest job, review queue를 확인하는 운영 UI가 있습니다. |
+| Streamlit | 상담 form, 채팅형 화면, backend `/chat` 연결 흐름을 검증합니다. |
+| Docs Web | GitHub Pages 배포용 문서 웹 구조가 있습니다. |
+
+### 2) 남은 작업
+
+| 작업 | 설명 |
+| --- | --- |
+| 🔗 실제 RAG MCP 연결 | Backend Agent가 RAG MCP tool을 실제로 호출하도록 연결합니다. |
+| 🧾 출처 응답 강화 | `sources`, `tool_calls`를 실제 검색 결과 기준으로 채웁니다. |
+| 🧪 통합 테스트 | Streamlit, Backend, RAG Backend를 함께 실행해 전체 흐름을 검증합니다. |
+| 🎤 시연 준비 | 질문 예시, 화면 흐름, LangSmith trace를 발표용으로 정리합니다. |
+
+## 8. 🧰 기술 스택
+
+### 1) 사용 기술
+
+| 영역 | 사용 기술 |
+| --- | --- |
+| Backend | ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white) ![Pydantic](https://img.shields.io/badge/Pydantic-Settings-E92063?logo=pydantic&logoColor=white) ![uv](https://img.shields.io/badge/uv-Package-6E56CF) |
+| Agent | ![LangChain](https://img.shields.io/badge/LangChain-Agent-1C3C3C?logo=langchain&logoColor=white) ![LangGraph](https://img.shields.io/badge/LangGraph-Flow-1C3C3C?logo=langchain&logoColor=white) ![OpenRouter](https://img.shields.io/badge/OpenRouter-LLM-111827) ![LangSmith](https://img.shields.io/badge/LangSmith-Trace-1C3C3C?logo=langchain&logoColor=white) |
+| RAG | ![MCP](https://img.shields.io/badge/MCP-Tool%20Server-111827) ![Memgraph](https://img.shields.io/badge/Memgraph-Graph%20DB-FF6B35?logo=memgraph&logoColor=white) ![Neo4j](https://img.shields.io/badge/Neo4j-Compatible-4581C3?logo=neo4j&logoColor=white) ![GraphRAG](https://img.shields.io/badge/GraphRAG-Search-10B981) |
+|Frontend | ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black) ![TypeScript](https://img.shields.io/badge/TypeScript-TS-3178C6?logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-Style-06B6D4?logo=tailwindcss&logoColor=white) ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-000000?logo=shadcnui&logoColor=white) |
+| Prototype | ![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white) |
+| Infra | ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white) ![Memgraph Lab](https://img.shields.io/badge/Memgraph%20Lab-Graph%20View-FF6B35?logo=memgraph&logoColor=white) ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Docs%20Web-222222?logo=githubpages&logoColor=white) |
+| Collaboration | ![GitHub](https://img.shields.io/badge/GitHub-Code-181717?logo=github&logoColor=white) ![Linear](https://img.shields.io/badge/Linear-Issues-5E6AD2?logo=linear&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-Docs-000000?logo=notion&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-Chat-5865F2?logo=discord&logoColor=white) |
+
+## 9. 📁 프로젝트 구조
+
+### 1) Repository Structure
 
 ```text
-"중소기업 장애인 의무고용 비율이 몇 %야?"
-"장애인 고용장려금 신청 조건이 뭐야?"
-"부당해고 당했을 때 장애인은 어떻게 대응해?"
-"시각장애 3급이면 받을 수 있는 복지 혜택 알려줘"
-```
-
-### 주요 기능
-
-1. 자연어 기반 질의응답
-   - 복잡한 법률 용어 없이 질문 가능
-2. 근거 문서 제공
-   - 답변과 함께 관련 법령 및 문서 출처 제공
-3. 최신 문서 기반 응답
-   - Vector DB에 저장된 최신 문서를 기반으로 검색 및 응답 수행
-
-### 사용 기술
-
-| 영역 | 주요 기술 | 사용 방향 |
-|---|---|---|
-| RAG | Microsoft GraphRAG, LangChain, LangGraph, Vector DB 후보(ChromaDB/FAISS) | 법령·복지 문서를 조항 단위로 검색하고 답변 근거를 함께 제공합니다. |
-| Backend | Python, FastAPI, Pydantic, uv | API 엔드포인트, 환경 설정, RAG 파이프라인 호출을 관리합니다. |
-| Frontend | React, TypeScript, Tailwind CSS, shadcn/ui, Streamlit | 최종 사용자 화면과 프로토타입 화면을 구현합니다. |
-| Docs Web | Vite, React, GitHub Pages | 프로젝트 소개와 파트별 구현 방향을 문서 웹으로 제공합니다. |
-| Collaboration | GitHub, Linear, Notion, Discord | 코드 리뷰, 이슈 추적, 문서 공유, 실시간 커뮤니케이션에 사용합니다. |
-
----
-
-## Repository Structure
-
-```txt
 SKN28-3rd-1Team/
-├── README.md
-├── .gitignore
-├── backend/          # 백엔드 서비스
-├── frontend/         # 프론트엔드 서비스
-├── infra/            # 인프라 및 배포 설정
-├── rag/              # RAG, 문서 파싱, 분석 관련 작업
-├── streamlit/        # Streamlit 기반 앱
-├── docs_web/         # GitHub Pages 문서 웹
-└── docs/             # 프로젝트 문서
+├── backend/                 # FastAPI 기반 Agent Orchestrator
+│   ├── src/api/             # /chat API
+│   ├── src/agent/           # LangGraph Agent, OpenRouter LLM, tools
+│   └── src/prompt/          # Agent system prompt
+├── rag/
+│   ├── be/                  # RAG backend, ingest, search, MCP endpoint
+│   ├── fe/                  # RAG 운영 UI
+│   ├── infra/               # Memgraph, Memgraph Lab 실행 설정
+│   └── docs/                # RAG 설계 문서
+├── streamlit/               # 상담형 UI 프로토타입
+├── docs_web/                # 프로젝트 소개용 문서 웹
+├── docs/                    # 회의록, 온보딩, 개발 문서
+├── frontend/                # 최종 프론트엔드 작업 공간
+├── infra/                   # 루트 인프라 문서
+├── AGENTS.md                # 협업 및 agent 작업 규칙
+└── README.md
 ```
 
-## Environment Files
+### 2) 주요 문서
 
-- 루트에는 `.env.example`을 두지 않습니다.
-- 환경 변수 예시는 필요한 서비스 디렉토리 안에서 개별 관리합니다.
-  - `frontend/.env.example`
-  - `backend/.env.example`
-  - `rag/.env.example`
-  - `streamlit/.env.example`
-- 실제 `.env` 파일은 로컬에서만 사용하고 커밋하지 않습니다.
+| 문서 | 설명 |
+| --- | --- |
+| ⚙️ `backend/README.md` | Backend Agent 구조, `/chat` API, MCP 연결 위치 |
+| 📚 `rag/README.md` | RAG 서브시스템 전체 구조 |
+| 🛠️ `rag/be/README.md` | RAG Backend API, MCP endpoint, 환경 변수 |
+| 🖥️ `rag/fe/README.md` | RAG 운영 UI 실행 방법 |
+| 💬 `streamlit/README.md` | Streamlit 상담 UI 구조와 backend 연결 방법 |
+| 📄 `docs_web/README.md` | 문서 웹 실행 및 GitHub Pages 배포 방식 |
 
-## Python / uv Policy
+## 10. 🚀 실행 방법
 
-`backend/`, `rag/`, `streamlit/`은 Python 프로젝트이며 `uv`를 사용합니다.
-
-- 의존성 추가: `uv add <package>`
-- 의존성 동기화: `uv sync`
-- 명령 실행: `uv run <command>`
-- 잠금 파일 갱신: `uv lock`
-
-`pip`, `pip3`, Poetry, 루트 `requirements.txt`는 사용하지 않습니다.
-
-## VS Code Workspace
-
-VS Code에서는 루트의 `SKN28-3rd-1Team.code-workspace`로 여는 것을 기준으로 합니다.
-
-- `backend/`, `rag/`, `streamlit/`은 각각 별도 워크스페이스 폴더로 등록됩니다.
-- 각 Python 프로젝트는 자기 디렉토리의 `.venv/bin/python`을 인터프리터로 사용합니다.
-- `.venv`가 없으면 해당 디렉토리에서 `uv sync`를 먼저 실행합니다.
-
-## Quick Start
-
-### Backend
+### 1) Backend Agent 실행
 
 ```bash
 cd backend
+cp .env.example .env
 uv sync
-uv run fastapi dev src/app.py
+
+set -a
+source .env
+set +a
+
+PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-### Streamlit
+상태 확인:
+
+```bash
+curl -s http://127.0.0.1:8000/health | python -m json.tool
+```
+
+채팅 API 테스트:
+
+```bash
+curl -s -X POST http://127.0.0.1:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"session_id":"readme-test-1","message":"안녕. 너는 어떤 일을 할 수 있어?"}' \
+  | python -m json.tool
+```
+
+### 2) Streamlit 상담 UI 실행
 
 ```bash
 cd streamlit
+cp .env.example .env
 uv sync
-uv run streamlit run src/app.py
+uv run streamlit run streamlit.py
 ```
 
-## Collaboration Rules
+backend와 연결하려면 `streamlit/.env`에서 아래 값을 사용합니다.
 
-공동 작업 규칙은 루트의 `AGENTS.md`를 기준으로 합니다.
+```env
+STREAMLIT_BACKEND_BASE_URL="http://127.0.0.1:8000"
+STREAMLIT_CHAT_BACKEND_MOCK=false
+```
 
-핵심 원칙:
+### 3) RAG Infra 실행
 
-- GitHub Flow를 사용합니다.
-- 초기 부트스트랩 이후에는 `main`에서 직접 작업하지 않습니다.
-- 기능/수정/문서 작업은 별도 브랜치에서 진행합니다.
-- 커밋 메시지는 한국어로 작성합니다.
-- PR은 작고 리뷰 가능한 단위로 만듭니다.
+```bash
+cd rag
+cp infra/.env.example infra/.env
+docker compose --env-file infra/.env -f infra/docker-compose.yml up -d
+```
+
+기본 접속 정보:
+
+```text
+Memgraph Bolt: bolt://127.0.0.1:7687
+Memgraph Lab:  http://127.0.0.1:3000
+```
+
+### 4) RAG Backend 실행
+
+```bash
+cd rag/be
+cp .env.example .env
+uv sync
+PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
+```
+
+주요 endpoint:
+
+```text
+GET  /health
+POST /ingest
+POST /search
+GET  /api/documents
+POST /api/documents/search
+GET  /api/review/edge-candidates
+MCP  /mcp
+```
+
+### 5) RAG Frontend 실행
+
+```bash
+cd rag/fe
+bun install
+bun run dev
+```
+
+기본 접속:
+
+```text
+http://127.0.0.1:5173
+```
+
+### 6) Docs Web 실행
+
+```bash
+cd docs_web
+npm install
+npm run dev
+```
+
+## 11. 🧪 검증 방법
+
+### 1) Backend
+
+```bash
+cd backend
+PYTHONPATH=src uv run python -m compileall src scripts tests
+PYTHONPATH=src uv run python -m unittest discover -s tests
+```
+
+### 2) RAG Backend
+
+```bash
+cd rag/be
+PYTHONPATH=src uv run python -m compileall src tests
+PYTHONPATH=src uv run python -m unittest discover -s tests
+```
+
+### 3) RAG Frontend
+
+```bash
+cd rag/fe
+bun run lint
+bun run build
+```
+
+### 4) Docs Web
+
+```bash
+cd docs_web
+npm run lint
+npm run build
+```
+
+## 12. 🔐 환경 변수 관리
+
+### 1) 관리 원칙
+
+- 실제 `.env` 파일은 Git에 올리지 않습니다.
+- 각 서비스 디렉터리의 `.env.example`을 복사해 로컬에서만 값을 채웁니다.
+- API key, DB URL, LangSmith key는 로컬 `.env`에서 관리합니다.
+
+### 2) 서비스별 환경 파일
+
+| 서비스 | 예시 파일 | 주요 값 |
+| --- | --- | --- |
+| Backend | `backend/.env.example` | OpenRouter API key, LangSmith 설정, CORS, RAG MCP URL |
+| Streamlit | `streamlit/.env.example` | Backend API 주소, mock mode 여부 |
+| RAG Backend | `rag/be/.env.example` | Memgraph 연결, MCP endpoint, 모델 설정 |
+| RAG Frontend | `rag/fe/.env.example` | RAG API base URL |
+| RAG Infra | `rag/infra/.env.example` | Memgraph 포트, Lab 포트 |
+
+## 13. 🤝 협업 방식
+
+### 1) 작업 관리
+
+| 도구 | 사용 목적 |
+| --- | --- |
+| GitHub | 코드 관리, PR, 리뷰 |
+| Linear | 파트별 일정과 이슈 관리 |
+| Notion | 회의 내용, 기획 문서, 프로젝트 정리 |
+| Discord | 실시간 소통 |
+
+### 2) Git 규칙
+
+- `main` 브랜치에 직접 push하지 않습니다.
+- 기능, 수정, 문서 작업은 별도 브랜치에서 진행합니다.
+- PR에는 변경 요약, 테스트 결과, 영향 디렉터리, 환경 변수 변경 여부를 기록합니다.
+- 상세 작업 규칙은 `AGENTS.md`와 `docs/agent_workspace_guidelines.md`를 따릅니다.
+
+## 14. 📝 한 줄 정리
+
+### 1) 프로젝트 요약
+
+이 프로젝트는 흩어진 노인·고령층 관련 법률 문서를 RAG로 찾고, Agent가 그 근거를 바탕으로 사용자가 이해하기 쉬운 상담 답변을 제공하는 서비스입니다.

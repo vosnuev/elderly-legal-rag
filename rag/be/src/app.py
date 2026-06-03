@@ -8,7 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.mcp import create_external_mcp
 from api.router import api_router
+from logger import configure_logging
 from settings import settings
+
+configure_logging()
 
 external_mcp = create_external_mcp()
 external_mcp_app = external_mcp.streamable_http_app()
