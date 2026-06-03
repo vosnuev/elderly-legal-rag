@@ -4,7 +4,8 @@ import {
   FileText,
   GitBranch,
   Sparkles,
-  Binary
+  Binary,
+  type LucideIcon,
 } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
@@ -24,6 +25,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { getJobPhase, getStagePhase } from '@/features/jobs/job-progress'
 import { cn } from '@/lib/utils'
 import type {
   FileIngestStatusResponse,
@@ -39,7 +41,7 @@ export function DocumentCard({ document, job }: DocumentCardProps) {
   const [open, setOpen] = useState(false)
   const runDate = getDocumentRunDate(document, job)
   const displayDate = formatDateTime(runDate)
-  const stage = job?.current_stage ?? 'indexed'
+  const stage = job ? getJobPhase(job) : 'indexed'
   const chunkCount = job?.chunk_count
   const candidateCount = job?.candidate_count
 
@@ -179,7 +181,7 @@ export function DocumentCard({ document, job }: DocumentCardProps) {
                         <div className="min-w-0 flex-1 mt-0.5">
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] font-extrabold text-foreground uppercase tracking-wider leading-none">
-                              {formatStage(stg.stage)}
+                              {formatStage(getStagePhase(stg))}
                             </span>
                             <span className={cn(
                               "text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full border leading-none",
@@ -261,7 +263,7 @@ function DocumentMiniMeta({
   label,
   value,
 }: {
-  icon: any
+  icon: LucideIcon
   label: string
   value: string
 }) {
@@ -285,7 +287,7 @@ function DocumentDetailMeta({
   label,
   value,
 }: {
-  icon: any
+  icon: LucideIcon
   label: string
   value: string
 }) {
@@ -335,4 +337,3 @@ function formatDateTime(value: string | null) {
 function formatStage(stage: string) {
   return stage.replaceAll('_', ' ')
 }
-

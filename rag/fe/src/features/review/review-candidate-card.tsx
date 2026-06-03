@@ -1,34 +1,24 @@
 import {
-  ArrowRightLeft,
   CheckIcon,
+  ChevronDown,
   FileText,
   GitBranch,
   XIcon,
-  Edit3,
-  Check,
-  X,
   Sparkles,
   BookOpen,
   TrendingUp,
-  AlertTriangle
+  Network,
 } from 'lucide-react'
 import {
   useId,
   useState,
-  useMemo,
 } from 'react'
 import { cn } from '@/lib/utils'
 
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
-  CardAction,
   CardContent,
   CardHeader,
 } from '@/components/ui/card'
@@ -41,7 +31,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import {
+  formatReviewCandidateConfidence,
+  getReviewCandidateConfidenceBadgeClass,
+  getReviewCandidateConfidenceScore,
+} from '@/features/review/review-candidate-utils'
 import type {
   RelationshipCandidate,
   ReviewAction,
@@ -50,29 +45,47 @@ import type {
 
 type ReviewDecisionAction = Extract<ReviewAction, 'yes' | 'no'>
 
-type ReviewCandidateCardProps = {
-  accordionValue: string
+type ReviewCandidateListItemProps = {
   candidate: RelationshipCandidate
+  index: number
+  selected: boolean
   disabled?: boolean
   checked?: boolean
+  draftAction?: ReviewDecisionAction | null
+  confidenceScore?: number
+  onSelect: () => void
+  onCheckedChange?: (checked: boolean) => void
+}
+
+type ReviewCandidateDetailPanelProps = {
+  candidate: RelationshipCandidate | null
+  disabled?: boolean
+  readOnly?: boolean
+  checked?: boolean
+  draftAction?: ReviewDecisionAction | null
+  note: string
+  editedRationale: string
+  onNoteChange: (note: string) => void
   onCheckedChange?: (checked: boolean) => void
   onDecision: (
     candidateId: string,
     action: ReviewDecisionAction,
     note: string,
     editedRationale?: string,
-  ) => Promise<void>
-  onRequestCollapse?: () => void
+  ) => Promise<void> | void
   sourceDocument?: RagDocument | null
   targetDocument?: RagDocument | null
+  reviewDocumentTitle?: string | null
   confidenceScore?: number
 }
 
 type ChunkNodePanelProps = {
   kind: 'source' | 'target'
   nodeId: string
+  displayLabel: string
+  description: string | null
   text: string
-  documentLabel: string
+  documentTitle: string
   hasFullDoc: boolean
   onOpenDoc: () => void
 }
@@ -90,81 +103,244 @@ function RawTextViewer({ text }: { text: string }) {
   )
 }
 
-export function ReviewCandidateCard({
-  accordionValue,
+export function ReviewCandidateListItem({
   candidate,
+  index,
+  selected,
   disabled = false,
   checked = false,
+  draftAction = null,
+  confidenceScore,
+  onSelect,
+  onCheckedChange,
+}: ReviewCandidateListItemProps) {
+  const sourceChunk = getSourceChunk(candidate)
+  const targetChunk = getTargetChunk(candidate)
+  const confidence = getReviewCandidateConfidenceScore(candidate, confidenceScore)
+  const relationshipLabel = formatMachineLabel(candidate.relationship_type)
+  const statusLabel = formatCandidateStatus(candidate.status)
+
+  const handleCheckedChange = (value: boolean | 'indeterminate') => {
+    onCheckedChange?.(value === true)
+  }
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onSelect()
+        }
+      }}
+      className={cn(
+        'group relative min-w-0 w-full cursor-pointer overflow-hidden rounded-xl border bg-card/80 p-3 pl-4 text-left shadow-sm outline-none transition-all hover:border-primary/45 hover:bg-muted/35 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary/35',
+        selected
+          ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10 ring-2 ring-primary/20'
+          : 'border-border/65',
+      )}
+    >
+      <span
+        className={cn(
+          'absolute inset-y-2 left-0 w-1 rounded-r-full transition-colors',
+          selected ? 'bg-primary' : 'bg-transparent group-hover:bg-primary/30',
+        )}
+        aria-hidden="true"
+      />
+      <div className="flex items-start gap-2.5">
+        <div
+          className={cn(
+            'mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black',
+            selected
+              ? 'border-primary/30 bg-primary/15 text-primary'
+              : 'border-border bg-background text-muted-foreground',
+          )}
+          aria-hidden="true"
+        >
+          {index + 1}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex min-w-0 items-start justify-between gap-2">
+            <p className="line-clamp-2 text-[12px] font-extrabold leading-snug text-foreground">
+              {sourceChunk.displayLabel}
+            </p>
+            <Checkbox
+              checked={checked}
+              onClick={(event) => event.stopPropagation()}
+              onCheckedChange={handleCheckedChange}
+              disabled={disabled}
+              aria-label="Select candidate for bulk staging"
+              className="mt-0.5 size-3.5 shrink-0 rounded border-primary/35"
+            />
+          </div>
+          <div className="mt-1 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-muted-foreground">
+            <span className="max-w-[8rem] truncate">{relationshipLabel}</span>
+            <span aria-hidden="true">→</span>
+            <span className="min-w-0 flex-1 truncate text-chart-2">{targetChunk.displayLabel}</span>
+          </div>
+          <p className="mt-2 line-clamp-2 text-[10px] font-medium leading-relaxed text-muted-foreground">
+            {candidate.rationale || candidate.evidence_text || targetChunk.description || sourceChunk.description}
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+            <Badge
+              variant="outline"
+              className={cn(
+                'rounded-full px-1.5 py-0 text-[8px] font-black',
+                getReviewCandidateConfidenceBadgeClass(confidence),
+              )}
+            >
+              {formatReviewCandidateConfidence(confidence)}
+            </Badge>
+            <Badge
+              variant="outline"
+              className="rounded-full border-primary/15 bg-primary/5 px-1.5 py-0 text-[8px] font-black text-primary"
+            >
+              {statusLabel}
+            </Badge>
+            {draftAction && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  'rounded-full px-1.5 py-0 text-[8px] font-black',
+                  draftAction === 'yes'
+                    ? 'border-chart-3/30 bg-chart-3/10 text-chart-3'
+                    : 'border-destructive/30 bg-destructive/10 text-destructive',
+                )}
+              >
+                {draftAction === 'yes' ? 'Approve draft' : 'Deny draft'}
+              </Badge>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function ReviewCandidateDetailPanel({
+  candidate,
+  disabled = false,
+  readOnly = false,
+  checked = false,
+  draftAction = null,
+  note,
+  editedRationale,
+  onNoteChange,
   onCheckedChange,
   onDecision,
-  onRequestCollapse,
   sourceDocument = null,
   targetDocument = null,
+  reviewDocumentTitle = null,
   confidenceScore,
-}: ReviewCandidateCardProps) {
+}: ReviewCandidateDetailPanelProps) {
   const noteId = useId()
-  const [note, setNote] = useState('')
   const [submittingAction, setSubmittingAction] = useState<ReviewDecisionAction | null>(null)
-  
-  // Realtime Inline Annotation Editor States
-  const [editedRationale, setEditedRationale] = useState(candidate.rationale || '')
-  const [isEditingRationale, setIsEditingRationale] = useState(false)
-  const [tempRationale, setTempRationale] = useState(candidate.rationale || '')
-
-  // Document Teleport Modal States
   const [docModalOpen, setDocModalOpen] = useState(false)
   const [activeDocTitle, setActiveDocTitle] = useState('')
   const [activeDocContent, setActiveDocContent] = useState('')
 
+  const sourceChunk = candidate ? getSourceChunk(candidate) : null
+  const targetChunk = candidate ? getTargetChunk(candidate) : null
   const isSubmitting = submittingAction !== null
-  const sourceChunk = getSourceChunk(candidate)
-  const targetChunk = getTargetChunk(candidate)
+  const finalConfidence = candidate
+    ? getReviewCandidateConfidenceScore(candidate, confidenceScore)
+    : 0
 
-  // Generate deterministic fallback confidence score if not provided by prop
-  const finalConfidence = useMemo(() => {
-    if (typeof confidenceScore === 'number') {
-      return confidenceScore
-    }
-    if (typeof candidate.metadata.confidence === 'number') {
-      return candidate.metadata.confidence
-    }
-    const charSum = candidate.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-    return Number((0.72 + (charSum % 23) / 100).toFixed(2)) // 0.72 ~ 0.94
-  }, [candidate.id, candidate.metadata.confidence, confidenceScore])
+  if (!candidate || !sourceChunk || !targetChunk) {
+    return (
+      <Card className="review-candidate-empty-state relative flex h-full min-h-[28rem] flex-col items-center justify-center overflow-hidden rounded-2xl border border-primary/10 bg-card/60 p-6 text-center shadow-md backdrop-blur-sm">
+        <div className="pointer-events-none absolute -top-36 -right-36 size-72 rounded-full bg-primary/4 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-36 -left-36 size-72 rounded-full bg-chart-2/4 blur-3xl" />
+
+        <div className="relative z-10 mb-5 flex w-full max-w-[21rem] items-center justify-between gap-3 px-2">
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-dashed border-primary/25 bg-primary/4 text-muted-foreground/55 shadow-inner">
+              <FileText className="size-4.5" />
+            </div>
+            <span className="text-[8px] font-black uppercase tracking-wider text-muted-foreground/45">Source</span>
+          </div>
+
+          <div className="relative mt-[-0.65rem] flex flex-1 flex-col items-center gap-1.5">
+            <div className="relative w-full border-t border-dashed border-border/65">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-0.5 border-y-2.5 border-y-transparent border-l-[5px] border-l-border/65" />
+            </div>
+            <Badge variant="outline" className="flex shrink-0 items-center gap-1 rounded-full border-primary/15 bg-muted/45 px-1.5 py-0 text-[7.5px] font-black text-muted-foreground/70 shadow-xs">
+              <Sparkles className="size-2 text-primary/80" />
+              AI Extraction
+            </Badge>
+          </div>
+
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-dashed border-primary/25 bg-primary/4 text-muted-foreground/55 shadow-inner">
+              <GitBranch className="size-4.5" />
+            </div>
+            <span className="text-[8px] font-black uppercase tracking-wider text-muted-foreground/45">Target</span>
+          </div>
+        </div>
+
+        <div className="relative z-10 max-w-[21rem]">
+          <div className="mx-auto mb-2.5 flex size-9 items-center justify-center rounded-xl border border-primary/12 bg-primary/6 text-primary shadow-xs">
+            <Network className="size-4.5" aria-hidden="true" />
+          </div>
+          <h3 className="text-[12px] font-black tracking-tight text-foreground">검토할 관계 후보를 선택하세요</h3>
+          <p className="mt-1.5 text-[10px] font-semibold leading-relaxed text-muted-foreground">
+            좌측 queue에서 후보를 선택하면 청크 원문, 추출 근거, review note가 열립니다.
+          </p>
+
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-[8.5px] font-black text-muted-foreground/65">
+            <span className="rounded-full border border-border/35 bg-muted/15 px-2 py-1">청크 비교</span>
+            <span className="rounded-full border border-border/35 bg-muted/15 px-2 py-1">근거 확인</span>
+            <span className="rounded-full border border-border/35 bg-muted/15 px-2 py-1">결정 기록</span>
+          </div>
+        </div>
+      </Card>
+    )
+  }
+
+  const sourceDocumentTitle = getChunkDocumentTitle({
+    candidate,
+    chunkDocumentLabel: sourceChunk.documentLabel,
+    document: sourceDocument,
+    fallbackTitle: reviewDocumentTitle,
+    kind: 'source',
+  })
+  const relationshipLabel = formatMachineLabel(candidate.relationship_type)
+  const statusLabel = formatCandidateStatus(candidate.status)
+  const targetDocumentTitle = getChunkDocumentTitle({
+    candidate,
+    chunkDocumentLabel: targetChunk.documentLabel,
+    document: targetDocument,
+    fallbackTitle: reviewDocumentTitle,
+    kind: 'target',
+  })
 
   const handleCheckedChange = (value: boolean | 'indeterminate') => {
-    const nextChecked = value === true
-    onCheckedChange?.(nextChecked)
-    if (nextChecked) {
-      onRequestCollapse?.()
-    }
+    onCheckedChange?.(value === true)
   }
 
   const handleDecision = async (action: ReviewDecisionAction) => {
     setSubmittingAction(action)
     try {
-      // Propagate annotations and decisions to parent container page
       await onDecision(candidate.id, action, note.trim(), editedRationale.trim())
-      setNote('') // Clear individual note on success
-      setIsEditingRationale(false)
     } finally {
       setSubmittingAction(null)
     }
   }
 
-  // Handle open document modal teleportation using props document instead of context
   const handleOpenDocument = (isSource: boolean) => {
     const doc = isSource ? sourceDocument : targetDocument
-    const label = isSource ? sourceChunk.documentLabel : targetChunk.documentLabel
+    const chunk = isSource ? sourceChunk : targetChunk
+    const label = chunk.documentLabel
 
     if (doc) {
       setActiveDocTitle(doc.file_name || doc.source_title || label)
       setActiveDocContent(doc.content || 'Content not available.')
     } else {
-      // Fallback virtual metadata document to ensure smooth UX when doc is not fully synchronized
       setActiveDocTitle(label)
       setActiveDocContent(
-        isSource 
+        isSource
           ? `--- VIRTUAL RUNTIME DATA REFERENCE ---\nDocument Label: ${label}\nChunk Node ID: ${candidate.source_chunk_id}\n\n[Raw Text Context Extract]:\n${sourceChunk.text}\n\n[System Info]: Fully ingested and stored in GraphRAG engine.`
           : `--- VIRTUAL RUNTIME DATA REFERENCE ---\nDocument Label: ${label}\nTarget Reference: ${candidate.target_node}\n\n[Raw Text Context Extract]:\n${targetChunk.text}\n\n[System Info]: Fully ingested and stored in GraphRAG engine.`
       )
@@ -172,213 +348,231 @@ export function ReviewCandidateCard({
     setDocModalOpen(true)
   }
 
-  const startEditRationale = () => {
-    setTempRationale(editedRationale)
-    setIsEditingRationale(true)
-  }
-
-  const saveEditRationale = () => {
-    setEditedRationale(tempRationale)
-    setIsEditingRationale(false)
-  }
-
-  const cancelEditRationale = () => {
-    setIsEditingRationale(false)
-  }
-
   return (
-    <AccordionItem
-      value={accordionValue}
-      className="review-candidate-accordion-item not-last:border-b-0"
-    >
-      <Card className="review-candidate-card border border-primary/10 shadow-md hover:shadow-lg dark:hover:shadow-primary/5 transition-all duration-300 rounded-xl overflow-hidden backdrop-blur-md bg-card/65">
-        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4 p-3.5 px-4.5">
-          <AccordionTrigger className="review-candidate-trigger flex-1 py-0 hover:no-underline text-left">
-            <span className="review-candidate-trigger-body flex flex-col gap-1.5">
-              {/* Compact Entity Flow Visualizer Title */}
-              <span className="review-candidate-title flex flex-wrap items-center gap-2 text-sm">
-                <span className="font-extrabold text-primary bg-primary/8 px-2.5 py-0.5 rounded-lg border border-primary/15 tracking-tight shadow-sm">
-                  {candidate.source_node}
-                </span>
-                <span className="text-muted-foreground/60 font-bold text-[10px] flex items-center gap-1 uppercase tracking-wider">
-                  ── [ {candidate.relationship_type} ] ──&gt;
-                </span>
-                <span className="font-extrabold text-chart-2 bg-chart-2/8 px-2.5 py-0.5 rounded-lg border border-chart-2/15 tracking-tight shadow-sm">
-                  {candidate.target_node}
-                </span>
+    <Card className="review-candidate-detail flex h-full min-h-[34rem] flex-col overflow-hidden rounded-2xl border border-primary/10 bg-card/70 shadow-md backdrop-blur-md">
+      <CardHeader className="shrink-0 border-b border-border/45 bg-muted/10 p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="max-w-[18rem] truncate rounded-lg border border-primary/15 bg-primary/8 px-2.5 py-1 font-extrabold text-primary">
+                {sourceChunk.displayLabel}
               </span>
-              <span className="review-candidate-meta text-[10px] text-muted-foreground/75 font-semibold">
-                ID: {candidate.id} • Version: {candidate.version} • Job: {candidate.job_id}
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                [{relationshipLabel}] →
               </span>
-            </span>
-          </AccordionTrigger>
-          <CardAction className="review-header-actions flex items-center gap-2 shrink-0 max-lg:w-full max-lg:justify-end">
-            <Badge variant="secondary" className="bg-primary/10 text-primary border border-primary/20 font-bold px-2 py-0.5 rounded-full text-[10px]">
-              {candidate.status}
-            </Badge>
-            <label className="review-check-control flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border bg-background/55 text-[10px] font-bold cursor-pointer hover:bg-muted/40 transition-colors">
-              <Checkbox
-                checked={checked}
-                onCheckedChange={handleCheckedChange}
-                disabled={disabled || isSubmitting}
-                aria-label="Mark this candidate as checked"
-                className="rounded border-primary/30 text-primary focus:ring-primary size-3.5"
-              />
-              <span>Checked</span>
-            </label>
-            <Button
-              type="button"
-              size="sm"
-              className="review-approve-update-button bg-gradient-to-r from-primary to-primary hover:from-primary/95 hover:to-primary/95 text-primary-foreground font-extrabold shadow-sm text-[11px] h-8 px-3 rounded-lg"
-              onClick={() => void handleDecision('yes')}
-              disabled={disabled || isSubmitting || !checked}
+              <span className="max-w-[18rem] truncate rounded-lg border border-chart-2/15 bg-chart-2/8 px-2.5 py-1 font-extrabold text-chart-2">
+                {targetChunk.displayLabel}
+              </span>
+            </div>
+            <p className="mt-2 break-all text-[10px] font-semibold text-muted-foreground/80">
+              Candidate ID: {candidate.id} · Version: {candidate.version} · Job: {candidate.job_id}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <Badge
+              variant="outline"
+              className={cn(
+                'inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-black',
+                getReviewCandidateConfidenceBadgeClass(finalConfidence),
+              )}
             >
-              <CheckIcon data-icon="inline-start" className="size-3.5" />
-              {submittingAction === 'yes' ? 'Updating' : 'Approve'}
-            </Button>
-          </CardAction>
-        </CardHeader>
-
-        <AccordionContent className="review-candidate-content border-t border-primary/5 bg-primary/2 dark:bg-primary/1">
-          <CardContent className="review-card-content p-4">
-            <div className="review-graph grid gap-4 lg:grid-cols-[1fr_auto_1fr] items-stretch">
-              
-              <div className="review-edge-stage grid gap-4 md:grid-cols-[1fr_auto_1fr] items-stretch lg:col-span-3">
-                
-                {/* Source Chunk Node Panel - Pure Raw Chunk content with Document Teleport Badge */}
-                <ChunkNodePanel
-                  kind="source"
-                  nodeId={sourceChunk.id}
-                  text={sourceChunk.text}
-                  documentLabel={sourceChunk.documentLabel}
-                  hasFullDoc={Boolean(sourceDocument)}
-                  onOpenDoc={() => handleOpenDocument(true)}
+              <TrendingUp className="mr-1 size-3" aria-hidden="true" />
+              AI {formatReviewCandidateConfidence(finalConfidence)}
+            </Badge>
+            <Badge variant="secondary" className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+              {statusLabel}
+            </Badge>
+            {draftAction && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  'rounded-full px-2 py-0.5 text-[10px] font-black',
+                  draftAction === 'yes'
+                    ? 'border-chart-3/30 bg-chart-3/10 text-chart-3'
+                    : 'border-destructive/30 bg-destructive/10 text-destructive',
+                )}
+              >
+                Draft: {draftAction === 'yes' ? 'Approve' : 'Deny'}
+              </Badge>
+            )}
+            {!readOnly && (
+              <label className="review-check-control cursor-pointer text-[10px]">
+                <Checkbox
+                  checked={checked}
+                  onCheckedChange={handleCheckedChange}
+                  disabled={disabled || isSubmitting}
+                  aria-label="Mark this candidate as checked"
+                  className="size-3.5 rounded border-primary/30"
                 />
+                <span>Checked</span>
+              </label>
+            )}
+          </div>
+        </div>
+      </CardHeader>
 
-                {/* Animated SVG Connection Bridge + Integrated LLM Insight Panel */}
-                <CandidateEdgeBridge
-                  candidate={candidate}
-                  confidence={finalConfidence}
-                  editedRationale={editedRationale}
-                  isEditingRationale={isEditingRationale}
-                  tempRationale={tempRationale}
-                  onTempRationaleChange={setTempRationale}
-                  onStartEdit={startEditRationale}
-                  onSaveEdit={saveEditRationale}
-                  onCancelEdit={cancelEditRationale}
-                />
+      <CardContent className="flex min-h-0 flex-1 flex-col p-4">
+        <div className="review-graph grid min-h-0 flex-1 gap-4 lg:grid-cols-3">
+          <ChunkNodePanel
+            kind="source"
+            nodeId={sourceChunk.id}
+            displayLabel={sourceChunk.displayLabel}
+            description={sourceChunk.description}
+            text={sourceChunk.text}
+            documentTitle={sourceDocumentTitle}
+            hasFullDoc={Boolean(sourceDocument)}
+            onOpenDoc={() => handleOpenDocument(true)}
+          />
 
-                {/* Target Chunk Node Panel - Pure Raw Chunk content with Document Teleport Badge */}
-                <ChunkNodePanel
-                  kind="target"
-                  nodeId={targetChunk.id}
-                  text={targetChunk.text}
-                  documentLabel={targetChunk.documentLabel}
-                  hasFullDoc={Boolean(targetDocument)}
-                  onOpenDoc={() => handleOpenDocument(false)}
-                />
+          <ChunkNodePanel
+            kind="target"
+            nodeId={targetChunk.id}
+            displayLabel={targetChunk.displayLabel}
+            description={targetChunk.description}
+            text={targetChunk.text}
+            documentTitle={targetDocumentTitle}
+            hasFullDoc={Boolean(targetDocument)}
+            onOpenDoc={() => handleOpenDocument(false)}
+          />
+
+          <div className="flex min-h-0 flex-col gap-4">
+            <CandidateInsightPanel
+              candidate={candidate}
+              confidence={finalConfidence}
+              editedRationale={editedRationale}
+            />
+
+            <aside className="review-note-panel min-h-[16rem] flex-1">
+              <div className="review-note-header flex items-center gap-2.5">
+                <div className="review-note-avatar flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-black" aria-hidden="true">
+                  AI
+                </div>
+                <div>
+                  <label htmlFor={noteId} className="text-xs font-bold text-foreground">
+                    Reviewer Decision Note
+                  </label>
+                  <p className="text-[10px] font-semibold text-muted-foreground">
+                    {readOnly
+                      ? '이미 저장된 reviewer decision note입니다.'
+                      : '이 candidate에 대한 approve/deny 근거를 남기면 commit 시 review graph와 memory update에 반영됩니다.'}
+                  </p>
+                </div>
               </div>
 
-              {/* Side Reviewer Action Panel (For individual comments) */}
-              <aside className="review-note-panel border border-border/80 rounded-xl bg-card/85 p-3.5 shadow-sm flex flex-col gap-3 lg:col-span-3 lg:mt-1">
-                <div className="review-note-header flex items-center gap-2.5">
-                  <div className="review-note-avatar flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-primary to-chart-2 text-primary-foreground font-black text-xs shadow-sm" aria-hidden="true">
-                    AI
-                  </div>
-                  <div>
-                    <label htmlFor={noteId} className="text-xs font-bold text-foreground">
-                      Reviewer Decision Note (Individual Annotation)
-                    </label>
-                    <p className="text-[10px] text-muted-foreground font-semibold">
-                      Provide rationale or annotations for this specific candidate if needed.
-                    </p>
-                  </div>
+              <Textarea
+                id={noteId}
+                value={note}
+                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                  if (!readOnly) {
+                    onNoteChange(event.target.value)
+                  }
+                }}
+                placeholder={readOnly ? '저장된 review note가 없습니다.' : '승인 또는 반려 근거를 여기에 입력하세요... (선택 사항)'}
+                className="review-note-textarea min-h-[8rem] rounded-lg border-primary/10 bg-background/40 p-2.5 text-xs leading-relaxed focus-visible:border-primary focus-visible:ring-primary"
+                disabled={disabled || isSubmitting || readOnly}
+              />
+
+              {readOnly ? (
+                <div className="rounded-lg border border-border/55 bg-muted/20 p-3 text-[10px] font-semibold text-muted-foreground">
+                  <p>
+                    Stored decision:{' '}
+                    <span className="font-black text-foreground">{statusLabel}</span>
+                  </p>
+                  <p className="mt-1">
+                    Reviewer:{' '}
+                    <span className="font-black text-foreground">
+                      {candidate.reviewer || 'unknown'}
+                    </span>
+                  </p>
                 </div>
-
-                <Textarea
-                  id={noteId}
-                  value={note}
-                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setNote(event.target.value)}
-                  placeholder="승인 또는 반려 근거를 여기에 입력하세요... (선택 사항)"
-                  className="review-note-textarea min-h-[4rem] p-2.5 rounded-lg border-primary/10 bg-background/40 focus-visible:ring-primary focus-visible:border-primary transition-all text-xs leading-relaxed"
-                  disabled={disabled || isSubmitting}
-                />
-
+              ) : (
                 <div className="review-decision-actions grid grid-cols-2 gap-2.5">
                   <Button
                     type="button"
                     variant="outline"
-                    className="review-decision-button review-decision-button--deny border-destructive/20 hover:border-destructive bg-destructive/5 hover:bg-destructive/10 text-destructive font-bold transition-all duration-300 rounded-lg flex items-center justify-center gap-1.5 h-9 text-xs"
+                    className="review-decision-button review-decision-button--deny h-9 rounded-lg border-destructive/20 bg-destructive/5 text-xs font-bold text-destructive hover:border-destructive hover:bg-destructive/10"
                     onClick={() => void handleDecision('no')}
                     disabled={disabled || isSubmitting}
                   >
                     <XIcon className="size-3.5 shrink-0" />
-                    Deny Connection
+                    {submittingAction === 'no'
+                      ? 'Staging'
+                      : draftAction === 'no'
+                        ? 'Deny Drafted'
+                        : 'Stage Deny'}
                   </Button>
                   <Button
                     type="button"
-                    className="review-decision-button review-decision-button--approve bg-gradient-to-r from-chart-3 to-chart-3 hover:from-chart-3/95 hover:to-chart-3/95 text-primary-foreground font-bold shadow-sm transition-all duration-300 rounded-lg flex items-center justify-center gap-1.5 h-9 text-xs"
+                    className="review-decision-button review-decision-button--approve h-9 rounded-lg bg-chart-3 text-xs font-bold text-primary-foreground shadow-sm hover:bg-chart-3/95"
                     onClick={() => void handleDecision('yes')}
                     disabled={disabled || isSubmitting}
                   >
                     <CheckIcon className="size-3.5 shrink-0" />
-                    Approve Connection
+                    {submittingAction === 'yes'
+                      ? 'Staging'
+                      : draftAction === 'yes'
+                        ? 'Approve Drafted'
+                        : 'Stage Approve'}
                   </Button>
                 </div>
-              </aside>
-            </div>
-          </CardContent>
-        </AccordionContent>
-      </Card>
+              )}
+            </aside>
+          </div>
+        </div>
+      </CardContent>
 
-      {/* Global premium document teleport viewport modal */}
       <Dialog open={docModalOpen} onOpenChange={setDocModalOpen}>
-        <DialogContent className="sm:max-w-4xl max-h-[85vh] flex flex-col border border-primary/10 shadow-2xl rounded-2xl bg-card/95 backdrop-blur-md overflow-hidden p-0">
-          <DialogHeader className="p-6 pb-4.5 bg-muted/15 border-b border-border/45 flex flex-row items-center gap-3 shrink-0">
-            <div className="flex size-9.5 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 text-primary shadow-sm shadow-primary/2">
+        <DialogContent className="flex max-h-[85vh] flex-col overflow-hidden rounded-2xl border border-primary/10 bg-card/95 p-0 shadow-2xl backdrop-blur-md sm:max-w-4xl">
+          <DialogHeader className="flex shrink-0 flex-row items-center gap-3 border-b border-border/45 bg-muted/15 p-6 pb-4.5">
+            <div className="flex size-9.5 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
               <BookOpen className="size-5" />
             </div>
             <div className="min-w-0 flex-1">
-              <DialogTitle className="text-base font-extrabold tracking-tight text-foreground truncate max-w-[28rem]">
+              <DialogTitle className="max-w-[28rem] truncate text-base font-extrabold tracking-tight text-foreground">
                 {activeDocTitle}
               </DialogTitle>
-              <DialogDescription className="text-[10px] font-semibold text-muted-foreground/80 mt-1">
-                RAG Ingested Core Document Teleportation Matrix
+              <DialogDescription className="mt-1 text-[10px] font-semibold text-muted-foreground/80">
+                RAG ingested document context
               </DialogDescription>
             </div>
           </DialogHeader>
-          <div className="flex-1 min-h-0 overflow-y-auto p-6.5 font-mono text-[11px] leading-relaxed text-foreground bg-background/25 select-text whitespace-pre-wrap">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-background/25 p-6.5 font-mono text-[11px] leading-relaxed text-foreground whitespace-pre-wrap select-text">
             {activeDocContent}
           </div>
-          <div className="p-4 px-6.5 bg-muted/15 border-t border-border/45 flex justify-end shrink-0 select-none">
+          <div className="flex shrink-0 justify-end border-t border-border/45 bg-muted/15 p-4 px-6.5">
             <Button
               type="button"
               onClick={() => setDocModalOpen(false)}
-              className="text-xs font-bold px-5 h-8.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm cursor-pointer transition-all"
+              className="h-8.5 rounded-lg bg-primary px-5 text-xs font-bold text-primary-foreground hover:bg-primary/95"
             >
-              Close Teleport Matrix
+              Close
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </AccordionItem>
+    </Card>
   )
 }
+
 
 function ChunkNodePanel({
   kind,
   nodeId,
+  displayLabel,
+  description,
   text,
-  documentLabel,
+  documentTitle,
   hasFullDoc,
   onOpenDoc,
 }: ChunkNodePanelProps) {
+  const [rawOpen, setRawOpen] = useState(false)
+  const chunkDescription = description || '이 chunk에 대한 사람이 읽을 수 있는 설명이 아직 제공되지 않았습니다.'
+
   return (
     <section className={`review-node review-node--chunk review-node--${kind} border rounded-xl bg-card shadow-sm overflow-hidden flex flex-col min-h-[17.5rem]`}>
       
-      {/* Header with Visual Hierarchy */}
       <div className="review-node-header flex items-center justify-between p-3 bg-muted/20 border-b border-border/40">
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-center gap-2">
           <div className={`review-node-icon flex size-7.5 items-center justify-center rounded-lg font-bold shadow-sm ${
             kind === 'source' 
               ? 'bg-primary/10 text-primary border border-primary/20 shadow-primary/5' 
@@ -388,33 +582,21 @@ function ChunkNodePanel({
           </div>
           <div>
             <p className="review-node-kicker text-[8px] font-black text-muted-foreground uppercase tracking-widest leading-none">
-              {kind === 'source' ? 'Source Chunk ID' : 'Target Chunk ID'}
+              {kind === 'source' ? 'Source Chunk' : 'Target Chunk'}
             </p>
-            <h4 className="mt-0.5 text-[11px] font-bold text-foreground max-w-[9rem] truncate" title={nodeId}>
-              {nodeId}
+            <h4 className="mt-0.5 text-[11px] font-bold text-foreground max-w-[9rem] truncate" title={displayLabel}>
+              {displayLabel}
             </h4>
-            <p className="text-[8.5px] font-bold text-muted-foreground/75 mt-0.5 truncate max-w-[8.5rem] leading-none" title={documentLabel}>
-              Doc: {documentLabel}
+            <p
+              className="text-[8.5px] font-bold text-muted-foreground/75 mt-0.5 truncate max-w-[11rem] leading-none"
+              title={documentTitle}
+            >
+              원본: {documentTitle}
             </p>
           </div>
         </div>
         
-        {/* Document Teleport Badge Link */}
-        {hasFullDoc ? (
-          <button
-            type="button"
-            onClick={onOpenDoc}
-            className={cn(
-              "flex items-center gap-1 text-[8px] font-extrabold tracking-wide px-2 py-0.5 rounded-full shadow-sm hover:scale-[1.03] transition-all border shrink-0 cursor-pointer animate-pulse-short",
-              kind === 'source'
-                ? 'bg-primary/10 text-primary border-primary/20 shadow-primary/5 hover:bg-primary/15'
-                : 'bg-chart-2/10 text-chart-2 border-chart-2/20 shadow-chart-2/5 hover:bg-chart-2/15'
-            )}
-          >
-            <Sparkles className="size-2.5 animate-pulse" />
-            <span>Doc Link</span>
-          </button>
-        ) : (
+        <div className="flex shrink-0 flex-col items-end gap-1">
           <Badge variant="outline" className={`font-extrabold text-[8px] tracking-wide px-1.5 py-0.5 rounded-full ${
             kind === 'source'
               ? 'bg-primary/5 text-primary border-primary/20 shadow-sm'
@@ -422,233 +604,292 @@ function ChunkNodePanel({
           }`}>
             {kind === 'source' ? 'Source' : 'Target'}
           </Badge>
-        )}
+          {hasFullDoc && (
+            <button
+              type="button"
+              onClick={onOpenDoc}
+              className={cn(
+                'flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[8px] font-extrabold tracking-wide shadow-sm transition-all hover:scale-[1.03]',
+                kind === 'source'
+                  ? 'bg-primary/10 text-primary border-primary/20 shadow-primary/5 hover:bg-primary/15'
+                  : 'bg-chart-2/10 text-chart-2 border-chart-2/20 shadow-chart-2/5 hover:bg-chart-2/15'
+              )}
+            >
+              <Sparkles className="size-2.5" />
+              <span>Open Doc</span>
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Body: Purely dedicated to rendering the Raw Chunk content */}
-      <div className="review-node-body p-3 flex-1 flex flex-col min-h-0 bg-background/30 justify-stretch items-stretch">
-        {/* Expanded Neon Area without inner scrollbar for perfect double scroll prevention */}
-        <div className={`review-document-scroll flex-1 min-h-[12.5rem] border rounded-lg bg-card/65 p-3.5 select-text transition-all ${
-          kind === 'source'
-            ? 'border-primary/15'
-            : 'border-chart-2/15'
-        }`}>
-          <RawTextViewer text={text} />
+      <div className="review-node-body p-3 flex-1 flex flex-col min-h-0 bg-background/30">
+        <div
+          className={cn(
+            'flex min-h-0 flex-1 flex-col rounded-lg border bg-card/70 p-3 shadow-sm',
+            kind === 'source'
+              ? 'border-primary/15'
+              : 'border-chart-2/15',
+          )}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+                Chunk Description
+              </p>
+              <p className="mt-1 line-clamp-6 text-[11px] font-semibold leading-relaxed text-foreground/85">
+                {chunkDescription}
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setRawOpen((open) => !open)}
+              className={cn(
+                'h-7 shrink-0 rounded-lg border bg-background/60 px-2 text-[10px] font-extrabold',
+                kind === 'source'
+                  ? 'border-primary/15 text-primary hover:bg-primary/5'
+                  : 'border-chart-2/15 text-chart-2 hover:bg-chart-2/5',
+              )}
+            >
+              <span className="flex items-center gap-1.5">
+                <FileText className="size-3.5" aria-hidden="true" />
+                {rawOpen ? '원문 닫기' : '원문 보기'}
+              </span>
+              <ChevronDown
+                className={cn('size-3.5 transition-transform', rawOpen && 'rotate-180')}
+                aria-hidden="true"
+              />
+            </Button>
+          </div>
+
+          <div className="mt-3 rounded-lg border border-border/55 bg-background/35 p-2.5">
+            <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+              Original Document
+            </p>
+            <p className="mt-1 truncate text-[10px] font-extrabold text-foreground" title={documentTitle}>
+              {documentTitle}
+            </p>
+            <p className="mt-1 break-all text-[8.5px] font-bold text-muted-foreground/70">
+              Chunk ID: {nodeId}
+            </p>
+          </div>
+
+          {rawOpen && (
+            <div className="mt-3 flex min-h-0 flex-1 flex-col border-t border-border/45 pt-3">
+              <ScrollArea className={cn(
+                "review-document-scroll review-document-scroll--expanded border rounded-lg bg-card/65 select-text transition-all",
+                kind === 'source'
+                  ? 'border-primary/15'
+                  : 'border-chart-2/15',
+              )}>
+                <RawTextViewer text={text} />
+              </ScrollArea>
+            </div>
+          )}
         </div>
       </div>
     </section>
   )
 }
 
-type CandidateEdgeBridgeProps = {
+type CandidateInsightPanelProps = {
   candidate: RelationshipCandidate
   confidence: number
   editedRationale: string
-  isEditingRationale: boolean
-  tempRationale: string
-  onTempRationaleChange: (val: string) => void
-  onStartEdit: () => void
-  onSaveEdit: () => void
-  onCancelEdit: () => void
 }
 
-function CandidateEdgeBridge({
+function CandidateInsightPanel({
   candidate,
   confidence,
   editedRationale,
-  isEditingRationale,
-  tempRationale,
-  onTempRationaleChange,
-  onStartEdit,
-  onSaveEdit,
-  onCancelEdit
-}: CandidateEdgeBridgeProps) {
+}: CandidateInsightPanelProps) {
+  const confidenceLabel = formatReviewCandidateConfidence(confidence)
+
   return (
-    <div className="review-card-edge relative flex flex-col items-center justify-between min-h-[17.5rem] max-md:min-h-[12rem] w-full py-2.5 px-1 overflow-visible" aria-label="Candidate connection edge">
-      
-      {/* SVG dynamic dotted flow line */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="edge-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="oklch(var(--color-primary))" />
-            <stop offset="50%" stopColor="oklch(var(--color-chart-2))" />
-            <stop offset="100%" stopColor="oklch(var(--color-chart-2))" />
-          </linearGradient>
-          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-        </defs>
-        
-        {/* Background Arc Flow Path for Desktop */}
-        <path
-          d="M 0,50% H 100%"
-          fill="none"
-          stroke="oklch(var(--color-chart-2)/10%)"
-          strokeWidth="4"
-          className="max-md:hidden"
-        />
-        
-        {/* Animated Flow Path for Desktop */}
-        <path
-          d="M 0,50% H 100%"
-          fill="none"
-          stroke="url(#edge-grad)"
-          strokeWidth="2"
-          strokeDasharray="6 4"
-          className="animate-edge-flow max-md:hidden"
-          filter="url(#glow)"
-        />
-        
-        {/* Mobile layout vertical flow line */}
-        <path
-          d="M 50%,0 V 100%"
-          fill="none"
-          stroke="url(#edge-grad)"
-          strokeWidth="2"
-          strokeDasharray="6 4"
-          className="animate-edge-flow md:hidden"
-          filter="url(#glow)"
-        />
-      </svg>
-
-      {/* Central Floating Neo Badge */}
-      <div className="relative z-10 flex flex-col items-center gap-1">
-        <div className="flex size-9.5 items-center justify-center rounded-full bg-card border border-chart-2 text-chart-2 shadow-[0_0_12px_oklch(var(--color-chart-2)/20%)] relative">
-          <span className="absolute inset-0 rounded-full animate-pulse-ring opacity-35 border border-chart-2"></span>
-          <ArrowRightLeft className="size-4 animate-pulse" aria-hidden="true" />
-        </div>
-        
-        <div className="flex flex-col items-center">
-          <span className="px-2 py-0.5 rounded-full text-[7.5px] font-black tracking-widest uppercase border bg-background text-chart-2 border-chart-2/30 shadow-sm leading-none">
-            {candidate.relationship_type}
-          </span>
-        </div>
-      </div>
-
-      {/* Dynamic Confidence Meter Bar Component */}
-      <div className="relative z-10 w-full max-w-[14.5rem] bg-card/75 border border-border/50 rounded-lg p-2 flex flex-col gap-1 shadow-sm select-none">
-        <div className="flex items-center justify-between text-[8px] font-bold">
-          <span className="text-muted-foreground uppercase tracking-wider flex items-center gap-0.5">
-            <TrendingUp className="size-2.5 text-primary" />
-            AI Confidence
-          </span>
-          <span className={cn(
-            "font-mono font-extrabold",
-            confidence >= 0.85 ? "text-chart-2" : confidence >= 0.76 ? "text-primary" : "text-destructive"
-          )}>
-            {Math.round(confidence * 100)}%
-          </span>
-        </div>
-        <Progress 
-          value={confidence * 100} 
-          className="h-1 bg-muted rounded-full"
-        />
-        {confidence < 0.76 && (
-          <div className="flex items-center gap-0.5 text-[7px] font-bold text-destructive leading-none">
-            <AlertTriangle className="size-2" />
-            <span>Weak Match. Manual Audit suggested.</span>
+    <section className="review-insight-panel flex min-h-[16rem] flex-1 flex-col overflow-hidden rounded-xl border border-primary/15 bg-card shadow-sm">
+      <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border/40 bg-muted/20 p-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <div className="flex size-7.5 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary shadow-sm">
+            <GitBranch className="size-3.5" aria-hidden="true" />
           </div>
-        )}
-      </div>
-
-      {/* ✨ Highly Sleek LLM Insight Block (Evidence & Rationale integrated together in micro scale) */}
-      <div className="relative z-10 w-full max-w-[14.5rem] p-3 rounded-xl border border-primary/10 bg-card/85 backdrop-blur-md shadow-lg shadow-primary/2 flex flex-col gap-1.5 text-[10px] leading-relaxed select-text group/insight hover:border-chart-2/30 transition-colors duration-300">
-        <div className="absolute top-0 left-0 h-0.5 w-full bg-gradient-to-r from-primary via-chart-2 to-primary/0" />
-        
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1 text-primary font-black text-[9px] uppercase tracking-wider leading-none">
-            <GitBranch className="size-3 text-primary" />
-            <span>LLM Extraction Insight</span>
+          <div className="min-w-0">
+            <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+              LLM Extraction Insight
+            </p>
+            <h4 className="mt-0.5 truncate text-[11px] font-bold text-foreground">
+              관계 후보 추출 근거
+            </h4>
           </div>
-
-          {/* Rationale Inline Editor Trigger Button */}
-          {!isEditingRationale && (
-            <button
-              type="button"
-              onClick={onStartEdit}
-              className="text-muted-foreground/60 hover:text-primary transition-colors cursor-pointer shrink-0"
-              aria-label="Edit AI extraction rationale"
-              title="Edit Rationale"
-            >
-              <Edit3 className="size-3" />
-            </button>
-          )}
         </div>
-        
-        {/* Conditional Rendering of Rationale Text vs Input Editor */}
-        <div className="flex flex-col gap-1">
-          {isEditingRationale ? (
-            <div className="flex flex-col gap-1.5 animate-fade-in">
-              <Textarea
-                value={tempRationale}
-                onChange={(e) => onTempRationaleChange(e.target.value)}
-                className="min-h-[4rem] text-[9.5px] p-1.5 rounded-md border-primary/20 bg-background/55 focus:ring-1 focus:ring-primary"
-              />
-              <div className="flex justify-end gap-1">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={onCancelEdit}
-                  className="size-5 p-0 hover:bg-muted-foreground/5 rounded-md text-muted-foreground hover:text-foreground"
-                >
-                  <X className="size-3" />
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={onSaveEdit}
-                  className="size-5 p-0 bg-chart-2 text-primary-foreground hover:bg-chart-2/90 rounded-md"
-                >
-                  <Check className="size-3" />
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <p className="text-foreground/90 font-medium line-clamp-3" title={editedRationale}>
-                <span className="text-primary font-black uppercase text-[8px] tracking-wide">Why: </span>{editedRationale || 'No extraction rationale.'}
-              </p>
-              {candidate.evidence_text && (
-                <div className="mt-0.5 border-t border-border/30 pt-1 text-muted-foreground font-semibold italic line-clamp-2" title={candidate.evidence_text}>
-                  "{candidate.evidence_text}"
-                </div>
-              )}
-            </>
+        <Badge
+          variant="outline"
+          className={cn(
+            'inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[8px] font-black',
+            getReviewCandidateConfidenceBadgeClass(confidence),
           )}
+        >
+          {confidenceLabel}
+        </Badge>
+      </div>
+
+      <div className="flex min-h-0 flex-1 flex-col gap-3 p-3 text-[11px] leading-relaxed">
+        <div className="rounded-lg border border-primary/10 bg-background/45 p-3">
+          <p className="text-[8px] font-black uppercase tracking-widest text-primary">
+            Rationale Summary
+          </p>
+          <p className="mt-1 whitespace-pre-wrap break-words font-semibold text-foreground/90">
+            {editedRationale || 'No extraction rationale.'}
+          </p>
+        </div>
+
+        <div className="min-h-0 flex-1 rounded-lg border border-border/60 bg-background/45 p-3">
+          <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+            Evidence Text
+          </p>
+          <ScrollArea className="mt-1 h-[8.5rem]">
+            <p className="whitespace-pre-wrap break-words pr-3 font-mono text-[10px] leading-relaxed text-muted-foreground">
+              {candidate.evidence_text || 'Evidence text is not available.'}
+            </p>
+          </ScrollArea>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
+function formatMachineLabel(value: string) {
+  return value
+    .toLowerCase()
+    .split('_')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+function formatCandidateStatus(value: string) {
+  const normalized = value.toLowerCase()
+  if (normalized === 'pending_review') {
+    return 'Review pending'
+  }
+  if (normalized === 'approved') {
+    return 'Approved'
+  }
+  if (normalized === 'denied' || normalized === 'rejected') {
+    return 'Denied'
+  }
+  return formatMachineLabel(value)
+}
+
 function getSourceChunk(candidate: RelationshipCandidate) {
+  const displayLabel =
+    candidate.source_chunk_label ??
+    candidate.source_chunk_name ??
+    getMetadataString(candidate, ['source_chunk_label', 'source_chunk_name', 'source_chunk_summary']) ??
+    (candidate.source_chunk_id || candidate.source_node)
   return {
     documentLabel:
       getMetadataString(candidate, ['document_title', 'source_document_title', 'file_name']) ??
       candidate.job_id,
+    displayLabel,
+    description:
+      candidate.source_chunk_description ??
+      getMetadataString(candidate, ['source_chunk_description', 'source_chunk_summary']),
     id:
       getMetadataString(candidate, ['source_chunk_id']) ??
       (candidate.source_chunk_id || 'source-chunk'),
     text:
-      getMetadataString(candidate, ['source_chunk_text', 'source_text', 'chunk_text']) ??
-      (candidate.evidence_text || 'Source chunk context is not available from the API response.'),
+      candidate.source_chunk_text ??
+      getMetadataString(candidate, ['source_chunk_text', 'source_text', 'chunk_text', 'source_chunk_summary']) ??
+      (candidate.evidence_text || candidate.source_chunk_summary || 'Source chunk context is not available from the API response.'),
   }
 }
 
 function getTargetChunk(candidate: RelationshipCandidate) {
+  const displayLabel =
+    candidate.target_chunk_label ??
+    candidate.target_chunk_name ??
+    getMetadataString(candidate, ['target_chunk_label', 'target_chunk_name', 'target_chunk_summary']) ??
+    candidate.target_node
   return {
     documentLabel:
       getMetadataString(candidate, ['target_document_title', 'document_title', 'file_name']) ??
       candidate.job_id,
+    displayLabel,
+    description:
+      candidate.target_chunk_description ??
+      getMetadataString(candidate, ['target_chunk_description', 'target_chunk_summary']),
     id:
+      candidate.target_chunk_id ??
       getMetadataString(candidate, ['target_chunk_id', 'target_chunk_node_id', 'related_chunk_id']) ??
       candidate.target_node,
     text:
-      getMetadataString(candidate, ['target_chunk_text', 'target_text', 'matched_chunk_text']) ??
+      candidate.target_chunk_text ??
+      getMetadataString(candidate, ['target_chunk_text', 'target_text', 'matched_chunk_text', 'target_chunk_summary']) ??
+      candidate.target_chunk_summary ??
+      candidate.target_chunk_description ??
       'Target chunk context is not available from the API response.',
   }
+}
+
+function getChunkDocumentTitle({
+  candidate,
+  chunkDocumentLabel,
+  document,
+  fallbackTitle,
+  kind,
+}: {
+  candidate: RelationshipCandidate
+  chunkDocumentLabel: string
+  document: RagDocument | null
+  fallbackTitle: string | null
+  kind: 'source' | 'target'
+}) {
+  const sourceCandidates = [
+    getMetadataString(candidate, ['source_document_title', 'document_title', 'source_title', 'file_name']),
+    document?.source_title,
+    document?.file_name,
+    fallbackTitle,
+    chunkDocumentLabel,
+  ]
+  const targetCandidates = [
+    getMetadataString(candidate, ['target_document_title', 'target_source_title', 'target_file_name']),
+    document?.source_title,
+    document?.file_name,
+    getMetadataString(candidate, ['document_title', 'source_title', 'file_name']),
+    fallbackTitle,
+    chunkDocumentLabel,
+  ]
+  return firstReadableDisplayValue(kind === 'source' ? sourceCandidates : targetCandidates) ??
+    (kind === 'source' ? 'Source document' : 'Target document')
+}
+
+function firstReadableDisplayValue(values: Array<string | null | undefined>) {
+  for (const value of values) {
+    const normalized = normalizeDisplayValue(value)
+    if (normalized && !isUuidLike(normalized)) {
+      return stripKnownExtension(normalized)
+    }
+  }
+
+  return null
+}
+
+function normalizeDisplayValue(value: string | null | undefined) {
+  const trimmed = value?.trim()
+  if (!trimmed) {
+    return null
+  }
+
+  return trimmed.split('/').pop()?.normalize('NFC') || trimmed.normalize('NFC')
+}
+
+function stripKnownExtension(value: string) {
+  return value.replace(/\.(toon|md|markdown|txt|json|pdf|docx?)$/i, '')
+}
+
+function isUuidLike(value: string) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)
 }
 
 function getMetadataString(candidate: RelationshipCandidate, keys: string[]) {
@@ -664,5 +905,3 @@ function getMetadataString(candidate: RelationshipCandidate, keys: string[]) {
 
   return null
 }
-
-

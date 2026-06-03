@@ -120,12 +120,28 @@ function normalizeCandidate(
   copyMetadataField(record, metadata, 'source_title')
   copyMetadataField(record, metadata, 'file_name')
   copyMetadataField(record, metadata, 'source_chunk_text')
+  copyMetadataField(record, metadata, 'source_chunk_name')
+  copyMetadataField(record, metadata, 'source_chunk_description')
+  copyMetadataField(record, metadata, 'source_chunk_summary')
+  copyMetadataField(record, metadata, 'source_chunk_index')
   copyMetadataField(record, metadata, 'source_chunk_label')
   copyMetadataField(record, metadata, 'target_chunk_id')
   copyMetadataField(record, metadata, 'target_chunk_text')
+  copyMetadataField(record, metadata, 'target_chunk_name')
+  copyMetadataField(record, metadata, 'target_chunk_description')
+  copyMetadataField(record, metadata, 'target_chunk_summary')
+  copyMetadataField(record, metadata, 'target_chunk_index')
   copyMetadataField(record, metadata, 'target_chunk_label')
+  copyMetadataField(record, metadata, 'evidence_chunk_name')
+  copyMetadataField(record, metadata, 'evidence_chunk_description')
+  copyMetadataField(record, metadata, 'evidence_chunk_summary')
+  copyMetadataField(record, metadata, 'evidence_chunk_index')
   copyMetadataField(record, metadata, 'target_document_title')
   copyMetadataField(record, metadata, 'confidence')
+  copyMetadataField(record, metadata, 'review_action')
+  copyMetadataField(record, metadata, 'review_note')
+  copyMetadataField(record, metadata, 'reviewed_at')
+  copyMetadataField(record, metadata, 'reviewer')
 
   const sourceNode = readString(record, ['source_node', 'source', 'from'], 'Unknown source')
   const targetNode = readString(record, ['target_node', 'target', 'to'], 'Unknown target')
@@ -141,8 +157,25 @@ function normalizeCandidate(
       'RELATED_TO',
     ).toUpperCase(),
     source_chunk_id: readString(record, ['source_chunk_id', 'chunk_id'], ''),
+    source_chunk_name: readOptionalString(record, ['source_chunk_name']),
+    source_chunk_description: readOptionalString(record, ['source_chunk_description']),
+    source_chunk_summary: readOptionalString(record, ['source_chunk_summary']),
+    source_chunk_text: readOptionalString(record, ['source_chunk_text']),
+    source_chunk_label: readOptionalString(record, ['source_chunk_label']),
+    target_chunk_id: readOptionalString(record, ['target_chunk_id']),
+    target_chunk_name: readOptionalString(record, ['target_chunk_name']),
+    target_chunk_description: readOptionalString(record, ['target_chunk_description']),
+    target_chunk_summary: readOptionalString(record, ['target_chunk_summary']),
+    target_chunk_text: readOptionalString(record, ['target_chunk_text']),
+    target_chunk_label: readOptionalString(record, ['target_chunk_label']),
+    evidence_chunk_name: readOptionalString(record, ['evidence_chunk_name']),
+    evidence_chunk_description: readOptionalString(record, ['evidence_chunk_description']),
     evidence_text: readString(record, ['evidence_text', 'evidence', 'source_text'], ''),
     rationale: readString(record, ['rationale', 'reason'], ''),
+    review_action: readOptionalString(record, ['review_action']),
+    review_note: readOptionalString(record, ['review_note']),
+    reviewed_at: readOptionalString(record, ['reviewed_at']),
+    reviewer: readOptionalString(record, ['reviewer', 'reviewed_by']),
     status: readString(record, ['status'], 'pending_review'),
     version: readNumber(record.version, 1),
     metadata,
@@ -208,6 +241,19 @@ function readString(record: UnknownRecord, keys: string[], fallback: string) {
   }
 
   return fallback
+}
+
+function readOptionalString(record: UnknownRecord, keys: string[]) {
+  for (const key of keys) {
+    const value = record[key]
+    if (typeof value === 'string' && value.trim()) {
+      return value
+    }
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      return String(value)
+    }
+  }
+  return null
 }
 
 function readNumber(value: unknown, fallback: number) {

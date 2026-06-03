@@ -40,6 +40,8 @@ type FileMetadata = {
   error?: string
 }
 
+const SUPPORTED_UPLOAD_EXTENSIONS = ['.txt', '.md', '.json', '.csv', '.toon'] as const
+
 export function AddDocumentDialog({
   onOpenChange,
   onSubmit,
@@ -72,9 +74,9 @@ export function AddDocumentDialog({
       if (extension === 'json') {
         try {
           JSON.parse(text)
-        } catch (e: any) {
+        } catch (error: unknown) {
           isValid = false
-          errorMsg = `Invalid JSON: ${e.message || 'Syntax error'}`
+          errorMsg = `Invalid JSON: ${getErrorMessage(error) || 'Syntax error'}`
         }
       } else if (extension === 'csv') {
         // Simple CSV validation: check if rows have similar column counts roughly
@@ -106,8 +108,8 @@ export function AddDocumentDialog({
         error: errorMsg,
       })
       setParseError(errorMsg || null)
-    } catch (e: any) {
-      setParseError(`Failed to read file: ${e.message}`)
+    } catch (error: unknown) {
+      setParseError(`Failed to read file: ${getErrorMessage(error)}`)
     }
   }
 
@@ -156,6 +158,14 @@ export function AddDocumentDialog({
         <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30">
           <FileSpreadsheet className="size-3" />
           Valid CSV
+        </span>
+      )
+    }
+    if (ext === 'toon') {
+      return (
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-chart-3/15 text-chart-3 border border-chart-3/30">
+          <FileText className="size-3" />
+          TOON Text
         </span>
       )
     }
@@ -278,7 +288,7 @@ export function AddDocumentDialog({
                         Drag and drop local data file here
                       </span>
                       <span className="mt-1 text-[10px] text-muted-foreground/80 font-medium max-w-[20rem]">
-                        Supports <span className="font-mono text-primary/80">.txt, .md, .json, .csv</span> formats
+                        Supports <span className="font-mono text-primary/80">{SUPPORTED_UPLOAD_EXTENSIONS.join(', ')}</span> formats
                       </span>
                       <span className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full border bg-card text-[9px] font-bold text-muted-foreground group-hover:text-foreground group-hover:border-border transition-colors">
                         Or browse local files
@@ -290,7 +300,7 @@ export function AddDocumentDialog({
                     ref={fileInputRef}
                     name="document-file"
                     type="file"
-                    accept=".txt,.md,.json,.csv"
+                    accept={SUPPORTED_UPLOAD_EXTENSIONS.join(',')}
                     className="sr-only"
                     onChange={(event) => {
                       const file = event.target.files?.item(0)
@@ -437,3 +447,6 @@ export function AddDocumentDialog({
   )
 }
 
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error)
+}

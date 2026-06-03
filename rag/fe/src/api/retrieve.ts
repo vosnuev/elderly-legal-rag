@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_RAG_API_BASE_URL ?? 'http://127.0.0.1:8010'
+export const API_BASE_URL = import.meta.env.VITE_RAG_API_BASE_URL ?? 'http://127.0.0.1:8010'
 const DEFAULT_TIMEOUT_MS = Number(import.meta.env.VITE_RAG_API_TIMEOUT_MS ?? 1500)
 const MOCK_FALLBACK_ENABLED = import.meta.env.VITE_RAG_ENABLE_MOCK_FALLBACK !== 'false'
 

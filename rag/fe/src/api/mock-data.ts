@@ -2,10 +2,14 @@ import type {
   CreateDocumentIngestJobRequest,
   FileIngestStatusResponse,
   GraphTaskSnapshot,
+  MemoryDocument,
+  MemoryDocumentUpdateRequest,
   RagDocument,
   RelationshipCandidate,
   ReviewDecisionRequest,
   ReviewCandidateResponse,
+  ReviewCandidateStatusFilter,
+  ReviewJobDecisionRequest,
 } from '@/types'
 
 const nowSuffix = () => new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)
@@ -101,6 +105,24 @@ const mockJobs: FileIngestStatusResponse[] = [
     warning: 'Mock data is being used because the RAG backend is unavailable.',
   },
 ]
+
+let mockMemory: MemoryDocument = {
+  exists: true,
+  id: 'mock-memory-global',
+  scope: 'global',
+  title: 'Candidate extraction memory',
+  content:
+    '## 후보 생성 기준\n\n- 사용자가 반려한 관계 유형은 다음 후보 생성에서 보수적으로 적용한다.\n- reviewer note가 있는 경우 해당 note를 우선 기준으로 삼는다.',
+  version: 1,
+  status: 'active',
+  author: 'mock',
+  updated_at: mockBaseDate,
+  metadata: {
+    format: 'curated_markdown',
+  },
+  evidence_review_note_ids: [],
+  evidence_candidate_ids: [],
+}
 
 const mockReviewCandidates: RelationshipCandidate[] = [
   {
@@ -607,6 +629,10 @@ export function getMockDocuments(): RagDocument[] {
   return [...mockDocuments]
 }
 
+export function getMockJobs(): FileIngestStatusResponse[] {
+  return [...mockJobs]
+}
+
 export function createMockIngestJob(
   payload: CreateDocumentIngestJobRequest,
 ): FileIngestStatusResponse {
@@ -720,14 +746,22 @@ export function startMockGraphAdd(jobId: string): FileIngestStatusResponse {
   return startedJob
 }
 
-export function getMockReviewCandidates(): ReviewCandidateResponse {
-  const pendingCandidates = mockReviewCandidates.filter(
-    (candidate) => candidate.status === 'pending_review',
-  )
+export function getMockReviewCandidates(
+  status: ReviewCandidateStatusFilter = 'pending',
+): ReviewCandidateResponse {
+  const candidates = mockReviewCandidates.filter((candidate) => {
+    if (status === 'all') {
+      return true
+    }
+    if (status === 'finished') {
+      return candidate.status !== 'pending_review'
+    }
+    return candidate.status === 'pending_review'
+  })
 
   return {
     columns: ['candidate'],
-    rows: pendingCandidates.map((candidate) => ({
+    rows: candidates.map((candidate) => ({
       candidate: {
         type: 'node',
         element_id: candidate.id,
@@ -735,58 +769,108 @@ export function getMockReviewCandidates(): ReviewCandidateResponse {
         properties: candidate,
       },
     })),
-    row_count: pendingCandidates.length,
+    row_count: candidates.length,
     elapsed_ms: 0,
   }
+}
+
+export function getMockMemory(): MemoryDocument {
+  return { ...mockMemory }
+}
+
+export function updateMockMemory(payload: MemoryDocumentUpdateRequest): MemoryDocument {
+  mockMemory = {
+    ...mockMemory,
+    exists: true,
+    title: payload.title?.trim() || mockMemory.title,
+    content: payload.content.trim(),
+    version: mockMemory.version + 1,
+    status: 'active',
+    author: payload.author ?? 'rag-fe',
+    updated_at: new Date().toISOString(),
+    metadata: {
+      format: 'curated_markdown',
+      last_update_summary: payload.update_summary ?? '',
+    },
+  }
+  return getMockMemory()
 }
 
 export function submitMockReviewDecision(
   candidateId: string,
   payload: ReviewDecisionRequest,
 ): FileIngestStatusResponse {
-  const candidateIndex = mockReviewCandidates.findIndex((candidate) => candidate.id === candidateId)
-  const actionStatus = {
-    no: 'rejected',
-    retry: 'needs_retry',
-    yes: 'approved',
-  } satisfies Record<ReviewDecisionRequest['action'], string>
+  return submitMockReviewJobDecisions('mock-review', {
+    decisions: [
+      {
+        candidate_id: candidateId,
+        action: payload.action,
+        note: payload.note,
+      },
+    ],
+    reviewer: payload.reviewer,
+  })
+}
 
-  if (candidateIndex < 0) {
+export function submitMockReviewJobDecisions(
+  jobId: string,
+  payload: ReviewJobDecisionRequest,
+): FileIngestStatusResponse {
+  let lastCandidate: RelationshipCandidate | null = null
+  for (const decision of payload.decisions) {
+    const candidateIndex = mockReviewCandidates.findIndex(
+      (candidate) => candidate.id === decision.candidate_id,
+    )
+    if (candidateIndex < 0) {
+      continue
+    }
+    const candidate = mockReviewCandidates[candidateIndex]
+    if (jobId !== 'mock-review' && candidate.job_id !== jobId) {
+      continue
+    }
+    lastCandidate = candidate
+    mockReviewCandidates.splice(candidateIndex, 1, {
+      ...candidate,
+      review_action: decision.action,
+      review_note: decision.note ?? null,
+      reviewed_at: new Date().toISOString(),
+      reviewer: payload.reviewer ?? 'rag-fe',
+      status: decision.action === 'yes' ? 'approved' : 'rejected',
+      metadata: {
+        ...candidate.metadata,
+        reviewer: payload.reviewer ?? 'rag-fe',
+        reviewer_note: decision.note ?? '',
+      },
+    })
+  }
+
+  const effectiveJobId = lastCandidate?.job_id ?? jobId
+  const jobCandidates = mockReviewCandidates.filter((item) => item.job_id === effectiveJobId)
+  const pendingReviewCount = jobCandidates.filter((item) => item.status === 'pending_review').length
+  const existingJob = mockJobs.find((job) => job.job_id === effectiveJobId)
+  const stage = pendingReviewCount > 0 ? 'pending_review' : 'completed'
+
+  if (!lastCandidate) {
     return {
-      job_id: 'mock-review',
-      file_name: 'mock-review.txt',
-      current_stage: 'completed',
-      completed: true,
-      stages: [],
-      chunk_count: 0,
-      candidate_count: mockReviewCandidates.length,
-      pending_review_count: countPendingCandidates(),
+      job_id: effectiveJobId,
+      file_name: existingJob?.file_name ?? 'mock-review.txt',
+      current_stage: stage,
+      completed: stage === 'completed',
+      stages: existingJob?.stages ?? [],
+      document_id: existingJob?.document_id,
+      chunk_count: existingJob?.chunk_count ?? 0,
+      candidate_count: jobCandidates.length,
+      pending_review_count: pendingReviewCount,
       warning: 'Mock candidate was already reviewed.',
     }
   }
 
-  const candidate = mockReviewCandidates[candidateIndex]
-  const reviewedCandidate: RelationshipCandidate = {
-    ...candidate,
-    status: actionStatus[payload.action],
-    metadata: {
-      ...candidate.metadata,
-      reviewer: payload.reviewer ?? 'rag-fe',
-      reviewer_note: payload.note ?? '',
-    },
-  }
-  mockReviewCandidates.splice(candidateIndex, 1, reviewedCandidate)
-
-  const jobCandidates = mockReviewCandidates.filter((item) => item.job_id === candidate.job_id)
-  const pendingReviewCount = jobCandidates.filter((item) => item.status === 'pending_review').length
-  const existingJob = mockJobs.find((job) => job.job_id === candidate.job_id)
-  const stage = pendingReviewCount > 0 ? 'pending_review' : 'completed'
   const reviewedJob: FileIngestStatusResponse = {
-    job_id: candidate.job_id,
+    job_id: effectiveJobId,
     file_name:
       existingJob?.file_name ??
-      getStringMetadata(candidate, 'file_name') ??
-      `${candidate.job_id}.txt`,
+      getStringMetadata(lastCandidate, 'file_name') ??
+      `${effectiveJobId}.txt`,
     current_stage: stage,
     completed: stage === 'completed',
     stages: [
@@ -794,18 +878,18 @@ export function submitMockReviewDecision(
       {
         stage,
         status: 'success',
-        message: 'Mock review decision task finished.',
+        message: 'Mock review decision batch task finished.',
       },
     ],
-    document_id: getStringMetadata(candidate, 'document_id') ?? existingJob?.document_id,
+    document_id: getStringMetadata(lastCandidate, 'document_id') ?? existingJob?.document_id,
     chunk_count: existingJob?.chunk_count ?? 0,
     candidate_count: jobCandidates.length,
     pending_review_count: pendingReviewCount,
-    current_task: createMockTask(candidate.job_id, 'review_action', 'succeeded', candidateId),
+    current_task: createMockTask(effectiveJobId, 'review_action', 'succeeded', 'batch'),
     warning: 'Mock data is being used because the RAG backend is unavailable.',
   }
 
-  const existingJobIndex = mockJobs.findIndex((job) => job.job_id === candidate.job_id)
+  const existingJobIndex = mockJobs.findIndex((job) => job.job_id === effectiveJobId)
   if (existingJobIndex >= 0) {
     mockJobs.splice(existingJobIndex, 1, reviewedJob)
   } else {
@@ -872,9 +956,9 @@ function ensureMockCandidatesForJob(job: FileIngestStatusResponse) {
   )
 }
 
-function countPendingCandidates() {
-  return mockReviewCandidates.filter((candidate) => candidate.status === 'pending_review').length
-}
+// function countPendingCandidates() {
+//   return mockReviewCandidates.filter((candidate) => candidate.status === 'pending_review').length
+// }
 
 function getStringMetadata(candidate: RelationshipCandidate, key: string) {
   const value = candidate.metadata[key]

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 
 import { WorkspaceLayout } from '@/components/layout/workspace-layout'
+import { Toaster } from '@/components/ui/sonner'
 import { RagWorkspaceProvider } from '@/features/workspace/rag-workspace-provider'
 import { NotFoundPage } from '@/pages/not-found-page'
 import { appRoutes } from '@/routes/app-routes'
@@ -26,6 +27,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
+      <Toaster />
     </BrowserRouter>
   )
 }

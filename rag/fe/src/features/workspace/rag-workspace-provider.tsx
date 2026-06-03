@@ -8,10 +8,14 @@ import {
 
 import {
   createIngestJob,
+  getGlobalMemory,
   listDocuments,
+  listIngestJobs,
   listReviewCandidates,
   startGraphAdd,
   submitReviewDecision,
+  submitReviewJobDecisions,
+  updateGlobalMemory,
 } from '@/api/rag'
 import {
   hasMockFallback,
@@ -21,12 +25,18 @@ import { normalizeReviewCandidates } from '@/features/review/review-candidates'
 import { RagWorkspaceContext } from '@/features/workspace/rag-workspace-context'
 import type {
   FileIngestStatusResponse,
+  MemoryDocument,
+  MemoryDocumentUpdateRequest,
   RagDocument,
   RelationshipCandidate,
   ReviewAction,
+  ReviewJobDecision,
 } from '@/types'
 import type { RagWorkspaceContextValue } from '@/features/workspace/rag-workspace-context'
-import type { WorkspaceStatus } from '@/features/workspace/rag-workspace-context'
+import type {
+  WorkspaceRefreshOptions,
+  WorkspaceStatus,
+} from '@/features/workspace/rag-workspace-context'
 
 type RagWorkspaceProviderProps = {
   children: ReactNode
@@ -36,37 +46,53 @@ export function RagWorkspaceProvider({ children }: RagWorkspaceProviderProps) {
   const [documents, setDocuments] = useState<RagDocument[]>([])
   const [jobs, setJobs] = useState<FileIngestStatusResponse[]>([])
   const [reviewCandidates, setReviewCandidates] = useState<RelationshipCandidate[]>([])
+  const [memory, setMemory] = useState<MemoryDocument | null>(null)
   const [status, setStatus] = useState<WorkspaceStatus>('idle')
   const [message, setMessage] = useState('Connect to RAG backend and review graph updates.')
 
-  const syncWorkspace = useCallback(async (extraJobs: FileIngestStatusResponse[] = []) => {
-    setStatus('loading')
+  const syncWorkspace = useCallback(async (
+    extraJobs: FileIngestStatusResponse[] = [],
+    options: WorkspaceRefreshOptions = {},
+  ) => {
+    if (!options.silent) {
+      setStatus('loading')
+    }
 
     try {
       resetMockFallbackState()
 
-      const [nextDocuments, reviewResponse] = await Promise.all([
+      const [nextDocuments, nextJobs, reviewResponse, nextMemory] = await Promise.all([
         listDocuments(),
+        listIngestJobs(),
         listReviewCandidates(),
+        getGlobalMemory(),
       ])
       const nextReviewCandidates = normalizeReviewCandidates(reviewResponse)
       const inferredJobs = inferJobsFromDocuments(nextDocuments)
 
       setDocuments(nextDocuments)
       setReviewCandidates(nextReviewCandidates)
-      setJobs((currentJobs) => mergeJobs(extraJobs, currentJobs, inferredJobs))
-      setStatus('idle')
-      setMessage(
-        hasMockFallback()
-          ? 'RAG backend is unavailable. Showing mock workspace data.'
-          : 'RAG backend is connected.',
-      )
+      setMemory(nextMemory)
+      setJobs((currentJobs) => mergeJobs(currentJobs, inferredJobs, extraJobs, nextJobs))
+      if (!options.silent) {
+        setStatus('idle')
+        setMessage(
+          hasMockFallback()
+            ? 'RAG backend is unavailable. Showing mock workspace data.'
+            : 'RAG backend is connected.',
+        )
+      }
     } catch (error) {
       console.error('Failed to refresh RAG workspace.', error)
       setStatus('error')
       setMessage('RAG workspace sync failed. Check backend availability.')
     }
   }, [])
+
+  const refreshWorkspace = useCallback(
+    (options?: WorkspaceRefreshOptions) => syncWorkspace([], options),
+    [syncWorkspace],
+  )
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -149,9 +175,59 @@ export function RagWorkspaceProvider({ children }: RagWorkspaceProviderProps) {
     [],
   )
 
+  const submitReviewDecisionsForJob = useCallback(
+    async (
+      jobId: string,
+      decisions: ReviewJobDecision[],
+    ) => {
+      if (decisions.length === 0) {
+        return
+      }
+
+      setStatus('loading')
+
+      try {
+        const job = await submitReviewJobDecisions(jobId, {
+          decisions,
+          reviewer: 'rag-fe',
+        })
+        const reviewResponse = await listReviewCandidates()
+
+        setReviewCandidates(normalizeReviewCandidates(reviewResponse))
+        setJobs((currentJobs) => mergeJobs([job], currentJobs))
+        setStatus('idle')
+        setMessage('Review decisions submitted.')
+      } catch (error) {
+        console.error('Failed to submit review decisions.', error)
+        setStatus('error')
+        setMessage('Review decisions failed. Check backend availability.')
+      }
+    },
+    [],
+  )
+
+  const saveMemory = useCallback(async (request: MemoryDocumentUpdateRequest) => {
+    setStatus('loading')
+
+    try {
+      const nextMemory = await updateGlobalMemory({
+        author: 'rag-fe-memory-settings',
+        ...request,
+      })
+      setMemory(nextMemory)
+      setStatus('idle')
+      setMessage('Agent memory updated.')
+    } catch (error) {
+      console.error('Failed to save agent memory.', error)
+      setStatus('error')
+      setMessage('Agent memory save failed. Check backend availability.')
+      throw error
+    }
+  }, [])
+
   const pendingReviewCount = useMemo(() => {
     if (reviewCandidates.length > 0) {
-      return reviewCandidates.length
+      return reviewCandidates.filter(isPendingReviewCandidate).length
     }
 
     return jobs.reduce((total, job) => total + (job.pending_review_count ?? 0), 0)
@@ -162,27 +238,33 @@ export function RagWorkspaceProvider({ children }: RagWorkspaceProviderProps) {
       documents,
       jobs,
       latestJob,
+      memory,
       message,
       pendingReviewCount,
-      refresh: syncWorkspace,
+      refresh: refreshWorkspace,
       reviewCandidates,
+      saveMemory,
       stageDocument,
       startGraphAddForJob,
       status,
       submitReviewDecisionForCandidate,
+      submitReviewDecisionsForJob,
     }),
     [
       documents,
       jobs,
       latestJob,
+      memory,
       message,
       pendingReviewCount,
       reviewCandidates,
+      saveMemory,
       stageDocument,
       startGraphAddForJob,
       status,
       submitReviewDecisionForCandidate,
-      syncWorkspace,
+      submitReviewDecisionsForJob,
+      refreshWorkspace,
     ],
   )
 
@@ -199,12 +281,14 @@ function inferJobsFromDocuments(documents: RagDocument[]): FileIngestStatusRespo
     .map((document) => ({
       job_id: document.job_id as string,
       file_name: document.file_name,
+      current_phase: 'uploaded_to_database',
       current_stage: 'uploaded_to_database',
       completed: false,
       created_at: document.created_at,
       updated_at: document.updated_at ?? document.indexed_at,
       stages: [
         {
+          phase: 'uploaded_to_database',
           stage: 'uploaded_to_database',
           status: 'success',
           message: 'Document is available in the RAG workspace.',
@@ -225,7 +309,27 @@ function mergeJobs(...jobGroups: FileIngestStatusResponse[][]) {
     merged.set(job.job_id, existing ? { ...existing, ...job } : job)
   }
 
-  return Array.from(merged.values())
+  return Array.from(merged.values()).sort(compareJobsByNewestUpdate)
+}
+
+function compareJobsByNewestUpdate(
+  left: FileIngestStatusResponse,
+  right: FileIngestStatusResponse,
+) {
+  return jobUpdatedTime(right) - jobUpdatedTime(left)
+}
+
+function jobUpdatedTime(job: FileIngestStatusResponse) {
+  const lastStage = job.stages.at(-1)
+  const value =
+    job.updated_at ??
+    job.completed_at ??
+    lastStage?.recorded_at ??
+    job.created_at ??
+    ''
+  const parsed = Date.parse(value)
+
+  return Number.isNaN(parsed) ? 0 : parsed
 }
 
 function inferContentType(fileName: string) {
@@ -240,7 +344,13 @@ function inferContentType(fileName: string) {
       return 'text/markdown'
     case 'txt':
       return 'text/plain'
+    case 'toon':
+      return 'toon'
     default:
       return null
   }
+}
+
+function isPendingReviewCandidate(candidate: RelationshipCandidate) {
+  return candidate.status.toLowerCase() === 'pending_review'
 }
