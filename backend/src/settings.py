@@ -51,7 +51,8 @@ class Settings(BaseSettings):
     llm_temperature: float = 0.2
     llm_timeout_ms: int = 60_000
     llm_max_retries: int = 2
-    llm_reasoning_effort: str = "medium"
+    llm_max_tokens: int | None = Field(default=None, gt=0)
+    llm_reasoning_effort: str | None = None
 
     rag_mcp_url: str = "http://127.0.0.1:8010/mcp"
     tool_timeout_ms: int = Field(default=30_000, gt=0)

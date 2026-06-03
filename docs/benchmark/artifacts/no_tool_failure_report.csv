@@ -1,0 +1,197 @@
+timestamp,testcase_id,query_reference,answer,input_price_per_1m,output_price_per_1m,input_tokens,output_tokens,used_tokens,input_cost_usd,output_cost_usd,total_cost_usd,batch,difficulty,special_case,model_id,provider_order,primary_provider_slug,primary_provider_quantization,actual_provider,allow_fallbacks,endpoint_tools_supported,context_length,max_completion_tokens,quantization,openrouter_generation_id,latency_ms,langsmith_project,langsmith_tags,status,error,source_file,is_success,allow_fallbacks_bool,actual_provider_missing,actual_provider_mismatch,success_actual_provider_missing,success_actual_provider_mismatch,provider_key,query_text,routing_eligible,routing_issue
+2026-06-02T22:14:53.174131+00:00,RAG-Q-096,"query: 대구 달서구 노인복지시설 현황에서 시설 종류별로 정리할 수 있어?
+expected_keywords: 필수 키워드: 대구, 달서구, 시설 종류, 노인복지시설. 정답 방향: 질문 조건에 맞는 제도명과 판단 기준을 설명하고, 대구, 달서구, 시설 종류, 노인복지시설 키워드를 포함하며, 자료에 없는 개인별 확정 가능 여부는 추가 확인이 필요하다고 밝혀야 한다.
+reference: 참고 문서: cleaned_09_대구광역시_달서구_노인복지시설현황_20240527.csv.md. 근거: cleaned_09_대구광역시_달서구_노인복지시설현황_20240527.csv.md에서 질문 주제와 직접 연결되는 조문, 항목, 표 컬럼, 지역명을 근거로 제시해야 한다.
+judge_criteria: LLM 답변이 필수 키워드를 포함하고, 질문 상황에 맞게 같은 의미의 표현으로 설명하면 통과. 시설 종류 기준 정리가 가능하면 요약해야 함",,0.435,0.87,0,0,0,,,,detailed_user_questions,medium,분류 요청,deepseek/deepseek-v4-pro,"[""deepseek""]",deepseek,,,False,True,1048576,384000.0,unknown,,107685,skn28-backend-agent-dev,"[""RAG-Q-096"", ""deepseek"", ""backend-settings-benchmark"", ""deepseek/deepseek-v4-pro""]",error,"APIConnectionError('Connection error.')Traceback (most recent call last):
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_transports/default.py"", line 101, in map_httpcore_exceptions
+    yield
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_transports/default.py"", line 127, in __iter__
+    for part in self._httpcore_stream:
+                ^^^^^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py"", line 407, in __iter__
+    raise exc from None
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py"", line 403, in __iter__
+    for part in self._stream:
+                ^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py"", line 342, in __iter__
+    raise exc
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py"", line 334, in __iter__
+    for chunk in self._connection._receive_response_body(**kwargs):
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py"", line 203, in _receive_response_body
+    event = self._receive_event(timeout=timeout)
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py"", line 213, in _receive_event
+    with map_exceptions({h11.RemoteProtocolError: RemoteProtocolError}):
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/.local/share/uv/python/cpython-3.13.13-linux-x86_64-gnu/lib/python3.13/contextlib.py"", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py"", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+
+
+httpcore.RemoteProtocolError: peer closed connection without sending complete message body (incomplete chunked read)
+
+
+
+The above exception was the direct cause of the following exception:
+
+
+
+Traceback (most recent call last):
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_base_client.py"", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_client.py"", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_client.py"", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_base_client.py"", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 928, in send
+    raise exc
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 922, in send
+    response.read()
+    ~~~~~~~~~~~~~^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_models.py"", line 881, in read
+    self._content = b"""".join(self.iter_bytes())
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_models.py"", line 897, in iter_bytes
+    for raw_bytes in self.iter_raw():
+                     ~~~~~~~~~~~~~^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_models.py"", line 951, in iter_raw
+    for raw_stream_bytes in self.stream:
+                            ^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_client.py"", line 153, in __iter__
+    for chunk in self._stream:
+                 ^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_transports/default.py"", line 126, in __iter__
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+
+
+  File ""/home/vosnuevo/.local/share/uv/python/cpython-3.13.13-linux-x86_64-gnu/lib/python3.13/contextlib.py"", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/httpx/_transports/default.py"", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+
+
+httpx.RemoteProtocolError: peer closed connection without sending complete message body (incomplete chunked read)
+
+
+
+The above exception was the direct cause of the following exception:
+
+
+
+Traceback (most recent call last):
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/langchain_core/language_models/chat_models.py"", line 1630, in generate
+    self._generate_with_cache(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        m,
+        ^^
+    ...<2 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/langchain_core/language_models/chat_models.py"", line 1970, in _generate_with_cache
+    result = self._generate(
+        messages, stop=stop, run_manager=run_manager, **kwargs
+    )
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/langchain_openai/chat_models/base.py"", line 1667, in _generate
+    _handle_openai_api_error(e)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/langchain_openai/chat_models/base.py"", line 1662, in _generate
+    raw_response = self.client.with_raw_response.create(**payload)
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_legacy_response.py"", line 367, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+                                      ~~~~^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py"", line 298, in wrapper
+    return func(*args, **kwargs)
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py"", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        ""/chat/completions"",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_base_client.py"", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+  File ""/home/vosnuevo/workspace/SKN28-3rd-1Team/backend/.venv/lib/python3.13/site-packages/openai/_base_client.py"", line 1072, in request
+    raise APIConnectionError(request=request) from err
+
+
+openai.APIConnectionError: Connection error.",deepseek_v4_pro_deepseek.csv,False,False,True,False,False,False,deepseek/deepseek-v4-pro / deepseek,대구 달서구 노인복지시설 현황에서 시설 종류별로 정리할 수 있어?,True,ok

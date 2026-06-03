@@ -38,6 +38,17 @@ def _openrouter_extra_body() -> dict[str, Any]:
     return {"provider": provider}
 
 
+def _reasoning_effort() -> str | None:
+    if settings.llm_reasoning_effort is None:
+        return None
+
+    value = settings.llm_reasoning_effort.strip()
+    if not value or value.lower() in {"none", "null", "off", "false"}:
+        return None
+
+    return value
+
+
 # OpenRouter 기반 ChatOpenAI 클라이언트를 캐시해서 반환
 @lru_cache
 def get_chat_llm() -> ChatOpenAI:
@@ -52,14 +63,22 @@ def get_chat_llm() -> ChatOpenAI:
         settings.openrouter_allow_fallbacks,
     )
 
+    llm_kwargs: dict[str, Any] = {
+        "model": settings.openrouter_model,
+        "api_key": settings.openrouter_api_key.get_secret_value(),
+        "base_url": settings.openrouter_base_url,
+        "temperature": settings.llm_temperature,
+        "timeout": settings.llm_timeout_ms / 1000,
+        "max_retries": settings.llm_max_retries,
+        "default_headers": _openrouter_headers(),
+        "extra_body": _openrouter_extra_body(),
+    }
+    reasoning_effort = _reasoning_effort()
+    if reasoning_effort:
+        llm_kwargs["reasoning_effort"] = reasoning_effort
+    if settings.llm_max_tokens:
+        llm_kwargs["max_completion_tokens"] = settings.llm_max_tokens
+
     return ChatOpenAI(
-        model=settings.openrouter_model,
-        api_key=settings.openrouter_api_key.get_secret_value(),
-        base_url=settings.openrouter_base_url,
-        temperature=settings.llm_temperature,
-        timeout=settings.llm_timeout_ms / 1000,
-        max_retries=settings.llm_max_retries,
-        reasoning_effort=settings.llm_reasoning_effort,
-        default_headers=_openrouter_headers(),
-        extra_body=_openrouter_extra_body(),
+        **llm_kwargs,
     )
