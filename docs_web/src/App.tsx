@@ -40,6 +40,8 @@ const teamMembers = [
   { name: '양도영', role: '플로우 정리', responsibility: 'PPT 제작, 전체 내용 정리' },
 ]
 
+const robotIconSrc = `${import.meta.env.BASE_URL}old_robot.png`
+
 const navGroups = [
   {
     value: 'project',
@@ -129,7 +131,7 @@ function SidebarContent() {
       <div className="border-b border-slate-200 px-5 py-5">
         <a href="#overview" className="flex items-center gap-2 text-sm font-semibold text-slate-950">
           <span className="flex size-8 items-center justify-center overflow-hidden rounded-md border border-blue-100 bg-blue-50">
-            <img src="/old_robot.png" alt="" aria-hidden="true" className="size-6 object-contain" />
+            <img src={robotIconSrc} alt="" aria-hidden="true" className="size-6 object-contain" />
           </span>
           SKN28-3rd-1Team
         </a>
@@ -238,7 +240,7 @@ function App() {
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:px-8">
           <div className="flex min-w-0 items-center gap-2">
             <MobileNav />
-            <img src="/old_robot.png" alt="" aria-hidden="true" className="size-7 object-contain" />
+            <img src={robotIconSrc} alt="" aria-hidden="true" className="size-7 object-contain" />
             <span className="truncate text-sm font-semibold text-slate-950">
               복지/법률 RAG Agent Docs
             </span>
