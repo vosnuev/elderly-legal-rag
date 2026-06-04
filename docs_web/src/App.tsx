@@ -128,7 +128,9 @@ function SidebarContent() {
     <div className="flex h-full flex-col bg-white">
       <div className="border-b border-slate-200 px-5 py-5">
         <a href="#overview" className="flex items-center gap-2 text-sm font-semibold text-slate-950">
-          <BookOpenText className="size-5 text-blue-700" aria-hidden="true" />
+          <span className="flex size-8 items-center justify-center overflow-hidden rounded-md border border-blue-100 bg-blue-50">
+            <img src="/old_robot.png" alt="" aria-hidden="true" className="size-6 object-contain" />
+          </span>
           SKN28-3rd-1Team
         </a>
         <p className="mt-2 text-xs leading-5 text-slate-600">
@@ -236,6 +238,7 @@ function App() {
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:px-8">
           <div className="flex min-w-0 items-center gap-2">
             <MobileNav />
+            <img src="/old_robot.png" alt="" aria-hidden="true" className="size-7 object-contain" />
             <span className="truncate text-sm font-semibold text-slate-950">
               복지/법률 RAG Agent Docs
             </span>
