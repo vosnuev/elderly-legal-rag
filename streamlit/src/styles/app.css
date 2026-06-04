@@ -196,9 +196,14 @@ button[data-testid="stExpandSidebarButton"]::before {
     width: 42px;
     height: 42px;
     border-radius: 8px;
-    color: #4A2E1A;
-    font-weight: 900;
     background: #F5F3EC;
+    overflow: hidden;
+}
+
+.sidebar-logo-mark img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
 }
 
 .sidebar-logo-title {

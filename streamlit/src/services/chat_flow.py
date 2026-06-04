@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import streamlit as st
 
+from asset_paths import ROBOT_ICON_PATH
 from chat_backend_client import (
     ChatBackendError,
     ChatBackendRequest,
@@ -159,7 +160,7 @@ def _stream_backend_response(request: ChatBackendRequest) -> ChatBackendResponse
     tool_calls: list[ToolCallResult] = []
     content_blocks: list[dict[str, Any]] = []
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=str(ROBOT_ICON_PATH)):
         placeholder = st.empty()
         placeholder.markdown(_render_shimmer(), unsafe_allow_html=True)
         with st.spinner("답변을 생성하는 중입니다."):

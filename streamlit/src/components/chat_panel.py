@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import streamlit as st
 
+from asset_paths import ROBOT_ICON_PATH
 from response_renderer import render_chat_response
 from services import example_chat_messages
 
@@ -9,13 +10,13 @@ from services import example_chat_messages
 def render_example_chat() -> None:
     with st.expander("예시 채팅", expanded=True):
         for message in example_chat_messages():
-            with st.chat_message(message["role"]):
+            with _chat_message(message["role"]):
                 st.write(message["content"])
 
 
 def render_chat_history() -> None:
     for index, message in enumerate(st.session_state.get("consultation_messages", [])):
-        with st.chat_message(str(message["role"])):
+        with _chat_message(str(message["role"])):
             response = message.get("response")
             if isinstance(response, dict):
                 render_chat_response(response, key_prefix=f"chat_response_{index}")
@@ -38,6 +39,12 @@ def render_chat_prompt() -> str | None:
     if prompt and prompt.strip():
         return prompt.strip()
     return None
+
+
+def _chat_message(role: str):
+    if role == "assistant":
+        return st.chat_message(role, avatar=str(ROBOT_ICON_PATH))
+    return st.chat_message(role)
 
 
 def _render_local_result(result: dict[str, object]) -> None:

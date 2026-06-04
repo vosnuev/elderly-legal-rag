@@ -1,5 +1,4 @@
 import {
-  BookOpenText,
   Brain,
   CheckCircle2,
   Loader2,
@@ -104,9 +103,14 @@ export function WorkspaceSidebar() {
     <aside className="flex h-full min-h-0 flex-col rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 max-lg:h-auto max-lg:w-full max-lg:p-4 transition-all duration-300">
       {/* Brand Logo Header */}
       <div className="flex items-center gap-3.5 select-none">
-        <div className="flex size-11 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-chart-2 text-primary-foreground shadow-lg shadow-primary/20 relative overflow-hidden group">
+        <div className="group relative flex size-11 items-center justify-center overflow-hidden rounded-xl border border-primary/10 bg-primary/10 shadow-lg shadow-primary/10">
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-          <BookOpenText className="size-5.5 relative z-10" aria-hidden="true" />
+          <img
+            src="/old_robot.png"
+            alt=""
+            aria-hidden="true"
+            className="relative z-10 h-8 w-8 object-contain"
+          />
         </div>
         <div>
           <p className="text-base font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
