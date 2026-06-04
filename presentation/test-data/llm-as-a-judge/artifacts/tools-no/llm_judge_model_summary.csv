@@ -1,5 +1,5 @@
-﻿source_file,model_id,provider,total_questions,correct_count,wrong_count,accuracy,avg_used_tokens,avg_total_cost_usd,avg_latency_ms
-deepseek_v4_flash_deepseek.csv,deepseek/deepseek-v4-flash,deepseek,360,249,111,0.691667,2159.35,0.00035059,12385.40
-deepseek_v4_pro_deepseek.csv,deepseek/deepseek-v4-pro,deepseek,360,274,86,0.761111,2402.18,0.00130400,34408.21
-openai_gpt_oss_120b_cerebras_fp16.csv,openai/gpt-oss-120b,cerebras,360,228,132,0.633333,1974.51,0.00112336,1410.95
-qwen_qwen3_7_plus_alibaba.csv,qwen/qwen3.7-plus,alibaba,200,124,76,0.620000,1896.52,0.00215769,21767.10
+﻿source_file,model_id,provider,total_questions,correct_count,wrong_count,accuracy,avg_used_tokens,avg_total_cost_usd,avg_latency_ms,output_failure_count,output_failure_ratio,unsupported_hallucination_count,unsupported_hallucination_ratio,missing_actual_data_count,missing_actual_data_ratio,source_mapping_error_count,source_mapping_error_ratio,scope_filter_error_count,scope_filter_error_ratio,missing_conditional_limitation_count,missing_conditional_limitation_ratio,overgeneralized_ungrounded_count,overgeneralized_ungrounded_ratio,incomplete_criteria_count,incomplete_criteria_ratio
+deepseek_v4_flash_deepseek.csv,deepseek/deepseek-v4-flash,deepseek,360,249,111,0.691667,2159.35,0.00035059,12385.40,0,0.000000,21,0.189189,23,0.207207,30,0.270270,13,0.117117,11,0.099099,4,0.036036,9,0.081081
+deepseek_v4_pro_deepseek.csv,deepseek/deepseek-v4-pro,deepseek,360,274,86,0.761111,2402.18,0.00130400,34408.21,0,0.000000,17,0.197674,19,0.220930,23,0.267442,11,0.127907,7,0.081395,3,0.034884,6,0.069767
+openai_gpt_oss_120b_cerebras_fp16.csv,openai/gpt-oss-120b,cerebras,360,228,132,0.633333,1974.51,0.00112336,1410.95,0,0.000000,38,0.287879,19,0.143939,27,0.204545,18,0.136364,15,0.113636,3,0.022727,12,0.090909
+qwen_qwen3_7_plus_alibaba.csv,qwen/qwen3.7-plus,alibaba,200,124,76,0.620000,1896.52,0.00215769,21767.10,1,0.013158,7,0.092105,34,0.447368,11,0.144737,12,0.157895,1,0.013158,1,0.013158,9,0.118421

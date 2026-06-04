@@ -226,11 +226,13 @@ export function RagWorkspaceProvider({ children }: RagWorkspaceProviderProps) {
   }, [])
 
   const pendingReviewCount = useMemo(() => {
-    if (reviewCandidates.length > 0) {
-      return reviewCandidates.filter(isPendingReviewCandidate).length
-    }
+    const candidatePendingCount = reviewCandidates.filter(isPendingReviewCandidate).length
+    const jobPendingCount = jobs.reduce(
+      (total, job) => total + (job.pending_review_count ?? 0),
+      0,
+    )
 
-    return jobs.reduce((total, job) => total + (job.pending_review_count ?? 0), 0)
+    return Math.max(candidatePendingCount, jobPendingCount)
   }, [jobs, reviewCandidates])
   const latestJob = jobs[0] ?? null
   const value = useMemo<RagWorkspaceContextValue>(

@@ -1,0 +1,2 @@
+﻿target_model_id,provider,bench_scope,evaluated_wrong_questions,with_tool_correct_count,with_tool_wrong_count,with_tool_accuracy_on_no_tool_wrongs,no_tool_total_questions,no_tool_correct_count,no_tool_wrong_count,expected_total_correct_with_tools,expected_overall_accuracy_with_tools,absolute_accuracy_lift,avg_tool_call_count,avg_source_count,avg_latency_ms
+deepseek/deepseek-v4-flash,deepseek,no-tool wrong-only,2,1,1,0.500000,360,249,111,250,0.694444,0.002778,5.000000,0.000000,26064.500000

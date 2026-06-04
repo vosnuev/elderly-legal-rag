@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import re
 
-from langchain_core.tools import BaseTool
+from langchain_core.tools import BaseTool, ToolException
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from logger import get_logger
@@ -61,6 +61,23 @@ def _normalize_tool_names(tools: list[BaseTool]) -> list[BaseTool]:
     return tools
 
 
+def _tool_error_message(error: ToolException) -> str:
+    return (
+        "RAG 도구 실행 중 오류가 발생했습니다. 이 도구 결과는 근거로 사용하지 말고, "
+        f"다른 검색 도구나 이미 확인된 근거로 답변을 계속 작성하세요. 오류: {error}"
+    )
+
+
+def _handle_tool_errors(tools: list[BaseTool]) -> list[BaseTool]:
+    for tool in tools:
+        tool.handle_tool_error = _tool_error_message
+        tool.handle_validation_error = (
+            "RAG 도구 입력값이 올바르지 않습니다. 다른 검색 도구나 더 단순한 "
+            "키워드로 다시 조회하세요."
+        )
+    return tools
+
+
 async def _load_rag_mcp_tools() -> list[BaseTool]:
     client = MultiServerMCPClient(
         {
@@ -74,7 +91,7 @@ async def _load_rag_mcp_tools() -> list[BaseTool]:
         client.get_tools(server_name="rag"),
         timeout=settings.tool_timeout_ms / 1000,
     )
-    return _normalize_tool_names(tools)
+    return _handle_tool_errors(_normalize_tool_names(tools))
 
 
 # 현재 agent가 사용할 LangChain tool 목록 반환
