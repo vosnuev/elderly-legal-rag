@@ -103,13 +103,13 @@ export function WorkspaceSidebar() {
     <aside className="flex h-full min-h-0 flex-col rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 max-lg:h-auto max-lg:w-full max-lg:p-4 transition-all duration-300">
       {/* Brand Logo Header */}
       <div className="flex items-center gap-3.5 select-none">
-        <div className="group relative flex size-11 items-center justify-center overflow-hidden rounded-xl border border-primary/10 bg-primary/10 shadow-lg shadow-primary/10">
+        <div className="group relative flex size-14 items-center justify-center overflow-hidden rounded-xl border border-primary/10 bg-primary/10 shadow-lg shadow-primary/10">
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           <img
-            src="/old_robot.png"
+            src="/old_robot_icon.png"
             alt=""
             aria-hidden="true"
-            className="relative z-10 h-8 w-8 object-contain"
+            className="relative z-10 size-11 object-contain"
           />
         </div>
         <div>

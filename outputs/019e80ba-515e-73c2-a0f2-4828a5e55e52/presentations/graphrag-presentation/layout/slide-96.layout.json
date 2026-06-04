@@ -1,0 +1,1072 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/a398dk",
+    "id": "a398dk",
+    "slide": 1,
+    "layoutId": "fb1215b9-beed-42eb-969e-3d939c4bd0f5",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "5dc652be-78cd-4fe3-92bb-969db1ff3247",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "fb1215b9-beed-42eb-969e-3d939c4bd0f5",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "5dc652be-78cd-4fe3-92bb-969db1ff3247",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "5dc652be-78cd-4fe3-92bb-969db1ff3247",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        180,
+        80
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFDDDD",
+      "lineColor": "#000000",
+      "lineWidth": 1
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "2",
+      "bbox": [
+        8,
+        8,
+        81.15,
+        16.8
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0.0"
+      },
+      "geometry": "rect",
+      "text": "obj x/y 60,60",
+      "textPreview": "obj x/y 60,60",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#000000",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "obj x/y 60,60"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "obj x/y 60,60",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#000000",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "obj x/y 60,60",
+              "fontSize": 14,
+              "color": "#000000",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "3",
+      "bbox": [
+        300,
+        60,
+        180,
+        80
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#DDFFDD",
+      "lineColor": "#000000",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "4",
+      "bbox": [
+        308,
+        68,
+        91.27,
+        16.8
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1.0"
+      },
+      "geometry": "rect",
+      "text": "left/top 300,60",
+      "textPreview": "left/top 300,60",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#000000",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "left/top 300,60"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "left/top 300,60",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#000000",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "left/top 300,60",
+              "fontSize": 14,
+              "color": "#000000",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "5",
+      "bbox": [
+        0,
+        0,
+        180,
+        80
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#DDDDFF",
+      "lineColor": "#000000",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "6",
+      "bbox": [
+        8,
+        8,
+        78.04,
+        33.6
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2.0"
+      },
+      "geometry": "rect",
+      "text": "array 540,60",
+      "textPreview": "array 540,60",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#000000",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "array"
+          },
+          {
+            "index": 2,
+            "text": "540,60"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "array 540,60",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#000000",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "array 540,60",
+              "fontSize": 14,
+              "color": "#000000",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "7",
+      "bbox": [
+        0,
+        0,
+        180,
+        80
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFDD",
+      "lineColor": "#000000",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "8",
+      "bbox": [
+        8,
+        8,
+        81.68,
+        33.6
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3.0"
+      },
+      "geometry": "rect",
+      "text": "string 780 60",
+      "textPreview": "string 780 60",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#000000",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "string 780"
+          },
+          {
+            "index": 2,
+            "text": "60"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "string 780 60",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#000000",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "string 780 60",
+              "fontSize": 14,
+              "color": "#000000",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "9",
+      "bbox": [
+        300,
+        200,
+        220,
+        40
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "rect",
+      "text": "direct text left/top",
+      "textPreview": "direct text left/top",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#000000",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "direct text left/top"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "direct text left/top",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#000000",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "direct text left/top",
+              "fontSize": 18,
+              "color": "#000000",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "10",
+      "bbox": [
+        0,
+        0,
+        220,
+        40
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "rect",
+      "text": "direct text xy",
+      "textPreview": "direct text xy",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#000000",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "direct text xy"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "direct text xy",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#000000",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "direct text xy",
+              "fontSize": 18,
+              "color": "#000000",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 520,
+          "height": 240
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "panel",
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 80
+              }
+            },
+            "intrinsicSize": {
+              "width": 97.15,
+              "height": 32.8
+            },
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 180,
+              "height": 80
+            },
+            "children": [
+              {
+                "path": "0.0.0",
+                "kind": "text",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 81.15,
+                  "height": 16.8
+                },
+                "frame": {
+                  "left": 8,
+                  "top": 8,
+                  "width": 81.15,
+                  "height": 16.8
+                },
+                "children": [],
+                "text": "obj x/y 60,60",
+                "transform": "none",
+                "element": {
+                  "aid": "sh/xczed8v6",
+                  "id": "2",
+                  "kind": "shape"
+                }
+              }
+            ],
+            "padding": {
+              "top": 8,
+              "right": 8,
+              "bottom": 8,
+              "left": 8
+            },
+            "align": "start",
+            "justify": "start",
+            "contentFrame": {
+              "left": 8,
+              "top": 8,
+              "width": 164,
+              "height": 64
+            },
+            "element": {
+              "aid": "sh/qpg3ex0n",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "panel",
+            "position": {
+              "left": 300,
+              "top": 60
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 80
+              }
+            },
+            "intrinsicSize": {
+              "width": 107.27,
+              "height": 32.8
+            },
+            "frame": {
+              "left": 300,
+              "top": 60,
+              "width": 180,
+              "height": 80
+            },
+            "children": [
+              {
+                "path": "0.1.0",
+                "kind": "text",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 91.27,
+                  "height": 16.8
+                },
+                "frame": {
+                  "left": 308,
+                  "top": 68,
+                  "width": 91.27,
+                  "height": 16.8
+                },
+                "children": [],
+                "text": "left/top 300,60",
+                "transform": "none",
+                "element": {
+                  "aid": "sh/fyxobm58",
+                  "id": "4",
+                  "kind": "shape"
+                }
+              }
+            ],
+            "padding": {
+              "top": 8,
+              "right": 8,
+              "bottom": 8,
+              "left": 8
+            },
+            "align": "start",
+            "justify": "start",
+            "contentFrame": {
+              "left": 308,
+              "top": 68,
+              "width": 164,
+              "height": 64
+            },
+            "element": {
+              "aid": "sh/8v6psfil",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "panel",
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 80
+              }
+            },
+            "intrinsicSize": {
+              "width": 94.04,
+              "height": 32.8
+            },
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 180,
+              "height": 80
+            },
+            "children": [
+              {
+                "path": "0.2.0",
+                "kind": "text",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 78.04,
+                  "height": 16.8
+                },
+                "frame": {
+                  "left": 8,
+                  "top": 8,
+                  "width": 78.04,
+                  "height": 33.6
+                },
+                "children": [],
+                "text": "array 540,60",
+                "transform": "none",
+                "element": {
+                  "aid": "sh/x4nap4r6",
+                  "id": "6",
+                  "kind": "shape"
+                }
+              }
+            ],
+            "padding": {
+              "top": 8,
+              "right": 8,
+              "bottom": 8,
+              "left": 8
+            },
+            "align": "start",
+            "justify": "start",
+            "contentFrame": {
+              "left": 8,
+              "top": 8,
+              "width": 164,
+              "height": 64
+            },
+            "element": {
+              "aid": "sh/qd4vmtwr",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "panel",
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 80
+              }
+            },
+            "intrinsicSize": {
+              "width": 97.68,
+              "height": 32.8
+            },
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 180,
+              "height": 80
+            },
+            "children": [
+              {
+                "path": "0.3.0",
+                "kind": "text",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 81.68,
+                  "height": 16.8
+                },
+                "frame": {
+                  "left": 8,
+                  "top": 8,
+                  "width": 81.68,
+                  "height": 33.6
+                },
+                "children": [],
+                "text": "string 780 60",
+                "transform": "none",
+                "element": {
+                  "aid": "sh/fmlkjm1c",
+                  "id": "8",
+                  "kind": "shape"
+                }
+              }
+            ],
+            "padding": {
+              "top": 8,
+              "right": 8,
+              "bottom": 8,
+              "left": 8
+            },
+            "align": "start",
+            "justify": "start",
+            "contentFrame": {
+              "left": 8,
+              "top": 8,
+              "width": 164,
+              "height": 64
+            },
+            "element": {
+              "aid": "sh/8jqh0fep",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "text",
+            "position": {
+              "left": 300,
+              "top": 200
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 40
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 40
+            },
+            "frame": {
+              "left": 300,
+              "top": 200,
+              "width": 220,
+              "height": 40
+            },
+            "children": [],
+            "text": "direct text left/top",
+            "transform": "none",
+            "element": {
+              "aid": "sh/q1orytsv",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "text",
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 40
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 40
+            },
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 220,
+              "height": 40
+            },
+            "children": [],
+            "text": "direct text xy",
+            "transform": "none",
+            "element": {
+              "aid": "sh/4nap4r65",
+              "id": "10",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 180,
+              "height": 80
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 300,
+              "top": 60,
+              "width": 180,
+              "height": 80
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 180,
+              "height": 80
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 180,
+              "height": 80
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 300,
+              "top": 200,
+              "width": 220,
+              "height": 40
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 220,
+              "height": 40
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+task mode: create
+primary deck-profile: engineering-platform
+secondary profile gates: product-platform storytelling, appendix-light evidence discipline
+
+required proof objects:
+- System boundary map for FE, BE, RAG backend, Memgraph, Redis, MCP, LLM providers.
+- Async ingest workflow and worker/queue architecture.
+- Document construction graph DAG.
+- Agent tool-surface and permission boundary.
+- Human review queue and RelationshipCandidate edge materialization flow.
+- Memory feedback loop.
+- Test evidence slide using 360 QA cases and no-tool benchmark raw results.
+
+source/asset requirements:
+- Main script: presentation/ppt/20min-presentation-script-v2.md
+- Reference diagrams: presentation/script-demo/reference-diagrams/*.md
+- Test data: presentation/test-data/rag-agent-question-cases/rag_agent_question_test_cases_360.md
+- Benchmark chart: presentation/test-data/no-tool-benchmark/charts/cost_vs_latency_scatter.png
+- Backend prompt evidence: backend/src/prompt/system_prompt.j2
+
+brand authenticity constraints:
+- No fabricated logos or third-party marks.
+- Use abstract system labels and native editable shapes.
+- Imported chart image is project-generated benchmark artifact.
+
+profile-specific QA gates:
+- Diagram boundaries and connector direction must be readable.
+- Slide claims must map to a proof object.
+- Technical terms should remain precise: RelationshipCandidate, Memory, MCP, Memgraph, Redis Streams, worker pool.
+- Avoid generic feature-card slides by using flow maps, DAGs, matrices, and evidence tables.
+
+known missing inputs:
+- With-tool benchmark results are pending; deck marks them as remaining validation.

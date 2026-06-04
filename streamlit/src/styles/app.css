@@ -193,16 +193,16 @@ button[data-testid="stExpandSidebarButton"]::before {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
+    width: 50px;
+    height: 50px;
     border-radius: 8px;
     background: #F5F3EC;
     overflow: hidden;
 }
 
 .sidebar-logo-mark img {
-    width: 34px;
-    height: 34px;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
 }
 

@@ -5,7 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 
 
-ROBOT_ICON_PATH = Path(__file__).resolve().parent / "assets" / "old_robot.png"
+ROBOT_ICON_PATH = Path(__file__).resolve().parent / "assets" / "old_robot_icon.png"
 
 
 @lru_cache(maxsize=1)

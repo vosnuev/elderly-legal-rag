@@ -1,0 +1,32 @@
+14-slide contact-sheet plan:
+
+1. Cover thesis with metric rail and architecture strip.
+2. Split comparison: vector-only RAG vs reviewable GraphRAG.
+3. Evaluation matrix with evidence mapping.
+4. Data source and TOON preprocessing with token compression bar.
+5. Full system boundary map.
+6. RAG backend role split: FE API, processing, MCP.
+7. Async ingest flow sequence.
+8. Construction graph DAG.
+9. Agent harness and tool surface.
+10. Candidate-first review workflow.
+11. Memory feedback loop.
+12. Final QA runtime via MCP.
+13. Observability and telemetry pipeline.
+14. Test evidence and remaining validation.
+
+Layout rhythm:
+- Cover with dark thesis band.
+- Two-column comparison.
+- Matrix/table proof.
+- Metric bar proof.
+- Large boundary map.
+- Three-lane role map.
+- Horizontal sequence.
+- DAG/graph layout.
+- Tool permission surface.
+- UI-review workflow.
+- Feedback loop.
+- Runtime query flow.
+- Stream/telemetry map.
+- Evidence table + benchmark chart.
