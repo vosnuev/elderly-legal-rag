@@ -41,8 +41,8 @@
 | --- | --- | --- |
 | 2026-05-22 ~ 2026-05-26 | 주제 범위 확정, 고령층 법령 데이터 후보 정리 | 완료 |
 | 2026-05-27 ~ 2026-05-29 | Backend API 계약, RAG POC, 화면 UX 설계 | 완료 |
-| 2026-06-01 ~ 2026-06-03 | Backend, Streamlit, RAG MCP 연결 흐름 통합 검증 | 진행 예정 |
-| 2026-06-04 | 전체 기능 연동, 통합 테스트, 발표와 시연 준비 | 목표 마감 |
+| 2026-06-01 ~ 2026-06-03 | Backend, Streamlit, RAG MCP 연결 흐름 통합 검증 | 완료 |
+| 2026-06-04 | 전체 기능 연동, 통합 테스트, 발표와 시연 준비 | 완료 |
 
 ## 2. 📌 프로젝트 소개
 
@@ -169,15 +169,17 @@
 | RAG Frontend | 문서 목록, ingest job, review queue를 확인하는 운영 UI가 있습니다. |
 | Streamlit | 상담 form, 채팅형 화면, backend `/chat` 연결 흐름을 검증합니다. |
 | Docs Web | GitHub Pages 배포용 문서 웹 구조가 있습니다. |
+| RAG Red Team | Neo4j 기반 graph schema와 read-only Cypher MCP 실험 공간이 있습니다. |
+| Presentation | 발표 스크립트, PPTX, 최종 PDF, Memgraph Lab 시연 캡처를 정리했습니다. |
 
 ### 2) 남은 작업
 
 | 작업 | 설명 |
 | --- | --- |
-| 실제 RAG MCP 연결 | Backend Agent가 RAG MCP tool을 실제로 호출하도록 연결합니다. |
-| 출처 응답 강화 | `sources`, `tool_calls`를 실제 검색 결과 기준으로 채웁니다. |
-| 통합 테스트 | Streamlit, Backend, RAG Backend를 함께 실행해 전체 흐름을 검증합니다. |
-| 시연 준비 | 질문 예시, 화면 흐름, LangSmith trace를 발표용으로 정리합니다. |
+| 근거 품질 고도화 | 답변에서 내부 id를 숨기고 사용자가 이해할 수 있는 문서명, 조문명, 원문 일부 중심으로 출처를 정리합니다. |
+| 평가 데이터 확장 | `presentation/test-data`의 벤치마크와 LLM-as-a-judge 결과를 기준으로 실패 케이스를 계속 보강합니다. |
+| 운영 안정화 | Docker Compose 통합 실행, health check, UI 반응형 검증을 반복해 시연 환경을 안정화합니다. |
+| 배포 정리 | Docs Web, Streamlit, RAG 운영 UI의 공개 범위와 배포 절차를 확정합니다. |
 
 ## 8. 기술 스택
 
@@ -213,10 +215,15 @@ SKN28-3rd-1Team/
 ├── streamlit/               # 상담형 UI 프로토타입
 ├── docs_web/                # 프로젝트 소개용 문서 웹
 ├── docs/                    # 회의록, 온보딩, 개발 문서
-├── presentation/            # 발표 스크립트, 다이어그램, 테스트 데이터 산출물
+├── presentation/            # 발표 스크립트, PPT/PDF, 평가 데이터 산출물
+│   ├── ppt/                 # 발표 자료, 스크립트, Memgraph Lab 시연 캡처
+│   ├── test-data/           # benchmark, LLM-as-a-judge 결과
+│   └── marking_criteria/    # 프로젝트 평가 기준 정리
 ├── rag-red-team/            # RAG red-team 실험 공간
 ├── frontend/                # 최종 프론트엔드 작업 공간
-├── infra/                   # 루트 인프라 문서
+├── infra/                   # 통합 Docker Compose 실행 설정
+├── .github/                 # GitHub Actions workflow
+├── .agents/                 # repo-scoped agent skill과 작업 규칙
 ├── AGENTS.md                # 협업 및 agent 작업 규칙
 └── README.md
 ```
@@ -231,6 +238,20 @@ SKN28-3rd-1Team/
 | `rag/fe/README.md` | RAG 운영 UI 실행 방법 |
 | `streamlit/README.md` | Streamlit 상담 UI 구조와 backend 연결 방법 |
 | `docs_web/README.md` | 문서 웹 실행 및 GitHub Pages 배포 방식 |
+| `infra/README.md` | 통합 Docker Compose 서비스와 포트 정보 |
+| `docs/README.md` | 회의록, agent workspace guideline 등 팀 문서 |
+| `rag-red-team/README.md` | Neo4j red-team graph 실험과 MCP 실행 방법 |
+| `presentation/test-data/README.md` | 발표용 평가 데이터, benchmark, judge 결과 구조 |
+
+### 3) 발표 및 시연 산출물
+
+| 산출물 | 설명 |
+| --- | --- |
+| [`presentation/ppt/옆집 손주_찐최종 (1).pdf`](<presentation/ppt/옆집 손주_찐최종 (1).pdf>) | 최종 발표 PDF |
+| [`presentation/ppt/reviewable-graphrag-service-presentation-v4.pptx`](presentation/ppt/reviewable-graphrag-service-presentation-v4.pptx) | 검토 가능한 최신 PPTX 발표 자료 |
+| [`presentation/ppt/20min-presentation-script-v4.md`](presentation/ppt/20min-presentation-script-v4.md) | 20분 발표 스크립트 |
+| [`presentation/ppt/artifact-build-manifest.json`](presentation/ppt/artifact-build-manifest.json) | 발표 자료 생성과 검증 산출물 manifest |
+| `presentation/ppt/assets/` | Memgraph Lab graph, schema, query 결과 시연 캡처 |
 
 ## 10. 🚀 실행 방법
 
