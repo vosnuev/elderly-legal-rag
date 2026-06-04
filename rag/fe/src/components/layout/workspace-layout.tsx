@@ -19,7 +19,7 @@ export function WorkspaceLayout() {
       {/* Fine grid/dot pattern across the page */}
       <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-[0.4] dark:opacity-[0.15]" />
 
-      <div className="relative grid h-full min-h-0 grid-cols-[260px_1fr] items-stretch gap-6 p-4 max-lg:grid-cols-1 max-lg:grid-rows-[auto_minmax(0,1fr)] max-lg:p-2">
+      <div className="relative grid h-full min-h-0 grid-cols-[72px_minmax(0,1fr)] items-stretch gap-6 p-4 max-lg:grid-cols-1 max-lg:grid-rows-[auto_minmax(0,1fr)] max-lg:p-2">
         <WorkspaceSidebar />
 
         <section className="flex h-full min-h-0 flex-col min-w-0 rounded-2xl border bg-card/60 backdrop-blur-xl px-8 py-7 shadow-xl shadow-primary/5 max-sm:px-4">

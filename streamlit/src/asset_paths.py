@@ -5,10 +5,10 @@ from functools import lru_cache
 from pathlib import Path
 
 
-ROBOT_ICON_PATH = Path(__file__).resolve().parent / "assets" / "old_robot_icon.png"
+APP_ICON_PATH = Path(__file__).resolve().parent / "assets" / "new_dog_icon.png"
 
 
 @lru_cache(maxsize=1)
-def robot_icon_data_uri() -> str:
-    encoded = base64.b64encode(ROBOT_ICON_PATH.read_bytes()).decode("ascii")
+def app_icon_data_uri() -> str:
+    encoded = base64.b64encode(APP_ICON_PATH.read_bytes()).decode("ascii")
     return f"data:image/png;base64,{encoded}"

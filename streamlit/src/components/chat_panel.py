@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from asset_paths import ROBOT_ICON_PATH
+from asset_paths import APP_ICON_PATH
 from response_renderer import render_chat_response
 from services import example_chat_messages
 
@@ -43,7 +43,7 @@ def render_chat_prompt() -> str | None:
 
 def _chat_message(role: str):
     if role == "assistant":
-        return st.chat_message(role, avatar=str(ROBOT_ICON_PATH))
+        return st.chat_message(role, avatar=str(APP_ICON_PATH))
     return st.chat_message(role)
 
 

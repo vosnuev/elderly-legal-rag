@@ -100,19 +100,19 @@ export function WorkspaceSidebar() {
         : 'Save Memory'
 
   return (
-    <aside className="flex h-full min-h-0 flex-col rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 max-lg:h-auto max-lg:w-full max-lg:p-4 transition-all duration-300">
+    <aside className="group/sidebar relative z-30 flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border bg-card/45 backdrop-blur-xl p-5 shadow-xl shadow-primary/5 text-sidebar-foreground border-primary/10 transition-all duration-300 lg:w-[72px] lg:p-3 lg:hover:w-[260px] lg:hover:p-5 lg:focus-within:w-[260px] lg:focus-within:p-5 max-lg:h-auto max-lg:w-full max-lg:p-4">
       {/* Brand Logo Header */}
-      <div className="flex items-center gap-3.5 select-none">
-        <div className="group relative flex size-14 items-center justify-center overflow-hidden rounded-xl border border-primary/10 bg-primary/10 shadow-lg shadow-primary/10">
+      <div className="flex items-center gap-3.5 select-none lg:justify-center lg:gap-0 lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3.5 lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3.5">
+        <div className="group relative flex size-14 items-center justify-center overflow-hidden rounded-xl border border-primary/10 bg-primary/10 shadow-lg shadow-primary/10 transition-all duration-300 lg:size-12 lg:group-hover/sidebar:size-14 lg:group-focus-within/sidebar:size-14">
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           <img
-            src="/old_robot_icon.png"
+            src="/new_dog_icon.png"
             alt=""
             aria-hidden="true"
-            className="relative z-10 size-11 object-contain"
+            className="relative z-10 size-11 object-contain transition-all duration-300 lg:size-10 lg:group-hover/sidebar:size-11 lg:group-focus-within/sidebar:size-11"
           />
         </div>
-        <div>
+        <div className="overflow-hidden whitespace-nowrap transition-all duration-200 lg:max-w-0 lg:opacity-0 lg:group-hover/sidebar:max-w-40 lg:group-hover/sidebar:opacity-100 lg:group-focus-within/sidebar:max-w-40 lg:group-focus-within/sidebar:opacity-100">
           <p className="text-base font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
             RAG Library
           </p>
@@ -122,10 +122,12 @@ export function WorkspaceSidebar() {
         </div>
       </div>
 
-      <nav className="mt-8 flex flex-col gap-1.5 max-lg:mt-4 max-lg:flex-row max-lg:overflow-x-auto select-none">
+      <nav className="mt-8 flex flex-col gap-1.5 select-none lg:items-center lg:group-hover/sidebar:items-stretch lg:group-focus-within/sidebar:items-stretch max-lg:mt-4 max-lg:flex-row max-lg:overflow-x-auto">
         {navigationItems.map(({ externalUrl, label, path, icon: Icon }) => {
           const itemClassName =
-            'flex h-11 shrink-0 items-center gap-3.5 rounded-xl px-4 text-sm font-semibold transition-all duration-300 relative group overflow-hidden'
+            'flex h-11 shrink-0 items-center gap-3.5 rounded-xl px-4 text-sm font-semibold transition-all duration-300 relative group overflow-hidden lg:w-11 lg:justify-center lg:gap-0 lg:px-0 lg:group-hover/sidebar:w-full lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3.5 lg:group-hover/sidebar:px-4 lg:group-focus-within/sidebar:w-full lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3.5 lg:group-focus-within/sidebar:px-4'
+          const itemLabelClassName =
+            'whitespace-nowrap transition-all duration-200 lg:max-w-0 lg:overflow-hidden lg:opacity-0 lg:group-hover/sidebar:max-w-36 lg:group-hover/sidebar:opacity-100 lg:group-focus-within/sidebar:max-w-36 lg:group-focus-within/sidebar:opacity-100'
 
           if (externalUrl) {
             return (
@@ -134,13 +136,15 @@ export function WorkspaceSidebar() {
                 href={externalUrl}
                 target="_blank"
                 rel="noreferrer"
+                title={label}
+                aria-label={label}
                 className={cn(
                   itemClassName,
                   'text-muted-foreground hover:text-foreground hover:bg-primary/5 hover:translate-x-1 max-lg:hover:translate-x-0'
                 )}
               >
                 <Icon className="size-4.5 text-muted-foreground/80 group-hover:text-primary transition-colors" aria-hidden="true" />
-                <span>{label}</span>
+                <span className={itemLabelClassName}>{label}</span>
               </a>
             )
           }
@@ -150,6 +154,8 @@ export function WorkspaceSidebar() {
               key={path}
               to={path ?? '/'}
               end
+              title={label}
+              aria-label={label}
               className={({ isActive }) =>
                 cn(
                   itemClassName,
@@ -160,7 +166,7 @@ export function WorkspaceSidebar() {
               }
             >
               <Icon className="size-4.5 transition-colors duration-300" aria-hidden="true" />
-              <span>{label}</span>
+              <span className={itemLabelClassName}>{label}</span>
             </NavLink>
           )
         })}
@@ -170,12 +176,14 @@ export function WorkspaceSidebar() {
         <button
           type="button"
           onClick={openMemorySettings}
-          className="group flex w-full items-center gap-3 rounded-xl border border-primary/10 bg-background/45 p-3 text-left transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+          title="Candidate Memory"
+          aria-label="Candidate Memory"
+          className="group flex w-full items-center gap-3 rounded-xl border border-primary/10 bg-background/45 p-3 text-left transition-all duration-300 hover:border-primary/30 hover:bg-primary/5 lg:h-11 lg:w-11 lg:justify-center lg:gap-0 lg:p-0 lg:group-hover/sidebar:h-auto lg:group-hover/sidebar:w-full lg:group-hover/sidebar:justify-start lg:group-hover/sidebar:gap-3 lg:group-hover/sidebar:p-3 lg:group-focus-within/sidebar:h-auto lg:group-focus-within/sidebar:w-full lg:group-focus-within/sidebar:justify-start lg:group-focus-within/sidebar:gap-3 lg:group-focus-within/sidebar:p-3"
         >
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Brain className="size-4.5" aria-hidden="true" />
           </span>
-          <span className="min-w-0 flex-1">
+          <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap transition-all duration-200 lg:max-w-0 lg:opacity-0 lg:group-hover/sidebar:max-w-40 lg:group-hover/sidebar:opacity-100 lg:group-focus-within/sidebar:max-w-40 lg:group-focus-within/sidebar:opacity-100">
             <span className="block text-[8px] font-black uppercase tracking-widest text-muted-foreground">
               Candidate Memory
             </span>
@@ -191,7 +199,7 @@ export function WorkspaceSidebar() {
               </Badge>
             </span>
           </span>
-          <Settings className="size-4 shrink-0 text-muted-foreground/50 transition-colors group-hover:text-primary" aria-hidden="true" />
+          <Settings className="size-4 shrink-0 text-muted-foreground/50 transition-colors group-hover:text-primary lg:hidden lg:group-hover/sidebar:block lg:group-focus-within/sidebar:block" aria-hidden="true" />
         </button>
       </div>
 
