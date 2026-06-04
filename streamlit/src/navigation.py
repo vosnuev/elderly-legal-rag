@@ -4,7 +4,7 @@ from collections.abc import Callable
 
 import streamlit as st
 
-from asset_paths import robot_icon_data_uri
+from asset_paths import app_icon_data_uri
 from pages.consulting_page import render_consulting_page
 from pages.law_record_page import render_law_record_page
 
@@ -17,12 +17,12 @@ PAGES: dict[str, PageRenderer] = {
 
 
 def render_sidebar() -> str:
-    robot_icon = robot_icon_data_uri()
+    app_icon = app_icon_data_uri()
     st.sidebar.markdown(
         f"""
         <div class="sidebar-logo">
             <div class="sidebar-logo-mark">
-                <img src="{robot_icon}" alt="" aria-hidden="true" />
+                <img src="{app_icon}" alt="" aria-hidden="true" />
             </div>
             <div>
                 <p class="sidebar-logo-title">법률 RAG</p>

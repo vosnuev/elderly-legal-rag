@@ -1209,7 +1209,7 @@ div[data-testid="stMarkdownContainer"] li {
 
 @media (max-width: 768px) {
     .block-container {
-        padding: 1.2rem 0.9rem 3rem;
+        padding: 1.2rem 0.9rem 8.5rem;
     }
 
     .search-hero {
@@ -1228,5 +1228,32 @@ div[data-testid="stMarkdownContainer"] li {
 
     .search-hero h1 {
         font-size: 1.725rem;
+    }
+
+    .consultation-summary-item {
+        align-items: flex-start;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: keep-all;
+    }
+
+    .agent-tool-card {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 0.55rem;
+        padding: 0.62rem;
+    }
+
+    .agent-tool-dot {
+        margin-top: 0.45rem;
+    }
+
+    .agent-tool-name {
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 }
