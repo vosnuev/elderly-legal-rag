@@ -23,7 +23,7 @@ human-in-the-loop review, Memory feedback loop, read-only MCP exposure까지 구
 
 | 평가 항목 | 현재 커버리지 | 보강 필요 |
 | --- | --- | --- |
-| 수집 데이터 및 데이터 전처리 문서 | 법률/조례 데이터 기반 GraphRAG ingest 구조가 있고, `RAG_ORIGINAL_DATA`, `RAG_PREPROCESSED_DATA`, `.toon`, raw/cleaned sample 산출물이 있다. Chunk에는 `chunk_name`, `chunk_description`, `summary`, `document_id`, embedding metadata가 들어간다. | 데이터 출처, 수집 방식, 원본 형식, 전처리 결과 파일 수, 문서 수, chunk 수를 표로 정리해야 한다. 발표에서는 "국가법령/조례 데이터 -> toon/json/cleaned text -> Document/Chunk" 흐름을 보여줘야 한다. |
+| 수집 데이터 및 데이터 전처리 문서 | 법률/조례 데이터 기반 GraphRAG ingest 구조가 있고, `rag/RAG_ORIGINAL_DATA`, `rag/RAG_PREPROCESSED_DATA`, `.toon`, raw/cleaned sample 산출물이 있다. Chunk에는 `chunk_name`, `chunk_description`, `summary`, `document_id`, embedding metadata가 들어간다. | 데이터 출처, 수집 방식, 원본 형식, 전처리 결과 파일 수, 문서 수, chunk 수를 표로 정리해야 한다. 발표에서는 "국가법령/조례 데이터 -> toon/json/cleaned text -> Document/Chunk" 흐름을 보여줘야 한다. |
 | 문서 정제, 분할, 메타데이터 구성 | `chunking_agent`가 사람이 읽을 수 있는 chunk name/description을 만들고, DB-generated document/chunk id를 사용한다. Review UI에서도 chunk title/description을 보여준다. | 청킹 기준을 명시해야 한다. 예: 의미 단위, 너무 긴 chunk 제한, 원문 boundary, chunk name/description 생성 이유. 전처리 전/후 예시 1개가 필요하다. |
 | 검색 품질을 고려한 개선 | vector search뿐 아니라 text search, graph traverse, read query, Firecrawl search까지 agent tool로 제공한다. | "왜 단순 vector search만으로 부족했는지"와 "GraphRAG/Memgraph로 개선한 점"을 짧은 before/after로 보여줘야 한다. |
 | 시스템 아키텍처 | `demo2.md`와 `reference-diagrams/rag-architecture.md`에 RAG backend, task queue, worker, Memgraph, Redis, MCP boundary가 정리되어 있다. | 최종 질의응답 runtime인 `streamlit -> backend -> RAG MCP -> Memgraph -> backend answer` 다이어그램을 추가해야 한다. 지금 다이어그램은 RAG 구축/운영 쪽이 더 강하다. |

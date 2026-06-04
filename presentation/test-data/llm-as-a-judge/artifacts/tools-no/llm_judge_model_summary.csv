@@ -1,0 +1,5 @@
+﻿source_file,model_id,provider,total_questions,correct_count,wrong_count,accuracy,avg_used_tokens,avg_total_cost_usd,avg_latency_ms
+deepseek_v4_flash_deepseek.csv,deepseek/deepseek-v4-flash,deepseek,360,249,111,0.691667,2159.35,0.00035059,12385.40
+deepseek_v4_pro_deepseek.csv,deepseek/deepseek-v4-pro,deepseek,360,274,86,0.761111,2402.18,0.00130400,34408.21
+openai_gpt_oss_120b_cerebras_fp16.csv,openai/gpt-oss-120b,cerebras,360,228,132,0.633333,1974.51,0.00112336,1410.95
+qwen_qwen3_7_plus_alibaba.csv,qwen/qwen3.7-plus,alibaba,200,124,76,0.620000,1896.52,0.00215769,21767.10

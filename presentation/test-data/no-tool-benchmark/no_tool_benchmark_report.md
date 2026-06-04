@@ -16,10 +16,10 @@
 분석 대상 폴더:
 
 ```text
-docs/benchmark/results
+presentation/test-data/no-tool-benchmark/raw-results
 ```
 
-현재 분석 대상 CSV:
+초기 비용/latency 분석 대상 CSV:
 
 ```text
 deepseek_v4_flash_deepinfra.csv
@@ -34,6 +34,15 @@ deepseek_v4_pro_novita.csv
 deepseek_v4_pro_siliconflow.csv
 deepseek_v4_pro_streamlake.csv
 openai_gpt_oss_120b_cerebras_fp16.csv
+```
+
+LLM judge 단계는 `../llm-as-a-judge/`에 따로 분리했다. 비용/latency 후보군을 좁힌 뒤 아래 4개 raw CSV를 기준으로 판정 결과를 보관한다.
+
+```text
+deepseek_v4_flash_deepseek.csv
+deepseek_v4_pro_deepseek.csv
+openai_gpt_oss_120b_cerebras_fp16.csv
+qwen_qwen3_7_plus_alibaba.csv
 ```
 
 ## CSV 구조
@@ -56,7 +65,7 @@ openai_gpt_oss_120b_cerebras_fp16.csv
 
 ## 전처리와 계산 원칙
 
-1. `docs/benchmark/results/*.csv`를 읽되 `summary`, `qwen`, `smoke`, `raw` 파일은 제외한다.
+1. `presentation/test-data/no-tool-benchmark/raw-results/*.csv`를 읽되 `summary`, `qwen`, `smoke`, `raw` 파일은 제외한다.
 2. 숫자 컬럼은 `pd.to_numeric(..., errors="coerce")`로 변환한다.
 3. 평균 token, 비용, latency는 `status == "success"` row 기준으로 계산한다.
 4. 실패 row는 평균 계산에서 제외하되, `failed_count`와 `failure_report`에는 남긴다.
@@ -74,7 +83,9 @@ openai_gpt_oss_120b_cerebras_fp16.csv
 
 ```bash
 cd /home/vosnuevo/workspace/SKN28-3rd-1Team/backend
-uv run python ../docs/benchmark/analyze_no_tool_results.py --results-dir ../docs/benchmark/results
+uv run python ../presentation/test-data/no-tool-benchmark/tools/analyze_no_tool_results.py \
+  --results-dir ../presentation/test-data/no-tool-benchmark/raw-results \
+  --output-dir ../presentation/test-data/no-tool-benchmark/artifacts
 ```
 
 ## 분석 산출물
@@ -86,15 +97,17 @@ uv run python ../docs/benchmark/analyze_no_tool_results.py --results-dir ../docs
 - 주황색: `deepseek-v4-pro`
 
 ```text
-docs/benchmark/artifacts/no_tool_all_results.csv
-docs/benchmark/artifacts/no_tool_combined_results.csv
-docs/benchmark/artifacts/no_tool_provider_summary.csv
-docs/benchmark/artifacts/no_tool_question_summary.csv
-docs/benchmark/artifacts/no_tool_segment_summary.csv
-docs/benchmark/artifacts/no_tool_failure_report.csv
-docs/benchmark/artifacts/no_tool_routing_report.csv
-docs/benchmark/artifacts/no_tool_excluded_routing_report.csv
-docs/benchmark/charts/*.png
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_all_results.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_combined_results.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_provider_summary.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_question_summary.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_segment_summary.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_failure_report.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_routing_report.csv
+presentation/test-data/no-tool-benchmark/artifacts/no_tool_excluded_routing_report.csv
+presentation/test-data/llm-as-a-judge/artifacts/tools-no/llm_judge_results.csv
+presentation/test-data/llm-as-a-judge/artifacts/tools-no/llm_judge_model_summary.csv
+presentation/test-data/no-tool-benchmark/charts/*.png
 ```
 
 ## 전체 요약

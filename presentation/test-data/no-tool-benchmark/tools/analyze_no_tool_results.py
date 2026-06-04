@@ -4,14 +4,15 @@ import argparse
 from pathlib import Path
 
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-DEFAULT_OUTPUT_DIR = ROOT_DIR / "docs" / "benchmark" / "artifacts"
+BENCHMARK_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[4]
+DEFAULT_OUTPUT_DIR = BENCHMARK_DIR / "artifacts"
 
 
 def default_results_dir() -> Path:
     candidates = [
-        ROOT_DIR / "docs" / "benchmark" / "results",
-        ROOT_DIR / "backend" / "tests" / "benchmark" / "artifacts",
+        BENCHMARK_DIR / "raw-results",
+        BENCHMARK_DIR / "artifacts",
         ROOT_DIR / "backend" / "results",
     ]
     for path in candidates:
@@ -91,7 +92,7 @@ def import_analysis_libs():
         raise SystemExit(
             "pandas/numpy are required. Example:\n"
             "uv run --with pandas --with numpy --with matplotlib "
-            "python docs/benchmark/analyze_no_tool_results.py"
+            "python presentation/test-data/no-tool-benchmark/tools/analyze_no_tool_results.py"
         ) from exc
 
     try:

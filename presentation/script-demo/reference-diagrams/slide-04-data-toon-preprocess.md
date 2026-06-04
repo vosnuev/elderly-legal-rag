@@ -15,8 +15,8 @@
 - `rag/code_reference/collect_ordinance.py`
 - `rag/code_reference/preprocess_law.py`
 - `rag/code_reference/preprocess_ordinance.py`
-- `RAG_PREPROCESSED_DATA/README.md`
-- `RAG_PREPROCESSED_DATA/rag_datas`
+- `rag/RAG_PREPROCESSED_DATA/README.md`
+- `rag/RAG_PREPROCESSED_DATA/rag_datas`
 
 ## Mermaid
 
@@ -28,7 +28,7 @@ flowchart LR
     RawLawJson --> LawPreprocess["preprocess_law.py\n조문 단위 document 추출"]
     RawOrdinJson --> OrdinPreprocess["preprocess_ordinance.py\n조례 조문/메타데이터 추출"]
 
-    LawPreprocess --> Toon["TOON files\nRAG_PREPROCESSED_DATA/rag_datas"]
+    LawPreprocess --> Toon["TOON files\nrag/RAG_PREPROCESSED_DATA/rag_datas"]
     OrdinPreprocess --> Toon
 
     Toon --> RagUpload["RAG FE upload\n.toon supported"]
