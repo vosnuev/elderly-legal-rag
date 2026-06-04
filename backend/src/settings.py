@@ -57,6 +57,7 @@ class Settings(BaseSettings):
     llm_reasoning_effort: str | None = None
 
     rag_mcp_url: str = "http://127.0.0.1:8010/mcp"
+    enable_rag_tools: bool = True
     tool_timeout_ms: int = Field(default=30_000, gt=0)
 
     log_level: str = "INFO"

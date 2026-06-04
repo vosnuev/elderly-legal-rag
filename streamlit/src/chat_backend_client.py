@@ -32,6 +32,7 @@ class ChatBackendRequest:
 class ToolCallResult:
     name: str
     status: str
+    id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -47,12 +48,14 @@ class ChatBackendResponse:
     tool_calls: list[ToolCallResult] = field(default_factory=list)
     sources: list[Source] = field(default_factory=list)
     session_id: str | None = None
+    content_blocks: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
 class ChatStreamEvent:
     type: str
     content: str = ""
+    tool_call: ToolCallResult | None = None
     response: ChatBackendResponse | None = None
 
 
@@ -75,9 +78,7 @@ class ChatBackendClient:
             yield from self._stream_mock_chat(request)
             return
 
-        response = self._post_chat(request)
-        yield ChatStreamEvent(type="delta", content=response.answer)
-        yield ChatStreamEvent(type="final", response=response)
+        yield from self._stream_backend_chat(request)
 
     def _post_chat(self, request: ChatBackendRequest) -> ChatBackendResponse:
         payload = {
@@ -163,6 +164,51 @@ class ChatBackendClient:
         )
         return parsed
 
+    def _stream_backend_chat(self, request: ChatBackendRequest) -> Iterator[ChatStreamEvent]:
+        payload = {
+            "session_id": request.session_id,
+            "message": request.message,
+            "metadata": request.metadata,
+        }
+        url = urljoin(self.base_url, "chat/stream")
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        backend_request = Request(
+            url,
+            data=body,
+            headers={
+                "Accept": "text/event-stream",
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            method="POST",
+        )
+        logger.info("chat_backend_stream_started", path="chat/stream")
+
+        try:
+            with urlopen(backend_request, timeout=self.timeout_seconds) as response:
+                yield from _iter_stream_events(
+                    response,
+                    fallback_session_id=request.session_id,
+                )
+        except HTTPError as error:
+            detail = error.read().decode("utf-8", errors="replace")
+            logger.warning(
+                "chat_backend_stream_http_error",
+                status_code=error.code,
+                detail=detail[:500],
+            )
+            raise ChatBackendError(f"백엔드 스트림 응답 오류: HTTP {error.code}") from error
+        except URLError as error:
+            logger.warning("chat_backend_stream_connection_failed", reason=str(error.reason))
+            raise ChatBackendError("백엔드 스트림 API에 연결할 수 없습니다.") from error
+        except TimeoutError as error:
+            logger.warning(
+                "chat_backend_stream_timeout",
+                timeout_seconds=self.timeout_seconds,
+            )
+            raise ChatBackendError("백엔드 스트림 응답 시간이 초과되었습니다.") from error
+
+        logger.info("chat_backend_stream_succeeded", path="chat/stream")
+
     def _stream_mock_chat(self, request: ChatBackendRequest) -> Iterator[ChatStreamEvent]:
         answer = _build_mock_answer(request)
         for chunk in _chunk_text(answer):
@@ -215,10 +261,7 @@ def _parse_chat_response(
         answer = payload.get("summary", "")
 
     tool_calls = [
-        ToolCallResult(
-            name=str(item.get("name", "")),
-            status=str(item.get("status", "")),
-        )
+        _parse_tool_call(item)
         for item in payload.get("tool_calls", [])
         if isinstance(item, dict)
     ]
@@ -240,6 +283,84 @@ def _parse_chat_response(
     )
 
 
+def _parse_tool_call(payload: dict[str, Any]) -> ToolCallResult:
+    raw_id = payload.get("id")
+    return ToolCallResult(
+        name=str(payload.get("name", "")),
+        status=str(payload.get("status", "")),
+        id=str(raw_id) if raw_id else None,
+    )
+
+
+def _iter_stream_events(
+    response: Any,
+    *,
+    fallback_session_id: str,
+) -> Iterator[ChatStreamEvent]:
+    event_name = "message"
+    data_lines: list[str] = []
+
+    for raw_line in response:
+        line = raw_line.decode("utf-8").rstrip("\r\n")
+        if not line:
+            if data_lines:
+                yield _parse_sse_event(
+                    event_name,
+                    "\n".join(data_lines),
+                    fallback_session_id=fallback_session_id,
+                )
+            event_name = "message"
+            data_lines = []
+            continue
+
+        if line.startswith("event:"):
+            event_name = line.removeprefix("event:").strip()
+        elif line.startswith("data:"):
+            data_lines.append(line.removeprefix("data:").strip())
+
+    if data_lines:
+        yield _parse_sse_event(
+            event_name,
+            "\n".join(data_lines),
+            fallback_session_id=fallback_session_id,
+        )
+
+
+def _parse_sse_event(
+    event_name: str,
+    data: str,
+    *,
+    fallback_session_id: str,
+) -> ChatStreamEvent:
+    try:
+        payload = json.loads(data)
+    except json.JSONDecodeError as error:
+        logger.warning("chat_backend_sse_parse_failed", event=event_name)
+        raise ChatBackendError("백엔드 스트림 이벤트를 해석할 수 없습니다.") from error
+
+    if not isinstance(payload, dict):
+        raise ChatBackendError("백엔드 스트림 이벤트 형식이 올바르지 않습니다.")
+
+    if event_name == "delta":
+        return ChatStreamEvent(type="delta", content=str(payload.get("content", "")))
+    if event_name == "tool_call":
+        tool_payload = payload.get("tool_call")
+        if not isinstance(tool_payload, dict):
+            raise ChatBackendError("도구 호출 스트림 이벤트 형식이 올바르지 않습니다.")
+        return ChatStreamEvent(type="tool_call", tool_call=_parse_tool_call(tool_payload))
+    if event_name == "final":
+        return ChatStreamEvent(
+            type="final",
+            response=_parse_chat_response(payload, fallback_session_id=fallback_session_id),
+        )
+    if event_name == "error":
+        message = str(payload.get("message") or "백엔드 스트림 처리 중 오류가 발생했습니다.")
+        raise ChatBackendError(message)
+
+    logger.info("chat_backend_sse_event_ignored", event=event_name)
+    return ChatStreamEvent(type="ignored")
+
+
 def _build_mock_answer(request: ChatBackendRequest) -> str:
     turn_index = request.metadata.get("turn_index", 1)
     context_seeded = request.metadata.get("context_seeded", False)
@@ -248,7 +369,7 @@ def _build_mock_answer(request: ChatBackendRequest) -> str:
         f"{prefix}\n\n"
         f"- 세션: `{request.session_id}`\n"
         f"- turn: {turn_index}\n"
-        "- backend main agent가 연결되면 같은 payload 계약으로 `/chat`에 전달됩니다.\n\n"
+        "- backend main agent가 연결되면 같은 payload 계약으로 `/chat/stream`에 전달됩니다.\n\n"
         "현재는 mock stream 응답입니다. 실제 backend 연결 전에도 화면 흐름, session_id 유지, "
         "assistant 응답 렌더링을 확인할 수 있습니다."
     )

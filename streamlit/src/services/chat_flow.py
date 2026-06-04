@@ -1,18 +1,22 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+from dataclasses import replace
+from typing import Any
 from uuid import uuid4
 
 import streamlit as st
 
+from asset_paths import ROBOT_ICON_PATH
 from chat_backend_client import (
     ChatBackendError,
     ChatBackendRequest,
     ChatBackendResponse,
+    ToolCallResult,
     get_chat_backend_client,
 )
 from forms import build_initial_consultation_prompt, build_user_turn_message
-from response_renderer import render_agent_markdown
+from response_renderer import render_agent_blocks
 from settings import settings
 from structured_logging import get_logger
 
@@ -153,25 +157,131 @@ def _stream_backend_response(request: ChatBackendRequest) -> ChatBackendResponse
     client = get_chat_backend_client()
     streamed_answer = ""
     final_response: ChatBackendResponse | None = None
+    tool_calls: list[ToolCallResult] = []
+    content_blocks: list[dict[str, Any]] = []
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=str(ROBOT_ICON_PATH)):
         placeholder = st.empty()
         placeholder.markdown(_render_shimmer(), unsafe_allow_html=True)
         with st.spinner("답변을 생성하는 중입니다."):
             for event in client.stream_chat(request):
                 if event.type == "delta":
                     streamed_answer += event.content
-                    render_agent_markdown(streamed_answer, target=placeholder)
+                    _append_text_block(content_blocks, event.content)
+                    render_agent_blocks(content_blocks, target=placeholder)
+                elif event.type == "tool_call" and event.tool_call is not None:
+                    tool_calls = _upsert_tool_call(tool_calls, event.tool_call)
+                    _upsert_tool_call_block(content_blocks, event.tool_call)
+                    render_agent_blocks(content_blocks, target=placeholder)
                 elif event.type == "final" and event.response is not None:
                     final_response = event.response
+                    if final_response.tool_calls:
+                        for tool_call in final_response.tool_calls:
+                            _upsert_tool_call_block(content_blocks, tool_call)
+                        render_agent_blocks(content_blocks, target=placeholder)
 
     if final_response is not None:
-        return final_response
+        final_blocks = _finalize_content_blocks(
+            content_blocks,
+            answer=final_response.answer,
+            tool_calls=final_response.tool_calls,
+        )
+        return replace(final_response, content_blocks=final_blocks)
 
     return ChatBackendResponse(
         answer=streamed_answer or "답변을 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+        tool_calls=tool_calls,
+        content_blocks=_finalize_content_blocks(
+            content_blocks,
+            answer=streamed_answer,
+            tool_calls=tool_calls,
+        ),
         session_id=request.session_id,
     )
+
+
+def _upsert_tool_call(
+    tool_calls: list[ToolCallResult],
+    next_tool_call: ToolCallResult,
+) -> list[ToolCallResult]:
+    key = next_tool_call.id or next_tool_call.name
+    updated = list(tool_calls)
+    for index, tool_call in enumerate(updated):
+        if (tool_call.id or tool_call.name) == key:
+            updated[index] = next_tool_call
+            return updated
+    updated.append(next_tool_call)
+    return updated
+
+
+def _append_text_block(content_blocks: list[dict[str, Any]], content: str) -> None:
+    if not content:
+        return
+
+    if content_blocks and content_blocks[-1].get("type") == "text":
+        content_blocks[-1]["content"] = f"{content_blocks[-1].get('content', '')}{content}"
+        return
+
+    content_blocks.append({"type": "text", "content": content})
+
+
+def _upsert_tool_call_block(
+    content_blocks: list[dict[str, Any]],
+    next_tool_call: ToolCallResult,
+) -> None:
+    key = _tool_call_key(next_tool_call)
+    serialized = _tool_call_to_dict(next_tool_call)
+    for block in content_blocks:
+        if block.get("type") != "tool_call":
+            continue
+        tool_call = block.get("tool_call")
+        if not isinstance(tool_call, dict):
+            continue
+        if _tool_call_dict_key(tool_call) == key:
+            block["tool_call"] = serialized
+            return
+
+    content_blocks.append({"type": "tool_call", "tool_call": serialized})
+
+
+def _finalize_content_blocks(
+    content_blocks: list[dict[str, Any]],
+    *,
+    answer: str,
+    tool_calls: list[ToolCallResult],
+) -> list[dict[str, Any]]:
+    finalized = [dict(block) for block in content_blocks if _is_valid_content_block(block)]
+    has_text_block = any(block.get("type") == "text" for block in finalized)
+    if not has_text_block and answer:
+        finalized.append({"type": "text", "content": answer})
+
+    for tool_call in tool_calls:
+        _upsert_tool_call_block(finalized, tool_call)
+
+    return finalized
+
+
+def _is_valid_content_block(block: dict[str, Any]) -> bool:
+    if block.get("type") == "text":
+        return bool(str(block.get("content") or "").strip())
+    if block.get("type") == "tool_call":
+        return isinstance(block.get("tool_call"), dict)
+    return False
+
+
+def _tool_call_key(tool_call: ToolCallResult) -> str:
+    return tool_call.id or tool_call.name
+
+
+def _tool_call_dict_key(tool_call: dict[str, Any]) -> str:
+    raw_id = tool_call.get("id")
+    if raw_id:
+        return str(raw_id)
+    return str(tool_call.get("name") or "")
+
+
+def _tool_call_to_dict(tool_call: ToolCallResult) -> dict[str, str | None]:
+    return {"name": tool_call.name, "status": tool_call.status, "id": tool_call.id}
 
 
 def _render_shimmer() -> str:
@@ -203,9 +313,10 @@ def _response_to_dict(response: ChatBackendResponse) -> dict[str, object]:
     return {
         "answer": response.answer,
         "tool_calls": [
-            {"name": tool_call.name, "status": tool_call.status}
+            _tool_call_to_dict(tool_call)
             for tool_call in response.tool_calls
         ],
+        "content_blocks": response.content_blocks,
         "sources": [
             {
                 "title": source.title,

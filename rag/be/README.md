@@ -85,8 +85,11 @@ singleton.
 External read-only MCP endpoint:
 
 ```text
-http://127.0.0.1:8010/mcp
+http://127.0.0.1:8010/mcp/
 ```
+
+루트 통합 Docker Compose에서는 컨테이너 내부 endpoint가
+`http://rag-be:8010/mcp/`이고, host publish는 기본 `http://127.0.0.1:8110`이다.
 
 ### MCP Server Settings
 
@@ -121,6 +124,11 @@ PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
 | `RAG_KNOWLEDGE_BUILD_WORKER_COUNT` | `1` | build worker lane size |
 | `RAG_KNOWLEDGE_REVIEW_WORKER_COUNT` | `1` | review worker lane size |
 | `RAG_KNOWLEDGE_TASK_QUEUE_MAX_SIZE` | `100` | bounded queue size per task lane |
+
+Docker network에서 MCP client가 `http://rag-be:8010/mcp/`처럼 서비스명으로
+접속하려면 `RAG_MCP_HOST=0.0.0.0`을 사용한다. FastMCP는 host가
+`127.0.0.1`이면 DNS rebinding protection을 자동 활성화해서
+`Host: rag-be:8010` 요청을 거부할 수 있다.
 
 External MCP tools:
 
@@ -158,7 +166,7 @@ Denied `memgraph.read_query` operations include `CREATE`, `MERGE`, `SET`,
 For MCP clients that support Streamable HTTP, point the client at:
 
 ```text
-http://127.0.0.1:8010/mcp
+http://127.0.0.1:8010/mcp/
 ```
 
 Example Python MCP SDK smoke check:
@@ -171,7 +179,7 @@ from mcp.client.streamable_http import streamable_http_client
 
 
 async def main() -> None:
-    async with streamable_http_client("http://127.0.0.1:8010/mcp") as (
+    async with streamable_http_client("http://127.0.0.1:8010/mcp/") as (
         read_stream,
         write_stream,
         _get_session_id,

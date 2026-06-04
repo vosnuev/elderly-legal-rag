@@ -191,7 +191,7 @@ PPT에 들어갈 데이터:
 - `rag/code_reference/collect_ordinance.py`
 - `rag/code_reference/preprocess_law.py`
 - `rag/code_reference/preprocess_ordinance.py`
-- `RAG_PREPROCESSED_DATA/README.md`
+- `rag/RAG_PREPROCESSED_DATA/README.md`
 - `presentation/script-demo/demo3.md`
 
 다이어그램:

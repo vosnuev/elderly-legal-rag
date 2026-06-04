@@ -297,10 +297,102 @@ class EndpointToolsTest(unittest.TestCase):
             17,
         )
 
+    def test_external_mcp_read_query_sanitizes_context_heavy_fields(self) -> None:
+        tool_manager = create_external_mcp()._tool_manager
+        raw_result = {
+            "columns": ["document"],
+            "rows": [
+                {
+                    "document": {
+                        "type": "node",
+                        "labels": ["Document"],
+                        "element_id": "doc-element-1",
+                        "properties": {
+                            "id": "doc-1",
+                            "title": "근로기준법",
+                            "raw_content": "원문" * 1000,
+                            "embedding": [0.1] * 3072,
+                            "metadata": {"large": "object"},
+                        },
+                    }
+                }
+            ],
+            "row_count": 1,
+            "elapsed_ms": 1.2,
+            "query": "MATCH (document:Document) RETURN document",
+            "counters": {"contains_updates": False},
+        }
+
+        with patch("api.mcp.server.read_query", return_value=raw_result):
+            result = asyncio.run(
+                tool_manager.call_tool(
+                    "memgraph.read_query",
+                    {"query": "MATCH (document:Document) RETURN document"},
+                )
+            )
+
+        self.assertTrue(result["sanitized"])
+        self.assertNotIn("query", result)
+        self.assertNotIn("counters", result)
+        properties = result["rows"][0]["document"]["properties"]
+        self.assertEqual(properties["id"], "doc-1")
+        self.assertNotIn("raw_content", properties)
+        self.assertNotIn("embedding", properties)
+        self.assertNotIn("metadata", properties)
+
+    def test_external_mcp_read_query_logs_invocation_summary(self) -> None:
+        tool_manager = create_external_mcp()._tool_manager
+
+        with (
+            patch("api.mcp.server._logger") as logger,
+            patch(
+                "api.mcp.server.read_query",
+                return_value={
+                    "columns": ["id"],
+                    "rows": [{"id": "chunk-1"}],
+                    "row_count": 1,
+                },
+            ),
+        ):
+            result = asyncio.run(
+                tool_manager.call_tool(
+                    "memgraph.read_query",
+                    {
+                        "query": "MATCH (chunk:Chunk) RETURN chunk.id AS id",
+                        "parameters": {"limit": 1},
+                    },
+                )
+            )
+
+        self.assertEqual(result["row_count"], 1)
+        logger.bind.assert_called_once()
+        log_context = logger.bind.call_args.kwargs
+        self.assertEqual(log_context["tool_name"], "memgraph.read_query")
+        self.assertEqual(
+            log_context["input_summary"],
+            {
+                "query_preview": "MATCH (chunk:Chunk) RETURN chunk.id AS id",
+                "has_parameters": True,
+                "parameter_keys": ["limit"],
+                "max_rows": None,
+            },
+        )
+        invocation_logger = logger.bind.return_value
+        invocation_logger.info.assert_any_call("MCP tool invocation started")
+        completion_context = invocation_logger.bind.call_args.kwargs
+        self.assertEqual(completion_context["result_summary"]["row_count"], 1)
+        self.assertEqual(completion_context["result_summary"]["returned_row_count"], 1)
+        invocation_logger.bind.return_value.info.assert_called_once_with(
+            "MCP tool invocation completed"
+        )
+
     def test_external_mcp_read_query_rejects_write_cypher(self) -> None:
         tool_manager = create_external_mcp()._tool_manager
 
-        with patch("api.mcp.server.read_query") as read_query:
+        with (
+            patch("api.mcp.server._logger"),
+            patch("api.mcp.server.read_query") as read_query,
+        ):
             with self.assertRaisesRegex(ToolError, "read-only Cypher"):
                 asyncio.run(
                     tool_manager.call_tool(

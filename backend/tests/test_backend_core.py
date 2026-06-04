@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import sys
 import unittest
 from pathlib import Path
@@ -14,11 +15,24 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from app import app
-from agent.graph import _stream_chunk_to_text
+from agent.graph import (
+    AgentRunResult,
+    AgentStreamEvent,
+    SourceSummary,
+    ToolCallSummary,
+    _stream_chunk_to_text,
+)
+from agent import tool as tool_module
 
 
 # FastAPI TestClient를 생성해 테스트 간 재사용
 client = TestClient(app)
+
+
+async def _async_events(events: list[AgentStreamEvent]):
+    for event in events:
+        yield event
+
 
 # health endpoint가 서비스 상태를 반환하는지 확인
 class HealthApiTest(unittest.TestCase):
@@ -33,7 +47,22 @@ class ChatApiTest(unittest.TestCase):
     def test_chat_returns_agent_answer(self) -> None:
         with patch(
             "api.chat.run_agent",
-            return_value="신청은 주민센터에서 할 수 있습니다.",
+            return_value=AgentRunResult(
+                answer="신청은 주민센터에서 할 수 있습니다.",
+                tool_calls=[
+                    ToolCallSummary(
+                        name="memgraph_read_query",
+                        status="completed",
+                        id="call-1",
+                    )
+                ],
+                sources=[
+                    SourceSummary(
+                        title="노인일자리 안내",
+                        excerpt="신청은 주민센터에서 할 수 있습니다.",
+                    )
+                ],
+            ),
         ) as run_agent:
             response = client.post(
                 "/chat",
@@ -49,8 +78,21 @@ class ChatApiTest(unittest.TestCase):
             response.json(),
             {
                 "answer": "신청은 주민센터에서 할 수 있습니다.",
-                "tool_calls": [],
-                "sources": [],
+                "tool_calls": [
+                    {
+                        "name": "memgraph_read_query",
+                        "status": "completed",
+                        "id": "call-1",
+                    }
+                ],
+                "sources": [
+                    {
+                        "title": "노인일자리 안내",
+                        "url": None,
+                        "excerpt": "신청은 주민센터에서 할 수 있습니다.",
+                    }
+                ],
+                "session_id": "test-session",
             },
         )
         run_agent.assert_called_once_with("노인일자리 신청 방법 알려줘", session_id="test-session")
@@ -58,7 +100,34 @@ class ChatApiTest(unittest.TestCase):
     def test_chat_stream_returns_sse_event(self) -> None:
         with patch(
             "api.chat.run_agent_stream",
-            return_value=(["신청은 ", "주민센터에서 ", "할 수 있습니다."]),
+            return_value=_async_events(
+                [
+                    AgentStreamEvent(
+                        type="tool_call",
+                        tool_call=ToolCallSummary(
+                            name="memgraph_read_query",
+                            status="started",
+                            id="call-1",
+                        ),
+                    ),
+                    AgentStreamEvent(type="delta", content="신청은 "),
+                    AgentStreamEvent(type="delta", content="주민센터에서 "),
+                    AgentStreamEvent(type="delta", content="할 수 있습니다."),
+                    AgentStreamEvent(
+                        type="final",
+                        result=AgentRunResult(
+                            answer="신청은 주민센터에서 할 수 있습니다.",
+                            tool_calls=[
+                                ToolCallSummary(
+                                    name="memgraph_read_query",
+                                    status="completed",
+                                    id="call-1",
+                                )
+                            ],
+                        ),
+                    ),
+                ]
+            ),
         ) as run_agent_stream:
             response = client.post(
                 "/chat/stream",
@@ -74,7 +143,10 @@ class ChatApiTest(unittest.TestCase):
 
         body = response.text
         self.assertIn("event: delta", body)
+        self.assertIn("event: tool_call", body)
         self.assertIn("event: final", body)
+        self.assertIn('"name": "memgraph_read_query"', body)
+        self.assertIn('"status": "completed"', body)
         self.assertIn('"content": "신청은 "', body)
         self.assertIn('"content": "주민센터에서 "', body)
         self.assertIn('"content": "할 수 있습니다."', body)
@@ -113,6 +185,24 @@ class AgentStreamChunkTest(unittest.TestCase):
         chunk = AIMessageChunk(content="｜DSML｜tool_calls>")
 
         self.assertEqual(_stream_chunk_to_text(chunk), "")
+
+
+class AgentToolTest(unittest.TestCase):
+    def tearDown(self) -> None:
+        tool_module.clear_tools_cache()
+
+    def test_get_tools_returns_empty_when_rag_tools_disabled(self) -> None:
+        tool_module.clear_tools_cache()
+
+        with (
+            patch.object(tool_module.settings, "enable_rag_tools", False),
+            patch.object(tool_module, "_load_rag_mcp_tools") as load_tools,
+        ):
+            tools = asyncio.run(tool_module.get_tools())
+
+        self.assertEqual(tools, [])
+        load_tools.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

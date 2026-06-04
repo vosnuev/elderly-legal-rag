@@ -1,0 +1,148 @@
+name: infra
+
+services:
+  memgraph:
+    image: ${MEMGRAPH_IMAGE:-memgraph/memgraph-mage:latest}
+    container_name: ${MEMGRAPH_CONTAINER_NAME:-rag-memgraph}
+    ports:
+      - "${MEMGRAPH_PUBLISH_HOST:-127.0.0.1}:${MEMGRAPH_BOLT_PORT:-7687}:7687"
+      - "${MEMGRAPH_PUBLISH_HOST:-127.0.0.1}:${MEMGRAPH_LOG_PORT:-7444}:7444"
+    volumes:
+      - memgraph_lib:/var/lib/memgraph
+      - memgraph_log:/var/log/memgraph
+      - memgraph_etc:/etc/memgraph
+    command:
+      - "--log-level=${MEMGRAPH_LOG_LEVEL:-INFO}"
+      - "--schema-info-enabled=${MEMGRAPH_SCHEMA_INFO_ENABLED:-true}"
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'RETURN 0;' | mgconsole || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  lab:
+    image: ${MEMGRAPH_LAB_IMAGE:-memgraph/lab:latest}
+    container_name: ${MEMGRAPH_LAB_CONTAINER_NAME:-rag-memgraph-lab}
+    ports:
+      - "${MEMGRAPH_PUBLISH_HOST:-127.0.0.1}:${MEMGRAPH_LAB_PORT:-3000}:3000"
+    depends_on:
+      memgraph:
+        condition: service_started
+    environment:
+      QUICK_CONNECT_MG_HOST: memgraph
+      QUICK_CONNECT_MG_PORT: 7687
+
+  redis:
+    image: ${REDIS_IMAGE:-redis:7-alpine}
+    container_name: ${REDIS_CONTAINER_NAME:-rag-redis}
+    ports:
+      - "${REDIS_PUBLISH_HOST:-127.0.0.1}:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  rag-be:
+    build:
+      context: ../rag/be
+      dockerfile: Dockerfile
+    image: skn28-rag-be:dev
+    container_name: skn28-rag-be
+    restart: unless-stopped
+    env_file:
+      - ./.env_rag_be
+    environment:
+      RAG_MCP_HOST: "0.0.0.0"
+      RAG_MCP_PORT: "8010"
+      RAG_MEMGRAPH_URI: "bolt://memgraph:7687"
+      RAG_REDIS_URL: "redis://redis:6379/0"
+      RAG_CORS_ALLOWED_ORIGINS: '["http://127.0.0.1:5173","http://localhost:5173","http://127.0.0.1:5174","http://localhost:5174"]'
+    ports:
+      - "${RAG_BE_PUBLISH_HOST:-127.0.0.1}:${RAG_BE_HOST_PORT:-8110}:8010"
+    volumes:
+      - rag_be_workspace:/app/workspace
+      - rag_be_input:/app/input
+      - rag_be_output:/app/output
+      - rag_be_cache:/app/cache
+    depends_on:
+      memgraph:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    image: skn28-backend:dev
+    container_name: skn28-backend
+    restart: unless-stopped
+    env_file:
+      - ./.env_backend
+    environment:
+      BACKEND_API_HOST: "0.0.0.0"
+      BACKEND_API_PORT: "8000"
+      BACKEND_RELOAD: "false"
+      BACKEND_RAG_MCP_URL: "http://rag-be:8010/mcp/"
+      BACKEND_CORS_ORIGINS: '["http://localhost:8501","http://127.0.0.1:8501","http://localhost:5173","http://127.0.0.1:5173","http://localhost:8100","http://127.0.0.1:8100"]'
+    ports:
+      - "${BACKEND_PUBLISH_HOST:-127.0.0.1}:${BACKEND_HOST_PORT:-8100}:8000"
+    depends_on:
+      rag-be:
+        condition: service_healthy
+
+  streamlit:
+    build:
+      context: ../streamlit
+      dockerfile: Dockerfile
+    image: skn28-streamlit:dev
+    container_name: skn28-streamlit
+    restart: unless-stopped
+    env_file:
+      - ./.env_streamlit
+    environment:
+      STREAMLIT_BACKEND_BASE_URL: "http://backend:8000"
+      STREAMLIT_CHAT_BACKEND_MOCK: "false"
+    ports:
+      - "${STREAMLIT_PUBLISH_HOST:-127.0.0.1}:${STREAMLIT_HOST_PORT:-8501}:8501"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  rag-fe:
+    build:
+      context: ../rag/fe
+      dockerfile: Dockerfile
+      args:
+        VITE_RAG_API_BASE_URL: "${RAG_FE_PUBLIC_RAG_API_BASE_URL:-http://127.0.0.1:8110}"
+        VITE_RAG_API_TIMEOUT_MS: "${RAG_FE_PUBLIC_RAG_API_TIMEOUT_MS:-1500}"
+        VITE_RAG_ENABLE_MOCK_FALLBACK: "${RAG_FE_PUBLIC_RAG_ENABLE_MOCK_FALLBACK:-false}"
+        VITE_MEMGRAPH_LAB_URL: "${RAG_FE_PUBLIC_MEMGRAPH_LAB_URL:-http://127.0.0.1:3000}"
+    image: skn28-rag-fe:dev
+    container_name: skn28-rag-fe
+    restart: unless-stopped
+    ports:
+      - "${RAG_FE_PUBLISH_HOST:-127.0.0.1}:${RAG_FE_HOST_PORT:-5174}:80"
+    depends_on:
+      rag-be:
+        condition: service_healthy
+
+networks:
+  default:
+    name: infra_default
+
+volumes:
+  memgraph_lib:
+  memgraph_log:
+  memgraph_etc:
+  redis_data:
+  rag_be_workspace:
+  rag_be_input:
+  rag_be_output:
+  rag_be_cache:

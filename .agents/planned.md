@@ -33,6 +33,215 @@ Implement the RAG backend worker submission layer before refining API/FE contrac
 
 Approved by user for implementation.
 
+## 2026-06-04 KST - Integrated Docker Compose and Backend RAG MCP Connection
+
+### Goal
+
+Create a root `infra/` Docker Compose workflow that runs the runnable app
+services together, injects service env files from `infra/`, and verifies that
+the main backend agent can call the RAG backend's external MCP tools over the
+Compose network.
+
+### Current State
+
+- Branch is `feature/rag-red-team-neo4j-mcp`.
+- The working tree already has many unrelated modified/deleted/untracked files;
+  do not revert or sweep them into this task.
+- `instructions.md` is referenced by AGENTS notes but is intentionally ignored
+  and absent in the project root.
+- `frontend/` has only README, `.gitignore`, and `.env.example`; there is no
+  runnable app or package manifest there yet.
+- Runnable app services found:
+  - `backend/`: FastAPI main agent orchestrator, existing Dockerfile and
+    `docker-compose.yml`.
+  - `streamlit/`: Streamlit consultation UI, uv Python project.
+  - `rag/be/`: FastAPI RAG backend with FastMCP Streamable HTTP mounted at
+    `RAG_EXTERNAL_MCP_PATH`, default `/mcp`.
+  - `rag/fe/`: Bun + Vite + React RAG operations UI.
+- Supporting infra found:
+  - `rag/infra/docker-compose.yml` runs Memgraph, Memgraph Lab, and Redis.
+- Backend already has `langchain-mcp-adapters` and `BACKEND_RAG_MCP_URL`, but
+  `backend/src/agent/tool.py` still returns placeholder/mock tools.
+- `backend/src/agent/tool.py` currently defines `mock_policy_search_tool`
+  twice; avoid expanding this duplication while wiring MCP tools.
+- RAG backend external MCP tools are read-only:
+  `memgraph.read_query`, `memgraph.vector_search`,
+  `memgraph.text_index_search`, `memgraph.graph_traverse`,
+  `memgraph.schema_read`.
+- Context7/current local package check:
+  - installed `langchain-mcp-adapters` is `0.2.2`.
+  - `MultiServerMCPClient.get_tools()` is async.
+  - Streamable HTTP accepts `transport` values `http`, `streamable_http`, and
+    `streamable-http`; prefer `http` to match current docs examples.
+- Current machine is `arm64`; Docker 29.0.1 and Docker Compose 5.1.1 are
+  installed.
+- Manifest checks show `memgraph/memgraph-mage:latest`,
+  `memgraph/lab:latest`, `python:3.13-slim`, and `oven/bun:1-alpine` include
+  linux/arm64 images.
+
+### Env State
+
+- `backend/.env` exists and uses `OPENROUTER_API_KEY`; settings accept this as
+  an alias for `BACKEND_OPENROUTER_API_KEY`.
+- `backend/.env` is missing several example keys, mostly optional service
+  metadata, host publish settings, OpenRouter metadata/base URL defaults, and
+  optional LangSmith tracing keys.
+- `streamlit/.env` matches `streamlit/.env.example` by key.
+- `rag/be/.env` exists and includes `RAG_OPENROUTER_API_KEY` and
+  `RAG_FIRECRAWL_API_KEY` keys, but is missing some newer example keys for
+  Firecrawl timeout/limits and worker queue tuning. Code has defaults for those.
+- `rag/fe/.env` matches `rag/fe/.env.example` by key.
+- `rag/infra/.env` exists but is missing Redis env keys from its example.
+- `frontend/.env` is missing, but `frontend/` currently has no runnable app.
+- `rag-red-team/.env` is missing; treat this as separate experimental Neo4j
+  work unless the user confirms it belongs in this integration.
+
+### User Comments
+
+- Do not run `docs_web`.
+- Put service-specific copied env files under root `infra/`, e.g.
+  `.env_backend`.
+- Compare actual `.env` files with `.env.example`; report missing/API-key
+  requirements before relying on them.
+- Build/run the services together in Docker, keep them on one network, and pick
+  non-conflicting ports.
+- Make the main backend agent use the RAG MCP server exposed by the RAG backend.
+- Verify the connection from inside the Docker network using Docker commands.
+- Use small/thin Linux containers but check compatibility issues.
+
+### Proposed Plan
+
+1. Confirm service scope before implementation.
+   - Proposed runnable scope: `backend`, `streamlit`, `rag/be`, `rag/fe`.
+   - Include infra dependencies: Memgraph, Memgraph Lab, Redis.
+   - Exclude `docs_web`.
+   - Exclude top-level `frontend/` for now because it has no runnable app.
+   - Exclude `rag-red-team/` unless the user explicitly wants the separate
+     Neo4j experiment included.
+
+2. Prepare root `infra/` env layout.
+   - Copy existing local env files into ignored root infra files:
+     - `infra/.env_backend` from `backend/.env`
+     - `infra/.env_streamlit` from `streamlit/.env`
+     - `infra/.env_rag_be` from `rag/be/.env`
+     - `infra/.env_rag_fe` from `rag/fe/.env`
+     - `infra/.env_rag_infra` from `rag/infra/.env`
+   - Add/refresh tracked examples or docs only, not real secrets.
+   - Add missing non-secret defaults needed for Compose runtime:
+     - backend MCP URL override: `http://rag-be:8010/mcp`
+     - streamlit backend URL override: `http://backend:8000`
+     - RAG BE Memgraph URL override: `bolt://memgraph:7687`
+     - RAG BE Redis URL override: `redis://redis:6379/0`
+     - RAG BE bind host override: `0.0.0.0`
+
+3. Add thin Dockerfiles where missing.
+   - Keep/adjust `backend/Dockerfile` only if needed.
+   - Add `rag/be/Dockerfile` using `python:3.13-slim` + uv multi-stage.
+   - Add `streamlit/Dockerfile` using `python:3.13-slim` + uv multi-stage.
+   - Add `rag/fe/Dockerfile` using Bun build stage and a small static runtime
+     such as nginx.
+   - Add `.dockerignore` files for `rag/be`, `streamlit`, and `rag/fe` to keep
+     `.env`, `.venv`, `node_modules`, `dist`, caches, and logs out of images.
+
+4. Create root `infra/docker-compose.yml`.
+   - One Compose network for all services.
+   - Services:
+     - `memgraph`
+     - `memgraph-lab`
+     - `redis`
+     - `rag-be`
+     - `backend`
+     - `streamlit`
+     - `rag-fe`
+   - Proposed host ports:
+     - backend: `127.0.0.1:8000` or configurable fallback `8001`
+     - streamlit: `127.0.0.1:8501`
+     - rag-be: `127.0.0.1:8010`
+     - rag-fe: `127.0.0.1:5173`
+     - Memgraph Bolt: `127.0.0.1:7687`
+     - Memgraph Lab: `127.0.0.1:3000`
+     - Redis: `127.0.0.1:6379`
+   - Use `depends_on` with health checks where possible:
+     - `rag-be` waits for Memgraph and Redis.
+     - `backend` waits for `rag-be`.
+     - UI services wait for their API dependencies where practical.
+
+5. Wire backend MCP tools.
+   - Replace placeholder RAG tool loading with `MultiServerMCPClient`.
+   - Use connection config:
+     - server name: `rag`
+     - transport: `http`
+     - URL: `settings.rag_mcp_url`
+   - Because tool loading and MCP tool calls are async, convert chat execution
+     to an async path:
+     - load/cache tools through async startup or lazy async accessor.
+     - use `agent.ainvoke()` and async stream APIs where supported.
+     - update `api/chat.py` and tests accordingly.
+   - Keep a controlled fallback behavior for startup when RAG MCP is not
+     reachable only if needed for `/health`; do not silently pretend RAG worked
+     during `/chat`.
+
+6. Verify locally.
+   - Run Python checks with uv:
+     - `cd backend && uv run python -m compileall src scripts tests`
+     - `cd backend && uv run python -m unittest discover -s tests`
+     - `cd rag/be && uv run python -m compileall src tests`
+     - focused RAG tests if they are not blocked by external services.
+   - Run frontend checks:
+     - `cd rag/fe && bun run build`
+   - Build images:
+     - `docker compose --env-file infra/.env -f infra/docker-compose.yml build`
+   - Start stack:
+     - `docker compose --env-file infra/.env -f infra/docker-compose.yml up -d`
+   - Verify service health:
+     - backend `/health`
+     - rag-be `/health`
+     - streamlit health endpoint
+     - rag-fe HTTP response
+     - Memgraph/Redis container health.
+   - Verify MCP from Docker network:
+     - run a one-off container or `docker compose exec backend ...` to list MCP
+       tools from `http://rag-be:8010/mcp`.
+     - call a read-only MCP tool such as `memgraph.schema_read`.
+   - Verify backend agent path:
+     - POST `/chat` from host and inspect backend logs/tool traces to confirm
+       an MCP tool is available/called for a RAG-relevant prompt.
+
+7. Update docs.
+   - Update root `README.md` and `infra/README.md` with integrated Compose
+     commands, service URLs, env-file layout, and troubleshooting.
+   - Update service README files only where run commands or env behavior change.
+
+### Open Questions
+
+- Please confirm service scope: should the integrated app stack be exactly
+  `backend`, `streamlit`, `rag/be`, and `rag/fe` plus Memgraph/Redis infra?
+  This excludes top-level `frontend/` because it has no app yet.
+- Should `rag-red-team/` be excluded from this stack? It is a separate Neo4j
+  experiment and not the `rag/be` FastMCP endpoint currently consumed by the
+  main backend.
+- Host backend port preference: keep the existing Docker convention `8001`, or
+  publish backend on `8000` so Streamlit/local docs align with the non-Docker
+  command?
+
+### Approval Status
+
+Approved by user for implementation.
+
+### Approval Notes
+
+- Scope confirmed:
+  - include `backend`, `streamlit`, `rag/be`, `rag/fe`.
+  - exclude `rag-red-team/`; it is a separate Neo4j experiment.
+  - exclude `docs_web`.
+- Use the existing Docker Compose infra network currently named
+  `infra_default`; existing Memgraph, Memgraph Lab, and Redis containers are
+  already attached to it.
+- The integrated compose should bring up all connected services in one command
+  and attach them to the same infra network.
+- Publish backend on host port `8100` to avoid conflicts; internal service port
+  stays `8000`.
+
 ## 2026-06-01 KST - Knowledge Runtime Internal Service Split
 
 ### Goal
