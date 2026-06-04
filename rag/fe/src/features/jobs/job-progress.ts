@@ -32,7 +32,7 @@ export function getJobProgress(job: FileIngestStatusResponse) {
   if (job.current_task?.status === 'queued') {
     return { stepIndex: 1, label: 'Queued' }
   }
-  if (job.completed || currentStage.includes('complete')) {
+  if (job.completed || currentStage.includes('complete') || isJobReviewComplete(job)) {
     return { stepIndex: 5, label: 'Complete' }
   }
   if (isJobWaitingReview(job)) {
@@ -78,7 +78,7 @@ export function getJobRuntimeStatus(job: FileIngestStatusResponse): JobRuntimeSt
   if (job.current_task?.status === 'failed') {
     return 'needs_retry'
   }
-  if (job.completed || stageText.includes('complete')) {
+  if (job.completed || stageText.includes('complete') || isJobReviewComplete(job)) {
     return 'complete'
   }
   if (stageText.includes('retry') || stageText.includes('error') || stageText.includes('failed')) {
@@ -213,10 +213,26 @@ export function getJobTaskTiming(
 }
 
 export function isJobWaitingReview(job: FileIngestStatusResponse) {
-  return (
-    (job.pending_review_count ?? 0) > 0 ||
-    normalizeStage(getJobPhase(job)).includes('pending_review')
-  )
+  const pendingReviewCount = readFiniteNumber(job.pending_review_count)
+  if (pendingReviewCount !== null) {
+    return pendingReviewCount > 0
+  }
+
+  return normalizeStage(getJobPhase(job)).includes('pending_review')
+}
+
+function isJobReviewComplete(job: FileIngestStatusResponse) {
+  const pendingReviewCount = readFiniteNumber(job.pending_review_count)
+  if (pendingReviewCount !== 0) {
+    return false
+  }
+
+  const currentStage = normalizeStage(getJobPhase(job))
+  return currentStage.includes('pending_review') || (job.candidate_count ?? 0) > 0
+}
+
+function readFiniteNumber(value: number | undefined) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null
 }
 
 export function isPipelineStepDone(job: FileIngestStatusResponse, step: PipelineStepKey) {

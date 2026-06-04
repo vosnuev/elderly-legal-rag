@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -42,9 +43,13 @@ import {
   ReviewCandidateListItem,
 } from '@/features/review/review-candidate-card'
 import { getReviewCandidateConfidenceScore } from '@/features/review/review-candidate-utils'
-import { groupReviewCandidatesByJob } from '@/features/review/review-candidates'
+import {
+  groupReviewCandidatesByJob,
+  normalizeReviewCandidates,
+} from '@/features/review/review-candidates'
 import { useRagWorkspace } from '@/features/workspace/use-rag-workspace'
 import { cn } from '@/lib/utils'
+import { listReviewCandidates } from '@/api/rag'
 import type {
   RagDocument,
   RelationshipCandidate,
@@ -65,10 +70,15 @@ type CandidateAnnotation = {
 
 type CandidateSortMode = 'default' | 'confidence_desc' | 'confidence_asc'
 
+type JobScopedCandidateState = {
+  candidates: RelationshipCandidate[]
+  jobId: string
+}
+
 export function ReviewJobPage() {
   const { jobId = '' } = useParams()
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const reviewStatusFilter = readReviewStatusFilter(searchParams.get('view'))
   const {
     jobs,
@@ -92,10 +102,46 @@ export function ReviewJobPage() {
   const [candidatePageSize, setCandidatePageSize] = useState(10)
   const [candidateSortMode, setCandidateSortMode] = useState<CandidateSortMode>('default')
   const [isFilterExpanded, setIsFilterExpanded] = useState(false)
+  const [jobScopedCandidateState, setJobScopedCandidateState] =
+    useState<JobScopedCandidateState | null>(null)
 
+  const loadJobScopedCandidates = useCallback(async () => {
+    if (!jobId) {
+      return []
+    }
+
+    const response = await listReviewCandidates('all', { jobId })
+    return normalizeReviewCandidates(response)
+  }, [jobId])
+
+  useEffect(() => {
+    let cancelled = false
+
+    void loadJobScopedCandidates()
+      .then((candidates) => {
+        if (!cancelled) {
+          setJobScopedCandidateState({ candidates, jobId })
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load review candidates for job.', error)
+        if (!cancelled) {
+          setJobScopedCandidateState({ candidates: [], jobId })
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [jobId, loadJobScopedCandidates])
+
+  const jobScopedCandidates = jobScopedCandidateState?.jobId === jobId
+    ? jobScopedCandidateState.candidates
+    : null
+  const candidateSource = jobScopedCandidates ?? reviewCandidates
   const reviewJobs = useMemo(
-    () => groupReviewCandidatesByJob(reviewCandidates),
-    [reviewCandidates],
+    () => groupReviewCandidatesByJob(candidateSource),
+    [candidateSource],
   )
   const selectedJob = useMemo(
     () => reviewJobs.find((group) => group.jobId === jobId) ?? null,
@@ -239,9 +285,33 @@ export function ReviewJobPage() {
 
     const interval = window.setInterval(() => {
       void refresh({ silent: true })
+      void loadJobScopedCandidates()
+        .then((candidates) => {
+          setJobScopedCandidateState({ candidates, jobId })
+        })
+        .catch((error) => {
+          console.error('Failed to refresh review candidates for job.', error)
+        })
     }, 3000)
     return () => window.clearInterval(interval)
-  }, [hasActionableCandidates, refresh, selectedCandidates.length, status])
+  }, [hasActionableCandidates, jobId, loadJobScopedCandidates, refresh, selectedCandidates.length, status])
+
+  useEffect(() => {
+    if (!commitSubmitted || reviewStatusFilter !== 'pending') {
+      return
+    }
+
+    const pendingCount = selectedJobStatus?.pending_review_count
+    if (pendingCount === 0 || !hasActionableCandidates) {
+      setSearchParams({ view: 'finished' }, { replace: true })
+    }
+  }, [
+    commitSubmitted,
+    hasActionableCandidates,
+    reviewStatusFilter,
+    selectedJobStatus?.pending_review_count,
+    setSearchParams,
+  ])
 
   const handleCandidatePageChange = (nextPage: number) => {
     const boundedPage = Math.min(Math.max(nextPage, 1), candidatePageCount)
@@ -405,6 +475,12 @@ export function ReviewJobPage() {
       )
       setCommittedJobIds((prev) => new Set(prev).add(selectedJob.jobId))
       setCheckedIds({})
+      setActiveCandidateId(null)
+      await refresh({ silent: true })
+      setJobScopedCandidateState({
+        candidates: await loadJobScopedCandidates(),
+        jobId: selectedJob.jobId,
+      })
     } catch (error) {
       console.error('Failed to commit review task:', error)
     } finally {
