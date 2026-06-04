@@ -20,6 +20,9 @@ LLM judge 산출물:
 
 - `llm-as-a-judge/artifacts/tools-no/llm_judge_results.csv`: 4개 no-tool model/provider의 1,280개 답변별 `llm_answer`, token/cost/latency, `judge_result`, `judge_reason`, 웹 검증 메모.
 - `llm-as-a-judge/artifacts/tools-no/llm_judge_model_summary.csv`: model/provider별 correct/wrong 집계와 평균 token/cost/latency.
+- `llm-as-a-judge/artifacts/tools-no/wrong_type_enum.csv`: no-tool 오답 유형 enum과 전체 count/ratio.
+- `llm-as-a-judge/artifacts/tools-no/wrong_type_summary.csv`: model/provider별 no-tool 오답 유형 count/ratio.
+- `llm-as-a-judge/artifacts/tools-yes/wrong-questions/`: no-tool 오답만 모은 with-tool 실행 후보 데이터셋.
 - `llm-as-a-judge/artifacts/tools-no/charts/`: OpenRouter 실제 비용과 LLM judge accuracy를 합친 price/performance 차트.
 
 Qwen3.7 Max no-tool smoke:

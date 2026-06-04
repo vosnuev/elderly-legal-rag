@@ -1,0 +1,5 @@
+﻿source_file,model_id,provider,total_judged_questions,wrong_questions,wrong_rate,unique_wrong_questions
+deepseek_v4_flash_deepseek.csv,deepseek/deepseek-v4-flash,deepseek,360,111,0.308333,111
+deepseek_v4_pro_deepseek.csv,deepseek/deepseek-v4-pro,deepseek,360,86,0.238889,86
+openai_gpt_oss_120b_cerebras_fp16.csv,openai/gpt-oss-120b,cerebras,360,132,0.366667,132
+qwen_qwen3_7_plus_alibaba.csv,qwen/qwen3.7-plus,alibaba,200,76,0.380000,76
