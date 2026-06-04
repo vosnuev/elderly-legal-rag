@@ -1,43 +1,109 @@
 from __future__ import annotations
 
-from langchain_core.tools import BaseTool, tool
+import asyncio
+import re
+
+from langchain_core.tools import BaseTool
+from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from logger import get_logger
-
+from settings import settings
 
 logger = get_logger(__name__)
 
+_TOOLS_CACHE: list[BaseTool] | None = None
+_TOOLS_LOCK: asyncio.Lock | None = None
+_UNSAFE_TOOL_NAME_CHARS = re.compile(r"[^a-zA-Z0-9_-]")
 
-# LangSmith tool call 검증용 mock 검색 tool
-@tool
-def mock_policy_search_tool(query: str) -> str:
-    """기초연금, 복지 정책, 신청 방법 질문을 검증용 mock 문서에서 검색합니다."""
-    logger.info("mock_policy_search_tool called query=%s", query)
-    return (
-        "mock 검색 결과: 기초연금은 만 65세 이상 어르신 중 소득인정액 기준을 "
-        "충족하는 경우 신청할 수 있습니다. 신청은 주소지 관할 읍면동 주민센터 "
-        "또는 국민연금공단 지사에서 할 수 있습니다."
+
+def _tools_lock() -> asyncio.Lock:
+    global _TOOLS_LOCK
+    if _TOOLS_LOCK is None:
+        _TOOLS_LOCK = asyncio.Lock()
+    return _TOOLS_LOCK
+
+
+def _safe_tool_name(name: str) -> str:
+    safe_name = _UNSAFE_TOOL_NAME_CHARS.sub("_", name).strip("_")
+    return safe_name or "rag_mcp_tool"
+
+
+def _normalize_tool_names(tools: list[BaseTool]) -> list[BaseTool]:
+    used_names: set[str] = set()
+    for tool in tools:
+        original_name = tool.name
+        safe_name = _safe_tool_name(original_name)
+        if safe_name in used_names:
+            suffix = 2
+            candidate = f"{safe_name}_{suffix}"
+            while candidate in used_names:
+                suffix += 1
+                candidate = f"{safe_name}_{suffix}"
+            safe_name = candidate
+
+        used_names.add(safe_name)
+        if safe_name == original_name:
+            continue
+
+        logger.info(
+            "renaming MCP tool for LangChain compatibility original=%s safe=%s",
+            original_name,
+            safe_name,
+        )
+        tool.name = safe_name
+        original_description = tool.description or ""
+        tool.description = (
+            f"{original_description}\nOriginal MCP tool name: {original_name}."
+            if original_description
+            else f"Original MCP tool name: {original_name}."
+        )
+
+    return tools
+
+
+async def _load_rag_mcp_tools() -> list[BaseTool]:
+    client = MultiServerMCPClient(
+        {
+            "rag": {
+                "transport": "http",
+                "url": settings.rag_mcp_url,
+            }
+        }
     )
-
-
-# LangSmith tool call 검증용 mock 검색 tool
-@tool
-def mock_policy_search_tool(query: str) -> str:
-    """기초연금, 복지 정책, 신청 방법 질문을 검증용 mock 문서에서 검색합니다."""
-    return (
-        "mock 검색 결과: 기초연금은 만 65세 이상 어르신 중 소득인정액 기준을 "
-        "충족하는 경우 신청할 수 있습니다. 신청은 주소지 관할 읍면동 주민센터 "
-        "또는 국민연금공단 지사에서 할 수 있습니다."
+    tools = await asyncio.wait_for(
+        client.get_tools(server_name="rag"),
+        timeout=settings.tool_timeout_ms / 1000,
     )
-
-
-# RAG MCP 연결 전까지 agent에 붙일 임시 검색 tool
-@tool
-def rag_search_tool(query: str) -> str:
-    """사용자 질문과 관련된 정보를 찾기 위해 외부 RAG 문서를 검색합니다."""
-    return "RAG 검색 도구는 아직 연결되지 않았습니다."
+    return _normalize_tool_names(tools)
 
 
 # 현재 agent가 사용할 LangChain tool 목록 반환
-def get_tools() -> list[BaseTool]:
-    return [mock_policy_search_tool, rag_search_tool]
+async def get_tools() -> list[BaseTool]:
+    global _TOOLS_CACHE
+    if not settings.enable_rag_tools:
+        logger.info("RAG MCP tools disabled by configuration")
+        return []
+
+    if _TOOLS_CACHE is not None:
+        return _TOOLS_CACHE
+
+    async with _tools_lock():
+        if _TOOLS_CACHE is not None:
+            return _TOOLS_CACHE
+
+        tools = await _load_rag_mcp_tools()
+        if not tools:
+            raise RuntimeError("RAG MCP server returned no tools.")
+
+        _TOOLS_CACHE = tools
+        logger.info(
+            "loaded RAG MCP tools url=%s tools=%s",
+            settings.rag_mcp_url,
+            [tool.name for tool in tools],
+        )
+        return _TOOLS_CACHE
+
+
+def clear_tools_cache() -> None:
+    global _TOOLS_CACHE
+    _TOOLS_CACHE = None

@@ -1,15 +1,22 @@
 from __future__ import annotations
 
 import re
+import time
+from collections.abc import Callable
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from observability.logger import bind_logger
 from query.read.core import read_query, schema_read
 from query.read.discovery import graph_traverse, text_search, vector_search
 from query.utils import bounded_limit
+from settings import settings
+from tools.agent_output_sanitize import sanitize_agent_tool_output
 
 MCP_INSTRUCTIONS = "External Memgraph tools are read-only."
+_logger = bind_logger(component="external_mcp")
+_PREVIEW_TEXT_LIMIT = 240
 
 _FORBIDDEN_CYPHER_OPERATION = re.compile(
     r"\b("
@@ -31,6 +38,8 @@ def _new_mcp(name: str) -> FastMCP:
     return FastMCP(
         name,
         instructions=MCP_INSTRUCTIONS,
+        host=settings.mcp_host,
+        port=settings.mcp_port,
         json_response=True,
         stateless_http=True,
         streamable_http_path="/",
@@ -47,7 +56,11 @@ def _register_read_tools(mcp: FastMCP) -> None:
     @mcp.tool(
         name="memgraph.read_query",
         description=(
-            "Execute a bounded, write-restricted read Cypher query against Memgraph."
+            "Use this to answer Korean law, policy, welfare, employment, and "
+            "document-grounded user questions from the SKN28 RAG Memgraph graph. "
+            "Write only read-only Cypher. Prefer concise queries that return "
+            "answer evidence plus source-identifying fields such as id, file_name, "
+            "title, article, content, evidence_text, or raw_content excerpts."
         ),
     )
     def memgraph_read_query(
@@ -55,13 +68,25 @@ def _register_read_tools(mcp: FastMCP) -> None:
         parameters: dict[str, Any] | None = None,
         max_rows: int | None = None,
     ) -> dict[str, Any]:
-        return _execute_mcp_read_query(query, parameters, max_rows)
+        return _run_logged_mcp_tool(
+            "memgraph.read_query",
+            {
+                "query_preview": _text_preview(query),
+                "has_parameters": bool(parameters),
+                "parameter_keys": sorted(parameters) if parameters else [],
+                "max_rows": max_rows,
+            },
+            lambda: sanitize_agent_tool_output(
+                _execute_mcp_read_query(query, parameters, max_rows)
+            ),
+        )
 
     @mcp.tool(
         name="memgraph.vector_search",
         description=(
-            "Run Memgraph vector_search.search over a vector index. "
-            "The caller must provide the query embedding."
+            "Run Memgraph vector_search.search over a vector index only when the "
+            "caller already has a numeric embedding vector. Do not use this for a "
+            "plain natural-language user question unless an embedding was provided."
         ),
     )
     def memgraph_vector_search(
@@ -69,13 +94,30 @@ def _register_read_tools(mcp: FastMCP) -> None:
         embedding: list[float],
         top_k: int = 5,
     ) -> dict[str, Any]:
-        return vector_search(index_name, embedding, top_k)
+        return _run_logged_mcp_tool(
+            "memgraph.vector_search",
+            {
+                "index_name": index_name,
+                "embedding_length": len(embedding),
+                "top_k": top_k,
+            },
+            lambda: sanitize_agent_tool_output(
+                vector_search(index_name, embedding, top_k)
+            ),
+        )
 
     @mcp.tool(
         name="memgraph.text_index_search",
         description=(
-            "Search graph nodes through a configured Memgraph text index. "
-            "This is not a substring CONTAINS scan and requires the index to exist."
+            "Use this first for plain Korean keywords, law names, article names, "
+            "policy names, regions, institutions, and document titles. It searches "
+            "configured Memgraph text indexes and returns candidate graph nodes "
+            "that should be followed by memgraph.graph_traverse or memgraph.read_query "
+            "to inspect connected chunks, documents, relationships, and review notes. "
+            "Do not repeatedly call this with small keyword variants when an anchor "
+            "node id is already available; expand the graph from the anchor instead. "
+            "If the configured text index is missing, the server falls back to a "
+            "bounded read-only property CONTAINS scan."
         ),
     )
     def memgraph_text_index_search(
@@ -83,11 +125,27 @@ def _register_read_tools(mcp: FastMCP) -> None:
         top_k: int = 20,
         index_name: str | None = None,
     ) -> dict[str, Any]:
-        return text_search(keyword, top_k, index_name)
+        return _run_logged_mcp_tool(
+            "memgraph.text_index_search",
+            {
+                "keyword_preview": _text_preview(keyword),
+                "top_k": top_k,
+                "index_name": index_name,
+            },
+            lambda: sanitize_agent_tool_output(
+                text_search(keyword, top_k, index_name)
+            ),
+        )
 
     @mcp.tool(
         name="memgraph.graph_traverse",
-        description="Traverse a bounded graph neighborhood from a node id property.",
+        description=(
+            "Use this after finding a relevant node id to inspect nearby chunks, "
+            "documents, entities, review notes, and relationships. Prefer this over "
+            "repeating keyword searches when you need related context around an "
+            "already found chunk or document. Keep traversal bounded and use the "
+            "result as evidence for the final answer."
+        ),
     )
     def memgraph_graph_traverse(
         node_id: str,
@@ -95,14 +153,81 @@ def _register_read_tools(mcp: FastMCP) -> None:
         max_depth: int = 2,
         max_rows: int = 50,
     ) -> dict[str, Any]:
-        return graph_traverse(node_id, id_property, max_depth, max_rows)
+        return _run_logged_mcp_tool(
+            "memgraph.graph_traverse",
+            {
+                "node_id": node_id,
+                "id_property": id_property,
+                "max_depth": max_depth,
+                "max_rows": max_rows,
+            },
+            lambda: sanitize_agent_tool_output(
+                graph_traverse(node_id, id_property, max_depth, max_rows)
+            ),
+        )
 
     @mcp.tool(
         name="memgraph.schema_read",
-        description="Read current graph labels, relationship types, and vector index info.",
+        description=(
+            "Use this when you need to understand the available Memgraph labels, "
+            "relationship types, properties, and indexes before writing a Cypher "
+            "query or choosing another RAG tool."
+        ),
     )
     def memgraph_schema_read() -> dict[str, Any]:
-        return schema_read()
+        return _run_logged_mcp_tool(
+            "memgraph.schema_read",
+            {},
+            lambda: sanitize_agent_tool_output(schema_read()),
+        )
+
+
+def _run_logged_mcp_tool(
+    tool_name: str,
+    input_summary: dict[str, Any],
+    call: Callable[[], dict[str, Any]],
+) -> dict[str, Any]:
+    started_at = time.perf_counter()
+    logger = _logger.bind(tool_name=tool_name, input_summary=input_summary)
+    logger.info("MCP tool invocation started")
+    try:
+        result = call()
+    except Exception:
+        logger.bind(duration_ms=_elapsed_ms(started_at)).exception(
+            "MCP tool invocation failed"
+        )
+        raise
+
+    logger.bind(
+        duration_ms=_elapsed_ms(started_at),
+        result_summary=_result_summary(result),
+    ).info("MCP tool invocation completed")
+    return result
+
+
+def _elapsed_ms(started_at: float) -> float:
+    return round((time.perf_counter() - started_at) * 1000, 2)
+
+
+def _result_summary(result: dict[str, Any]) -> dict[str, Any]:
+    rows = result.get("rows")
+    return {
+        "row_count": result.get("row_count"),
+        "returned_row_count": result.get(
+            "returned_row_count",
+            len(rows) if isinstance(rows, list) else None,
+        ),
+        "truncated_rows": result.get("truncated_rows"),
+        "sanitized": result.get("sanitized"),
+        "keys": sorted(result),
+    }
+
+
+def _text_preview(value: str) -> str:
+    compact = " ".join(value.split())
+    if len(compact) <= _PREVIEW_TEXT_LIMIT:
+        return compact
+    return f"{compact[:_PREVIEW_TEXT_LIMIT]}...<truncated chars={len(compact) - _PREVIEW_TEXT_LIMIT}>"
 
 
 def _execute_mcp_read_query(
