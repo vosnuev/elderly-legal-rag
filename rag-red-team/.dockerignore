@@ -1,0 +1,9 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+original-data-toon/
+original-data-with-chunk-and-edge/
+original-data-with-chunk-and-edge-md/

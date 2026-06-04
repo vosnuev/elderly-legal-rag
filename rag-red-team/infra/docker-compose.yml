@@ -1,0 +1,62 @@
+services:
+  neo4j:
+    image: ${NEO4J_IMAGE:-neo4j:5-community}
+    container_name: ${NEO4J_CONTAINER_NAME:-rag-red-team-neo4j}
+    ports:
+      - "127.0.0.1:${NEO4J_HTTP_PORT:-7475}:7474"
+      - "127.0.0.1:${NEO4J_BOLT_PORT:-7688}:7687"
+    environment:
+      NEO4J_AUTH: "${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-1234}"
+      NEO4J_dbms_security_auth__minimum__password__length: "4"
+      NEO4J_server_default__listen__address: "0.0.0.0"
+      NEO4J_server_bolt_listen__address: "0.0.0.0:7687"
+      NEO4J_server_http_listen__address: "0.0.0.0:7474"
+      NEO4J_dbms_security_procedures_unrestricted: ""
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/var/lib/neo4j/import
+      - neo4j_plugins:/plugins
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "cypher-shell -u ${NEO4J_USER:-neo4j} -p ${NEO4J_PASSWORD:-1234} 'RETURN 1;' || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  mcp:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: ${MCP_CONTAINER_NAME:-rag-redteam}
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    ports:
+      - "${MCP_HTTP_PORT:-9001}:9001"
+    environment:
+      NEO4J_URI: "bolt://neo4j:7687"
+      NEO4J_USER: "${NEO4J_USER:-neo4j}"
+      NEO4J_PASSWORD: "${NEO4J_PASSWORD:-1234}"
+      NEO4J_DATABASE: "${NEO4J_DATABASE:-neo4j}"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import socket; s=socket.create_connection(('127.0.0.1', 9001), 2); s.close()\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_import:
+  neo4j_plugins:
