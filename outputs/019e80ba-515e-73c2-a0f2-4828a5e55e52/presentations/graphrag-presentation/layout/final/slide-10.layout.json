@@ -1,0 +1,3735 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/q85pkq",
+    "id": "q85pkq",
+    "slide": 10,
+    "layoutId": "c705888d-c1dc-41a0-8e8a-e864e7737636",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "1ae9dcfe-6a88-4ec2-9948-a3b124cfbbcd",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "c705888d-c1dc-41a0-8e8a-e864e7737636",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "1ae9dcfe-6a88-4ec2-9948-a3b124cfbbcd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "1ae9dcfe-6a88-4ec2-9948-a3b124cfbbcd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "1",
+      "bbox": [
+        56,
+        28,
+        720,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "rect",
+      "text": "REVIEW QUEUE",
+      "textPreview": "REVIEW QUEUE",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#9A6B4F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "REVIEW QUEUE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "REVIEW QUEUE",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#9A6B4F",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "REVIEW QUEUE",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#9A6B4F",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "2",
+      "bbox": [
+        56,
+        52,
+        980,
+        68
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "rect",
+      "text": "Candidate first, edge later",
+      "textPreview": "Candidate first, edge later",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Candidate first, edge later"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Candidate first, edge later",
+          "resolvedTextStyle": {
+            "fontSize": 30,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Candidate first, edge later",
+              "fontSize": 30,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "3",
+      "bbox": [
+        58,
+        118,
+        900,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "rect",
+      "text": "LLM이 만든 관계는 바로 graph edge가 아니라 사람이 승인하는 RelationshipCandidate가 된다.",
+      "textPreview": "LLM이 만든 관계는 바로 graph edge가 아니라 사람이 승인하는 RelationshipCandidate가 된다.",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#6C6775",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LLM이 만든 관계는 바로 graph edge가 아니라 사람이 승인하는 RelationshipCandidate가 된다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LLM이 만든 관계는 바로 graph edge가 아니라 사람이 승인하는 RelationshipCandidate가 된다.",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#6C6775",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LLM이 만든 관계는 바로 graph edge가 아니라 사람이 승인하는 RelationshipCandidate가 된다.",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#6C6775",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm1cfa9w",
+      "id": "4",
+      "bbox": [
+        1188,
+        48,
+        36,
+        20
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "rect",
+      "text": "10",
+      "textPreview": "10",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#9A6B4F",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "10",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#9A6B4F",
+            "bold": true,
+            "alignment": "right",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "10",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#9A6B4F",
+              "bold": true,
+              "alignment": "right",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u18jqh0f",
+      "id": "5",
+      "bbox": [
+        56,
+        150,
+        1168,
+        1
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "rect",
+      "fillColor": "#E5DCD5"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "6",
+      "bbox": [
+        70,
+        192,
+        310,
+        340
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D8D0",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "7",
+      "bbox": [
+        100,
+        226,
+        240,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.6"
+      },
+      "geometry": "rect",
+      "text": "RelationshipCandidate",
+      "textPreview": "RelationshipCandidate",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RelationshipCandidate"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RelationshipCandidate",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "RelationshipCandidate",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "8",
+      "bbox": [
+        100,
+        270,
+        128,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.7"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFF1D6",
+      "lineColor": "#C77700",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "9",
+      "bbox": [
+        112,
+        278,
+        104,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.8"
+      },
+      "geometry": "rect",
+      "text": "pending_review",
+      "textPreview": "pending_review",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#C77700",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "pending_review"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "pending_review",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#C77700",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "pending_review",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#C77700",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "10",
+      "bbox": [
+        100,
+        330,
+        120,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.9"
+      },
+      "geometry": "rect",
+      "text": "source chunk",
+      "textPreview": "source chunk",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C6775",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "source chunk"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "source chunk",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C6775",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "source chunk",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C6775",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "11",
+      "bbox": [
+        100,
+        354,
+        240,
+        48
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.10"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FAF7F3",
+      "lineColor": "#E5DCD5",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "12",
+      "bbox": [
+        116,
+        370,
+        190,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.11"
+      },
+      "geometry": "rect",
+      "text": "제57조~제60조",
+      "textPreview": "제57조~제60조",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "제57조~제60조"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "제57조~제60조",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "제57조~제60조",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "13",
+      "bbox": [
+        100,
+        424,
+        120,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.12"
+      },
+      "geometry": "rect",
+      "text": "target chunk",
+      "textPreview": "target chunk",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C6775",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "target chunk"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "target chunk",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C6775",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "target chunk",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C6775",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "14",
+      "bbox": [
+        100,
+        448,
+        240,
+        48
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.13"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FAF7F3",
+      "lineColor": "#E5DCD5",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "15",
+      "bbox": [
+        116,
+        464,
+        190,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.14"
+      },
+      "geometry": "rect",
+      "text": "제16조~제63조",
+      "textPreview": "제16조~제63조",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "제16조~제63조"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "제16조~제63조",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "제16조~제63조",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "16",
+      "bbox": [
+        400,
+        338,
+        42,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.15"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#9A6B4F",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#9A6B4F",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#9A6B4F",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "17",
+      "bbox": [
+        462,
+        192,
+        350,
+        340
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.16"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFBF8",
+      "lineColor": "#DEC8BA",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "18",
+      "bbox": [
+        492,
+        226,
+        220,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.17"
+      },
+      "geometry": "rect",
+      "text": "Human review",
+      "textPreview": "Human review",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Human review"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Human review",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Human review",
+              "fontSize": 24,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "19",
+      "bbox": [
+        492,
+        276,
+        260,
+        74
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.18"
+      },
+      "geometry": "rect",
+      "text": "사용자는 source/target chunk, AI rationale, evidence, confidence를 보고 approve/deny를 staging한다.",
+      "textPreview": "사용자는 source/target chunk, AI rationale, evidence, confidence를 보고 approve/deny를 staging한다.",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "사용자는 source/target chunk, AI"
+          },
+          {
+            "index": 2,
+            "text": "rationale, evidence, confidence를"
+          },
+          {
+            "index": 3,
+            "text": "보고 approve/deny를 staging한다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "사용자는 source/target chunk, AI rationale, evidence, confidence를 보고 approve/deny를 staging한다.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "사용자는 source/target chunk, AI rationale, evidence, confidence를 보고 approve/deny를 staging한다.",
+              "fontSize": 17,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "20",
+      "bbox": [
+        492,
+        386,
+        112,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.19"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E4F8EF",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "21",
+      "bbox": [
+        504,
+        394,
+        88,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.20"
+      },
+      "geometry": "rect",
+      "text": "Approve",
+      "textPreview": "Approve",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#0F9F6E",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Approve"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Approve",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#0F9F6E",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Approve",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#0F9F6E",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "22",
+      "bbox": [
+        620,
+        386,
+        88,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.21"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFE7EF",
+      "lineColor": "#BE3455",
+      "lineWidth": 1
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "23",
+      "bbox": [
+        632,
+        394,
+        64,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.22"
+      },
+      "geometry": "rect",
+      "text": "Deny",
+      "textPreview": "Deny",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#BE3455",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Deny"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Deny",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#BE3455",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Deny",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#BE3455",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "24",
+      "bbox": [
+        492,
+        438,
+        156,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.23"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#F7ECE4",
+      "lineColor": "#6C2E12",
+      "lineWidth": 1
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "25",
+      "bbox": [
+        504,
+        446,
+        132,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.24"
+      },
+      "geometry": "rect",
+      "text": "Atomic commit",
+      "textPreview": "Atomic commit",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Atomic commit"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Atomic commit",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Atomic commit",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqh0fepk",
+      "id": "26",
+      "bbox": [
+        836,
+        338,
+        42,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.25"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#9A6B4F",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#9A6B4F",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#9A6B4F",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q5o7qpg3",
+      "id": "27",
+      "bbox": [
+        900,
+        192,
+        300,
+        340
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.26"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FBFEFC",
+      "lineColor": "#BFE4D6",
+      "lineWidth": 1
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "28",
+      "bbox": [
+        930,
+        226,
+        230,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.27"
+      },
+      "geometry": "rect",
+      "text": "Materialized graph",
+      "textPreview": "Materialized graph",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Arial",
+        "color": "#0F766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Materialized graph"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Materialized graph",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Arial",
+            "color": "#0F766E",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Materialized graph",
+              "fontSize": 24,
+              "typeface": "Arial",
+              "color": "#0F766E",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "29",
+      "bbox": [
+        940,
+        300,
+        210,
+        74
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.28"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E4F8EF",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "30",
+      "bbox": [
+        956,
+        314,
+        178,
+        34
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.29"
+      },
+      "geometry": "rect",
+      "text": "Approved",
+      "textPreview": "Approved",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Approved"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Approved",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Approved",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "31",
+      "bbox": [
+        956,
+        352,
+        178,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.30"
+      },
+      "geometry": "rect",
+      "text": "actual edge 생성",
+      "textPreview": "actual edge 생성",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C6775",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "actual edge 생성"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "actual edge 생성",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C6775",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "actual edge 생성",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C6775",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "32",
+      "bbox": [
+        940,
+        406,
+        210,
+        74
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.31"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFE7EF",
+      "lineColor": "#BE3455",
+      "lineWidth": 1
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsvu9kni",
+      "id": "33",
+      "bbox": [
+        956,
+        420,
+        178,
+        34
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.32"
+      },
+      "geometry": "rect",
+      "text": "Denied",
+      "textPreview": "Denied",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Denied"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Denied",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Denied",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "34",
+      "bbox": [
+        956,
+        458,
+        178,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.33"
+      },
+      "geometry": "rect",
+      "text": "rejected artifact로 보존",
+      "textPreview": "rejected artifact로 보존",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C6775",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "rejected artifact로 보존"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "rejected artifact로 보존",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C6775",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "rejected artifact로 보존",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C6775",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "35",
+      "bbox": [
+        194,
+        596,
+        880,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.34"
+      },
+      "geometry": "rect",
+      "text": "검수 가능한 자동화: LLM output은 제안이고 DB graph truth는 review 이후에만 바뀐다.",
+      "textPreview": "검수 가능한 자동화: LLM output은 제안이고 DB graph truth는 review 이후에만 바뀐다.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Arial",
+        "color": "#17122D",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "검수 가능한 자동화: LLM output은 제안이고 DB graph truth는 review 이후에만 바뀐다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "검수 가능한 자동화: LLM output은 제안이고 DB graph truth는 review 이후에만 바뀐다.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Arial",
+            "color": "#17122D",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "검수 가능한 자동화: LLM output은 제안이고 DB graph truth는 review 이후에만 바뀐다.",
+              "fontSize": 18,
+              "typeface": "Arial",
+              "color": "#17122D",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 1224,
+          "height": 620
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 28
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 720
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 720,
+              "height": 18
+            },
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 720,
+              "height": 18
+            },
+            "children": [],
+            "text": "REVIEW QUEUE",
+            "transform": "none",
+            "element": {
+              "aid": "sh/u9knih4b",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 52
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 980
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 68
+              }
+            },
+            "intrinsicSize": {
+              "width": 980,
+              "height": 68
+            },
+            "frame": {
+              "left": 56,
+              "top": 52,
+              "width": 980,
+              "height": 68
+            },
+            "children": [],
+            "text": "Candidate first, edge later",
+            "transform": "none",
+            "element": {
+              "aid": "sh/1032lszq",
+              "id": "2",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "text",
+            "position": {
+              "left": 58,
+              "top": 118
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 900
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 900,
+              "height": 28
+            },
+            "frame": {
+              "left": 58,
+              "top": 118,
+              "width": 900,
+              "height": 28
+            },
+            "children": [],
+            "text": "LLM이 만든 관계는 바로 graph edge가 아니라 사람이 승인하는 RelationshipCandidate가 된다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/cfa9w3m9",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "text",
+            "position": {
+              "left": 1188,
+              "top": 48
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 36
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 20
+              }
+            },
+            "intrinsicSize": {
+              "width": 36,
+              "height": 20
+            },
+            "frame": {
+              "left": 1188,
+              "top": 48,
+              "width": 36,
+              "height": 20
+            },
+            "children": [],
+            "text": "10",
+            "transform": "none",
+            "element": {
+              "aid": "sh/jm1cfa9w",
+              "id": "4",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "shape",
+            "position": {
+              "left": 56,
+              "top": 150
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 1
+              }
+            },
+            "intrinsicSize": {
+              "width": 1168,
+              "height": 1
+            },
+            "frame": {
+              "left": 56,
+              "top": 150,
+              "width": 1168,
+              "height": 1
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/u18jqh0f",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "shape",
+            "position": {
+              "left": 70,
+              "top": 192
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 310
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 340
+              }
+            },
+            "intrinsicSize": {
+              "width": 310,
+              "height": 340
+            },
+            "frame": {
+              "left": 70,
+              "top": 192,
+              "width": 310,
+              "height": 340
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/1orytsvu",
+              "id": "6",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.6",
+            "kind": "text",
+            "position": {
+              "left": 100,
+              "top": 226
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 240
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 240,
+              "height": 26
+            },
+            "frame": {
+              "left": 100,
+              "top": 226,
+              "width": 240,
+              "height": 26
+            },
+            "children": [],
+            "text": "RelationshipCandidate",
+            "transform": "none",
+            "element": {
+              "aid": "sh/c7u54zid",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.7",
+            "kind": "shape",
+            "position": {
+              "left": 100,
+              "top": 270
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 128
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 128,
+              "height": 30
+            },
+            "frame": {
+              "left": 100,
+              "top": 270,
+              "width": 128,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/nap4r65w",
+              "id": "8",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.8",
+            "kind": "text",
+            "position": {
+              "left": 112,
+              "top": 278
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 104
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 104,
+              "height": 18
+            },
+            "frame": {
+              "left": 112,
+              "top": 278,
+              "width": 104,
+              "height": 18
+            },
+            "children": [],
+            "text": "pending_review",
+            "transform": "none",
+            "element": {
+              "aid": "sh/upwb2hwf",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.9",
+            "kind": "text",
+            "position": {
+              "left": 100,
+              "top": 330
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 120
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 120,
+              "height": 18
+            },
+            "frame": {
+              "left": 100,
+              "top": 330,
+              "width": 120,
+              "height": 18
+            },
+            "children": [],
+            "text": "source chunk",
+            "transform": "none",
+            "element": {
+              "aid": "sh/orytsvu9",
+              "id": "10",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.10",
+            "kind": "shape",
+            "position": {
+              "left": 100,
+              "top": 354
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 240
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 48
+              }
+            },
+            "intrinsicSize": {
+              "width": 240,
+              "height": 48
+            },
+            "frame": {
+              "left": 100,
+              "top": 354,
+              "width": 240,
+              "height": 48
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/hcrmhk3q",
+              "id": "11",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.11",
+            "kind": "text",
+            "position": {
+              "left": 116,
+              "top": 370
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 190
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 190,
+              "height": 16
+            },
+            "frame": {
+              "left": 116,
+              "top": 370,
+              "width": 190,
+              "height": 16
+            },
+            "children": [],
+            "text": "제57조~제60조",
+            "transform": "none",
+            "element": {
+              "aid": "sh/al87ed8b",
+              "id": "12",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.12",
+            "kind": "text",
+            "position": {
+              "left": 100,
+              "top": 424
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 120
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 120,
+              "height": 18
+            },
+            "frame": {
+              "left": 100,
+              "top": 424,
+              "width": 120,
+              "height": 18
+            },
+            "children": [],
+            "text": "target chunk",
+            "transform": "none",
+            "element": {
+              "aid": "sh/z61032ls",
+              "id": "13",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.13",
+            "kind": "shape",
+            "position": {
+              "left": 100,
+              "top": 448
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 240
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 48
+              }
+            },
+            "intrinsicSize": {
+              "width": 240,
+              "height": 48
+            },
+            "frame": {
+              "left": 100,
+              "top": 448,
+              "width": 240,
+              "height": 48
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/sfil0rqd",
+              "id": "14",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.14",
+            "kind": "text",
+            "position": {
+              "left": 116,
+              "top": 464
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 190
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 190,
+              "height": 16
+            },
+            "frame": {
+              "left": 116,
+              "top": 464,
+              "width": 190,
+              "height": 16
+            },
+            "children": [],
+            "text": "제16조~제63조",
+            "transform": "none",
+            "element": {
+              "aid": "sh/h0fepkzu",
+              "id": "15",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.15",
+            "kind": "text",
+            "position": {
+              "left": 400,
+              "top": 338
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 42
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 42,
+              "height": 24
+            },
+            "frame": {
+              "left": 400,
+              "top": 338,
+              "width": 42,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/a9w3m94f",
+              "id": "16",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.16",
+            "kind": "shape",
+            "position": {
+              "left": 462,
+              "top": 192
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 350
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 340
+              }
+            },
+            "intrinsicSize": {
+              "width": 350,
+              "height": 340
+            },
+            "frame": {
+              "left": 462,
+              "top": 192,
+              "width": 350,
+              "height": 340
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/zupwb2hw",
+              "id": "17",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.17",
+            "kind": "text",
+            "position": {
+              "left": 492,
+              "top": 226
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 28
+            },
+            "frame": {
+              "left": 492,
+              "top": 226,
+              "width": 220,
+              "height": 28
+            },
+            "children": [],
+            "text": "Human review",
+            "transform": "none",
+            "element": {
+              "aid": "sh/obm58z25",
+              "id": "18",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.18",
+            "kind": "text",
+            "position": {
+              "left": 492,
+              "top": 276
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 260
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 74
+              }
+            },
+            "intrinsicSize": {
+              "width": 260,
+              "height": 74
+            },
+            "frame": {
+              "left": 492,
+              "top": 276,
+              "width": 260,
+              "height": 74
+            },
+            "children": [],
+            "text": "사용자는 source/target chunk, AI rationale, evidence, confidence를 보고 approve/deny를 staging한다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/hwfyxobm",
+              "id": "19",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.19",
+            "kind": "shape",
+            "position": {
+              "left": 492,
+              "top": 386
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 112
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 112,
+              "height": 30
+            },
+            "frame": {
+              "left": 492,
+              "top": 386,
+              "width": 112,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/18jqh0fe",
+              "id": "20",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.20",
+            "kind": "text",
+            "position": {
+              "left": 504,
+              "top": 394
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 88
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 88,
+              "height": 18
+            },
+            "frame": {
+              "left": 504,
+              "top": 394,
+              "width": 88,
+              "height": 18
+            },
+            "children": [],
+            "text": "Approve",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8nqxs72x",
+              "id": "21",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.21",
+            "kind": "shape",
+            "position": {
+              "left": 620,
+              "top": 386
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 88
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 88,
+              "height": 30
+            },
+            "frame": {
+              "left": 620,
+              "top": 386,
+              "width": 88,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/j2t83itg",
+              "id": "22",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.22",
+            "kind": "text",
+            "position": {
+              "left": 632,
+              "top": 394
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 64
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 64,
+              "height": 18
+            },
+            "frame": {
+              "left": 632,
+              "top": 394,
+              "width": 64,
+              "height": 18
+            },
+            "children": [],
+            "text": "Deny",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qh0fepkz",
+              "id": "23",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.23",
+            "kind": "shape",
+            "position": {
+              "left": 492,
+              "top": 438
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 156
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 156,
+              "height": 30
+            },
+            "frame": {
+              "left": 492,
+              "top": 438,
+              "width": 156,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/1w7mp0bi",
+              "id": "24",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.24",
+            "kind": "text",
+            "position": {
+              "left": 504,
+              "top": 446
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 132
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 132,
+              "height": 18
+            },
+            "frame": {
+              "left": 504,
+              "top": 446,
+              "width": 132,
+              "height": 18
+            },
+            "children": [],
+            "text": "Atomic commit",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8bat47y1",
+              "id": "25",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.25",
+            "kind": "text",
+            "position": {
+              "left": 836,
+              "top": 338
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 42
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 42,
+              "height": 24
+            },
+            "frame": {
+              "left": 836,
+              "top": 338,
+              "width": 42,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/jqh0fepk",
+              "id": "26",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.26",
+            "kind": "shape",
+            "position": {
+              "left": 900,
+              "top": 192
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 300
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 340
+              }
+            },
+            "intrinsicSize": {
+              "width": 300,
+              "height": 340
+            },
+            "frame": {
+              "left": 900,
+              "top": 192,
+              "width": 300,
+              "height": 340
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/q5o7qpg3",
+              "id": "27",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.27",
+            "kind": "text",
+            "position": {
+              "left": 930,
+              "top": 226
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 230
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 230,
+              "height": 28
+            },
+            "frame": {
+              "left": 930,
+              "top": 226,
+              "width": 230,
+              "height": 28
+            },
+            "children": [],
+            "text": "Materialized graph",
+            "transform": "none",
+            "element": {
+              "aid": "sh/1kre1w7m",
+              "id": "28",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.28",
+            "kind": "shape",
+            "position": {
+              "left": 940,
+              "top": 300
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 210
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 74
+              }
+            },
+            "intrinsicSize": {
+              "width": 210,
+              "height": 74
+            },
+            "frame": {
+              "left": 940,
+              "top": 300,
+              "width": 210,
+              "height": 74
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/c3ylc7u5",
+              "id": "29",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.29",
+            "kind": "text",
+            "position": {
+              "left": 956,
+              "top": 314
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 34
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 34
+            },
+            "frame": {
+              "left": 956,
+              "top": 314,
+              "width": 178,
+              "height": 34
+            },
+            "children": [],
+            "text": "Approved",
+            "transform": "none",
+            "element": {
+              "aid": "sh/m1cfa9w3",
+              "id": "30",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.30",
+            "kind": "text",
+            "position": {
+              "left": 956,
+              "top": 352
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 18
+            },
+            "frame": {
+              "left": 956,
+              "top": 352,
+              "width": 178,
+              "height": 18
+            },
+            "children": [],
+            "text": "actual edge 생성",
+            "transform": "none",
+            "element": {
+              "aid": "sh/bm58z25k",
+              "id": "31",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.31",
+            "kind": "shape",
+            "position": {
+              "left": 940,
+              "top": 406
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 210
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 74
+              }
+            },
+            "intrinsicSize": {
+              "width": 210,
+              "height": 74
+            },
+            "frame": {
+              "left": 940,
+              "top": 406,
+              "width": 210,
+              "height": 74
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/47y1kre1",
+              "id": "32",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.32",
+            "kind": "text",
+            "position": {
+              "left": 956,
+              "top": 420
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 34
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 34
+            },
+            "frame": {
+              "left": 956,
+              "top": 420,
+              "width": 178,
+              "height": 34
+            },
+            "children": [],
+            "text": "Denied",
+            "transform": "none",
+            "element": {
+              "aid": "sh/tsvu9kni",
+              "id": "33",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.33",
+            "kind": "text",
+            "position": {
+              "left": 956,
+              "top": 458
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 18
+            },
+            "frame": {
+              "left": 956,
+              "top": 458,
+              "width": 178,
+              "height": 18
+            },
+            "children": [],
+            "text": "rejected artifact로 보존",
+            "transform": "none",
+            "element": {
+              "aid": "sh/mp0bi9s3",
+              "id": "34",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.34",
+            "kind": "text",
+            "position": {
+              "left": 194,
+              "top": 596
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 880
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 880,
+              "height": 24
+            },
+            "frame": {
+              "left": 194,
+              "top": 596,
+              "width": 880,
+              "height": 24
+            },
+            "children": [],
+            "text": "검수 가능한 자동화: LLM output은 제안이고 DB graph truth는 review 이후에만 바뀐다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/bat47y1k",
+              "id": "35",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 720,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 56,
+              "top": 52,
+              "width": 980,
+              "height": 68
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 58,
+              "top": 118,
+              "width": 900,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 1188,
+              "top": 48,
+              "width": 36,
+              "height": 20
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 56,
+              "top": 150,
+              "width": 1168,
+              "height": 1
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 70,
+              "top": 192,
+              "width": 310,
+              "height": 340
+            }
+          },
+          {
+            "path": "0.6",
+            "frame": {
+              "left": 100,
+              "top": 226,
+              "width": 240,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.7",
+            "frame": {
+              "left": 100,
+              "top": 270,
+              "width": 128,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.8",
+            "frame": {
+              "left": 112,
+              "top": 278,
+              "width": 104,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.9",
+            "frame": {
+              "left": 100,
+              "top": 330,
+              "width": 120,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.10",
+            "frame": {
+              "left": 100,
+              "top": 354,
+              "width": 240,
+              "height": 48
+            }
+          },
+          {
+            "path": "0.11",
+            "frame": {
+              "left": 116,
+              "top": 370,
+              "width": 190,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.12",
+            "frame": {
+              "left": 100,
+              "top": 424,
+              "width": 120,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.13",
+            "frame": {
+              "left": 100,
+              "top": 448,
+              "width": 240,
+              "height": 48
+            }
+          },
+          {
+            "path": "0.14",
+            "frame": {
+              "left": 116,
+              "top": 464,
+              "width": 190,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.15",
+            "frame": {
+              "left": 400,
+              "top": 338,
+              "width": 42,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.16",
+            "frame": {
+              "left": 462,
+              "top": 192,
+              "width": 350,
+              "height": 340
+            }
+          },
+          {
+            "path": "0.17",
+            "frame": {
+              "left": 492,
+              "top": 226,
+              "width": 220,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.18",
+            "frame": {
+              "left": 492,
+              "top": 276,
+              "width": 260,
+              "height": 74
+            }
+          },
+          {
+            "path": "0.19",
+            "frame": {
+              "left": 492,
+              "top": 386,
+              "width": 112,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.20",
+            "frame": {
+              "left": 504,
+              "top": 394,
+              "width": 88,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.21",
+            "frame": {
+              "left": 620,
+              "top": 386,
+              "width": 88,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.22",
+            "frame": {
+              "left": 632,
+              "top": 394,
+              "width": 64,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.23",
+            "frame": {
+              "left": 492,
+              "top": 438,
+              "width": 156,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.24",
+            "frame": {
+              "left": 504,
+              "top": 446,
+              "width": 132,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.25",
+            "frame": {
+              "left": 836,
+              "top": 338,
+              "width": 42,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.26",
+            "frame": {
+              "left": 900,
+              "top": 192,
+              "width": 300,
+              "height": 340
+            }
+          },
+          {
+            "path": "0.27",
+            "frame": {
+              "left": 930,
+              "top": 226,
+              "width": 230,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.28",
+            "frame": {
+              "left": 940,
+              "top": 300,
+              "width": 210,
+              "height": 74
+            }
+          },
+          {
+            "path": "0.29",
+            "frame": {
+              "left": 956,
+              "top": 314,
+              "width": 178,
+              "height": 34
+            }
+          },
+          {
+            "path": "0.30",
+            "frame": {
+              "left": 956,
+              "top": 352,
+              "width": 178,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.31",
+            "frame": {
+              "left": 940,
+              "top": 406,
+              "width": 210,
+              "height": 74
+            }
+          },
+          {
+            "path": "0.32",
+            "frame": {
+              "left": 956,
+              "top": 420,
+              "width": 178,
+              "height": 34
+            }
+          },
+          {
+            "path": "0.33",
+            "frame": {
+              "left": 956,
+              "top": 458,
+              "width": 178,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.34",
+            "frame": {
+              "left": 194,
+              "top": 596,
+              "width": 880,
+              "height": 24
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

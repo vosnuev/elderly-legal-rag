@@ -1,0 +1,4067 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/5yoykt",
+    "id": "5yoykt",
+    "slide": 2,
+    "layoutId": "f256c434-2912-4602-8a51-36e8654de185",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f256c434-2912-4602-8a51-36e8654de185",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "1",
+      "bbox": [
+        56,
+        28,
+        760,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "rect",
+      "text": "PROBLEM FRAMING",
+      "textPreview": "PROBLEM FRAMING",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PROBLEM FRAMING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PROBLEM FRAMING",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PROBLEM FRAMING",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "2",
+      "bbox": [
+        56,
+        54,
+        1010,
+        66
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "rect",
+      "text": "Why vector-only RAG is not enough",
+      "textPreview": "Why vector-only RAG is not enough",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Why vector-only RAG is not enough"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Why vector-only RAG is not enough",
+          "resolvedTextStyle": {
+            "fontSize": 30,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Why vector-only RAG is not enough",
+              "fontSize": 30,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "3",
+      "bbox": [
+        58,
+        120,
+        930,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "rect",
+      "text": "법령/조례 도메인은 의미 유사도뿐 아니라 조항 간 관계, 예외, 근거 검수가 필요하다.",
+      "textPreview": "법령/조례 도메인은 의미 유사도뿐 아니라 조항 간 관계, 예외, 근거 검수가 필요하다.",
+      "resolvedFontSize": 12.51,
+      "resolvedTextStyle": {
+        "fontSize": 12.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "법령/조례 도메인은 의미 유사도뿐 아니라 조항 간 관계, 예외, 근거 검수가 필요하다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "법령/조례 도메인은 의미 유사도뿐 아니라 조항 간 관계, 예외, 근거 검수가 필요하다.",
+          "resolvedTextStyle": {
+            "fontSize": 12.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "법령/조례 도메인은 의미 유사도뿐 아니라 조항 간 관계, 예외, 근거 검수가 필요하다.",
+              "fontSize": 12.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "4",
+      "bbox": [
+        1186,
+        48,
+        38,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "right",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "right",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "5",
+      "bbox": [
+        56,
+        152,
+        1168,
+        1
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "rect",
+      "fillColor": "#E5DCD5"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "6",
+      "bbox": [
+        72,
+        188,
+        500,
+        392
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D7CF",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "7",
+      "bbox": [
+        106,
+        220,
+        260,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.6"
+      },
+      "geometry": "rect",
+      "text": "일반 vector RAG",
+      "textPreview": "일반 vector RAG",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "일반 vector RAG"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "일반 vector RAG",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "일반 vector RAG",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "8",
+      "bbox": [
+        112,
+        282,
+        150,
+        86
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.7"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#F7ECE4",
+      "lineColor": "#6C2E12",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "9",
+      "bbox": [
+        128,
+        296,
+        118,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.8"
+      },
+      "geometry": "rect",
+      "text": "Chunk",
+      "textPreview": "Chunk",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Chunk"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Chunk",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Chunk",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8v6psfi",
+      "id": "10",
+      "bbox": [
+        128,
+        326,
+        118,
+        34
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.9"
+      },
+      "geometry": "rect",
+      "text": "문서를 조각으로 나눔",
+      "textPreview": "문서를 조각으로 나눔",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "문서를 조각으로 나눔"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "문서를 조각으로 나눔",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "문서를 조각으로 나눔",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/onyd0z61",
+      "id": "11",
+      "bbox": [
+        280,
+        313,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.10"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "12",
+      "bbox": [
+        326,
+        282,
+        170,
+        86
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.11"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#F7ECE4",
+      "lineColor": "#6C2E12",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6hcrmhk3",
+      "id": "13",
+      "bbox": [
+        342,
+        296,
+        138,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.12"
+      },
+      "geometry": "rect",
+      "text": "Embedding",
+      "textPreview": "Embedding",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Embedding"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Embedding",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Embedding",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dg7adsji",
+      "id": "14",
+      "bbox": [
+        342,
+        326,
+        138,
+        34
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.13"
+      },
+      "geometry": "rect",
+      "text": "벡터화 후 top-k 검색",
+      "textPreview": "벡터화 후 top-k 검색",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "벡터화 후 top-k 검색"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "벡터화 후 top-k 검색",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "벡터화 후 top-k 검색",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ovahoza1",
+      "id": "15",
+      "bbox": [
+        234,
+        400,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.14"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vahoza1g",
+      "id": "16",
+      "bbox": [
+        202,
+        438,
+        210,
+        90
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.15"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFE7EF",
+      "lineColor": "#BE3455",
+      "lineWidth": 1
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6tovahoz",
+      "id": "17",
+      "bbox": [
+        218,
+        452,
+        178,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.16"
+      },
+      "geometry": "rect",
+      "text": "Answer",
+      "textPreview": "Answer",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Answer"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Answer",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Answer",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsji5sne",
+      "id": "18",
+      "bbox": [
+        218,
+        482,
+        178,
+        38
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.17"
+      },
+      "geometry": "rect",
+      "text": "근거/관계 검수는 약함",
+      "textPreview": "근거/관계 검수는 약함",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "근거/관계 검수는 약함"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "근거/관계 검수는 약함",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "근거/관계 검수는 약함",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7qpg3ex",
+      "id": "19",
+      "bbox": [
+        110,
+        540,
+        390,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.18"
+      },
+      "geometry": "rect",
+      "text": "유사 문장은 찾지만 조문 간 관계와 예외의 타당성을 검수하기 어렵다.",
+      "textPreview": "유사 문장은 찾지만 조문 간 관계와 예외의 타당성을 검수하기 어렵다.",
+      "resolvedFontSize": 13.51,
+      "resolvedTextStyle": {
+        "fontSize": 13.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "유사 문장은 찾지만 조문 간 관계와 예외의 타당성을 검수하기 어렵다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "유사 문장은 찾지만 조문 간 관계와 예외의 타당성을 검수하기 어렵다.",
+          "resolvedTextStyle": {
+            "fontSize": 13.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "유사 문장은 찾지만 조문 간 관계와 예외의 타당성을 검수하기 어렵다.",
+              "fontSize": 13.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjm1cfa9",
+      "id": "20",
+      "bbox": [
+        700,
+        188,
+        500,
+        392
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.19"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8D0FF",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94fu18jq",
+      "id": "21",
+      "bbox": [
+        734,
+        220,
+        260,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.20"
+      },
+      "geometry": "rect",
+      "text": "이번 GraphRAG",
+      "textPreview": "이번 GraphRAG",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "이번 GraphRAG"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "이번 GraphRAG",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "이번 GraphRAG",
+              "fontSize": 23,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hwfyxob",
+      "id": "22",
+      "bbox": [
+        746,
+        276,
+        200,
+        82
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.21"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#DDF6F1",
+      "lineColor": "#0F766E",
+      "lineWidth": 1
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "23",
+      "bbox": [
+        762,
+        290,
+        168,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.22"
+      },
+      "geometry": "rect",
+      "text": "Chunk + Embedding",
+      "textPreview": "Chunk + Embedding",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Chunk + Embedding"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Chunk + Embedding",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Chunk + Embedding",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gvy90je9",
+      "id": "24",
+      "bbox": [
+        762,
+        320,
+        168,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.23"
+      },
+      "geometry": "rect",
+      "text": "의미 단위 chunk와 vector 저장",
+      "textPreview": "의미 단위 chunk와 vector 저장",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "의미 단위 chunk와 vector 저장"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "의미 단위 chunk와 vector 저장",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "의미 단위 chunk와 vector 저장",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gr2p8nq",
+      "id": "25",
+      "bbox": [
+        956,
+        306,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.24"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6655E8",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6655E8",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6655E8",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "26",
+      "bbox": [
+        994,
+        276,
+        170,
+        82
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.25"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#EEEAFE",
+      "lineColor": "#6655E8",
+      "lineWidth": 1
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "27",
+      "bbox": [
+        1010,
+        290,
+        138,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.26"
+      },
+      "geometry": "rect",
+      "text": "Graph Traverse",
+      "textPreview": "Graph Traverse",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Graph Traverse"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Graph Traverse",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Graph Traverse",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzupwb2h",
+      "id": "28",
+      "bbox": [
+        1010,
+        320,
+        138,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.27"
+      },
+      "geometry": "rect",
+      "text": "문서/조항/후보 관계 탐색",
+      "textPreview": "문서/조항/후보 관계 탐색",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "문서/조항/후보 관계 탐색"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "문서/조항/후보 관계 탐색",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "문서/조항/후보 관계 탐색",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9knih4by",
+      "id": "29",
+      "bbox": [
+        856,
+        392,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.28"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6655E8",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6655E8",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6655E8",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "30",
+      "bbox": [
+        746,
+        430,
+        180,
+        82
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.29"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFF1D6",
+      "lineColor": "#C77700",
+      "lineWidth": 1
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "31",
+      "bbox": [
+        762,
+        444,
+        148,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.30"
+      },
+      "geometry": "rect",
+      "text": "Candidate",
+      "textPreview": "Candidate",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Candidate"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Candidate",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Candidate",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "32",
+      "bbox": [
+        762,
+        474,
+        148,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.31"
+      },
+      "geometry": "rect",
+      "text": "edge가 아닌 검수 artifact",
+      "textPreview": "edge가 아닌 검수 artifact",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "edge가 아닌 검수 artifact"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "edge가 아닌 검수 artifact",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "edge가 아닌 검수 artifact",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "33",
+      "bbox": [
+        942,
+        460,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.32"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6655E8",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6655E8",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6655E8",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "34",
+      "bbox": [
+        990,
+        430,
+        180,
+        82
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.33"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E4F8EF",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "35",
+      "bbox": [
+        1006,
+        444,
+        148,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.34"
+      },
+      "geometry": "rect",
+      "text": "Human Review",
+      "textPreview": "Human Review",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Human Review"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Human Review",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Human Review",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "36",
+      "bbox": [
+        1006,
+        474,
+        148,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.35"
+      },
+      "geometry": "rect",
+      "text": "승인 후보만 edge 확정",
+      "textPreview": "승인 후보만 edge 확정",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "승인 후보만 edge 확정"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "승인 후보만 edge 확정",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "승인 후보만 edge 확정",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "37",
+      "bbox": [
+        746,
+        540,
+        390,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.36"
+      },
+      "geometry": "rect",
+      "text": "LLM은 제안하고, 사용자가 검수하며, DB에는 검증된 관계만 반영한다.",
+      "textPreview": "LLM은 제안하고, 사용자가 검수하며, DB에는 검증된 관계만 반영한다.",
+      "resolvedFontSize": 13.51,
+      "resolvedTextStyle": {
+        "fontSize": 13.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LLM은 제안하고, 사용자가 검수하며, DB에는 검증된 관계만 반영한다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LLM은 제안하고, 사용자가 검수하며, DB에는 검증된 관계만 반영한다.",
+          "resolvedTextStyle": {
+            "fontSize": 13.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LLM은 제안하고, 사용자가 검수하며, DB에는 검증된 관계만 반영한다.",
+              "fontSize": 13.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 1224,
+          "height": 580
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 28
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 760
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 760,
+              "height": 18
+            },
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            },
+            "children": [],
+            "text": "PROBLEM FRAMING",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9cvixcze",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 54
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1010
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 66
+              }
+            },
+            "intrinsicSize": {
+              "width": 1010,
+              "height": 66
+            },
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            },
+            "children": [],
+            "text": "Why vector-only RAG is not enough",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ylc7u54z",
+              "id": "2",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "text",
+            "position": {
+              "left": 58,
+              "top": 120
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 930
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 930,
+              "height": 26
+            },
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            },
+            "children": [],
+            "text": "법령/조례 도메인은 의미 유사도뿐 아니라 조항 간 관계, 예외, 근거 검수가 필요하다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/r65wjudg",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "text",
+            "position": {
+              "left": 1186,
+              "top": 48
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 38
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 38,
+              "height": 18
+            },
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            },
+            "children": [],
+            "text": "02",
+            "transform": "none",
+            "element": {
+              "aid": "sh/g3ex0nux",
+              "id": "4",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "shape",
+            "position": {
+              "left": 56,
+              "top": 152
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 1
+              }
+            },
+            "intrinsicSize": {
+              "width": 1168,
+              "height": 1
+            },
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/5o7qpg3e",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "shape",
+            "position": {
+              "left": 72,
+              "top": 188
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 500
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 392
+              }
+            },
+            "intrinsicSize": {
+              "width": 500,
+              "height": 392
+            },
+            "frame": {
+              "left": 72,
+              "top": 188,
+              "width": 500,
+              "height": 392
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/yxobm58z",
+              "id": "6",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.6",
+            "kind": "text",
+            "position": {
+              "left": 106,
+              "top": 220
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 260
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 260,
+              "height": 28
+            },
+            "frame": {
+              "left": 106,
+              "top": 220,
+              "width": 260,
+              "height": 28
+            },
+            "children": [],
+            "text": "일반 vector RAG",
+            "transform": "none",
+            "element": {
+              "aid": "sh/nih4byhg",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.7",
+            "kind": "shape",
+            "position": {
+              "left": 112,
+              "top": 282
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 150
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 86
+              }
+            },
+            "intrinsicSize": {
+              "width": 150,
+              "height": 86
+            },
+            "frame": {
+              "left": 112,
+              "top": 282,
+              "width": 150,
+              "height": 86
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/g7adsji5",
+              "id": "8",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.8",
+            "kind": "text",
+            "position": {
+              "left": 128,
+              "top": 296
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 118
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 118,
+              "height": 26
+            },
+            "frame": {
+              "left": 128,
+              "top": 296,
+              "width": 118,
+              "height": 26
+            },
+            "children": [],
+            "text": "Chunk",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9s36hcrm",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.9",
+            "kind": "text",
+            "position": {
+              "left": 128,
+              "top": 326
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 118
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 34
+              }
+            },
+            "intrinsicSize": {
+              "width": 118,
+              "height": 34
+            },
+            "frame": {
+              "left": 128,
+              "top": 326,
+              "width": 118,
+              "height": 34
+            },
+            "children": [],
+            "text": "문서를 조각으로 나눔",
+            "transform": "none",
+            "element": {
+              "aid": "sh/d8v6psfi",
+              "id": "10",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.10",
+            "kind": "text",
+            "position": {
+              "left": 280,
+              "top": 313
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 280,
+              "top": 313,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/onyd0z61",
+              "id": "11",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.11",
+            "kind": "shape",
+            "position": {
+              "left": 326,
+              "top": 282
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 170
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 86
+              }
+            },
+            "intrinsicSize": {
+              "width": 170,
+              "height": 86
+            },
+            "frame": {
+              "left": 326,
+              "top": 282,
+              "width": 170,
+              "height": 86
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/z25kb6xk",
+              "id": "12",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.12",
+            "kind": "text",
+            "position": {
+              "left": 342,
+              "top": 296
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 138
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 138,
+              "height": 26
+            },
+            "frame": {
+              "left": 342,
+              "top": 296,
+              "width": 138,
+              "height": 26
+            },
+            "children": [],
+            "text": "Embedding",
+            "transform": "none",
+            "element": {
+              "aid": "sh/6hcrmhk3",
+              "id": "13",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.13",
+            "kind": "text",
+            "position": {
+              "left": 342,
+              "top": 326
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 138
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 34
+              }
+            },
+            "intrinsicSize": {
+              "width": 138,
+              "height": 34
+            },
+            "frame": {
+              "left": 342,
+              "top": 326,
+              "width": 138,
+              "height": 34
+            },
+            "children": [],
+            "text": "벡터화 후 top-k 검색",
+            "transform": "none",
+            "element": {
+              "aid": "sh/dg7adsji",
+              "id": "14",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.14",
+            "kind": "text",
+            "position": {
+              "left": 234,
+              "top": 400
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 234,
+              "top": 400,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ovahoza1",
+              "id": "15",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.15",
+            "kind": "shape",
+            "position": {
+              "left": 202,
+              "top": 438
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 210
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 90
+              }
+            },
+            "intrinsicSize": {
+              "width": 210,
+              "height": 90
+            },
+            "frame": {
+              "left": 202,
+              "top": 438,
+              "width": 210,
+              "height": 90
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/vahoza1g",
+              "id": "16",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.16",
+            "kind": "text",
+            "position": {
+              "left": 218,
+              "top": 452
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 26
+            },
+            "frame": {
+              "left": 218,
+              "top": 452,
+              "width": 178,
+              "height": 26
+            },
+            "children": [],
+            "text": "Answer",
+            "transform": "none",
+            "element": {
+              "aid": "sh/6tovahoz",
+              "id": "17",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.17",
+            "kind": "text",
+            "position": {
+              "left": 218,
+              "top": 482
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 38
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 38
+            },
+            "frame": {
+              "left": 218,
+              "top": 482,
+              "width": 178,
+              "height": 38
+            },
+            "children": [],
+            "text": "근거/관계 검수는 약함",
+            "transform": "none",
+            "element": {
+              "aid": "sh/dsji5sne",
+              "id": "18",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.18",
+            "kind": "text",
+            "position": {
+              "left": 110,
+              "top": 540
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 390
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 390,
+              "height": 28
+            },
+            "frame": {
+              "left": 110,
+              "top": 540,
+              "width": 390,
+              "height": 28
+            },
+            "children": [],
+            "text": "유사 문장은 찾지만 조문 간 관계와 예외의 타당성을 검수하기 어렵다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/o7qpg3ex",
+              "id": "19",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.19",
+            "kind": "shape",
+            "position": {
+              "left": 700,
+              "top": 188
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 500
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 392
+              }
+            },
+            "intrinsicSize": {
+              "width": 500,
+              "height": 392
+            },
+            "frame": {
+              "left": 700,
+              "top": 188,
+              "width": 500,
+              "height": 392
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/kjm1cfa9",
+              "id": "20",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.20",
+            "kind": "text",
+            "position": {
+              "left": 734,
+              "top": 220
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 260
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 260,
+              "height": 28
+            },
+            "frame": {
+              "left": 734,
+              "top": 220,
+              "width": 260,
+              "height": 28
+            },
+            "children": [],
+            "text": "이번 GraphRAG",
+            "transform": "none",
+            "element": {
+              "aid": "sh/94fu18jq",
+              "id": "21",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.21",
+            "kind": "shape",
+            "position": {
+              "left": 746,
+              "top": 276
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 200
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 82
+              }
+            },
+            "intrinsicSize": {
+              "width": 200,
+              "height": 82
+            },
+            "frame": {
+              "left": 746,
+              "top": 276,
+              "width": 200,
+              "height": 82
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/2hwfyxob",
+              "id": "22",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.22",
+            "kind": "text",
+            "position": {
+              "left": 762,
+              "top": 290
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 168,
+              "height": 26
+            },
+            "frame": {
+              "left": 762,
+              "top": 290,
+              "width": 168,
+              "height": 26
+            },
+            "children": [],
+            "text": "Chunk + Embedding",
+            "transform": "none",
+            "element": {
+              "aid": "sh/r2p8nqxs",
+              "id": "23",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.23",
+            "kind": "text",
+            "position": {
+              "left": 762,
+              "top": 320
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 168,
+              "height": 30
+            },
+            "frame": {
+              "left": 762,
+              "top": 320,
+              "width": 168,
+              "height": 30
+            },
+            "children": [],
+            "text": "의미 단위 chunk와 vector 저장",
+            "transform": "none",
+            "element": {
+              "aid": "sh/gvy90je9",
+              "id": "24",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.24",
+            "kind": "text",
+            "position": {
+              "left": 956,
+              "top": 306
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 956,
+              "top": 306,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9gr2p8nq",
+              "id": "25",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.25",
+            "kind": "shape",
+            "position": {
+              "left": 994,
+              "top": 276
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 170
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 82
+              }
+            },
+            "intrinsicSize": {
+              "width": 170,
+              "height": 82
+            },
+            "frame": {
+              "left": 994,
+              "top": 276,
+              "width": 170,
+              "height": 82
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/2p8nqxs7",
+              "id": "26",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.26",
+            "kind": "text",
+            "position": {
+              "left": 1010,
+              "top": 290
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 138
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 138,
+              "height": 26
+            },
+            "frame": {
+              "left": 1010,
+              "top": 290,
+              "width": 138,
+              "height": 26
+            },
+            "children": [],
+            "text": "Graph Traverse",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ra5gbq1o",
+              "id": "27",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.27",
+            "kind": "text",
+            "position": {
+              "left": 1010,
+              "top": 320
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 138
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 138,
+              "height": 30
+            },
+            "frame": {
+              "left": 1010,
+              "top": 320,
+              "width": 138,
+              "height": 30
+            },
+            "children": [],
+            "text": "문서/조항/후보 관계 탐색",
+            "transform": "none",
+            "element": {
+              "aid": "sh/kzupwb2h",
+              "id": "28",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.28",
+            "kind": "text",
+            "position": {
+              "left": 856,
+              "top": 392
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 856,
+              "top": 392,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9knih4by",
+              "id": "29",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.29",
+            "kind": "shape",
+            "position": {
+              "left": 746,
+              "top": 430
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 82
+              }
+            },
+            "intrinsicSize": {
+              "width": 180,
+              "height": 82
+            },
+            "frame": {
+              "left": 746,
+              "top": 430,
+              "width": 180,
+              "height": 82
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/fa9w3m94",
+              "id": "30",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.30",
+            "kind": "text",
+            "position": {
+              "left": 762,
+              "top": 444
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 148
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 148,
+              "height": 26
+            },
+            "frame": {
+              "left": 762,
+              "top": 444,
+              "width": 148,
+              "height": 26
+            },
+            "children": [],
+            "text": "Candidate",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qpg3ex0n",
+              "id": "31",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.31",
+            "kind": "text",
+            "position": {
+              "left": 762,
+              "top": 474
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 148
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 148,
+              "height": 30
+            },
+            "frame": {
+              "left": 762,
+              "top": 474,
+              "width": 148,
+              "height": 30
+            },
+            "children": [],
+            "text": "edge가 아닌 검수 artifact",
+            "transform": "none",
+            "element": {
+              "aid": "sh/xczed8v6",
+              "id": "32",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.32",
+            "kind": "text",
+            "position": {
+              "left": 942,
+              "top": 460
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 942,
+              "top": 460,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8v6psfil",
+              "id": "33",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.33",
+            "kind": "shape",
+            "position": {
+              "left": 990,
+              "top": 430
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 82
+              }
+            },
+            "intrinsicSize": {
+              "width": 180,
+              "height": 82
+            },
+            "frame": {
+              "left": 990,
+              "top": 430,
+              "width": 180,
+              "height": 82
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/fyxobm58",
+              "id": "34",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.34",
+            "kind": "text",
+            "position": {
+              "left": 1006,
+              "top": 444
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 148
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 148,
+              "height": 26
+            },
+            "frame": {
+              "left": 1006,
+              "top": 444,
+              "width": 148,
+              "height": 26
+            },
+            "children": [],
+            "text": "Human Review",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qd4vmtwr",
+              "id": "35",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.35",
+            "kind": "text",
+            "position": {
+              "left": 1006,
+              "top": 474
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 148
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 148,
+              "height": 30
+            },
+            "frame": {
+              "left": 1006,
+              "top": 474,
+              "width": 148,
+              "height": 30
+            },
+            "children": [],
+            "text": "승인 후보만 edge 확정",
+            "transform": "none",
+            "element": {
+              "aid": "sh/x4nap4r6",
+              "id": "36",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.36",
+            "kind": "text",
+            "position": {
+              "left": 746,
+              "top": 540
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 390
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 390,
+              "height": 28
+            },
+            "frame": {
+              "left": 746,
+              "top": 540,
+              "width": 390,
+              "height": 28
+            },
+            "children": [],
+            "text": "LLM은 제안하고, 사용자가 검수하며, DB에는 검증된 관계만 반영한다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8jqh0fep",
+              "id": "37",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 72,
+              "top": 188,
+              "width": 500,
+              "height": 392
+            }
+          },
+          {
+            "path": "0.6",
+            "frame": {
+              "left": 106,
+              "top": 220,
+              "width": 260,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.7",
+            "frame": {
+              "left": 112,
+              "top": 282,
+              "width": 150,
+              "height": 86
+            }
+          },
+          {
+            "path": "0.8",
+            "frame": {
+              "left": 128,
+              "top": 296,
+              "width": 118,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.9",
+            "frame": {
+              "left": 128,
+              "top": 326,
+              "width": 118,
+              "height": 34
+            }
+          },
+          {
+            "path": "0.10",
+            "frame": {
+              "left": 280,
+              "top": 313,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.11",
+            "frame": {
+              "left": 326,
+              "top": 282,
+              "width": 170,
+              "height": 86
+            }
+          },
+          {
+            "path": "0.12",
+            "frame": {
+              "left": 342,
+              "top": 296,
+              "width": 138,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.13",
+            "frame": {
+              "left": 342,
+              "top": 326,
+              "width": 138,
+              "height": 34
+            }
+          },
+          {
+            "path": "0.14",
+            "frame": {
+              "left": 234,
+              "top": 400,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.15",
+            "frame": {
+              "left": 202,
+              "top": 438,
+              "width": 210,
+              "height": 90
+            }
+          },
+          {
+            "path": "0.16",
+            "frame": {
+              "left": 218,
+              "top": 452,
+              "width": 178,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.17",
+            "frame": {
+              "left": 218,
+              "top": 482,
+              "width": 178,
+              "height": 38
+            }
+          },
+          {
+            "path": "0.18",
+            "frame": {
+              "left": 110,
+              "top": 540,
+              "width": 390,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.19",
+            "frame": {
+              "left": 700,
+              "top": 188,
+              "width": 500,
+              "height": 392
+            }
+          },
+          {
+            "path": "0.20",
+            "frame": {
+              "left": 734,
+              "top": 220,
+              "width": 260,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.21",
+            "frame": {
+              "left": 746,
+              "top": 276,
+              "width": 200,
+              "height": 82
+            }
+          },
+          {
+            "path": "0.22",
+            "frame": {
+              "left": 762,
+              "top": 290,
+              "width": 168,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.23",
+            "frame": {
+              "left": 762,
+              "top": 320,
+              "width": 168,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.24",
+            "frame": {
+              "left": 956,
+              "top": 306,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.25",
+            "frame": {
+              "left": 994,
+              "top": 276,
+              "width": 170,
+              "height": 82
+            }
+          },
+          {
+            "path": "0.26",
+            "frame": {
+              "left": 1010,
+              "top": 290,
+              "width": 138,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.27",
+            "frame": {
+              "left": 1010,
+              "top": 320,
+              "width": 138,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.28",
+            "frame": {
+              "left": 856,
+              "top": 392,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.29",
+            "frame": {
+              "left": 746,
+              "top": 430,
+              "width": 180,
+              "height": 82
+            }
+          },
+          {
+            "path": "0.30",
+            "frame": {
+              "left": 762,
+              "top": 444,
+              "width": 148,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.31",
+            "frame": {
+              "left": 762,
+              "top": 474,
+              "width": 148,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.32",
+            "frame": {
+              "left": 942,
+              "top": 460,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.33",
+            "frame": {
+              "left": 990,
+              "top": 430,
+              "width": 180,
+              "height": 82
+            }
+          },
+          {
+            "path": "0.34",
+            "frame": {
+              "left": 1006,
+              "top": 444,
+              "width": 148,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.35",
+            "frame": {
+              "left": 1006,
+              "top": 474,
+              "width": 148,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.36",
+            "frame": {
+              "left": 746,
+              "top": 540,
+              "width": 390,
+              "height": 28
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

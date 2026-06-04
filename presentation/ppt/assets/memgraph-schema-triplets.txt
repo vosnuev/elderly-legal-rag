@@ -1,0 +1,20 @@
++------------------------------------+------------------------------------+------------------------------------+------------------------------------+
+| from_labels                        | rel                                | to_labels                          | count                              |
++------------------------------------+------------------------------------+------------------------------------+------------------------------------+
+| ["Chunk"]                          | "EVIDENCES_RELATIONSHIP_CANDIDATE" | ["RelationshipCandidate"]          | 42                                 |
+| ["Chunk"]                          | "CANDIDATE_LEFT"                   | ["RelationshipCandidate"]          | 42                                 |
+| ["RelationshipCandidate"]          | "CANDIDATE_RIGHT"                  | ["Chunk"]                          | 39                                 |
+| ["Document"]                       | "HAS_CHUNK"                        | ["Chunk"]                          | 35                                 |
+| ["Chunk"]                          | "RELATED_TO"                       | ["Chunk"]                          | 8                                  |
+| ["Chunk"]                          | "관련_조항"                    | ["Chunk"]                          | 6                                  |
+| ["RelationshipCandidate"]          | "HAS_REVIEW_NOTE"                  | ["ReviewNote"]                     | 5                                  |
+| ["ReviewNote"]                     | "EVIDENCES_MEMORY"                 | ["Memory"]                         | 5                                  |
+| ["Chunk"]                          | "DEFINES_TERM_FOR"                 | ["Chunk"]                          | 4                                  |
+| ["RelationshipCandidate"]          | "CANDIDATE_RIGHT"                  | ["Document"]                       | 3                                  |
+| ["Chunk"]                          | "PROVIDES_EVIDENCE_FOR"            | ["Document"]                       | 3                                  |
+| ["Chunk"]                          | "INCURS_FINE"                      | ["Chunk"]                          | 2                                  |
+| ["Chunk"]                          | "PROVIDES_EVIDENCE_FOR"            | ["Chunk"]                          | 2                                  |
+| ["Chunk"]                          | "SPECIFIES_STATUTE_OF_LIMITATIONS" | ["Chunk"]                          | 1                                  |
+| ["Chunk"]                          | "보상_절차_연계"             | ["Chunk"]                          | 1                                  |
+| ["Chunk"]                          | "PUNISHES_VIOLATION"               | ["Chunk"]                          | 1                                  |
++------------------------------------+------------------------------------+------------------------------------+------------------------------------+

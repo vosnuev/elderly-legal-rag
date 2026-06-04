@@ -1,0 +1,3685 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/5vadn6",
+    "id": "5vadn6",
+    "slide": 4,
+    "layoutId": "f256c434-2912-4602-8a51-36e8654de185",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f256c434-2912-4602-8a51-36e8654de185",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "1",
+      "bbox": [
+        56,
+        28,
+        760,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "rect",
+      "text": "END-TO-END ARCHITECTURE",
+      "textPreview": "END-TO-END ARCHITECTURE",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "END-TO-END ARCHITECTURE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "END-TO-END ARCHITECTURE",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "END-TO-END ARCHITECTURE",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ji5snelo",
+      "id": "2",
+      "bbox": [
+        56,
+        54,
+        1010,
+        66
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "rect",
+      "text": "최종 서비스는 Frontend, LLM Runtime, GraphRAG Knowledge Layer로 분리",
+      "textPreview": "최종 서비스는 Frontend, LLM Runtime, GraphRAG Knowledge Layer로 분리",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "최종 서비스는 Frontend, LLM Runtime, GraphRAG Knowledge Layer로"
+          },
+          {
+            "index": 2,
+            "text": "분리"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "최종 서비스는 Frontend, LLM Runtime, GraphRAG Knowledge Layer로 분리",
+          "resolvedTextStyle": {
+            "fontSize": 30,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "최종 서비스는 Frontend, LLM Runtime, GraphRAG Knowledge Layer로 분리",
+              "fontSize": 30,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxc3ylc7",
+      "id": "3",
+      "bbox": [
+        58,
+        120,
+        930,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "rect",
+      "text": "사용자가 보는 stream UX와 graph를 구축하는 pipeline을 같은 runtime에 섞지 않았다.",
+      "textPreview": "사용자가 보는 stream UX와 graph를 구축하는 pipeline을 같은 runtime에 섞지 않았다.",
+      "resolvedFontSize": 12.51,
+      "resolvedTextStyle": {
+        "fontSize": 12.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "사용자가 보는 stream UX와 graph를 구축하는 pipeline을 같은 runtime에 섞지 않았다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "사용자가 보는 stream UX와 graph를 구축하는 pipeline을 같은 runtime에 섞지 않았다.",
+          "resolvedTextStyle": {
+            "fontSize": 12.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "사용자가 보는 stream UX와 graph를 구축하는 pipeline을 같은 runtime에 섞지 않았다.",
+              "fontSize": 12.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cfa9w3m",
+      "id": "4",
+      "bbox": [
+        1186,
+        48,
+        38,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "right",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "right",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crmhk3q5",
+      "id": "5",
+      "bbox": [
+        56,
+        152,
+        1168,
+        1
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "rect",
+      "fillColor": "#E5DCD5"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "6",
+      "bbox": [
+        58,
+        286,
+        120,
+        76
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#F7ECE4",
+      "lineColor": "#6C2E12",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "7",
+      "bbox": [
+        74,
+        300,
+        88,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.6"
+      },
+      "geometry": "rect",
+      "text": "User",
+      "textPreview": "User",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "User"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "User",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "User",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "8",
+      "bbox": [
+        74,
+        330,
+        88,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.7"
+      },
+      "geometry": "rect",
+      "text": "질문 입력",
+      "textPreview": "질문 입력",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "질문 입력"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "질문 입력",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "질문 입력",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "9",
+      "bbox": [
+        188,
+        310,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.8"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "10",
+      "bbox": [
+        230,
+        270,
+        200,
+        108
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.9"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E8F0FF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "11",
+      "bbox": [
+        246,
+        284,
+        168,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.10"
+      },
+      "geometry": "rect",
+      "text": "Streaming Frontend",
+      "textPreview": "Streaming Frontend",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Streaming Frontend"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Streaming Frontend",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Streaming Frontend",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "12",
+      "bbox": [
+        246,
+        314,
+        168,
+        56
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.11"
+      },
+      "geometry": "rect",
+      "text": "token/event stream 렌더링",
+      "textPreview": "token/event stream 렌더링",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "token/event stream 렌더링"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "token/event stream 렌더링",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "token/event stream 렌더링",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "13",
+      "bbox": [
+        448,
+        310,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.12"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "14",
+      "bbox": [
+        492,
+        250,
+        220,
+        148
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.13"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#EEEAFE",
+      "lineColor": "#6655E8",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "15",
+      "bbox": [
+        508,
+        264,
+        188,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.14"
+      },
+      "geometry": "rect",
+      "text": "Main Backend",
+      "textPreview": "Main Backend",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Main Backend"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Main Backend",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Main Backend",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "16",
+      "bbox": [
+        508,
+        294,
+        188,
+        96
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.15"
+      },
+      "geometry": "rect",
+      "text": "LLM chat runtime\nprompt · session · stream",
+      "textPreview": "LLM chat runtime | prompt · session · stream",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LLM chat runtime"
+          },
+          {
+            "index": 2,
+            "text": "prompt · session · stream"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LLM chat runtime",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LLM chat runtime",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "prompt · session · stream",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "prompt · session · stream",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "17",
+      "bbox": [
+        500,
+        458,
+        200,
+        76
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.16"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#F6F2FF",
+      "lineColor": "#6655E8",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "18",
+      "bbox": [
+        516,
+        472,
+        168,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.17"
+      },
+      "geometry": "rect",
+      "text": "LLM Provider",
+      "textPreview": "LLM Provider",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LLM Provider"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LLM Provider",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LLM Provider",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "19",
+      "bbox": [
+        516,
+        502,
+        168,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.18"
+      },
+      "geometry": "rect",
+      "text": "answer synthesis",
+      "textPreview": "answer synthesis",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "answer synthesis"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "answer synthesis",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "answer synthesis",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/byhgn29g",
+      "id": "20",
+      "bbox": [
+        604,
+        405,
+        3,
+        46
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.19"
+      },
+      "geometry": "rect",
+      "fillColor": "#6655E8"
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idonyd0z",
+      "id": "21",
+      "bbox": [
+        730,
+        310,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.20"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6655E8",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6655E8",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6655E8",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t47y1kre",
+      "id": "22",
+      "bbox": [
+        774,
+        286,
+        150,
+        76
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.21"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFF1D6",
+      "lineColor": "#C77700",
+      "lineWidth": 1
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0je9cvix",
+      "id": "23",
+      "bbox": [
+        790,
+        300,
+        118,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.22"
+      },
+      "geometry": "rect",
+      "text": "MCP Client",
+      "textPreview": "MCP Client",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MCP Client"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MCP Client",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MCP Client",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b6xkf6dc",
+      "id": "24",
+      "bbox": [
+        790,
+        330,
+        118,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.23"
+      },
+      "geometry": "rect",
+      "text": "tool call boundary",
+      "textPreview": "tool call boundary",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "tool call boundary"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "tool call boundary",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "tool call boundary",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/il0rqd4v",
+      "id": "25",
+      "bbox": [
+        942,
+        310,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.24"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#C77700",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#C77700",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#C77700",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcj6tova",
+      "id": "26",
+      "bbox": [
+        984,
+        272,
+        190,
+        104
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.25"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#DDF6F1",
+      "lineColor": "#0F766E",
+      "lineWidth": 1
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rqd4vmt",
+      "id": "27",
+      "bbox": [
+        1000,
+        286,
+        158,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.26"
+      },
+      "geometry": "rect",
+      "text": "RAG MCP Server",
+      "textPreview": "RAG MCP Server",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RAG MCP Server"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RAG MCP Server",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "RAG MCP Server",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi9s36hc",
+      "id": "28",
+      "bbox": [
+        1000,
+        316,
+        158,
+        52
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.27"
+      },
+      "geometry": "rect",
+      "text": "read-only graph tools",
+      "textPreview": "read-only graph tools",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "read-only graph tools"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "read-only graph tools",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "read-only graph tools",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ixczed8v",
+      "id": "29",
+      "bbox": [
+        1080,
+        386,
+        3,
+        46
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.28"
+      },
+      "geometry": "rect",
+      "fillColor": "#0F766E"
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s36hcrmh",
+      "id": "30",
+      "bbox": [
+        984,
+        444,
+        190,
+        84
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.29"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E4F8EF",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hoza1gvy",
+      "id": "31",
+      "bbox": [
+        1000,
+        458,
+        158,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.30"
+      },
+      "geometry": "rect",
+      "text": "Memgraph",
+      "textPreview": "Memgraph",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Memgraph"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Memgraph",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Memgraph",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a1gvy90j",
+      "id": "32",
+      "bbox": [
+        1000,
+        488,
+        158,
+        32
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.31"
+      },
+      "geometry": "rect",
+      "text": "verified knowledge graph",
+      "textPreview": "verified knowledge graph",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "verified knowledge graph"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "verified knowledge graph",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "verified knowledge graph",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zidonyd0",
+      "id": "33",
+      "bbox": [
+        246,
+        566,
+        778,
+        52
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.32"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFF9F3",
+      "lineColor": "#E2C8B0",
+      "lineWidth": 1
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svu9knih",
+      "id": "34",
+      "bbox": [
+        276,
+        584,
+        718,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.33"
+      },
+      "geometry": "rect",
+      "text": "GraphRAG build path는 별도: RAG Admin FE → RAG Backend API → Task Queue → Worker → RelationshipCandidate → Human Review → Memgraph",
+      "textPreview": "GraphRAG build path는 별도: RAG Admin FE → RAG Backend API → Task Queue → Worker → RelationshipCandidate → Human Review → Memgraph",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GraphRAG build path는 별도: RAG Admin FE → RAG Backend API → Task Queue → Worker →"
+          },
+          {
+            "index": 2,
+            "text": "RelationshipCandidate → Human Review → Memgraph"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GraphRAG build path는 별도: RAG Admin FE → RAG Backend API → Task Queue → Worker → RelationshipCandidate → Human Review → Memgraph",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "GraphRAG build path는 별도: RAG Admin FE → RAG Backend API → Task Queue → Worker → RelationshipCandidate → Human Review → Memgraph",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 1224,
+          "height": 618
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 28
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 760
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 760,
+              "height": 18
+            },
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            },
+            "children": [],
+            "text": "END-TO-END ARCHITECTURE",
+            "transform": "none",
+            "element": {
+              "aid": "sh/c3ylc7u5",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 54
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1010
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 66
+              }
+            },
+            "intrinsicSize": {
+              "width": 1010,
+              "height": 66
+            },
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            },
+            "children": [],
+            "text": "최종 서비스는 Frontend, LLM Runtime, GraphRAG Knowledge Layer로 분리",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ji5snelo",
+              "id": "2",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "text",
+            "position": {
+              "left": 58,
+              "top": 120
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 930
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 930,
+              "height": 26
+            },
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            },
+            "children": [],
+            "text": "사용자가 보는 stream UX와 graph를 구축하는 pipeline을 같은 runtime에 섞지 않았다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/uxc3ylc7",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "text",
+            "position": {
+              "left": 1186,
+              "top": 48
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 38
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 38,
+              "height": 18
+            },
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            },
+            "children": [],
+            "text": "04",
+            "transform": "none",
+            "element": {
+              "aid": "sh/1cfa9w3m",
+              "id": "4",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "shape",
+            "position": {
+              "left": 56,
+              "top": 152
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 1
+              }
+            },
+            "intrinsicSize": {
+              "width": 1168,
+              "height": 1
+            },
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/crmhk3q5",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "shape",
+            "position": {
+              "left": 58,
+              "top": 286
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 120
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 76
+              }
+            },
+            "intrinsicSize": {
+              "width": 120,
+              "height": 76
+            },
+            "frame": {
+              "left": 58,
+              "top": 286,
+              "width": 120,
+              "height": 76
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/j6tovaho",
+              "id": "6",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.6",
+            "kind": "text",
+            "position": {
+              "left": 74,
+              "top": 300
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 88
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 88,
+              "height": 26
+            },
+            "frame": {
+              "left": 74,
+              "top": 300,
+              "width": 88,
+              "height": 26
+            },
+            "children": [],
+            "text": "User",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ulwval87",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.7",
+            "kind": "text",
+            "position": {
+              "left": 74,
+              "top": 330
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 88
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 88,
+              "height": 24
+            },
+            "frame": {
+              "left": 74,
+              "top": 330,
+              "width": 88,
+              "height": 24
+            },
+            "children": [],
+            "text": "질문 입력",
+            "transform": "none",
+            "element": {
+              "aid": "sh/18jqh0fe",
+              "id": "8",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.8",
+            "kind": "text",
+            "position": {
+              "left": 188,
+              "top": 310
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 188,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8nqxs72x",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.9",
+            "kind": "shape",
+            "position": {
+              "left": 230,
+              "top": 270
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 200
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 108
+              }
+            },
+            "intrinsicSize": {
+              "width": 200,
+              "height": 108
+            },
+            "frame": {
+              "left": 230,
+              "top": 270,
+              "width": 200,
+              "height": 108
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/al87ed8b",
+              "id": "10",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.10",
+            "kind": "text",
+            "position": {
+              "left": 246,
+              "top": 284
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 168,
+              "height": 26
+            },
+            "frame": {
+              "left": 246,
+              "top": 284,
+              "width": 168,
+              "height": 26
+            },
+            "children": [],
+            "text": "Streaming Frontend",
+            "transform": "none",
+            "element": {
+              "aid": "sh/z61032ls",
+              "id": "11",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.11",
+            "kind": "text",
+            "position": {
+              "left": 246,
+              "top": 314
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 56
+              }
+            },
+            "intrinsicSize": {
+              "width": 168,
+              "height": 56
+            },
+            "frame": {
+              "left": 246,
+              "top": 314,
+              "width": 168,
+              "height": 56
+            },
+            "children": [],
+            "text": "token/event stream 렌더링",
+            "transform": "none",
+            "element": {
+              "aid": "sh/orytsvu9",
+              "id": "12",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.12",
+            "kind": "text",
+            "position": {
+              "left": 448,
+              "top": 310
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 448,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/hcrmhk3q",
+              "id": "13",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.13",
+            "kind": "shape",
+            "position": {
+              "left": 492,
+              "top": 250
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 148
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 148
+            },
+            "frame": {
+              "left": 492,
+              "top": 250,
+              "width": 220,
+              "height": 148
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/a9w3m94f",
+              "id": "14",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.14",
+            "kind": "text",
+            "position": {
+              "left": 508,
+              "top": 264
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 188
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 188,
+              "height": 26
+            },
+            "frame": {
+              "left": 508,
+              "top": 264,
+              "width": 188,
+              "height": 26
+            },
+            "children": [],
+            "text": "Main Backend",
+            "transform": "none",
+            "element": {
+              "aid": "sh/zupwb2hw",
+              "id": "15",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.15",
+            "kind": "text",
+            "position": {
+              "left": 508,
+              "top": 294
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 188
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 96
+              }
+            },
+            "intrinsicSize": {
+              "width": 188,
+              "height": 96
+            },
+            "frame": {
+              "left": 508,
+              "top": 294,
+              "width": 188,
+              "height": 96
+            },
+            "children": [],
+            "text": "LLM chat runtime\nprompt · session · stream",
+            "transform": "none",
+            "element": {
+              "aid": "sh/sfil0rqd",
+              "id": "16",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.16",
+            "kind": "shape",
+            "position": {
+              "left": 500,
+              "top": 458
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 200
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 76
+              }
+            },
+            "intrinsicSize": {
+              "width": 200,
+              "height": 76
+            },
+            "frame": {
+              "left": 500,
+              "top": 458,
+              "width": 200,
+              "height": 76
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/h0fepkzu",
+              "id": "17",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.17",
+            "kind": "text",
+            "position": {
+              "left": 516,
+              "top": 472
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 168,
+              "height": 26
+            },
+            "frame": {
+              "left": 516,
+              "top": 472,
+              "width": 168,
+              "height": 26
+            },
+            "children": [],
+            "text": "LLM Provider",
+            "transform": "none",
+            "element": {
+              "aid": "sh/65wjudg7",
+              "id": "18",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.18",
+            "kind": "text",
+            "position": {
+              "left": 516,
+              "top": 502
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 168,
+              "height": 24
+            },
+            "frame": {
+              "left": 516,
+              "top": 502,
+              "width": 168,
+              "height": 24
+            },
+            "children": [],
+            "text": "answer synthesis",
+            "transform": "none",
+            "element": {
+              "aid": "sh/zqtcj6to",
+              "id": "19",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.19",
+            "kind": "shape",
+            "position": {
+              "left": 604,
+              "top": 405
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 3
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 46
+              }
+            },
+            "intrinsicSize": {
+              "width": 3,
+              "height": 46
+            },
+            "frame": {
+              "left": 604,
+              "top": 405,
+              "width": 3,
+              "height": 46
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/byhgn29g",
+              "id": "20",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.20",
+            "kind": "text",
+            "position": {
+              "left": 730,
+              "top": 310
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 730,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/idonyd0z",
+              "id": "21",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.21",
+            "kind": "shape",
+            "position": {
+              "left": 774,
+              "top": 286
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 150
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 76
+              }
+            },
+            "intrinsicSize": {
+              "width": 150,
+              "height": 76
+            },
+            "frame": {
+              "left": 774,
+              "top": 286,
+              "width": 150,
+              "height": 76
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/t47y1kre",
+              "id": "22",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.22",
+            "kind": "text",
+            "position": {
+              "left": 790,
+              "top": 300
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 118
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 118,
+              "height": 26
+            },
+            "frame": {
+              "left": 790,
+              "top": 300,
+              "width": 118,
+              "height": 26
+            },
+            "children": [],
+            "text": "MCP Client",
+            "transform": "none",
+            "element": {
+              "aid": "sh/0je9cvix",
+              "id": "23",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.23",
+            "kind": "text",
+            "position": {
+              "left": 790,
+              "top": 330
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 118
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 118,
+              "height": 24
+            },
+            "frame": {
+              "left": 790,
+              "top": 330,
+              "width": 118,
+              "height": 24
+            },
+            "children": [],
+            "text": "tool call boundary",
+            "transform": "none",
+            "element": {
+              "aid": "sh/b6xkf6dc",
+              "id": "24",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.24",
+            "kind": "text",
+            "position": {
+              "left": 942,
+              "top": 310
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 942,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/il0rqd4v",
+              "id": "25",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.25",
+            "kind": "shape",
+            "position": {
+              "left": 984,
+              "top": 272
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 190
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 104
+              }
+            },
+            "intrinsicSize": {
+              "width": 190,
+              "height": 104
+            },
+            "frame": {
+              "left": 984,
+              "top": 272,
+              "width": 190,
+              "height": 104
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/tcj6tova",
+              "id": "26",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.26",
+            "kind": "text",
+            "position": {
+              "left": 1000,
+              "top": 286
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 158
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 158,
+              "height": 26
+            },
+            "frame": {
+              "left": 1000,
+              "top": 286,
+              "width": 158,
+              "height": 26
+            },
+            "children": [],
+            "text": "RAG MCP Server",
+            "transform": "none",
+            "element": {
+              "aid": "sh/0rqd4vmt",
+              "id": "27",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.27",
+            "kind": "text",
+            "position": {
+              "left": 1000,
+              "top": 316
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 158
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 52
+              }
+            },
+            "intrinsicSize": {
+              "width": 158,
+              "height": 52
+            },
+            "frame": {
+              "left": 1000,
+              "top": 316,
+              "width": 158,
+              "height": 52
+            },
+            "children": [],
+            "text": "read-only graph tools",
+            "transform": "none",
+            "element": {
+              "aid": "sh/bi9s36hc",
+              "id": "28",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.28",
+            "kind": "shape",
+            "position": {
+              "left": 1080,
+              "top": 386
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 3
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 46
+              }
+            },
+            "intrinsicSize": {
+              "width": 3,
+              "height": 46
+            },
+            "frame": {
+              "left": 1080,
+              "top": 386,
+              "width": 3,
+              "height": 46
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/ixczed8v",
+              "id": "29",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.29",
+            "kind": "shape",
+            "position": {
+              "left": 984,
+              "top": 444
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 190
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 84
+              }
+            },
+            "intrinsicSize": {
+              "width": 190,
+              "height": 84
+            },
+            "frame": {
+              "left": 984,
+              "top": 444,
+              "width": 190,
+              "height": 84
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/s36hcrmh",
+              "id": "30",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.30",
+            "kind": "text",
+            "position": {
+              "left": 1000,
+              "top": 458
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 158
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 158,
+              "height": 26
+            },
+            "frame": {
+              "left": 1000,
+              "top": 458,
+              "width": 158,
+              "height": 26
+            },
+            "children": [],
+            "text": "Memgraph",
+            "transform": "none",
+            "element": {
+              "aid": "sh/hoza1gvy",
+              "id": "31",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.31",
+            "kind": "text",
+            "position": {
+              "left": 1000,
+              "top": 488
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 158
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 32
+              }
+            },
+            "intrinsicSize": {
+              "width": 158,
+              "height": 32
+            },
+            "frame": {
+              "left": 1000,
+              "top": 488,
+              "width": 158,
+              "height": 32
+            },
+            "children": [],
+            "text": "verified knowledge graph",
+            "transform": "none",
+            "element": {
+              "aid": "sh/a1gvy90j",
+              "id": "32",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.32",
+            "kind": "shape",
+            "position": {
+              "left": 246,
+              "top": 566
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 778
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 52
+              }
+            },
+            "intrinsicSize": {
+              "width": 778,
+              "height": 52
+            },
+            "frame": {
+              "left": 246,
+              "top": 566,
+              "width": 778,
+              "height": 52
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/zidonyd0",
+              "id": "33",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.33",
+            "kind": "text",
+            "position": {
+              "left": 276,
+              "top": 584
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 718
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 718,
+              "height": 18
+            },
+            "frame": {
+              "left": 276,
+              "top": 584,
+              "width": 718,
+              "height": 18
+            },
+            "children": [],
+            "text": "GraphRAG build path는 별도: RAG Admin FE → RAG Backend API → Task Queue → Worker → RelationshipCandidate → Human Review → Memgraph",
+            "transform": "none",
+            "element": {
+              "aid": "sh/svu9knih",
+              "id": "34",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 58,
+              "top": 286,
+              "width": 120,
+              "height": 76
+            }
+          },
+          {
+            "path": "0.6",
+            "frame": {
+              "left": 74,
+              "top": 300,
+              "width": 88,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.7",
+            "frame": {
+              "left": 74,
+              "top": 330,
+              "width": 88,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.8",
+            "frame": {
+              "left": 188,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.9",
+            "frame": {
+              "left": 230,
+              "top": 270,
+              "width": 200,
+              "height": 108
+            }
+          },
+          {
+            "path": "0.10",
+            "frame": {
+              "left": 246,
+              "top": 284,
+              "width": 168,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.11",
+            "frame": {
+              "left": 246,
+              "top": 314,
+              "width": 168,
+              "height": 56
+            }
+          },
+          {
+            "path": "0.12",
+            "frame": {
+              "left": 448,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.13",
+            "frame": {
+              "left": 492,
+              "top": 250,
+              "width": 220,
+              "height": 148
+            }
+          },
+          {
+            "path": "0.14",
+            "frame": {
+              "left": 508,
+              "top": 264,
+              "width": 188,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.15",
+            "frame": {
+              "left": 508,
+              "top": 294,
+              "width": 188,
+              "height": 96
+            }
+          },
+          {
+            "path": "0.16",
+            "frame": {
+              "left": 500,
+              "top": 458,
+              "width": 200,
+              "height": 76
+            }
+          },
+          {
+            "path": "0.17",
+            "frame": {
+              "left": 516,
+              "top": 472,
+              "width": 168,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.18",
+            "frame": {
+              "left": 516,
+              "top": 502,
+              "width": 168,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.19",
+            "frame": {
+              "left": 604,
+              "top": 405,
+              "width": 3,
+              "height": 46
+            }
+          },
+          {
+            "path": "0.20",
+            "frame": {
+              "left": 730,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.21",
+            "frame": {
+              "left": 774,
+              "top": 286,
+              "width": 150,
+              "height": 76
+            }
+          },
+          {
+            "path": "0.22",
+            "frame": {
+              "left": 790,
+              "top": 300,
+              "width": 118,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.23",
+            "frame": {
+              "left": 790,
+              "top": 330,
+              "width": 118,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.24",
+            "frame": {
+              "left": 942,
+              "top": 310,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.25",
+            "frame": {
+              "left": 984,
+              "top": 272,
+              "width": 190,
+              "height": 104
+            }
+          },
+          {
+            "path": "0.26",
+            "frame": {
+              "left": 1000,
+              "top": 286,
+              "width": 158,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.27",
+            "frame": {
+              "left": 1000,
+              "top": 316,
+              "width": 158,
+              "height": 52
+            }
+          },
+          {
+            "path": "0.28",
+            "frame": {
+              "left": 1080,
+              "top": 386,
+              "width": 3,
+              "height": 46
+            }
+          },
+          {
+            "path": "0.29",
+            "frame": {
+              "left": 984,
+              "top": 444,
+              "width": 190,
+              "height": 84
+            }
+          },
+          {
+            "path": "0.30",
+            "frame": {
+              "left": 1000,
+              "top": 458,
+              "width": 158,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.31",
+            "frame": {
+              "left": 1000,
+              "top": 488,
+              "width": 158,
+              "height": 32
+            }
+          },
+          {
+            "path": "0.32",
+            "frame": {
+              "left": 246,
+              "top": 566,
+              "width": 778,
+              "height": 52
+            }
+          },
+          {
+            "path": "0.33",
+            "frame": {
+              "left": 276,
+              "top": 584,
+              "width": 718,
+              "height": 18
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

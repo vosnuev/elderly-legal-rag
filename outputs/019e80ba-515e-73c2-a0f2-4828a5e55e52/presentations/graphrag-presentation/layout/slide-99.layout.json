@@ -1,0 +1,822 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/n61cvb",
+    "id": "n61cvb",
+    "slide": 1,
+    "layoutId": "5cd75ecd-482a-4d19-b9a5-3279a4927c9a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "ad2644d6-da04-443a-a531-552d2fe4f714",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "5cd75ecd-482a-4d19-b9a5-3279a4927c9a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "ad2644d6-da04-443a-a531-552d2fe4f714",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "ad2644d6-da04-443a-a531-552d2fe4f714",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m94fu18j",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        700,
+        320
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#C7B8AA",
+      "lineWidth": 1
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "2",
+      "bbox": [
+        28,
+        28,
+        422,
+        100.8
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0.0"
+      },
+      "geometry": "rect",
+      "text": "검수 가능한 GraphRAG",
+      "textPreview": "검수 가능한 GraphRAG",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "fontSize": 42,
+        "typeface": "Arial",
+        "color": "#1A132F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "검수 가능한"
+          },
+          {
+            "index": 2,
+            "text": "GraphRAG"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "검수 가능한 GraphRAG",
+          "resolvedTextStyle": {
+            "fontSize": 42,
+            "typeface": "Arial",
+            "color": "#1A132F",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "검수 가능한 GraphRAG",
+              "fontSize": 42,
+              "typeface": "Arial",
+              "color": "#1A132F",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu18jqh",
+      "id": "3",
+      "bbox": [
+        28,
+        144.8,
+        598.87,
+        25.2
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0.1"
+      },
+      "geometry": "rect",
+      "text": "법령/조례 문서를 지식 그래프로 구축하고 MCP로 활용하는 RAG 시스템",
+      "textPreview": "법령/조례 문서를 지식 그래프로 구축하고 MCP로 활용하는 RAG 시스템",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "Arial",
+        "color": "#5D5666",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "법령/조례 문서를 지식 그래프로 구축하고 MCP로 활용하는 RAG 시스템"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "법령/조례 문서를 지식 그래프로 구축하고 MCP로 활용하는 RAG 시스템",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "typeface": "Arial",
+            "color": "#5D5666",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "법령/조례 문서를 지식 그래프로 구축하고 MCP로 활용하는 RAG 시스템",
+              "fontSize": 21,
+              "typeface": "Arial",
+              "color": "#5D5666",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fil0rqd4",
+      "id": "4",
+      "bbox": [
+        28,
+        186,
+        79.09,
+        38.4
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0.2.0"
+      },
+      "geometry": "rect",
+      "text": "Document",
+      "textPreview": "Document",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#0F766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Documen"
+          },
+          {
+            "index": 2,
+            "text": "t"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Document",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#0F766E",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Document",
+              "fontSize": 16,
+              "color": "#0F766E",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxs72x4n",
+      "id": "5",
+      "bbox": [
+        121.09,
+        186,
+        16,
+        19.2
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0.2.1"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#9A6B4F",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#9A6B4F",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 16,
+              "color": "#9A6B4F",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xobm58z2",
+      "id": "6",
+      "bbox": [
+        151.09,
+        186,
+        114.34,
+        38.4
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0.2.2"
+      },
+      "geometry": "rect",
+      "text": "Human Review",
+      "textPreview": "Human Review",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#0F766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Human"
+          },
+          {
+            "index": 2,
+            "text": "Review"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Human Review",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#0F766E",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Human Review",
+              "fontSize": 16,
+              "color": "#0F766E",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "panel",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 700
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 320
+          }
+        },
+        "intrinsicSize": {
+          "width": 654.87,
+          "height": 182.8
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 700,
+          "height": 320
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "column",
+            "requestedSize": {
+              "width": {
+                "mode": "fill",
+                "value": 1
+              },
+              "height": {
+                "mode": "hug"
+              }
+            },
+            "intrinsicSize": {
+              "width": 598.87,
+              "height": 126.8
+            },
+            "frame": {
+              "left": 28,
+              "top": 28,
+              "width": 644,
+              "height": 196.4
+            },
+            "children": [
+              {
+                "path": "0.0.0",
+                "kind": "text",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 422,
+                  "height": 50.4
+                },
+                "frame": {
+                  "left": 28,
+                  "top": 28,
+                  "width": 422,
+                  "height": 100.8
+                },
+                "children": [],
+                "text": "검수 가능한 GraphRAG",
+                "transform": "none",
+                "element": {
+                  "aid": "sh/x0nuxc3y",
+                  "id": "2",
+                  "kind": "shape"
+                }
+              },
+              {
+                "path": "0.0.1",
+                "kind": "text",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 598.87,
+                  "height": 25.2
+                },
+                "frame": {
+                  "left": 28,
+                  "top": 144.8,
+                  "width": 598.87,
+                  "height": 25.2
+                },
+                "children": [],
+                "text": "법령/조례 문서를 지식 그래프로 구축하고 MCP로 활용하는 RAG 시스템",
+                "transform": "none",
+                "element": {
+                  "aid": "sh/4fu18jqh",
+                  "id": "3",
+                  "kind": "shape"
+                }
+              },
+              {
+                "path": "0.0.2",
+                "kind": "row",
+                "requestedSize": {
+                  "width": {
+                    "mode": "hug"
+                  },
+                  "height": {
+                    "mode": "hug"
+                  }
+                },
+                "intrinsicSize": {
+                  "width": 237.43,
+                  "height": 19.2
+                },
+                "frame": {
+                  "left": 28,
+                  "top": 186,
+                  "width": 237.43,
+                  "height": 38.4
+                },
+                "children": [
+                  {
+                    "path": "0.0.2.0",
+                    "kind": "text",
+                    "requestedSize": {
+                      "width": {
+                        "mode": "hug"
+                      },
+                      "height": {
+                        "mode": "hug"
+                      }
+                    },
+                    "intrinsicSize": {
+                      "width": 79.09,
+                      "height": 19.2
+                    },
+                    "frame": {
+                      "left": 28,
+                      "top": 186,
+                      "width": 79.09,
+                      "height": 38.4
+                    },
+                    "children": [],
+                    "text": "Document",
+                    "transform": "none",
+                    "element": {
+                      "aid": "sh/fil0rqd4",
+                      "id": "4",
+                      "kind": "shape"
+                    }
+                  },
+                  {
+                    "path": "0.0.2.1",
+                    "kind": "text",
+                    "requestedSize": {
+                      "width": {
+                        "mode": "hug"
+                      },
+                      "height": {
+                        "mode": "hug"
+                      }
+                    },
+                    "intrinsicSize": {
+                      "width": 16,
+                      "height": 19.2
+                    },
+                    "frame": {
+                      "left": 121.09,
+                      "top": 186,
+                      "width": 16,
+                      "height": 19.2
+                    },
+                    "children": [],
+                    "text": "→",
+                    "transform": "none",
+                    "element": {
+                      "aid": "sh/qxs72x4n",
+                      "id": "5",
+                      "kind": "shape"
+                    }
+                  },
+                  {
+                    "path": "0.0.2.2",
+                    "kind": "text",
+                    "requestedSize": {
+                      "width": {
+                        "mode": "hug"
+                      },
+                      "height": {
+                        "mode": "hug"
+                      }
+                    },
+                    "intrinsicSize": {
+                      "width": 114.34,
+                      "height": 19.2
+                    },
+                    "frame": {
+                      "left": 151.09,
+                      "top": 186,
+                      "width": 114.34,
+                      "height": 38.4
+                    },
+                    "children": [],
+                    "text": "Human Review",
+                    "transform": "none",
+                    "element": {
+                      "aid": "sh/xobm58z2",
+                      "id": "6",
+                      "kind": "shape"
+                    }
+                  }
+                ],
+                "padding": {
+                  "top": 0,
+                  "right": 0,
+                  "bottom": 0,
+                  "left": 0
+                },
+                "gap": 14,
+                "effectiveGap": 14,
+                "justifyOffset": 0,
+                "align": "start",
+                "justify": "start",
+                "contentFrame": {
+                  "left": 28,
+                  "top": 186,
+                  "width": 237.43,
+                  "height": 38.4
+                },
+                "items": [
+                  {
+                    "path": "0.0.2.0",
+                    "frame": {
+                      "left": 28,
+                      "top": 186,
+                      "width": 79.09,
+                      "height": 38.4
+                    }
+                  },
+                  {
+                    "path": "0.0.2.1",
+                    "frame": {
+                      "left": 121.09,
+                      "top": 186,
+                      "width": 16,
+                      "height": 19.2
+                    }
+                  },
+                  {
+                    "path": "0.0.2.2",
+                    "frame": {
+                      "left": 151.09,
+                      "top": 186,
+                      "width": 114.34,
+                      "height": 38.4
+                    }
+                  }
+                ]
+              }
+            ],
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "gap": 16,
+            "effectiveGap": 16,
+            "justifyOffset": 0,
+            "align": "start",
+            "justify": "start",
+            "contentFrame": {
+              "left": 28,
+              "top": 28,
+              "width": 644,
+              "height": 196.4
+            },
+            "items": [
+              {
+                "path": "0.0.0",
+                "frame": {
+                  "left": 28,
+                  "top": 28,
+                  "width": 422,
+                  "height": 100.8
+                }
+              },
+              {
+                "path": "0.0.1",
+                "frame": {
+                  "left": 28,
+                  "top": 144.8,
+                  "width": 598.87,
+                  "height": 25.2
+                }
+              },
+              {
+                "path": "0.0.2",
+                "frame": {
+                  "left": 28,
+                  "top": 186,
+                  "width": 237.43,
+                  "height": 38.4
+                }
+              }
+            ]
+          }
+        ],
+        "padding": {
+          "top": 28,
+          "right": 28,
+          "bottom": 28,
+          "left": 28
+        },
+        "align": "start",
+        "justify": "start",
+        "contentFrame": {
+          "left": 28,
+          "top": 28,
+          "width": 644,
+          "height": 264
+        },
+        "element": {
+          "aid": "sh/m94fu18j",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

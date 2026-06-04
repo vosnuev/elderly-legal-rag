@@ -1,0 +1,3583 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/w4dbyi",
+    "id": "w4dbyi",
+    "slide": 8,
+    "layoutId": "f256c434-2912-4602-8a51-36e8654de185",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f256c434-2912-4602-8a51-36e8654de185",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "1",
+      "bbox": [
+        56,
+        28,
+        760,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "rect",
+      "text": "BACKEND TO RAG VIA MCP",
+      "textPreview": "BACKEND TO RAG VIA MCP",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "BACKEND TO RAG VIA MCP"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "BACKEND TO RAG VIA MCP",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "BACKEND TO RAG VIA MCP",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "2",
+      "bbox": [
+        56,
+        54,
+        1010,
+        66
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "rect",
+      "text": "MCP는 answer runtime과 GraphRAG system 사이의 read-only boundary",
+      "textPreview": "MCP는 answer runtime과 GraphRAG system 사이의 read-only boundary",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MCP는 answer runtime과 GraphRAG system 사이의 read-only boundary"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MCP는 answer runtime과 GraphRAG system 사이의 read-only boundary",
+          "resolvedTextStyle": {
+            "fontSize": 30,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MCP는 answer runtime과 GraphRAG system 사이의 read-only boundary",
+              "fontSize": 30,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "3",
+      "bbox": [
+        58,
+        120,
+        930,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "rect",
+      "text": "Main Backend는 graph를 수정하지 않고, RAG MCP server의 조회 tool만 호출한다.",
+      "textPreview": "Main Backend는 graph를 수정하지 않고, RAG MCP server의 조회 tool만 호출한다.",
+      "resolvedFontSize": 12.51,
+      "resolvedTextStyle": {
+        "fontSize": 12.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Main Backend는 graph를 수정하지 않고, RAG MCP server의 조회 tool만 호출한다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Main Backend는 graph를 수정하지 않고, RAG MCP server의 조회 tool만 호출한다.",
+          "resolvedTextStyle": {
+            "fontSize": 12.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Main Backend는 graph를 수정하지 않고, RAG MCP server의 조회 tool만 호출한다.",
+              "fontSize": 12.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "4",
+      "bbox": [
+        1186,
+        48,
+        38,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "rect",
+      "text": "08",
+      "textPreview": "08",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "08"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "08",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "right",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "08",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "right",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "5",
+      "bbox": [
+        56,
+        152,
+        1168,
+        1
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "rect",
+      "fillColor": "#E5DCD5"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "6",
+      "bbox": [
+        82,
+        284,
+        230,
+        118
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#EEEAFE",
+      "lineColor": "#6655E8",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "7",
+      "bbox": [
+        98,
+        298,
+        198,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.6"
+      },
+      "geometry": "rect",
+      "text": "Main Backend",
+      "textPreview": "Main Backend",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Main Backend"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Main Backend",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Main Backend",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahoza1gv",
+      "id": "8",
+      "bbox": [
+        98,
+        328,
+        198,
+        66
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.7"
+      },
+      "geometry": "rect",
+      "text": "Answer Runtime\nLLM agent · prompt · stream",
+      "textPreview": "Answer Runtime | LLM agent · prompt · stream",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Answer Runtime"
+          },
+          {
+            "index": 2,
+            "text": "LLM agent · prompt · stream"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Answer Runtime",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Answer Runtime",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "LLM agent · prompt · stream",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LLM agent · prompt · stream",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "9",
+      "bbox": [
+        336,
+        322,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.8"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6655E8",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6655E8",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6655E8",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "10",
+      "bbox": [
+        390,
+        304,
+        160,
+        76
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.9"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFF1D6",
+      "lineColor": "#C77700",
+      "lineWidth": 1
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "11",
+      "bbox": [
+        406,
+        318,
+        128,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.10"
+      },
+      "geometry": "rect",
+      "text": "MCP Client",
+      "textPreview": "MCP Client",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MCP Client"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MCP Client",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MCP Client",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w3m94fu",
+      "id": "12",
+      "bbox": [
+        406,
+        348,
+        128,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.11"
+      },
+      "geometry": "rect",
+      "text": "tool call adapter",
+      "textPreview": "tool call adapter",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "tool call adapter"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "tool call adapter",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "tool call adapter",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "13",
+      "bbox": [
+        572,
+        322,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.12"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#C77700",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#C77700",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#C77700",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/re1w7mp0",
+      "id": "14",
+      "bbox": [
+        628,
+        216,
+        260,
+        248
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.13"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t83itgf",
+      "id": "15",
+      "bbox": [
+        660,
+        248,
+        200,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.14"
+      },
+      "geometry": "rect",
+      "text": "RAG MCP Server",
+      "textPreview": "RAG MCP Server",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RAG MCP Server"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RAG MCP Server",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "RAG MCP Server",
+              "fontSize": 22,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9knih4by",
+      "id": "16",
+      "bbox": [
+        664,
+        298,
+        130,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.15"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E8F0FF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzupwb2h",
+      "id": "17",
+      "bbox": [
+        676,
+        306,
+        106,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.16"
+      },
+      "geometry": "rect",
+      "text": "schema_read",
+      "textPreview": "schema_read",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#2563EB",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "schema_read"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "schema_read",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#2563EB",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "schema_read",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#2563EB",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "18",
+      "bbox": [
+        664,
+        342,
+        130,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.17"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E8F0FF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "19",
+      "bbox": [
+        676,
+        350,
+        106,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.18"
+      },
+      "geometry": "rect",
+      "text": "text_search",
+      "textPreview": "text_search",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#2563EB",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "text_search"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "text_search",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#2563EB",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "text_search",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#2563EB",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "20",
+      "bbox": [
+        664,
+        386,
+        130,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.19"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E8F0FF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "21",
+      "bbox": [
+        676,
+        394,
+        106,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.20"
+      },
+      "geometry": "rect",
+      "text": "vector_search",
+      "textPreview": "vector_search",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#2563EB",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "vector_search"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "vector_search",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#2563EB",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "vector_search",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#2563EB",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "22",
+      "bbox": [
+        664,
+        430,
+        144,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.21"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E8F0FF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "23",
+      "bbox": [
+        676,
+        438,
+        120,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.22"
+      },
+      "geometry": "rect",
+      "text": "graph_traverse",
+      "textPreview": "graph_traverse",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#2563EB",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "graph_traverse"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "graph_traverse",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#2563EB",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "graph_traverse",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#2563EB",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "24",
+      "bbox": [
+        906,
+        322,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.23"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#2563EB",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#2563EB",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#2563EB",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "25",
+      "bbox": [
+        964,
+        286,
+        220,
+        112
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.24"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#DDF6F1",
+      "lineColor": "#0F766E",
+      "lineWidth": 1
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "26",
+      "bbox": [
+        980,
+        300,
+        188,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.25"
+      },
+      "geometry": "rect",
+      "text": "Memgraph",
+      "textPreview": "Memgraph",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Memgraph"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Memgraph",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Memgraph",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "27",
+      "bbox": [
+        980,
+        330,
+        188,
+        60
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.26"
+      },
+      "geometry": "rect",
+      "text": "Document · Chunk · Edge · Memory",
+      "textPreview": "Document · Chunk · Edge · Memory",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Document · Chunk · Edge ·"
+          },
+          {
+            "index": 2,
+            "text": "Memory"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Document · Chunk · Edge · Memory",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Document · Chunk · Edge · Memory",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "28",
+      "bbox": [
+        474,
+        516,
+        330,
+        80
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.27"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E4F8EF",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9cvixc",
+      "id": "29",
+      "bbox": [
+        490,
+        530,
+        298,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.28"
+      },
+      "geometry": "rect",
+      "text": "GraphRAG Builder",
+      "textPreview": "GraphRAG Builder",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GraphRAG Builder"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GraphRAG Builder",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "GraphRAG Builder",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "30",
+      "bbox": [
+        490,
+        560,
+        298,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.29"
+      },
+      "geometry": "rect",
+      "text": "Ingest / Review / Memory pipeline만 approved graph write 수행",
+      "textPreview": "Ingest / Review / Memory pipeline만 approved graph write 수행",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Ingest / Review / Memory pipeline만 approved graph"
+          },
+          {
+            "index": 2,
+            "text": "write 수행"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Ingest / Review / Memory pipeline만 approved graph write 수행",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Ingest / Review / Memory pipeline만 approved graph write 수행",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "31",
+      "bbox": [
+        958,
+        440,
+        220,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.30"
+      },
+      "geometry": "rect",
+      "text": "no write from answer runtime",
+      "textPreview": "no write from answer runtime",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Arial",
+        "color": "#BE3455",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "no write from answer runtime"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "no write from answer runtime",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Arial",
+            "color": "#BE3455",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "no write from answer runtime",
+              "fontSize": 13,
+              "typeface": "Arial",
+              "color": "#BE3455",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "32",
+      "bbox": [
+        214,
+        604,
+        850,
+        42
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.31"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFF9F3",
+      "lineColor": "#E2C8B0",
+      "lineWidth": 1
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "33",
+      "bbox": [
+        246,
+        616,
+        790,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.32"
+      },
+      "geometry": "rect",
+      "text": "이 구조 덕분에 외부 agent나 최종 backend가 같은 graph를 안정적으로 조회할 수 있다.",
+      "textPreview": "이 구조 덕분에 외부 agent나 최종 backend가 같은 graph를 안정적으로 조회할 수 있다.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "이 구조 덕분에 외부 agent나 최종 backend가 같은 graph를 안정적으로 조회할 수 있다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "이 구조 덕분에 외부 agent나 최종 backend가 같은 graph를 안정적으로 조회할 수 있다.",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "이 구조 덕분에 외부 agent나 최종 backend가 같은 graph를 안정적으로 조회할 수 있다.",
+              "fontSize": 15,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 1224,
+          "height": 646
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 28
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 760
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 760,
+              "height": 18
+            },
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            },
+            "children": [],
+            "text": "BACKEND TO RAG VIA MCP",
+            "transform": "none",
+            "element": {
+              "aid": "sh/3itgfmlk",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 54
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1010
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 66
+              }
+            },
+            "intrinsicSize": {
+              "width": 1010,
+              "height": 66
+            },
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            },
+            "children": [],
+            "text": "MCP는 answer runtime과 GraphRAG system 사이의 read-only boundary",
+            "transform": "none",
+            "element": {
+              "aid": "sh/w3m94fu1",
+              "id": "2",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "text",
+            "position": {
+              "left": 58,
+              "top": 120
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 930
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 930,
+              "height": 26
+            },
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            },
+            "children": [],
+            "text": "Main Backend는 graph를 수정하지 않고, RAG MCP server의 조회 tool만 호출한다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/loj2t83i",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "text",
+            "position": {
+              "left": 1186,
+              "top": 48
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 38
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 38,
+              "height": 18
+            },
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            },
+            "children": [],
+            "text": "08",
+            "transform": "none",
+            "element": {
+              "aid": "sh/e9cvixcz",
+              "id": "4",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "shape",
+            "position": {
+              "left": 56,
+              "top": 152
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 1
+              }
+            },
+            "intrinsicSize": {
+              "width": 1168,
+              "height": 1
+            },
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/3q5o7qpg",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "shape",
+            "position": {
+              "left": 82,
+              "top": 284
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 230
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 118
+              }
+            },
+            "intrinsicSize": {
+              "width": 230,
+              "height": 118
+            },
+            "frame": {
+              "left": 82,
+              "top": 284,
+              "width": 230,
+              "height": 118
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/wb2hwfyx",
+              "id": "6",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.6",
+            "kind": "text",
+            "position": {
+              "left": 98,
+              "top": 298
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 198
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 198,
+              "height": 26
+            },
+            "frame": {
+              "left": 98,
+              "top": 298,
+              "width": 198,
+              "height": 26
+            },
+            "children": [],
+            "text": "Main Backend",
+            "transform": "none",
+            "element": {
+              "aid": "sh/lwval87e",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.7",
+            "kind": "text",
+            "position": {
+              "left": 98,
+              "top": 328
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 198
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 66
+              }
+            },
+            "intrinsicSize": {
+              "width": 198,
+              "height": 66
+            },
+            "frame": {
+              "left": 98,
+              "top": 328,
+              "width": 198,
+              "height": 66
+            },
+            "children": [],
+            "text": "Answer Runtime\nLLM agent · prompt · stream",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ahoza1gv",
+              "id": "8",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.8",
+            "kind": "text",
+            "position": {
+              "left": 336,
+              "top": 322
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 336,
+              "top": 322,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/32lszqtc",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.9",
+            "kind": "shape",
+            "position": {
+              "left": 390,
+              "top": 304
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 160
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 76
+              }
+            },
+            "intrinsicSize": {
+              "width": 160,
+              "height": 76
+            },
+            "frame": {
+              "left": 390,
+              "top": 304,
+              "width": 160,
+              "height": 76
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/rqd4vmtw",
+              "id": "10",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.10",
+            "kind": "text",
+            "position": {
+              "left": 406,
+              "top": 318
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 128
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 128,
+              "height": 26
+            },
+            "frame": {
+              "left": 406,
+              "top": 318,
+              "width": 128,
+              "height": 26
+            },
+            "children": [],
+            "text": "MCP Client",
+            "transform": "none",
+            "element": {
+              "aid": "sh/25kb6xkf",
+              "id": "11",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.11",
+            "kind": "text",
+            "position": {
+              "left": 406,
+              "top": 348
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 128
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 128,
+              "height": 24
+            },
+            "frame": {
+              "left": 406,
+              "top": 348,
+              "width": 128,
+              "height": 24
+            },
+            "children": [],
+            "text": "tool call adapter",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9w3m94fu",
+              "id": "12",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.12",
+            "kind": "text",
+            "position": {
+              "left": 572,
+              "top": 322
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 572,
+              "top": 322,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/kb6xkf6d",
+              "id": "13",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.13",
+            "kind": "shape",
+            "position": {
+              "left": 628,
+              "top": 216
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 260
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 248
+              }
+            },
+            "intrinsicSize": {
+              "width": 260,
+              "height": 248
+            },
+            "frame": {
+              "left": 628,
+              "top": 216,
+              "width": 260,
+              "height": 248
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/re1w7mp0",
+              "id": "14",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.14",
+            "kind": "text",
+            "position": {
+              "left": 660,
+              "top": 248
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 200
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 200,
+              "height": 24
+            },
+            "frame": {
+              "left": 660,
+              "top": 248,
+              "width": 200,
+              "height": 24
+            },
+            "children": [],
+            "text": "RAG MCP Server",
+            "transform": "none",
+            "element": {
+              "aid": "sh/2t83itgf",
+              "id": "15",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.15",
+            "kind": "shape",
+            "position": {
+              "left": 664,
+              "top": 298
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 130
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 130,
+              "height": 30
+            },
+            "frame": {
+              "left": 664,
+              "top": 298,
+              "width": 130,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/9knih4by",
+              "id": "16",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.16",
+            "kind": "text",
+            "position": {
+              "left": 676,
+              "top": 306
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 106
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 106,
+              "height": 16
+            },
+            "frame": {
+              "left": 676,
+              "top": 306,
+              "width": 106,
+              "height": 16
+            },
+            "children": [],
+            "text": "schema_read",
+            "transform": "none",
+            "element": {
+              "aid": "sh/kzupwb2h",
+              "id": "17",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.17",
+            "kind": "shape",
+            "position": {
+              "left": 664,
+              "top": 342
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 130
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 130,
+              "height": 30
+            },
+            "frame": {
+              "left": 664,
+              "top": 342,
+              "width": 130,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/ra5gbq1o",
+              "id": "18",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.18",
+            "kind": "text",
+            "position": {
+              "left": 676,
+              "top": 350
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 106
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 106,
+              "height": 16
+            },
+            "frame": {
+              "left": 676,
+              "top": 350,
+              "width": 106,
+              "height": 16
+            },
+            "children": [],
+            "text": "text_search",
+            "transform": "none",
+            "element": {
+              "aid": "sh/2p8nqxs7",
+              "id": "19",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.19",
+            "kind": "shape",
+            "position": {
+              "left": 664,
+              "top": 386
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 130
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 130,
+              "height": 30
+            },
+            "frame": {
+              "left": 664,
+              "top": 386,
+              "width": 130,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/qd4vmtwr",
+              "id": "20",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.20",
+            "kind": "text",
+            "position": {
+              "left": 676,
+              "top": 394
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 106
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 106,
+              "height": 16
+            },
+            "frame": {
+              "left": 676,
+              "top": 394,
+              "width": 106,
+              "height": 16
+            },
+            "children": [],
+            "text": "vector_search",
+            "transform": "none",
+            "element": {
+              "aid": "sh/fyxobm58",
+              "id": "21",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.21",
+            "kind": "shape",
+            "position": {
+              "left": 664,
+              "top": 430
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 144
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 144,
+              "height": 30
+            },
+            "frame": {
+              "left": 664,
+              "top": 430,
+              "width": 144,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/8jqh0fep",
+              "id": "22",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.22",
+            "kind": "text",
+            "position": {
+              "left": 676,
+              "top": 438
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 120
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 120,
+              "height": 16
+            },
+            "frame": {
+              "left": 676,
+              "top": 438,
+              "width": 120,
+              "height": 16
+            },
+            "children": [],
+            "text": "graph_traverse",
+            "transform": "none",
+            "element": {
+              "aid": "sh/x4nap4r6",
+              "id": "23",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.23",
+            "kind": "text",
+            "position": {
+              "left": 906,
+              "top": 322
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 906,
+              "top": 322,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qpg3ex0n",
+              "id": "24",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.24",
+            "kind": "shape",
+            "position": {
+              "left": 964,
+              "top": 286
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 112
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 112
+            },
+            "frame": {
+              "left": 964,
+              "top": 286,
+              "width": 220,
+              "height": 112
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/fa9w3m94",
+              "id": "25",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.25",
+            "kind": "text",
+            "position": {
+              "left": 980,
+              "top": 300
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 188
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 188,
+              "height": 26
+            },
+            "frame": {
+              "left": 980,
+              "top": 300,
+              "width": 188,
+              "height": 26
+            },
+            "children": [],
+            "text": "Memgraph",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8v6psfil",
+              "id": "26",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.26",
+            "kind": "text",
+            "position": {
+              "left": 980,
+              "top": 330
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 188
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 60
+              }
+            },
+            "intrinsicSize": {
+              "width": 188,
+              "height": 60
+            },
+            "frame": {
+              "left": 980,
+              "top": 330,
+              "width": 188,
+              "height": 60
+            },
+            "children": [],
+            "text": "Document · Chunk · Edge · Memory",
+            "transform": "none",
+            "element": {
+              "aid": "sh/xczed8v6",
+              "id": "27",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.27",
+            "kind": "shape",
+            "position": {
+              "left": 474,
+              "top": 516
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 330
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 80
+              }
+            },
+            "intrinsicSize": {
+              "width": 330,
+              "height": 80
+            },
+            "frame": {
+              "left": 474,
+              "top": 516,
+              "width": 330,
+              "height": 80
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/qtcj6tov",
+              "id": "28",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.28",
+            "kind": "text",
+            "position": {
+              "left": 490,
+              "top": 530
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 298
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 298,
+              "height": 26
+            },
+            "frame": {
+              "left": 490,
+              "top": 530,
+              "width": 298,
+              "height": 26
+            },
+            "children": [],
+            "text": "GraphRAG Builder",
+            "transform": "none",
+            "element": {
+              "aid": "sh/je9cvixc",
+              "id": "29",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.29",
+            "kind": "text",
+            "position": {
+              "left": 490,
+              "top": 560
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 298
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 298,
+              "height": 28
+            },
+            "frame": {
+              "left": 490,
+              "top": 560,
+              "width": 298,
+              "height": 28
+            },
+            "children": [],
+            "text": "Ingest / Review / Memory pipeline만 approved graph write 수행",
+            "transform": "none",
+            "element": {
+              "aid": "sh/5kb6xkf6",
+              "id": "30",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.30",
+            "kind": "text",
+            "position": {
+              "left": 958,
+              "top": 440
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 18
+            },
+            "frame": {
+              "left": 958,
+              "top": 440,
+              "width": 220,
+              "height": 18
+            },
+            "children": [],
+            "text": "no write from answer runtime",
+            "transform": "none",
+            "element": {
+              "aid": "sh/czed8v6p",
+              "id": "31",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.31",
+            "kind": "shape",
+            "position": {
+              "left": 214,
+              "top": 604
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 850
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 42
+              }
+            },
+            "intrinsicSize": {
+              "width": 850,
+              "height": 42
+            },
+            "frame": {
+              "left": 214,
+              "top": 604,
+              "width": 850,
+              "height": 42
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/neloj2t8",
+              "id": "32",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.32",
+            "kind": "text",
+            "position": {
+              "left": 246,
+              "top": 616
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 790
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 790,
+              "height": 18
+            },
+            "frame": {
+              "left": 246,
+              "top": 616,
+              "width": 790,
+              "height": 18
+            },
+            "children": [],
+            "text": "이 구조 덕분에 외부 agent나 최종 backend가 같은 graph를 안정적으로 조회할 수 있다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ytsvu9kn",
+              "id": "33",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 82,
+              "top": 284,
+              "width": 230,
+              "height": 118
+            }
+          },
+          {
+            "path": "0.6",
+            "frame": {
+              "left": 98,
+              "top": 298,
+              "width": 198,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.7",
+            "frame": {
+              "left": 98,
+              "top": 328,
+              "width": 198,
+              "height": 66
+            }
+          },
+          {
+            "path": "0.8",
+            "frame": {
+              "left": 336,
+              "top": 322,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.9",
+            "frame": {
+              "left": 390,
+              "top": 304,
+              "width": 160,
+              "height": 76
+            }
+          },
+          {
+            "path": "0.10",
+            "frame": {
+              "left": 406,
+              "top": 318,
+              "width": 128,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.11",
+            "frame": {
+              "left": 406,
+              "top": 348,
+              "width": 128,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.12",
+            "frame": {
+              "left": 572,
+              "top": 322,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.13",
+            "frame": {
+              "left": 628,
+              "top": 216,
+              "width": 260,
+              "height": 248
+            }
+          },
+          {
+            "path": "0.14",
+            "frame": {
+              "left": 660,
+              "top": 248,
+              "width": 200,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.15",
+            "frame": {
+              "left": 664,
+              "top": 298,
+              "width": 130,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.16",
+            "frame": {
+              "left": 676,
+              "top": 306,
+              "width": 106,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.17",
+            "frame": {
+              "left": 664,
+              "top": 342,
+              "width": 130,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.18",
+            "frame": {
+              "left": 676,
+              "top": 350,
+              "width": 106,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.19",
+            "frame": {
+              "left": 664,
+              "top": 386,
+              "width": 130,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.20",
+            "frame": {
+              "left": 676,
+              "top": 394,
+              "width": 106,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.21",
+            "frame": {
+              "left": 664,
+              "top": 430,
+              "width": 144,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.22",
+            "frame": {
+              "left": 676,
+              "top": 438,
+              "width": 120,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.23",
+            "frame": {
+              "left": 906,
+              "top": 322,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.24",
+            "frame": {
+              "left": 964,
+              "top": 286,
+              "width": 220,
+              "height": 112
+            }
+          },
+          {
+            "path": "0.25",
+            "frame": {
+              "left": 980,
+              "top": 300,
+              "width": 188,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.26",
+            "frame": {
+              "left": 980,
+              "top": 330,
+              "width": 188,
+              "height": 60
+            }
+          },
+          {
+            "path": "0.27",
+            "frame": {
+              "left": 474,
+              "top": 516,
+              "width": 330,
+              "height": 80
+            }
+          },
+          {
+            "path": "0.28",
+            "frame": {
+              "left": 490,
+              "top": 530,
+              "width": 298,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.29",
+            "frame": {
+              "left": 490,
+              "top": 560,
+              "width": 298,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.30",
+            "frame": {
+              "left": 958,
+              "top": 440,
+              "width": 220,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.31",
+            "frame": {
+              "left": 214,
+              "top": 604,
+              "width": 850,
+              "height": 42
+            }
+          },
+          {
+            "path": "0.32",
+            "frame": {
+              "left": 246,
+              "top": 616,
+              "width": 790,
+              "height": 18
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

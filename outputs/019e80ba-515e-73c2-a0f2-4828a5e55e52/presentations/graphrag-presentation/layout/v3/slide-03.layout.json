@@ -1,0 +1,3571 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/ppm778",
+    "id": "ppm778",
+    "slide": 3,
+    "layoutId": "f256c434-2912-4602-8a51-36e8654de185",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f256c434-2912-4602-8a51-36e8654de185",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "1",
+      "bbox": [
+        56,
+        28,
+        760,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "rect",
+      "text": "DATA & PREPROCESSING",
+      "textPreview": "DATA & PREPROCESSING",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "DATA & PREPROCESSING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "DATA & PREPROCESSING",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "DATA & PREPROCESSING",
+              "fontSize": 10,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "2",
+      "bbox": [
+        56,
+        54,
+        1010,
+        66
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "rect",
+      "text": "law.go.kr JSON을 TOON으로 바꿔 전체 토큰 40.81% 절감",
+      "textPreview": "law.go.kr JSON을 TOON으로 바꿔 전체 토큰 40.81% 절감",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "law.go.kr JSON을 TOON으로 바꿔 전체 토큰 40.81% 절감"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "law.go.kr JSON을 TOON으로 바꿔 전체 토큰 40.81% 절감",
+          "resolvedTextStyle": {
+            "fontSize": 30,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "law.go.kr JSON을 TOON으로 바꿔 전체 토큰 40.81% 절감",
+              "fontSize": 30,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "3",
+      "bbox": [
+        58,
+        120,
+        930,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "rect",
+      "text": "원본 API 구조를 보존하되 LLM 입력 비용을 줄이기 위해 JSON 문법 토큰을 제거했다.",
+      "textPreview": "원본 API 구조를 보존하되 LLM 입력 비용을 줄이기 위해 JSON 문법 토큰을 제거했다.",
+      "resolvedFontSize": 12.51,
+      "resolvedTextStyle": {
+        "fontSize": 12.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "원본 API 구조를 보존하되 LLM 입력 비용을 줄이기 위해 JSON 문법 토큰을 제거했다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "원본 API 구조를 보존하되 LLM 입력 비용을 줄이기 위해 JSON 문법 토큰을 제거했다.",
+          "resolvedTextStyle": {
+            "fontSize": 12.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "원본 API 구조를 보존하되 LLM 입력 비용을 줄이기 위해 JSON 문법 토큰을 제거했다.",
+              "fontSize": 12.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "4",
+      "bbox": [
+        1186,
+        48,
+        38,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "right",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "right",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "5",
+      "bbox": [
+        56,
+        152,
+        1168,
+        1
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "rect",
+      "fillColor": "#E5DCD5"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "6",
+      "bbox": [
+        78,
+        188,
+        240,
+        84
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E8F0FF",
+      "lineColor": "#2563EB",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "7",
+      "bbox": [
+        94,
+        202,
+        208,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.6"
+      },
+      "geometry": "rect",
+      "text": "law.go.kr API",
+      "textPreview": "law.go.kr API",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "law.go.kr API"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "law.go.kr API",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "law.go.kr API",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahoza1gv",
+      "id": "8",
+      "bbox": [
+        94,
+        232,
+        208,
+        32
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.7"
+      },
+      "geometry": "rect",
+      "text": "lawSearch.do / lawService.do / target=ordin",
+      "textPreview": "lawSearch.do / lawService.do / target=ordin",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "lawSearch.do / lawService.do /"
+          },
+          {
+            "index": 2,
+            "text": "target=ordin"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "lawSearch.do / lawService.do / target=ordin",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "lawSearch.do / lawService.do / target=ordin",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "9",
+      "bbox": [
+        334,
+        218,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.8"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "10",
+      "bbox": [
+        390,
+        188,
+        210,
+        84
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.9"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#F7ECE4",
+      "lineColor": "#6C2E12",
+      "lineWidth": 1
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "11",
+      "bbox": [
+        406,
+        202,
+        178,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.10"
+      },
+      "geometry": "rect",
+      "text": "JSON 원본",
+      "textPreview": "JSON 원본",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "JSON 원본"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "JSON 원본",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "JSON 원본",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w3m94fu",
+      "id": "12",
+      "bbox": [
+        406,
+        232,
+        178,
+        32
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.11"
+      },
+      "geometry": "rect",
+      "text": "법령/조례 원천 구조 저장",
+      "textPreview": "법령/조례 원천 구조 저장",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "법령/조례 원천 구조 저장"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "법령/조례 원천 구조 저장",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "법령/조례 원천 구조 저장",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "13",
+      "bbox": [
+        616,
+        218,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.12"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/re1w7mp0",
+      "id": "14",
+      "bbox": [
+        672,
+        188,
+        230,
+        84
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.13"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#DDF6F1",
+      "lineColor": "#0F766E",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t83itgf",
+      "id": "15",
+      "bbox": [
+        688,
+        202,
+        198,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.14"
+      },
+      "geometry": "rect",
+      "text": "TOON 변환",
+      "textPreview": "TOON 변환",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TOON 변환"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TOON 변환",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "TOON 변환",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9knih4by",
+      "id": "16",
+      "bbox": [
+        688,
+        232,
+        198,
+        32
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.15"
+      },
+      "geometry": "rect",
+      "text": "LLM-friendly text representation",
+      "textPreview": "LLM-friendly text representation",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LLM-friendly text representation"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LLM-friendly text representation",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LLM-friendly text representation",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzupwb2h",
+      "id": "17",
+      "bbox": [
+        918,
+        218,
+        32,
+        24
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.16"
+      },
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "18",
+      "bbox": [
+        974,
+        188,
+        220,
+        84
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.17"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#E4F8EF",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "19",
+      "bbox": [
+        990,
+        202,
+        188,
+        26
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.18"
+      },
+      "geometry": "rect",
+      "text": "RAG 입력",
+      "textPreview": "RAG 입력",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RAG 입력"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RAG 입력",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "RAG 입력",
+              "fontSize": 16,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "20",
+      "bbox": [
+        990,
+        232,
+        188,
+        32
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.19"
+      },
+      "geometry": "rect",
+      "text": "chunking agent가 읽는 전처리 문서",
+      "textPreview": "chunking agent가 읽는 전처리 문서",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "chunking agent가 읽는 전처리 문서"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "chunking agent가 읽는 전처리 문서",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "chunking agent가 읽는 전처리 문서",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "21",
+      "bbox": [
+        80,
+        340,
+        360,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.20"
+      },
+      "geometry": "rect",
+      "text": "Token compression proof",
+      "textPreview": "Token compression proof",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Arial",
+        "color": "#151126",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Token compression proof"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Token compression proof",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Arial",
+            "color": "#151126",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Token compression proof",
+              "fontSize": 24,
+              "typeface": "Arial",
+              "color": "#151126",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "22",
+      "bbox": [
+        80,
+        386,
+        112,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.21"
+      },
+      "geometry": "rect",
+      "text": "320,991",
+      "textPreview": "320,991",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "320,991"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "320,991",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "320,991",
+              "fontSize": 24,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "23",
+      "bbox": [
+        210,
+        390,
+        560,
+        22
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.22"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#C49A82"
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "24",
+      "bbox": [
+        210,
+        420,
+        180,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.23"
+      },
+      "geometry": "rect",
+      "text": "원본 JSON tokens",
+      "textPreview": "원본 JSON tokens",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "원본 JSON tokens"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "원본 JSON tokens",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "원본 JSON tokens",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "25",
+      "bbox": [
+        80,
+        466,
+        112,
+        28
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.24"
+      },
+      "geometry": "rect",
+      "text": "189,997",
+      "textPreview": "189,997",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Arial",
+        "color": "#0F766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "189,997"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "189,997",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Arial",
+            "color": "#0F766E",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "189,997",
+              "fontSize": 24,
+              "typeface": "Arial",
+              "color": "#0F766E",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "26",
+      "bbox": [
+        210,
+        470,
+        332,
+        22
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.25"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#0F766E"
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "27",
+      "bbox": [
+        210,
+        500,
+        160,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.26"
+      },
+      "geometry": "rect",
+      "text": "TOON tokens",
+      "textPreview": "TOON tokens",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TOON tokens"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TOON tokens",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "TOON tokens",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "28",
+      "bbox": [
+        790,
+        352,
+        360,
+        170
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.27"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D8D0",
+      "lineWidth": 1
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9cvixc",
+      "id": "29",
+      "bbox": [
+        824,
+        384,
+        120,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.28"
+      },
+      "geometry": "rect",
+      "text": "절감 토큰",
+      "textPreview": "절감 토큰",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "절감 토큰"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "절감 토큰",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "절감 토큰",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "30",
+      "bbox": [
+        824,
+        408,
+        180,
+        42
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.29"
+      },
+      "geometry": "rect",
+      "text": "130,994",
+      "textPreview": "130,994",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "fontSize": 38,
+        "typeface": "Arial",
+        "color": "#0F9F6E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "130,994"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "130,994",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "typeface": "Arial",
+            "color": "#0F9F6E",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "130,994",
+              "fontSize": 38,
+              "typeface": "Arial",
+              "color": "#0F9F6E",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "31",
+      "bbox": [
+        824,
+        466,
+        280,
+        38
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.30"
+      },
+      "geometry": "rect",
+      "text": "전체 합계 기준 절감률 40.81%. 문서별 평균이 아니라 전체 token sum 기준이다.",
+      "textPreview": "전체 합계 기준 절감률 40.81%. 문서별 평균이 아니라 전체 token sum 기준이다.",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "전체 합계 기준 절감률 40.81%. 문서별 평균이"
+          },
+          {
+            "index": 2,
+            "text": "아니라 전체 token sum 기준이다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "전체 합계 기준 절감률 40.81%. 문서별 평균이 아니라 전체 token sum 기준이다.",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "전체 합계 기준 절감률 40.81%. 문서별 평균이 아니라 전체 token sum 기준이다.",
+              "fontSize": 14,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "32",
+      "bbox": [
+        80,
+        626,
+        780,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.31"
+      },
+      "geometry": "rect",
+      "text": "근거: rag/code_reference 수집/전처리 코드, rag/RAG_PREPROCESSED_DATA/README.md",
+      "textPreview": "근거: rag/code_reference 수집/전처리 코드, rag/RAG_PREPROCESSED_DATA/README.md",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "근거: rag/code_reference 수집/전처리 코드, rag/RAG_PREPROCESSED_DATA/README.md"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "근거: rag/code_reference 수집/전처리 코드, rag/RAG_PREPROCESSED_DATA/README.md",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "근거: rag/code_reference 수집/전처리 코드, rag/RAG_PREPROCESSED_DATA/README.md",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 1224,
+          "height": 644
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 28
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 760
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 760,
+              "height": 18
+            },
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            },
+            "children": [],
+            "text": "DATA & PREPROCESSING",
+            "transform": "none",
+            "element": {
+              "aid": "sh/3itgfmlk",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "text",
+            "position": {
+              "left": 56,
+              "top": 54
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1010
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 66
+              }
+            },
+            "intrinsicSize": {
+              "width": 1010,
+              "height": 66
+            },
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            },
+            "children": [],
+            "text": "law.go.kr JSON을 TOON으로 바꿔 전체 토큰 40.81% 절감",
+            "transform": "none",
+            "element": {
+              "aid": "sh/w3m94fu1",
+              "id": "2",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "text",
+            "position": {
+              "left": 58,
+              "top": 120
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 930
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 930,
+              "height": 26
+            },
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            },
+            "children": [],
+            "text": "원본 API 구조를 보존하되 LLM 입력 비용을 줄이기 위해 JSON 문법 토큰을 제거했다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/loj2t83i",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "text",
+            "position": {
+              "left": 1186,
+              "top": 48
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 38
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 38,
+              "height": 18
+            },
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            },
+            "children": [],
+            "text": "03",
+            "transform": "none",
+            "element": {
+              "aid": "sh/e9cvixcz",
+              "id": "4",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "shape",
+            "position": {
+              "left": 56,
+              "top": 152
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1168
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 1
+              }
+            },
+            "intrinsicSize": {
+              "width": 1168,
+              "height": 1
+            },
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/3q5o7qpg",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "shape",
+            "position": {
+              "left": 78,
+              "top": 188
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 240
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 84
+              }
+            },
+            "intrinsicSize": {
+              "width": 240,
+              "height": 84
+            },
+            "frame": {
+              "left": 78,
+              "top": 188,
+              "width": 240,
+              "height": 84
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/wb2hwfyx",
+              "id": "6",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.6",
+            "kind": "text",
+            "position": {
+              "left": 94,
+              "top": 202
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 208
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 208,
+              "height": 26
+            },
+            "frame": {
+              "left": 94,
+              "top": 202,
+              "width": 208,
+              "height": 26
+            },
+            "children": [],
+            "text": "law.go.kr API",
+            "transform": "none",
+            "element": {
+              "aid": "sh/lwval87e",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.7",
+            "kind": "text",
+            "position": {
+              "left": 94,
+              "top": 232
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 208
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 32
+              }
+            },
+            "intrinsicSize": {
+              "width": 208,
+              "height": 32
+            },
+            "frame": {
+              "left": 94,
+              "top": 232,
+              "width": 208,
+              "height": 32
+            },
+            "children": [],
+            "text": "lawSearch.do / lawService.do / target=ordin",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ahoza1gv",
+              "id": "8",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.8",
+            "kind": "text",
+            "position": {
+              "left": 334,
+              "top": 218
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 334,
+              "top": 218,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/32lszqtc",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.9",
+            "kind": "shape",
+            "position": {
+              "left": 390,
+              "top": 188
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 210
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 84
+              }
+            },
+            "intrinsicSize": {
+              "width": 210,
+              "height": 84
+            },
+            "frame": {
+              "left": 390,
+              "top": 188,
+              "width": 210,
+              "height": 84
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/rqd4vmtw",
+              "id": "10",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.10",
+            "kind": "text",
+            "position": {
+              "left": 406,
+              "top": 202
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 26
+            },
+            "frame": {
+              "left": 406,
+              "top": 202,
+              "width": 178,
+              "height": 26
+            },
+            "children": [],
+            "text": "JSON 원본",
+            "transform": "none",
+            "element": {
+              "aid": "sh/25kb6xkf",
+              "id": "11",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.11",
+            "kind": "text",
+            "position": {
+              "left": 406,
+              "top": 232
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 178
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 32
+              }
+            },
+            "intrinsicSize": {
+              "width": 178,
+              "height": 32
+            },
+            "frame": {
+              "left": 406,
+              "top": 232,
+              "width": 178,
+              "height": 32
+            },
+            "children": [],
+            "text": "법령/조례 원천 구조 저장",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9w3m94fu",
+              "id": "12",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.12",
+            "kind": "text",
+            "position": {
+              "left": 616,
+              "top": 218
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 616,
+              "top": 218,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/kb6xkf6d",
+              "id": "13",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.13",
+            "kind": "shape",
+            "position": {
+              "left": 672,
+              "top": 188
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 230
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 84
+              }
+            },
+            "intrinsicSize": {
+              "width": 230,
+              "height": 84
+            },
+            "frame": {
+              "left": 672,
+              "top": 188,
+              "width": 230,
+              "height": 84
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/re1w7mp0",
+              "id": "14",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.14",
+            "kind": "text",
+            "position": {
+              "left": 688,
+              "top": 202
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 198
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 198,
+              "height": 26
+            },
+            "frame": {
+              "left": 688,
+              "top": 202,
+              "width": 198,
+              "height": 26
+            },
+            "children": [],
+            "text": "TOON 변환",
+            "transform": "none",
+            "element": {
+              "aid": "sh/2t83itgf",
+              "id": "15",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.15",
+            "kind": "text",
+            "position": {
+              "left": 688,
+              "top": 232
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 198
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 32
+              }
+            },
+            "intrinsicSize": {
+              "width": 198,
+              "height": 32
+            },
+            "frame": {
+              "left": 688,
+              "top": 232,
+              "width": 198,
+              "height": 32
+            },
+            "children": [],
+            "text": "LLM-friendly text representation",
+            "transform": "none",
+            "element": {
+              "aid": "sh/9knih4by",
+              "id": "16",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.16",
+            "kind": "text",
+            "position": {
+              "left": 918,
+              "top": 218
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 32
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 24
+              }
+            },
+            "intrinsicSize": {
+              "width": 32,
+              "height": 24
+            },
+            "frame": {
+              "left": 918,
+              "top": 218,
+              "width": 32,
+              "height": 24
+            },
+            "children": [],
+            "text": "→",
+            "transform": "none",
+            "element": {
+              "aid": "sh/kzupwb2h",
+              "id": "17",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.17",
+            "kind": "shape",
+            "position": {
+              "left": 974,
+              "top": 188
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 220
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 84
+              }
+            },
+            "intrinsicSize": {
+              "width": 220,
+              "height": 84
+            },
+            "frame": {
+              "left": 974,
+              "top": 188,
+              "width": 220,
+              "height": 84
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/ra5gbq1o",
+              "id": "18",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.18",
+            "kind": "text",
+            "position": {
+              "left": 990,
+              "top": 202
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 188
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 26
+              }
+            },
+            "intrinsicSize": {
+              "width": 188,
+              "height": 26
+            },
+            "frame": {
+              "left": 990,
+              "top": 202,
+              "width": 188,
+              "height": 26
+            },
+            "children": [],
+            "text": "RAG 입력",
+            "transform": "none",
+            "element": {
+              "aid": "sh/2p8nqxs7",
+              "id": "19",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.19",
+            "kind": "text",
+            "position": {
+              "left": 990,
+              "top": 232
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 188
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 32
+              }
+            },
+            "intrinsicSize": {
+              "width": 188,
+              "height": 32
+            },
+            "frame": {
+              "left": 990,
+              "top": 232,
+              "width": 188,
+              "height": 32
+            },
+            "children": [],
+            "text": "chunking agent가 읽는 전처리 문서",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qd4vmtwr",
+              "id": "20",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.20",
+            "kind": "text",
+            "position": {
+              "left": 80,
+              "top": 340
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 360
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 360,
+              "height": 28
+            },
+            "frame": {
+              "left": 80,
+              "top": 340,
+              "width": 360,
+              "height": 28
+            },
+            "children": [],
+            "text": "Token compression proof",
+            "transform": "none",
+            "element": {
+              "aid": "sh/fyxobm58",
+              "id": "21",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.21",
+            "kind": "text",
+            "position": {
+              "left": 80,
+              "top": 386
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 112
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 112,
+              "height": 28
+            },
+            "frame": {
+              "left": 80,
+              "top": 386,
+              "width": 112,
+              "height": 28
+            },
+            "children": [],
+            "text": "320,991",
+            "transform": "none",
+            "element": {
+              "aid": "sh/8jqh0fep",
+              "id": "22",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.22",
+            "kind": "shape",
+            "position": {
+              "left": 210,
+              "top": 390
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 560
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 22
+              }
+            },
+            "intrinsicSize": {
+              "width": 560,
+              "height": 22
+            },
+            "frame": {
+              "left": 210,
+              "top": 390,
+              "width": 560,
+              "height": 22
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/x4nap4r6",
+              "id": "23",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.23",
+            "kind": "text",
+            "position": {
+              "left": 210,
+              "top": 420
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 180,
+              "height": 18
+            },
+            "frame": {
+              "left": 210,
+              "top": 420,
+              "width": 180,
+              "height": 18
+            },
+            "children": [],
+            "text": "원본 JSON tokens",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qpg3ex0n",
+              "id": "24",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.24",
+            "kind": "text",
+            "position": {
+              "left": 80,
+              "top": 466
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 112
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 28
+              }
+            },
+            "intrinsicSize": {
+              "width": 112,
+              "height": 28
+            },
+            "frame": {
+              "left": 80,
+              "top": 466,
+              "width": 112,
+              "height": 28
+            },
+            "children": [],
+            "text": "189,997",
+            "transform": "none",
+            "element": {
+              "aid": "sh/fa9w3m94",
+              "id": "25",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.25",
+            "kind": "shape",
+            "position": {
+              "left": 210,
+              "top": 470
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 332
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 22
+              }
+            },
+            "intrinsicSize": {
+              "width": 332,
+              "height": 22
+            },
+            "frame": {
+              "left": 210,
+              "top": 470,
+              "width": 332,
+              "height": 22
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/8v6psfil",
+              "id": "26",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.26",
+            "kind": "text",
+            "position": {
+              "left": 210,
+              "top": 500
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 160
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 160,
+              "height": 18
+            },
+            "frame": {
+              "left": 210,
+              "top": 500,
+              "width": 160,
+              "height": 18
+            },
+            "children": [],
+            "text": "TOON tokens",
+            "transform": "none",
+            "element": {
+              "aid": "sh/xczed8v6",
+              "id": "27",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.27",
+            "kind": "shape",
+            "position": {
+              "left": 790,
+              "top": 352
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 360
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 170
+              }
+            },
+            "intrinsicSize": {
+              "width": 360,
+              "height": 170
+            },
+            "frame": {
+              "left": 790,
+              "top": 352,
+              "width": 360,
+              "height": 170
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/qtcj6tov",
+              "id": "28",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.28",
+            "kind": "text",
+            "position": {
+              "left": 824,
+              "top": 384
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 120
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 120,
+              "height": 18
+            },
+            "frame": {
+              "left": 824,
+              "top": 384,
+              "width": 120,
+              "height": 18
+            },
+            "children": [],
+            "text": "절감 토큰",
+            "transform": "none",
+            "element": {
+              "aid": "sh/je9cvixc",
+              "id": "29",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.29",
+            "kind": "text",
+            "position": {
+              "left": 824,
+              "top": 408
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 180
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 42
+              }
+            },
+            "intrinsicSize": {
+              "width": 180,
+              "height": 42
+            },
+            "frame": {
+              "left": 824,
+              "top": 408,
+              "width": 180,
+              "height": 42
+            },
+            "children": [],
+            "text": "130,994",
+            "transform": "none",
+            "element": {
+              "aid": "sh/5kb6xkf6",
+              "id": "30",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.30",
+            "kind": "text",
+            "position": {
+              "left": 824,
+              "top": 466
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 280
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 38
+              }
+            },
+            "intrinsicSize": {
+              "width": 280,
+              "height": 38
+            },
+            "frame": {
+              "left": 824,
+              "top": 466,
+              "width": 280,
+              "height": 38
+            },
+            "children": [],
+            "text": "전체 합계 기준 절감률 40.81%. 문서별 평균이 아니라 전체 token sum 기준이다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/czed8v6p",
+              "id": "31",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.31",
+            "kind": "text",
+            "position": {
+              "left": 80,
+              "top": 626
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 780
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 780,
+              "height": 18
+            },
+            "frame": {
+              "left": 80,
+              "top": 626,
+              "width": 780,
+              "height": 18
+            },
+            "children": [],
+            "text": "근거: rag/code_reference 수집/전처리 코드, rag/RAG_PREPROCESSED_DATA/README.md",
+            "transform": "none",
+            "element": {
+              "aid": "sh/neloj2t8",
+              "id": "32",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 56,
+              "top": 28,
+              "width": 760,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 56,
+              "top": 54,
+              "width": 1010,
+              "height": 66
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 58,
+              "top": 120,
+              "width": 930,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 1186,
+              "top": 48,
+              "width": 38,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 56,
+              "top": 152,
+              "width": 1168,
+              "height": 1
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 78,
+              "top": 188,
+              "width": 240,
+              "height": 84
+            }
+          },
+          {
+            "path": "0.6",
+            "frame": {
+              "left": 94,
+              "top": 202,
+              "width": 208,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.7",
+            "frame": {
+              "left": 94,
+              "top": 232,
+              "width": 208,
+              "height": 32
+            }
+          },
+          {
+            "path": "0.8",
+            "frame": {
+              "left": 334,
+              "top": 218,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.9",
+            "frame": {
+              "left": 390,
+              "top": 188,
+              "width": 210,
+              "height": 84
+            }
+          },
+          {
+            "path": "0.10",
+            "frame": {
+              "left": 406,
+              "top": 202,
+              "width": 178,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.11",
+            "frame": {
+              "left": 406,
+              "top": 232,
+              "width": 178,
+              "height": 32
+            }
+          },
+          {
+            "path": "0.12",
+            "frame": {
+              "left": 616,
+              "top": 218,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.13",
+            "frame": {
+              "left": 672,
+              "top": 188,
+              "width": 230,
+              "height": 84
+            }
+          },
+          {
+            "path": "0.14",
+            "frame": {
+              "left": 688,
+              "top": 202,
+              "width": 198,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.15",
+            "frame": {
+              "left": 688,
+              "top": 232,
+              "width": 198,
+              "height": 32
+            }
+          },
+          {
+            "path": "0.16",
+            "frame": {
+              "left": 918,
+              "top": 218,
+              "width": 32,
+              "height": 24
+            }
+          },
+          {
+            "path": "0.17",
+            "frame": {
+              "left": 974,
+              "top": 188,
+              "width": 220,
+              "height": 84
+            }
+          },
+          {
+            "path": "0.18",
+            "frame": {
+              "left": 990,
+              "top": 202,
+              "width": 188,
+              "height": 26
+            }
+          },
+          {
+            "path": "0.19",
+            "frame": {
+              "left": 990,
+              "top": 232,
+              "width": 188,
+              "height": 32
+            }
+          },
+          {
+            "path": "0.20",
+            "frame": {
+              "left": 80,
+              "top": 340,
+              "width": 360,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.21",
+            "frame": {
+              "left": 80,
+              "top": 386,
+              "width": 112,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.22",
+            "frame": {
+              "left": 210,
+              "top": 390,
+              "width": 560,
+              "height": 22
+            }
+          },
+          {
+            "path": "0.23",
+            "frame": {
+              "left": 210,
+              "top": 420,
+              "width": 180,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.24",
+            "frame": {
+              "left": 80,
+              "top": 466,
+              "width": 112,
+              "height": 28
+            }
+          },
+          {
+            "path": "0.25",
+            "frame": {
+              "left": 210,
+              "top": 470,
+              "width": 332,
+              "height": 22
+            }
+          },
+          {
+            "path": "0.26",
+            "frame": {
+              "left": 210,
+              "top": 500,
+              "width": 160,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.27",
+            "frame": {
+              "left": 790,
+              "top": 352,
+              "width": 360,
+              "height": 170
+            }
+          },
+          {
+            "path": "0.28",
+            "frame": {
+              "left": 824,
+              "top": 384,
+              "width": 120,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.29",
+            "frame": {
+              "left": 824,
+              "top": 408,
+              "width": 180,
+              "height": 42
+            }
+          },
+          {
+            "path": "0.30",
+            "frame": {
+              "left": 824,
+              "top": 466,
+              "width": 280,
+              "height": 38
+            }
+          },
+          {
+            "path": "0.31",
+            "frame": {
+              "left": 80,
+              "top": 626,
+              "width": 780,
+              "height": 18
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

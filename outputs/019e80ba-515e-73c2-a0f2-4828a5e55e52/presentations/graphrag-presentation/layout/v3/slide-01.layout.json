@@ -1,0 +1,2286 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/la5ytr",
+    "id": "la5ytr",
+    "slide": 1,
+    "layoutId": "f256c434-2912-4602-8a51-36e8654de185",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Arial"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f256c434-2912-4602-8a51-36e8654de185",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "6c903b97-94ac-4d73-b51a-51add5307748",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fu18jqh0",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.0"
+      },
+      "geometry": "rect",
+      "fillColor": "#17151D"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu18jqh",
+      "id": "2",
+      "bbox": [
+        772,
+        0,
+        508,
+        720
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.1"
+      },
+      "geometry": "rect",
+      "fillColor": "#F4EDE7"
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "3",
+      "bbox": [
+        68,
+        74,
+        640,
+        126
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.2"
+      },
+      "geometry": "rect",
+      "text": "검수 가능한 GraphRAG 서비스",
+      "textPreview": "검수 가능한 GraphRAG 서비스",
+      "resolvedFontSize": 54,
+      "resolvedTextStyle": {
+        "fontSize": 54,
+        "typeface": "Arial",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "검수 가능한 GraphRAG"
+          },
+          {
+            "index": 2,
+            "text": "서비스"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "검수 가능한 GraphRAG 서비스",
+          "resolvedTextStyle": {
+            "fontSize": 54,
+            "typeface": "Arial",
+            "color": "#FFFFFF",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "검수 가능한 GraphRAG 서비스",
+              "fontSize": 54,
+              "typeface": "Arial",
+              "color": "#FFFFFF",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxs72x4n",
+      "id": "4",
+      "bbox": [
+        72,
+        214,
+        600,
+        60
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.3"
+      },
+      "geometry": "rect",
+      "text": "Streaming Frontend, LLM Runtime Backend, GraphRAG Knowledge Layer를 분리한 법령/조례 RAG 시스템",
+      "textPreview": "Streaming Frontend, LLM Runtime Backend, GraphRAG Knowledge Layer를 분리한 법령/조례 RAG 시스템",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Arial",
+        "color": "#D8D2DC",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Streaming Frontend, LLM Runtime Backend, GraphRAG Knowledge"
+          },
+          {
+            "index": 2,
+            "text": "Layer를 분리한 법령/조례 RAG 시스템"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Streaming Frontend, LLM Runtime Backend, GraphRAG Knowledge Layer를 분리한 법령/조례 RAG 시스템",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "typeface": "Arial",
+            "color": "#D8D2DC",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Streaming Frontend, LLM Runtime Backend, GraphRAG Knowledge Layer를 분리한 법령/조례 RAG 시스템",
+              "fontSize": 19,
+              "typeface": "Arial",
+              "color": "#D8D2DC",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fil0rqd4",
+      "id": "5",
+      "bbox": [
+        72,
+        320,
+        560,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.4"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#122E28",
+      "lineColor": "#0F9F6E",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83itgfml",
+      "id": "6",
+      "bbox": [
+        84,
+        328,
+        536,
+        16
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.5"
+      },
+      "geometry": "rect",
+      "text": "Streaming FE → Main Backend → MCP → GraphRAG → Memgraph",
+      "textPreview": "Streaming FE → Main Backend → MCP → GraphRAG → Memgraph",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#0F9F6E",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Streaming FE → Main Backend → MCP → GraphRAG → Memgraph"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Streaming FE → Main Backend → MCP → GraphRAG → Memgraph",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#0F9F6E",
+            "bold": true,
+            "alignment": "center",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Streaming FE → Main Backend → MCP → GraphRAG → Memgraph",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#0F9F6E",
+              "bold": true,
+              "alignment": "center",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xobm58z2",
+      "id": "7",
+      "bbox": [
+        72,
+        424,
+        120,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.6"
+      },
+      "geometry": "rect",
+      "text": "핵심 주장",
+      "textPreview": "핵심 주장",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Arial",
+        "color": "#C9B6A8",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "핵심 주장"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "핵심 주장",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Arial",
+            "color": "#C9B6A8",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "핵심 주장",
+              "fontSize": 11,
+              "typeface": "Arial",
+              "color": "#C9B6A8",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtwra5gb",
+      "id": "8",
+      "bbox": [
+        72,
+        452,
+        620,
+        96
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.7"
+      },
+      "geometry": "rect",
+      "text": "RAG system은 knowledge layer이고, Main Backend는 answer generation runtime이다. 두 영역은 MCP read-only tool boundary로 분리했다.",
+      "textPreview": "RAG system은 knowledge layer이고, Main Backend는 answer generation runtime이다. 두 영역은 MCP read-only tool boundary로 분리했다.",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Arial",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RAG system은 knowledge layer이고, Main Backend는 answer"
+          },
+          {
+            "index": 2,
+            "text": "generation runtime이다. 두 영역은 MCP read-only tool boundary로"
+          },
+          {
+            "index": 3,
+            "text": "분리했다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RAG system은 knowledge layer이고, Main Backend는 answer generation runtime이다. 두 영역은 MCP read-only tool boundary로 분리했다.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "typeface": "Arial",
+            "color": "#FFFFFF",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "RAG system은 knowledge layer이고, Main Backend는 answer generation runtime이다. 두 영역은 MCP read-only tool boundary로 분리했다.",
+              "fontSize": 20,
+              "typeface": "Arial",
+              "color": "#FFFFFF",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fepkzupw",
+      "id": "9",
+      "bbox": [
+        832,
+        100,
+        320,
+        78
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.8"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D8D0",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7adsji5s",
+      "id": "10",
+      "bbox": [
+        850,
+        114,
+        284,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.9"
+      },
+      "geometry": "rect",
+      "text": "40.81%",
+      "textPreview": "40.81%",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "Arial",
+        "color": "#6C2E12",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "40.81%"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "40.81%",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Arial",
+            "color": "#6C2E12",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "40.81%",
+              "fontSize": 25,
+              "typeface": "Arial",
+              "color": "#6C2E12",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epkzupwb",
+      "id": "11",
+      "bbox": [
+        850,
+        148,
+        284,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.10"
+      },
+      "geometry": "rect",
+      "text": "TOON 전처리 전체 토큰 절감률",
+      "textPreview": "TOON 전처리 전체 토큰 절감률",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TOON 전처리 전체 토큰 절감률"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TOON 전처리 전체 토큰 절감률",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "TOON 전처리 전체 토큰 절감률",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3ex0nu",
+      "id": "12",
+      "bbox": [
+        832,
+        202,
+        320,
+        78
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.11"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D8D0",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "13",
+      "bbox": [
+        850,
+        216,
+        284,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.12"
+      },
+      "geometry": "rect",
+      "text": "360",
+      "textPreview": "360",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "Arial",
+        "color": "#6655E8",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "360"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "360",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Arial",
+            "color": "#6655E8",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "360",
+              "fontSize": 25,
+              "typeface": "Arial",
+              "color": "#6655E8",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7mp0bi9s",
+      "id": "14",
+      "bbox": [
+        850,
+        250,
+        284,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.13"
+      },
+      "geometry": "rect",
+      "text": "대표/엣지 질문 테스트 케이스",
+      "textPreview": "대표/엣지 질문 테스트 케이스",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "대표/엣지 질문 테스트 케이스"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "대표/엣지 질문 테스트 케이스",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "대표/엣지 질문 테스트 케이스",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e1w7mp0b",
+      "id": "15",
+      "bbox": [
+        832,
+        304,
+        320,
+        78
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.14"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D8D0",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/psfil0rq",
+      "id": "16",
+      "bbox": [
+        850,
+        318,
+        284,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.15"
+      },
+      "geometry": "rect",
+      "text": "reviewable",
+      "textPreview": "reviewable",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "Arial",
+        "color": "#0F766E",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "reviewable"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "reviewable",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Arial",
+            "color": "#0F766E",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "reviewable",
+              "fontSize": 25,
+              "typeface": "Arial",
+              "color": "#0F766E",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7mp0bi9",
+      "id": "17",
+      "bbox": [
+        850,
+        352,
+        284,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.16"
+      },
+      "geometry": "rect",
+      "text": "candidate first, edge later",
+      "textPreview": "candidate first, edge later",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "candidate first, edge later"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "candidate first, edge later",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "candidate first, edge later",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u54zido",
+      "id": "18",
+      "bbox": [
+        832,
+        406,
+        320,
+        78
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.17"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#E2D8D0",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "19",
+      "bbox": [
+        850,
+        420,
+        284,
+        30
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.18"
+      },
+      "geometry": "rect",
+      "text": "read-only MCP",
+      "textPreview": "read-only MCP",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "Arial",
+        "color": "#2563EB",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "read-only MCP"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "read-only MCP",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Arial",
+            "color": "#2563EB",
+            "bold": true,
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "read-only MCP",
+              "fontSize": 25,
+              "typeface": "Arial",
+              "color": "#2563EB",
+              "bold": true,
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "20",
+      "bbox": [
+        850,
+        454,
+        284,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.19"
+      },
+      "geometry": "rect",
+      "text": "최종 backend graph query boundary",
+      "textPreview": "최종 backend graph query boundary",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Arial",
+        "color": "#6F6878",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "최종 backend graph query boundary"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "최종 backend graph query boundary",
+          "resolvedTextStyle": {
+            "fontSize": 10.51,
+            "typeface": "Arial",
+            "color": "#6F6878",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "최종 backend graph query boundary",
+              "fontSize": 10.51,
+              "typeface": "Arial",
+              "color": "#6F6878",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "21",
+      "bbox": [
+        72,
+        650,
+        500,
+        18
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0.20"
+      },
+      "geometry": "rect",
+      "text": "SKN28 3rd 1Team · GraphRAG Presentation v3",
+      "textPreview": "SKN28 3rd 1Team · GraphRAG Presentation v3",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Arial",
+        "color": "#9D96A8",
+        "alignment": "left",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SKN28 3rd 1Team · GraphRAG Presentation v3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SKN28 3rd 1Team · GraphRAG Presentation v3",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Arial",
+            "color": "#9D96A8",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SKN28 3rd 1Team · GraphRAG Presentation v3",
+              "fontSize": 12,
+              "typeface": "Arial",
+              "color": "#9D96A8",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "root": {
+        "path": "0",
+        "kind": "layers",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 1280
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 720
+          }
+        },
+        "intrinsicSize": {
+          "width": 1280,
+          "height": 720
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "children": [
+          {
+            "path": "0.0",
+            "kind": "shape",
+            "position": {
+              "left": 0,
+              "top": 0
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 1280
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 720
+              }
+            },
+            "intrinsicSize": {
+              "width": 1280,
+              "height": 720
+            },
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 1280,
+              "height": 720
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/fu18jqh0",
+              "id": "1",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.1",
+            "kind": "shape",
+            "position": {
+              "left": 772,
+              "top": 0
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 508
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 720
+              }
+            },
+            "intrinsicSize": {
+              "width": 508,
+              "height": 720
+            },
+            "frame": {
+              "left": 772,
+              "top": 0,
+              "width": 508,
+              "height": 720
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/4fu18jqh",
+              "id": "2",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.2",
+            "kind": "text",
+            "position": {
+              "left": 68,
+              "top": 74
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 640
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 126
+              }
+            },
+            "intrinsicSize": {
+              "width": 640,
+              "height": 126
+            },
+            "frame": {
+              "left": 68,
+              "top": 74,
+              "width": 640,
+              "height": 126
+            },
+            "children": [],
+            "text": "검수 가능한 GraphRAG 서비스",
+            "transform": "none",
+            "element": {
+              "aid": "sh/x0nuxc3y",
+              "id": "3",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.3",
+            "kind": "text",
+            "position": {
+              "left": 72,
+              "top": 214
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 600
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 60
+              }
+            },
+            "intrinsicSize": {
+              "width": 600,
+              "height": 60
+            },
+            "frame": {
+              "left": 72,
+              "top": 214,
+              "width": 600,
+              "height": 60
+            },
+            "children": [],
+            "text": "Streaming Frontend, LLM Runtime Backend, GraphRAG Knowledge Layer를 분리한 법령/조례 RAG 시스템",
+            "transform": "none",
+            "element": {
+              "aid": "sh/qxs72x4n",
+              "id": "4",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.4",
+            "kind": "shape",
+            "position": {
+              "left": 72,
+              "top": 320
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 560
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 560,
+              "height": 30
+            },
+            "frame": {
+              "left": 72,
+              "top": 320,
+              "width": 560,
+              "height": 30
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/fil0rqd4",
+              "id": "5",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.5",
+            "kind": "text",
+            "position": {
+              "left": 84,
+              "top": 328
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 536
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 16
+              }
+            },
+            "intrinsicSize": {
+              "width": 536,
+              "height": 16
+            },
+            "frame": {
+              "left": 84,
+              "top": 328,
+              "width": 536,
+              "height": 16
+            },
+            "children": [],
+            "text": "Streaming FE → Main Backend → MCP → GraphRAG → Memgraph",
+            "transform": "none",
+            "element": {
+              "aid": "sh/83itgfml",
+              "id": "6",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.6",
+            "kind": "text",
+            "position": {
+              "left": 72,
+              "top": 424
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 120
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 120,
+              "height": 18
+            },
+            "frame": {
+              "left": 72,
+              "top": 424,
+              "width": 120,
+              "height": 18
+            },
+            "children": [],
+            "text": "핵심 주장",
+            "transform": "none",
+            "element": {
+              "aid": "sh/xobm58z2",
+              "id": "7",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.7",
+            "kind": "text",
+            "position": {
+              "left": 72,
+              "top": 452
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 620
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 96
+              }
+            },
+            "intrinsicSize": {
+              "width": 620,
+              "height": 96
+            },
+            "frame": {
+              "left": 72,
+              "top": 452,
+              "width": 620,
+              "height": 96
+            },
+            "children": [],
+            "text": "RAG system은 knowledge layer이고, Main Backend는 answer generation runtime이다. 두 영역은 MCP read-only tool boundary로 분리했다.",
+            "transform": "none",
+            "element": {
+              "aid": "sh/mtwra5gb",
+              "id": "8",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.8",
+            "kind": "shape",
+            "position": {
+              "left": 832,
+              "top": 100
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 320
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 78
+              }
+            },
+            "intrinsicSize": {
+              "width": 320,
+              "height": 78
+            },
+            "frame": {
+              "left": 832,
+              "top": 100,
+              "width": 320,
+              "height": 78
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/fepkzupw",
+              "id": "9",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.9",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 114
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 30
+            },
+            "frame": {
+              "left": 850,
+              "top": 114,
+              "width": 284,
+              "height": 30
+            },
+            "children": [],
+            "text": "40.81%",
+            "transform": "none",
+            "element": {
+              "aid": "sh/7adsji5s",
+              "id": "10",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.10",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 148
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 18
+            },
+            "frame": {
+              "left": 850,
+              "top": 148,
+              "width": 284,
+              "height": 18
+            },
+            "children": [],
+            "text": "TOON 전처리 전체 토큰 절감률",
+            "transform": "none",
+            "element": {
+              "aid": "sh/epkzupwb",
+              "id": "11",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.11",
+            "kind": "shape",
+            "position": {
+              "left": 832,
+              "top": 202
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 320
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 78
+              }
+            },
+            "intrinsicSize": {
+              "width": 320,
+              "height": 78
+            },
+            "frame": {
+              "left": 832,
+              "top": 202,
+              "width": 320,
+              "height": 78
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/pg3ex0nu",
+              "id": "12",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.12",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 216
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 30
+            },
+            "frame": {
+              "left": 850,
+              "top": 216,
+              "width": 284,
+              "height": 30
+            },
+            "children": [],
+            "text": "360",
+            "transform": "none",
+            "element": {
+              "aid": "sh/wval87ed",
+              "id": "13",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.13",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 250
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 18
+            },
+            "frame": {
+              "left": 850,
+              "top": 250,
+              "width": 284,
+              "height": 18
+            },
+            "children": [],
+            "text": "대표/엣지 질문 테스트 케이스",
+            "transform": "none",
+            "element": {
+              "aid": "sh/7mp0bi9s",
+              "id": "14",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.14",
+            "kind": "shape",
+            "position": {
+              "left": 832,
+              "top": 304
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 320
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 78
+              }
+            },
+            "intrinsicSize": {
+              "width": 320,
+              "height": 78
+            },
+            "frame": {
+              "left": 832,
+              "top": 304,
+              "width": 320,
+              "height": 78
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/e1w7mp0b",
+              "id": "15",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.15",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 318
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 30
+            },
+            "frame": {
+              "left": 850,
+              "top": 318,
+              "width": 284,
+              "height": 30
+            },
+            "children": [],
+            "text": "reviewable",
+            "transform": "none",
+            "element": {
+              "aid": "sh/psfil0rq",
+              "id": "16",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.16",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 352
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 18
+            },
+            "frame": {
+              "left": 850,
+              "top": 352,
+              "width": 284,
+              "height": 18
+            },
+            "children": [],
+            "text": "candidate first, edge later",
+            "transform": "none",
+            "element": {
+              "aid": "sh/w7mp0bi9",
+              "id": "17",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.17",
+            "kind": "shape",
+            "position": {
+              "left": 832,
+              "top": 406
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 320
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 78
+              }
+            },
+            "intrinsicSize": {
+              "width": 320,
+              "height": 78
+            },
+            "frame": {
+              "left": 832,
+              "top": 406,
+              "width": 320,
+              "height": 78
+            },
+            "children": [],
+            "geometry": "rect",
+            "element": {
+              "aid": "sh/7u54zido",
+              "id": "18",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.18",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 420
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 30
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 30
+            },
+            "frame": {
+              "left": 850,
+              "top": 420,
+              "width": 284,
+              "height": 30
+            },
+            "children": [],
+            "text": "read-only MCP",
+            "transform": "none",
+            "element": {
+              "aid": "sh/ed8bat47",
+              "id": "19",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.19",
+            "kind": "text",
+            "position": {
+              "left": 850,
+              "top": 454
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 284
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 284,
+              "height": 18
+            },
+            "frame": {
+              "left": 850,
+              "top": 454,
+              "width": 284,
+              "height": 18
+            },
+            "children": [],
+            "text": "최종 backend graph query boundary",
+            "transform": "none",
+            "element": {
+              "aid": "sh/mhk3q5o7",
+              "id": "20",
+              "kind": "shape"
+            }
+          },
+          {
+            "path": "0.20",
+            "kind": "text",
+            "position": {
+              "left": 72,
+              "top": 650
+            },
+            "requestedSize": {
+              "width": {
+                "mode": "fixed",
+                "value": 500
+              },
+              "height": {
+                "mode": "fixed",
+                "value": 18
+              }
+            },
+            "intrinsicSize": {
+              "width": 500,
+              "height": 18
+            },
+            "frame": {
+              "left": 72,
+              "top": 650,
+              "width": 500,
+              "height": 18
+            },
+            "children": [],
+            "text": "SKN28 3rd 1Team · GraphRAG Presentation v3",
+            "transform": "none",
+            "element": {
+              "aid": "sh/b2hwfyxo",
+              "id": "21",
+              "kind": "shape"
+            }
+          }
+        ],
+        "padding": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "alignItems": "stretch",
+        "justifyItems": "stretch",
+        "contentFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "items": [
+          {
+            "path": "0.0",
+            "frame": {
+              "left": 0,
+              "top": 0,
+              "width": 1280,
+              "height": 720
+            }
+          },
+          {
+            "path": "0.1",
+            "frame": {
+              "left": 772,
+              "top": 0,
+              "width": 508,
+              "height": 720
+            }
+          },
+          {
+            "path": "0.2",
+            "frame": {
+              "left": 68,
+              "top": 74,
+              "width": 640,
+              "height": 126
+            }
+          },
+          {
+            "path": "0.3",
+            "frame": {
+              "left": 72,
+              "top": 214,
+              "width": 600,
+              "height": 60
+            }
+          },
+          {
+            "path": "0.4",
+            "frame": {
+              "left": 72,
+              "top": 320,
+              "width": 560,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.5",
+            "frame": {
+              "left": 84,
+              "top": 328,
+              "width": 536,
+              "height": 16
+            }
+          },
+          {
+            "path": "0.6",
+            "frame": {
+              "left": 72,
+              "top": 424,
+              "width": 120,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.7",
+            "frame": {
+              "left": 72,
+              "top": 452,
+              "width": 620,
+              "height": 96
+            }
+          },
+          {
+            "path": "0.8",
+            "frame": {
+              "left": 832,
+              "top": 100,
+              "width": 320,
+              "height": 78
+            }
+          },
+          {
+            "path": "0.9",
+            "frame": {
+              "left": 850,
+              "top": 114,
+              "width": 284,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.10",
+            "frame": {
+              "left": 850,
+              "top": 148,
+              "width": 284,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.11",
+            "frame": {
+              "left": 832,
+              "top": 202,
+              "width": 320,
+              "height": 78
+            }
+          },
+          {
+            "path": "0.12",
+            "frame": {
+              "left": 850,
+              "top": 216,
+              "width": 284,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.13",
+            "frame": {
+              "left": 850,
+              "top": 250,
+              "width": 284,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.14",
+            "frame": {
+              "left": 832,
+              "top": 304,
+              "width": 320,
+              "height": 78
+            }
+          },
+          {
+            "path": "0.15",
+            "frame": {
+              "left": 850,
+              "top": 318,
+              "width": 284,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.16",
+            "frame": {
+              "left": 850,
+              "top": 352,
+              "width": 284,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.17",
+            "frame": {
+              "left": 832,
+              "top": 406,
+              "width": 320,
+              "height": 78
+            }
+          },
+          {
+            "path": "0.18",
+            "frame": {
+              "left": 850,
+              "top": 420,
+              "width": 284,
+              "height": 30
+            }
+          },
+          {
+            "path": "0.19",
+            "frame": {
+              "left": 850,
+              "top": 454,
+              "width": 284,
+              "height": 18
+            }
+          },
+          {
+            "path": "0.20",
+            "frame": {
+              "left": 72,
+              "top": 650,
+              "width": 500,
+              "height": 18
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
