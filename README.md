@@ -28,6 +28,7 @@
 ### 1) 팀 소개
 
 | 구분 | 이원빈 | 김지효 | 송윤경 | 전하영 | 양도영 |
+|---|<img width="248" height="444" alt="image" src="https://github.com/user-attachments/assets/7f415ee3-18c2-4e5e-87c4-8171128370e1" />|<img width="457" height="546" alt="image" src="https://github.com/user-attachments/assets/e80bef47-6176-41c2-8471-28b5c4d14d00" />|<img width="283" height="571" alt="image" src="https://github.com/user-attachments/assets/eff9d9d9-f08c-4648-8435-0079015314b9" />|<img width="353" height="488" alt="image" src="https://github.com/user-attachments/assets/6f58acc9-b043-4a64-8387-3f2d78465fda" />|<img width="244" height="488" alt="image" src="https://github.com/user-attachments/assets/369cd18c-71bd-40b8-b035-70873142869c" />|
 |---|---|---|---|---|---|
 | 역할 | 팀장 | RAG | 프론트엔드 | 백엔드 | 기획·문서 |
 | 한 일 | 전체 일정 관리<br>작업 방향 컨펌<br>파트별 진행 상황 확인 | 노인·고령층 관련 법령 데이터 확인<br>문서 전처리와 임베딩 흐름 정리 | 사용자 질문 화면 구성<br>API 연결 흐름 설계<br>결과 화면 UX 정리<br>RAG 기반 테스트 케이스 설계 | FastAPI `/chat` 구성<br>LangGraph Agent 실행 구조 정리<br>MCP tool 연동 준비 | 전체 서비스 흐름 정리<br>README와 발표 자료 구성<br>팀 산출물 내용 정리 |
