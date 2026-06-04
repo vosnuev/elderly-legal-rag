@@ -12,7 +12,7 @@ Frontend는 `POST /chat`으로 최종 JSON 응답을 받을 수 있고, `POST /c
 | 🧠 LLM | OpenRouter 기반 `ChatOpenAI`, Cerebras primary provider |
 | 🧩 Agent | LangChain `create_agent()` + LangGraph checkpointer |
 | 🛠️ Tool | `agent/tool.py`에서 관리 |
-| 📚 RAG | 추후 FastMCP Tool Server로 연결 |
+| 📚 RAG | FastMCP Tool Server에서 read-only MCP tools 로딩 |
 | 💬 응답 | 최종 JSON `answer` 또는 SSE `delta`/`final` 반환 |
 
 ## 🎯 현재 목표
@@ -25,7 +25,7 @@ Frontend
   -> ⚡  FastAPI chat router
   -> 🧠 Main Agent Orchestrator
   -> 🔗 ChatOpenAI + LangChain tools
-  -> 📚 MCP RAG tool server, later
+  -> 📚 MCP RAG tool server
   -> 💬 answer 또는 delta stream
 ```
 
@@ -81,7 +81,7 @@ backend/
 4. `src/agent/graph.py`가 `create_agent()`와 `InMemorySaver` checkpointer로 Agent를 만든다.
 5. Agent는 `get_chat_llm()`, `get_tools()`, `render_prompt("system_prompt.j2")`를 조합한다.
 6. `src/agent/openrouter_llm.py`가 OpenRouter API key와 provider routing으로 `ChatOpenAI`를 생성한다.
-7. `src/agent/tool.py`가 현재는 placeholder `rag_search_tool`을 반환한다.
+7. `src/agent/tool.py`가 RAG MCP server에서 read-only MCP tools를 비동기로 로딩하고 캐시한다.
 8. 일반 요청에서는 Agent 실행 결과의 마지막 assistant message를 `answer` 문자열로 반환한다.
 9. 스트리밍 요청에서는 생성 중인 text chunk를 `delta` 이벤트로 순차 전송하고, 마지막에 기존 `ChatResponse`와 호환되는 `final` 이벤트를 전송한다.
 
@@ -121,24 +121,29 @@ async function sendChat(message: string) {
 
 RAG는 별도 FastMCP Tool Server가 담당하고, backend는 MCP Client로 tool만 가져와 Agent에 붙인다.
 
-| 구분 | backend 파일 | 해야 할 일 |
+| 구분 | backend 파일 | 동작 |
 | --- | --- | --- |
 | MCP 서버 URL | `src/settings.py` | `settings.rag_mcp_url` 값 사용 |
-| 환경 변수 | `.env` | `BACKEND_RAG_MCP_URL="http://127.0.0.1:8010/mcp"` 설정 |
-| tool 연결 | `src/agent/tool.py` | placeholder `rag_search_tool` 대신 MCP tools 반환 |
-| Agent 연결 | `src/agent/graph.py` | `create_agent(..., tools=get_tools(), ...)`에 MCP tools 전달 |
+| 환경 변수 | `.env` | 로컬은 `BACKEND_RAG_MCP_URL="http://127.0.0.1:8010/mcp/"`, Docker network 내부는 `http://rag-be:8010/mcp/` 사용 |
+| tool 연결 | `src/agent/tool.py` | `MultiServerMCPClient`로 MCP tools를 async 로딩하고 캐시 |
+| Agent 연결 | `src/agent/graph.py` | `create_agent(..., tools=await get_tools(), ...)`에 MCP tools 전달 |
 | 응답 출처 | `src/api/chat.py` | 필요 시 `sources`, `tool_calls` 채우도록 확장 |
 
-현재 `langchain_mcp_adapters.client.MultiServerMCPClient.get_tools()`는 async 함수다. 실제 MCP 연결 단계에서는 `get_tools()`와 `run_agent()`를 async 흐름으로 바꾸거나, 앱 시작 시 MCP tools를 로딩해 캐싱하는 방식 중 하나를 선택해야 한다.
+`langchain_mcp_adapters.client.MultiServerMCPClient.get_tools()`와 MCP tool
+호출은 async 경로를 사용한다. 그래서 `/chat`과 `/chat/stream`도 agent를
+`ainvoke()` / `astream()`으로 실행한다. MCP 원본 tool 이름은
+`memgraph.read_query`처럼 점을 포함하므로, LangChain/OpenAI tool 이름은
+`memgraph_read_query`처럼 안전한 이름으로 치환한다. 실제 MCP call은 원본
+tool 이름으로 전달된다.
 
-예상 연결 형태는 다음과 같다.
+연결 형태는 다음과 같다.
 
 ```python
 # MCP 서버에서 RAG tool 목록을 가져온다.
 client = MultiServerMCPClient(
     {
         "rag": {
-            "transport": "streamable_http",
+            "transport": "http",
             "url": settings.rag_mcp_url,
         }
     }
@@ -243,22 +248,36 @@ data: {"answer": "신청은 주민센터에서 할 수 있습니다.", "tool_cal
 
 ## 🛠️ Tools and MCP
 
-현재 `src/agent/tool.py`에는 MCP 연결 전 placeholder인 `rag_search_tool`만 있다. 실제 RAG 연결은 위의 `RAG/MCP 연결 위치` 섹션 기준으로 `src/agent/tool.py`에서 MCP tools를 가져오도록 바꾸면 된다.
+`src/agent/tool.py`는 RAG Backend의 FastMCP endpoint에서 아래 read-only MCP
+tools를 로딩한다.
+
+- `memgraph_read_query`
+- `memgraph_vector_search`
+- `memgraph_text_index_search`
+- `memgraph_graph_traverse`
+- `memgraph_schema_read`
+
+원본 MCP tool 이름은 `memgraph.read_query` 형식이고, LangChain/OpenAI에
+전달하는 이름만 안전한 snake style로 바꾼다.
+
+RAG 없이 main model만 확인해야 하는 경우에는 `BACKEND_ENABLE_RAG_TOOLS=false`로
+실행한다. 이때 agent에는 빈 tool 목록이 전달되므로 RAG MCP 서버가 떠 있지
+않아도 `/chat` 호출 경로를 확인할 수 있다.
 
 ## 📊 벤치마크 결과 위치
 
-backend 안의 `scripts/`는 현재 수동 `/chat` 테스트용 `manual_chat.py`만 유지한다. 벤치마크 실행/변환/LangSmith 검증용 임시 스크립트는 GitHub에 계속 둘 필요가 없어 제거했고, 결과 확인용 산출물은 repo 루트의 `docs/benchmark/`에 정리했다.
+backend 안의 `scripts/`는 현재 수동 `/chat` 테스트용 `manual_chat.py`만 유지한다. 벤치마크 실행/변환/LangSmith 검증용 임시 스크립트는 backend 서비스 코드 안에 두지 않고, 발표와 검증에 사용할 결과 산출물은 repo 루트의 `presentation/test-data/no-tool-benchmark/`에 정리했다.
 
 주요 산출물:
 
 | 파일 | 내용 |
 | --- | --- |
-| `../docs/benchmark/no_tool_chart_report.md` | model/provider별 no_tool 통합 분석 리포트 |
-| `../docs/benchmark/artifacts/no_tool_combined_results.csv` | strict 기준으로 합친 원본 benchmark CSV |
-| `../docs/benchmark/artifacts/no_tool_provider_summary.csv` | model/provider별 평균 token, 비용, latency 요약 |
-| `../docs/benchmark/artifacts/no_tool_question_summary.csv` | 질문별 평균 token, 비용, latency 요약 |
-| `../docs/benchmark/charts/*.png` | 비용, latency, token 비교 차트 |
-| `../docs/benchmark/results/benchmark_all_model_by_provider.xlsx` | 전체 결과를 묶은 Excel 파일 |
+| `../presentation/test-data/no-tool-benchmark/no_tool_benchmark_report.md` | model/provider별 no_tool 통합 분석 리포트 |
+| `../presentation/test-data/no-tool-benchmark/artifacts/no_tool_combined_results.csv` | strict 기준으로 합친 원본 benchmark CSV |
+| `../presentation/test-data/no-tool-benchmark/artifacts/no_tool_provider_summary.csv` | model/provider별 평균 token, 비용, latency 요약 |
+| `../presentation/test-data/no-tool-benchmark/artifacts/no_tool_question_summary.csv` | 질문별 평균 token, 비용, latency 요약 |
+| `../presentation/test-data/no-tool-benchmark/charts/*.png` | 비용, latency, token 비교 차트 |
+| `../presentation/test-data/no-tool-benchmark/results/benchmark_all_model_by_provider.xlsx` | 전체 결과를 묶은 Excel 파일 |
 
 비교 범위:
 
@@ -294,7 +313,8 @@ cp .env.example .env
 | `BACKEND_LLM_TIMEOUT_MS` | `60000` | LLM timeout |
 | `BACKEND_LLM_MAX_RETRIES` | `2` | LLM 재시도 횟수 |
 | `BACKEND_LLM_REASONING_EFFORT` | 빈 값 | 비워두면 OpenRouter 요청에서 `reasoning_effort`를 생략 |
-| `BACKEND_RAG_MCP_URL` | `http://127.0.0.1:8010/mcp` | RAG MCP Tool Server URL |
+| `BACKEND_RAG_MCP_URL` | `http://127.0.0.1:8010/mcp/` | RAG MCP Tool Server URL |
+| `BACKEND_ENABLE_RAG_TOOLS` | `true` | `false`로 두면 RAG MCP tools를 로딩하지 않고 no-RAG/no-tool로 agent 실행 |
 | `BACKEND_TOOL_TIMEOUT_MS` | `30000` | tool 실행 timeout |
 
 실제 `backend/.env`는 Git에 커밋하지 않는다. `/health`는 키 없이도 동작하지만 `/chat`은 실제 LLM 호출이므로 `BACKEND_OPENROUTER_API_KEY`가 필요하다.
@@ -318,6 +338,28 @@ docker compose up -d --build
 curl -s http://127.0.0.1:8001/health
 docker compose logs -f backend
 ```
+
+RAG 없이 Qwen3.7 Max를 한 번 확인하려면 backend compose만 사용해서 아래처럼
+띄운다. `infra/`의 compose 파일은 사용하지 않는다.
+
+```bash
+cd backend
+BACKEND_HOST_PORT=8002 \
+BACKEND_OPENROUTER_MODEL='qwen/qwen3.7-max' \
+BACKEND_OPENROUTER_PROVIDER_ORDER='["alibaba"]' \
+BACKEND_OPENROUTER_ALLOW_FALLBACKS=false \
+BACKEND_ENABLE_RAG_TOOLS=false \
+BACKEND_LLM_REASONING_EFFORT='' \
+docker compose up -d --build backend
+
+curl -s http://127.0.0.1:8002/health
+curl -s http://127.0.0.1:8002/chat \
+  -H "Content-Type: application/json" \
+  -d '{"session_id":"qwen-no-rag-smoke","message":"근로기준법에서 근로자와 사용자 관련해서 기본적으로 어떤 내용을 확인해야 해? 5문장 이내로 답해줘."}'
+```
+
+이 스모크 테스트는 실제 OpenRouter 호출이므로 `backend/.env`의
+`OPENROUTER_API_KEY` 또는 `BACKEND_OPENROUTER_API_KEY`가 유효해야 한다.
 
 종료:
 
@@ -403,7 +445,8 @@ curl -s http://127.0.0.1:8000/chat \
 }
 ```
 
-현재 RAG MCP tool은 아직 연결 전이다. LLM이 `rag_search_tool`을 호출하면 “RAG 검색 도구는 아직 연결되지 않았습니다.”라는 placeholder 결과를 참고할 수 있다.
+RAG MCP tools는 backend agent에 연결되어 있다. 실제 답변 생성과 tool
+선택은 OpenRouter LLM 호출이므로 `.env`의 OpenRouter API key가 유효해야 한다.
 
 ### 7. chat stream curl 확인
 

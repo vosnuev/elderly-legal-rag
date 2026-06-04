@@ -10,6 +10,8 @@ rag/
 ├── fe/            # Bun + Vite + React RAG operations UI
 ├── docs/          # PRD and architecture docs
 ├── infra/         # Memgraph and Memgraph Lab Docker Compose
+├── RAG_ORIGINAL_DATA/ # RAG 대상 원본 JSON 데이터
+├── RAG_PREPROCESSED_DATA/ # RAG 입력용 TOON 전처리 데이터
 ├── sample_datas/  # Local sample text/JSON data
 └── code_reference/ # Legacy/reference scripts kept out of runtime
 ```

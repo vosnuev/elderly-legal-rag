@@ -207,10 +207,14 @@ SKN28-3rd-1Team/
 │   ├── be/                  # RAG backend, ingest, search, MCP endpoint
 │   ├── fe/                  # RAG 운영 UI
 │   ├── infra/               # Memgraph, Memgraph Lab 실행 설정
+│   ├── RAG_ORIGINAL_DATA/   # RAG 대상 원본 JSON 데이터
+│   ├── RAG_PREPROCESSED_DATA/ # RAG 입력용 TOON 전처리 데이터
 │   └── docs/                # RAG 설계 문서
 ├── streamlit/               # 상담형 UI 프로토타입
 ├── docs_web/                # 프로젝트 소개용 문서 웹
 ├── docs/                    # 회의록, 온보딩, 개발 문서
+├── presentation/            # 발표 스크립트, 다이어그램, 테스트 데이터 산출물
+├── rag-red-team/            # RAG red-team 실험 공간
 ├── frontend/                # 최종 프론트엔드 작업 공간
 ├── infra/                   # 루트 인프라 문서
 ├── AGENTS.md                # 협업 및 agent 작업 규칙
@@ -226,11 +230,54 @@ SKN28-3rd-1Team/
 | 🛠️ `rag/be/README.md` | RAG Backend API, MCP endpoint, 환경 변수 |
 | 🖥️ `rag/fe/README.md` | RAG 운영 UI 실행 방법 |
 | 💬 `streamlit/README.md` | Streamlit 상담 UI 구조와 backend 연결 방법 |
+| 🎤 `presentation/test-data/README.md` | 발표와 평가 설명에 사용할 테스트 케이스, 벤치마크 결과, 차트 산출물 |
+| 🧪 `rag-red-team/README.md` | Neo4j 기반 수작업 GraphRAG 비교 실험 실행 방법 |
 | 📄 `docs_web/README.md` | 문서 웹 실행 및 GitHub Pages 배포 방식 |
 
 ## 10. 🚀 실행 방법
 
-### 1) Backend Agent 실행
+### 1) 통합 Docker Compose 실행
+
+`docs_web`과 `rag-red-team`을 제외하고, Backend, Streamlit, RAG Backend,
+RAG Frontend, Memgraph, Memgraph Lab, Redis를 같은 `infra_default` Docker
+network에서 함께 실행한다.
+
+```bash
+cp infra/.env.example infra/.env
+cp backend/.env infra/.env_backend
+cp streamlit/.env infra/.env_streamlit
+cp rag/be/.env infra/.env_rag_be
+cp rag/fe/.env infra/.env_rag_fe
+cp rag/infra/.env infra/.env_rag_infra
+
+docker compose --env-file infra/.env -f infra/docker-compose.yml up -d --build
+```
+
+기본 접속 정보:
+
+```text
+Backend API:   http://127.0.0.1:8100
+Streamlit UI:  http://127.0.0.1:8501
+RAG Backend:   http://127.0.0.1:8110
+RAG Frontend:  http://127.0.0.1:5174
+Memgraph Lab:  http://127.0.0.1:3000
+Memgraph Bolt: bolt://127.0.0.1:7687
+Redis:         redis://127.0.0.1:6379/0
+```
+
+Docker network 내부 연결:
+
+```text
+backend -> http://rag-be:8010/mcp/
+streamlit -> http://backend:8000
+rag-be -> bolt://memgraph:7687
+rag-be -> redis://redis:6379/0
+```
+
+`/chat`은 실제 OpenRouter 호출이므로 `infra/.env_backend`의
+`OPENROUTER_API_KEY` 또는 `BACKEND_OPENROUTER_API_KEY`가 유효해야 한다.
+
+### 2) Backend Agent 실행
 
 ```bash
 cd backend
@@ -259,7 +306,7 @@ curl -s -X POST http://127.0.0.1:8000/chat \
   | python -m json.tool
 ```
 
-### 2) Streamlit 상담 UI 실행
+### 3) Streamlit 상담 UI 실행
 
 ```bash
 cd streamlit
@@ -275,7 +322,7 @@ STREAMLIT_BACKEND_BASE_URL="http://127.0.0.1:8000"
 STREAMLIT_CHAT_BACKEND_MOCK=false
 ```
 
-### 3) RAG Infra 실행
+### 4) RAG Infra 실행
 
 ```bash
 cd rag
@@ -290,7 +337,7 @@ Memgraph Bolt: bolt://127.0.0.1:7687
 Memgraph Lab:  http://127.0.0.1:3000
 ```
 
-### 4) RAG Backend 실행
+### 5) RAG Backend 실행
 
 ```bash
 cd rag/be
@@ -311,7 +358,7 @@ GET  /api/review/edge-candidates
 MCP  /mcp
 ```
 
-### 5) RAG Frontend 실행
+### 6) RAG Frontend 실행
 
 ```bash
 cd rag/fe
@@ -325,7 +372,19 @@ bun run dev
 http://127.0.0.1:5173
 ```
 
-### 6) Docs Web 실행
+### 7) RAG Red Team Neo4j 실험
+
+```bash
+cd rag-red-team
+cp .env.example .env
+uv sync
+docker compose -p rag-red-team -f infra/docker-compose.yml up -d
+uv run python -m rag_red_team_neo4j.load_graph
+```
+
+Remote MCP 컨테이너는 `docker compose -p rag-red-team -f infra/docker-compose.yml up -d --build mcp`로 실행한다. 기본 컨테이너 이름은 `rag-redteam`, MCP URL은 `http://127.0.0.1:9001/mcp`다. 자세한 스키마와 read-only Cypher 예시는 `rag-red-team/README.md`를 참고한다.
+
+### 8) Docs Web 실행
 
 ```bash
 cd docs_web
