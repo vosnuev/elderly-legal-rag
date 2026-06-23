@@ -1,309 +1,231 @@
-# 🧭 SKN28-3rd-1Team
+# 옆집 손주 — 노인·고령층 법률 상담 서비스 (GraphRAG + Agentic RAG)
 
-> 노인·고령층을 위한 법률 정보를 쉽고 신뢰할 수 있게 찾도록 돕는 Agentic RAG + GraphRAG 기반 상담 서비스
+> An Agentic RAG + GraphRAG-based legal consultation service for the elderly, built on public legal documents and statutes. / 노인·고령층 관련 법령과 공공 문서를 근거로 자연어 질문에 답변하는 상담 서비스
+
+**SK Networks AI Camp 28기 3차 프로젝트 — 1팀**
+
+---
+
+## 🛠️ Tech Stack (기술 스택)
+
+### Backend & Agent (백엔드 · 에이전트)
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
-![Pydantic](https://img.shields.io/badge/Pydantic-Settings-E92063?logo=pydantic&logoColor=white)
-![uv](https://img.shields.io/badge/uv-Python%20Tooling-6E56CF)
-![LangChain](https://img.shields.io/badge/LangChain-Agent-1C3C3C?logo=langchain&logoColor=white)
-![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-1C3C3C?logo=langchain&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.136-009688?logo=fastapi&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-1.3-1C3C3C?logo=langchain&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-1.2-1C3C3C?logo=langchain&logoColor=white)
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-LLM%20Gateway-111827)
 ![LangSmith](https://img.shields.io/badge/LangSmith-Tracing-1C3C3C?logo=langchain&logoColor=white)
-![React](https://img.shields.io/badge/React-UI-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?logo=typescript&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-2-E92063?logo=pydantic&logoColor=white)
+![uv](https://img.shields.io/badge/uv-Package%20Manager-6E56CF)
+
+### RAG (검색 증강 생성)
+
+![Memgraph](https://img.shields.io/badge/Memgraph-GraphRAG-FF6B35)
+![Neo4j](https://img.shields.io/badge/Neo4j-Compatible-4581C3?logo=neo4j&logoColor=white)
+![MCP](https://img.shields.io/badge/MCP-Tool%20Server-111827)
+![Redis](https://img.shields.io/badge/Redis-7-DC382D?logo=redis&logoColor=white)
+![GraphRAG](https://img.shields.io/badge/GraphRAG-3.0-10B981)
+![Firecrawl](https://img.shields.io/badge/Firecrawl-Web%20Crawl-F97316)
+
+### Frontend (프론트엔드)
+
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-Style-06B6D4?logo=tailwindcss&logoColor=white)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-000000)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Prototype-FF4B4B?logo=streamlit&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white)
-![Memgraph](https://img.shields.io/badge/Memgraph-GraphRAG-FF6B35?logo=memgraph&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Infra-2496ED?logo=docker&logoColor=white)
-![GitHub](https://img.shields.io/badge/GitHub-Collaboration-181717?logo=github&logoColor=white)
-![Linear](https://img.shields.io/badge/Linear-Project%20Tracking-5E6AD2?logo=linear&logoColor=white)
-![Notion](https://img.shields.io/badge/Notion-Docs-000000?logo=notion&logoColor=white)
-![Discord](https://img.shields.io/badge/Discord-Communication-5865F2?logo=discord&logoColor=white)
 
-## 1. 👥 팀 소개 및 일정 계획
+### Infra (인프라)
 
-### 1) 팀 소개
-| 구분 | 이원빈 | 김지효 | 송윤경 | 전하영 | 양도영 |
-|---|---|---|---|---|---|
-|사진|<img width="467" height="622" alt="image" src="https://github.com/user-attachments/assets/1d55d805-ca88-4045-870c-efcf3cd093cd" />|<img width="457" height="546" alt="image" src="https://github.com/user-attachments/assets/e80bef47-6176-41c2-8471-28b5c4d14d00" />|<img width="283" height="571" alt="image" src="https://github.com/user-attachments/assets/eff9d9d9-f08c-4648-8435-0079015314b9" />|<img width="353" height="488" alt="image" src="https://github.com/user-attachments/assets/6f58acc9-b043-4a64-8387-3f2d78465fda" />|<img width="244" height="488" alt="image" src="https://github.com/user-attachments/assets/369cd18c-71bd-40b8-b035-70873142869c" />|
-| 역할 | 팀장 | RAG | 프론트엔드 | 백엔드 | 기획·문서 |
-| 한 일 | 전체 일정 관리, 작업 방향 컨펌, 파트별 진행 상황 확인 | 노인·고령층 관련 법령 데이터 확인, 문서 전처리와 임베딩 흐름 정리 | 사용자 질문 화면 구성, API 연결 흐름 설계, 결과 화면 UX 정리, RAG 기반 테스트 케이스 설계 | FastAPI `/chat` 구성, LangGraph Agent 실행 구조 정리, MCP tool 연동 준비 | 전체 서비스 흐름 정리, README와 발표 자료 구성, 팀 산출물 내용 정리 |
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Docs-222222?logo=githubpages&logoColor=white)
 
-### 2) 일정 계획
+---
 
-| 기간 | 주요 작업 | 상태 |
-| --- | --- | --- |
-| 2026-05-22 ~ 2026-05-26 | 주제 범위 확정, 고령층 법령 데이터 후보 정리 | 완료 |
-| 2026-05-27 ~ 2026-05-29 | Backend API 계약, RAG POC, 화면 UX 설계 | 완료 |
-| 2026-06-01 ~ 2026-06-03 | Backend, Streamlit, RAG MCP 연결 흐름 통합 검증 | 완료 |
-| 2026-06-04 | 전체 기능 연동, 통합 테스트, 발표와 시연 준비 | 완료 |
-
-## 2. 📌 프로젝트 소개
-
-### 1) 주제
-
-이 프로젝트는 노인과 고령층이 법률, 기초연금, 고령자 고용, 근로 관련 정보를 자연어로 질문하고, 실제 공공 문서와 법령을 근거로 답변을 받을 수 있도록 만드는 RAG 기반 상담 서비스입니다.
-
-노인복지법, 기초연금법, 고령자고용촉진 관련 법령, 근로기준법 같은 문서는 국가법령정보센터와 관련 기관 자료에 흩어져 있습니다. 또한 법률·행정 문서는 용어가 어렵고 조건이 복잡해 사용자가 본인에게 맞는 정보를 빠르게 찾기 어렵습니다.
-
-이 서비스는 문서 검색(Retrieval)과 LLM 답변 생성(Generation)을 결합해 사용자가 이해하기 쉬운 말로 답변하고 근거 문서까지 함께 확인할 수 있도록 설계합니다.
-
-### 2) 핵심 목표
-
-| 목표 | 설명 |
-| --- | --- |
-| 문서 기반 검색 | 노인·고령층 관련 법령과 행정 안내문을 검색 가능한 형태로 정리합니다. |
-| Agentic RAG 답변 | Main Agent가 질문을 판단하고 필요한 경우 RAG MCP Tool을 호출합니다. |
-| 근거 중심 응답 | RAG 검색 결과와 출처를 바탕으로 답변합니다. |
-| 상담형 화면 | Streamlit 프로토타입으로 질문 입력부터 답변 확인까지 검증합니다. |
-| 추적 가능성 | LangSmith로 LLM 호출과 tool calling 과정을 확인합니다. |
-
-## 3. 🎯 해결하려는 문제
-
-### 1) 정보 접근 문제
-
-| 문제 | 설명 |
-| --- | --- |
-| 정보가 흩어져 있음 | 노인복지, 기초연금, 고령자 고용, 근로 관련 정보가 여러 기관에 나뉘어 있어 한 번에 찾기 어렵습니다. |
-| 용어가 어려움 | 법령과 행정 문서는 일반 사용자가 바로 이해하기 어렵습니다. |
-| 최신성이 중요함 | 연금 기준, 지원 금액, 고용 기준은 바뀔 수 있어 최신 문서 확인이 필요합니다. |
-| 잘못된 답변 위험 | 복지·법률 정보는 잘못 안내되면 실제 불이익으로 이어질 수 있습니다. |
-
-### 2) RAG가 필요한 이유
-
-일반 LLM은 학습된 지식만으로 답변하기 때문에 최신 법령, 기초연금 신청 기준, 고령자 고용 기준을 정확히 보장하기 어렵습니다. 이 프로젝트는 실제 문서를 먼저 찾고, 그 문서를 바탕으로 답변하는 구조를 사용합니다.
-
-## 4. 주요 사용자
-
-### 1) 사용자 유형
-
-| 사용자 | 필요한 정보 |
-| --- | --- |
-| 노인·고령층 당사자와 가족 | 기초연금, 노인복지, 신청 조건, 권리 보호 절차 |
-| 복지사 및 상담 실무자 | 상담 중 빠르게 확인할 수 있는 법령, 지침, 공공 문서 근거 |
-| 고령자 고용 관련 실무자 | 고령자 고용, 연령차별, 근로 기준 관련 법령 |
-
-### 2) 질문 예시
-
-```text
-"65세 이상 노인이 받을 수 있는 혜택은 뭐가 있어?"
-"기초연금 신청 방법과 준비 서류를 알려줘."
-"노인일자리 신청은 어디에서 할 수 있어?"
-"고령자가 나이 때문에 채용에서 차별받으면 어떻게 대응해야 해?"
-"퇴직금을 못 받았을 때 어떤 법을 확인해야 해?"
-```
-
-## 5. 🧭 서비스 흐름
-
-### 1) 전체 흐름
-
-```text
-사용자 질문
-  -> Frontend 또는 Streamlit 화면
-  -> Backend FastAPI /chat
-  -> LangChain + LangGraph Agent
-  -> RAG MCP Tool Server
-  -> Memgraph 기반 문서 검색
-  -> OpenRouter LLM 답변 생성
-  -> 출처와 함께 화면에 표시
-```
-
-### 2) 역할 분리
-
-| 영역 | 역할 |
-| --- | --- |
-| Frontend / Streamlit | 사용자가 질문하고 답변을 확인하는 인터페이스 |
-| Backend | API 서버와 Main Agent Orchestrator 역할 |
-| RAG Backend | Backend 내부 모듈이 아닌 별도 서비스로 동작하며 문서 ingest, 검색 API, MCP endpoint 제공 |
-| Memgraph | GraphRAG 검색을 위한 그래프 데이터 저장 |
-| Docs Web | 프로젝트 소개와 파트별 진행 방향 문서화 |
-
-### 3) 아키텍처 원칙
-
-| 원칙 | 설명 |
-| --- | --- |
-| 영역 분리 | Frontend, Backend, RAG를 독립된 영역으로 나누어 책임을 분리합니다. |
-| 컨테이너 기반 실행 | 각 영역은 독립적인 Docker Container로 구성하고, 전체 실행은 Docker Compose로 묶는 방향입니다. |
-| Main Agent 중심 | Backend의 Main Agent가 사용자 요청을 판단하고 답변 흐름을 조율합니다. |
-| MCP Tool 호출 | Main Agent는 RAG 내부 구현을 직접 알지 않고 MCP Tool 형태로 검색 기능을 호출합니다. |
-| GraphRAG 확장 | RAG 영역은 문서 검색뿐 아니라 Memgraph 기반 관계 검색까지 확장할 수 있도록 설계합니다. |
-
-## 6. ✨ 주요 기능
-
-### 1) 사용자 기능
+## ✨ Features (주요 기능)
 
 | 기능 | 설명 |
-| --- | --- |
-| 자연어 상담 | 사용자가 어려운 법률 용어 없이 질문할 수 있습니다. |
-| 근거 문서 제공 | 답변과 함께 관련 법령, 문서, 출처를 확인할 수 있도록 설계합니다. |
-| 문서 검색 | 공공 문서와 법령을 기반으로 관련 정보를 찾습니다. |
-| 추가 판단 요소 안내 | 조건이 부족하면 추가 확인이 필요한 부분을 안내합니다. |
+|---|---|
+| 자연어 법률 상담 | 법률 용어 없이 구어체로 질문하면 이해하기 쉬운 답변 제공 |
+| 근거 문서 함께 제공 | 노인복지법·기초연금법·고령자고용법 등 실제 법령과 출처 함께 표시 |
+| Agentic RAG | LangGraph Main Agent가 질문을 판단해 필요한 경우 RAG MCP Tool 호출 |
+| GraphRAG 관계 검색 | Memgraph 기반 그래프 DB로 조문 간 관계 추적 및 연관 법령 탐색 |
+| 상담형 UI | Streamlit 프로토타입 + React 프론트엔드 두 가지 인터페이스 제공 |
+| RAG 운영 UI | 문서 ingest, 검색 결과 review, edge candidate 확인용 관리 화면 |
+| LangSmith 추적 | LLM 호출·tool calling 전 과정 trace 기록 |
+| Docker 통합 실행 | 전체 서비스를 단일 `docker compose up`으로 구동 |
 
-### 2) 개발 기능
+---
 
-| 기능 | 설명 |
-| --- | --- |
-| FastAPI `/chat` | 프론트엔드가 호출하는 메인 채팅 API입니다. |
-| LangGraph Agent | `session_id` 기반으로 대화 흐름을 이어갈 수 있도록 구성합니다. |
-| OpenRouter LLM | OpenRouter compatible `ChatOpenAI`로 LLM을 호출합니다. |
-| MCP Tool | RAG 검색 기능을 Agent tool로 연결하기 위한 구조입니다. |
-| LangSmith | LLM 호출과 tool calling trace를 검증합니다. |
+## 📁 Project Structure (프로젝트 구조)
 
-## 7. ✅ 현재 구현 상태
-
-### 1) 완료 및 진행 현황
-
-| 영역 | 상태 |
-| --- | --- |
-| Backend `/chat` API | FastAPI에서 사용자 메시지를 받아 Agent 답변을 반환합니다. |
-| OpenRouter 연동 | `langchain-openai`의 `ChatOpenAI`를 OpenRouter base URL로 사용합니다. |
-| LangGraph Agent | `create_agent()`와 `InMemorySaver` 기반 session/thread 처리를 사용합니다. |
-| LangSmith 검증 | LLM 호출 trace와 mock tool call trace를 확인했습니다. |
-| RAG Backend | 문서 ingest, 검색 API, read-only MCP endpoint 구조가 있습니다. |
-| RAG Frontend | 문서 목록, ingest job, review queue를 확인하는 운영 UI가 있습니다. |
-| Streamlit | 상담 form, 채팅형 화면, backend `/chat` 연결 흐름을 검증합니다. |
-| Docs Web | GitHub Pages 배포용 문서 웹 구조가 있습니다. |
-| RAG Red Team | Neo4j 기반 graph schema와 read-only Cypher MCP 실험 공간이 있습니다. |
-| Presentation | 발표 스크립트, PPTX, 최종 PDF, Memgraph Lab 시연 캡처를 정리했습니다. |
-
-### 2) 남은 작업
-
-| 작업 | 설명 |
-| --- | --- |
-| 근거 품질 고도화 | 답변에서 내부 id를 숨기고 사용자가 이해할 수 있는 문서명, 조문명, 원문 일부 중심으로 출처를 정리합니다. |
-| 평가 데이터 확장 | `presentation/test-data`의 벤치마크와 LLM-as-a-judge 결과를 기준으로 실패 케이스를 계속 보강합니다. |
-| 운영 안정화 | Docker Compose 통합 실행, health check, UI 반응형 검증을 반복해 시연 환경을 안정화합니다. |
-| 배포 정리 | Docs Web, Streamlit, RAG 운영 UI의 공개 범위와 배포 절차를 확정합니다. |
-
-## 8. 기술 스택
-
-### 1) 사용 기술
-
-| 영역 | 사용 기술 |
-| --- | --- |
-| Backend | ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white) ![Pydantic](https://img.shields.io/badge/Pydantic-Settings-E92063?logo=pydantic&logoColor=white) ![uv](https://img.shields.io/badge/uv-Package-6E56CF) |
-| Agent | ![LangChain](https://img.shields.io/badge/LangChain-Agent-1C3C3C?logo=langchain&logoColor=white) ![LangGraph](https://img.shields.io/badge/LangGraph-Flow-1C3C3C?logo=langchain&logoColor=white) ![OpenRouter](https://img.shields.io/badge/OpenRouter-LLM-111827) ![LangSmith](https://img.shields.io/badge/LangSmith-Trace-1C3C3C?logo=langchain&logoColor=white) |
-| RAG | ![MCP](https://img.shields.io/badge/MCP-Tool%20Server-111827) ![Memgraph](https://img.shields.io/badge/Memgraph-Graph%20DB-FF6B35?logo=memgraph&logoColor=white) ![Neo4j](https://img.shields.io/badge/Neo4j-Compatible-4581C3?logo=neo4j&logoColor=white) ![GraphRAG](https://img.shields.io/badge/GraphRAG-Search-10B981) |
-|Frontend | ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black) ![TypeScript](https://img.shields.io/badge/TypeScript-TS-3178C6?logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-Style-06B6D4?logo=tailwindcss&logoColor=white) ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Components-000000?logo=shadcnui&logoColor=white) |
-| Prototype | ![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white) |
-| Infra | ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white) ![Memgraph Lab](https://img.shields.io/badge/Memgraph%20Lab-Graph%20View-FF6B35?logo=memgraph&logoColor=white) ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Docs%20Web-222222?logo=githubpages&logoColor=white) |
-| Collaboration | ![GitHub](https://img.shields.io/badge/GitHub-Code-181717?logo=github&logoColor=white) ![Linear](https://img.shields.io/badge/Linear-Issues-5E6AD2?logo=linear&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-Docs-000000?logo=notion&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-Chat-5865F2?logo=discord&logoColor=white) |
-
-## 9. 📁 프로젝트 구조
-
-### 1) Repository Structure
-
-```text
+```
 SKN28-3rd-1Team/
-├── backend/                 # FastAPI 기반 Agent Orchestrator
-│   ├── src/api/             # /chat API
-│   ├── src/agent/           # LangGraph Agent, OpenRouter LLM, tools
-│   └── src/prompt/          # Agent system prompt
-├── rag/
-│   ├── be/                  # RAG backend, ingest, search, MCP endpoint
-│   ├── fe/                  # RAG 운영 UI
-│   ├── infra/               # Memgraph, Memgraph Lab 실행 설정
-│   ├── RAG_ORIGINAL_DATA/   # RAG 대상 원본 JSON 데이터
-│   ├── RAG_PREPROCESSED_DATA/ # RAG 입력용 TOON 전처리 데이터
-│   └── docs/                # RAG 설계 문서
-├── streamlit/               # 상담형 UI 프로토타입
-├── docs_web/                # 프로젝트 소개용 문서 웹
-├── docs/                    # 회의록, 온보딩, 개발 문서
-├── presentation/            # 발표 스크립트, PPT/PDF, 평가 데이터 산출물
-│   ├── ppt/                 # 발표 자료, 스크립트, Memgraph Lab 시연 캡처
-│   ├── test-data/           # benchmark, LLM-as-a-judge 결과
-│   └── marking_criteria/    # 프로젝트 평가 기준 정리
-├── rag-red-team/            # RAG red-team 실험 공간
-├── frontend/                # 최종 프론트엔드 작업 공간
-├── infra/                   # 통합 Docker Compose 실행 설정
-├── .github/                 # GitHub Actions workflow
-├── .agents/                 # repo-scoped agent skill과 작업 규칙
-├── AGENTS.md                # 협업 및 agent 작업 규칙
+├── backend/                    # FastAPI + LangGraph Agent Orchestrator
+│   ├── src/
+│   │   ├── app.py              # FastAPI 앱 생성 및 라우터 등록
+│   │   ├── settings.py         # Pydantic-settings 환경 변수 관리
+│   │   ├── api/                # /chat, /health API 라우터
+│   │   ├── agent/              # LangGraph Agent, OpenRouter LLM, MCP Tool 연결
+│   │   └── prompt/             # Agent 시스템 프롬프트
+│   ├── Dockerfile
+│   └── pyproject.toml          # Python 3.13, FastAPI, LangChain, LangGraph 의존성
+│
+├── rag/                        # RAG 서브시스템 전체
+│   ├── be/                     # RAG Backend (FastAPI + Memgraph + Redis + MCP)
+│   │   ├── src/                # ingest, search, MCP endpoint 구현
+│   │   └── pyproject.toml      # graphrag, neo4j, redis, mcp 의존성
+│   ├── fe/                     # RAG 운영 UI (React + Vite + Tailwind)
+│   ├── infra/                  # Memgraph + Memgraph Lab Docker Compose
+│   ├── RAG_ORIGINAL_DATA/      # 법령 원본 JSON 데이터
+│   ├── RAG_PREPROCESSED_DATA/  # 전처리된 TOON 형식 데이터
+│   └── docs/                   # RAG 설계 문서
+│
+├── streamlit/                  # 상담형 UI 프로토타입 (Python + Streamlit)
+│   ├── streamlit.py            # 앱 진입점
+│   └── src/                    # 화면 구성, backend API 연결 로직
+│
+├── frontend/                   # 최종 React 프론트엔드 (React 19 + TypeScript)
+│
+├── infra/                      # 통합 Docker Compose (전체 서비스 통합 실행)
+│   └── docker-compose.yml      # backend, rag-be, rag-fe, streamlit, memgraph, redis
+│
+├── docs_web/                   # GitHub Pages 프로젝트 소개 문서 웹
+├── docs/                       # 회의록, 온보딩, 개발 가이드
+├── presentation/               # 발표 자료, 테스트 데이터, 평가 산출물
+│   ├── ppt/                    # 발표 PDF/PPTX, 스크립트, Memgraph Lab 시연 캡처
+│   └── test-data/              # benchmark, LLM-as-a-judge 결과
+├── rag-red-team/               # Neo4j 기반 GraphRAG 실험 공간
+├── AGENTS.md                   # AI Agent 협업 규칙 및 Git 워크플로
 └── README.md
 ```
 
-### 2) 주요 문서
+---
 
-| 문서 | 설명 |
-| --- | --- |
-| `backend/README.md` | Backend Agent 구조, `/chat` API, MCP 연결 위치 |
-| `rag/README.md` | RAG 서브시스템 전체 구조 |
-| `rag/be/README.md` | RAG Backend API, MCP endpoint, 환경 변수 |
-| `rag/fe/README.md` | RAG 운영 UI 실행 방법 |
-| `streamlit/README.md` | Streamlit 상담 UI 구조와 backend 연결 방법 |
-| `docs_web/README.md` | 문서 웹 실행 및 GitHub Pages 배포 방식 |
-| `infra/README.md` | 통합 Docker Compose 서비스와 포트 정보 |
-| `docs/README.md` | 회의록, agent workspace guideline 등 팀 문서 |
-| `rag-red-team/README.md` | Neo4j red-team graph 실험과 MCP 실행 방법 |
-| `presentation/test-data/README.md` | 발표용 평가 데이터, benchmark, judge 결과 구조 |
+## 🔄 Usage Flow (사용 흐름)
 
-### 3) 발표 및 시연 산출물
+```
+사용자 질문 입력
+  ↓
+[Frontend / Streamlit]  — 질문 화면, 답변 표시
+  ↓  HTTP POST /chat
+[Backend — FastAPI]     — 요청 수신 및 Agent 실행
+  ↓
+[LangGraph Main Agent]  — 질문 분류 및 흐름 판단
+  ↓  MCP Tool 호출
+[RAG MCP Tool Server]   — 문서 검색 요청 수신
+  ↓  Cypher 쿼리
+[Memgraph GraphDB]      — 법령 그래프 검색, 관계 탐색
+  ↓  검색 결과 반환
+[OpenRouter LLM]        — 근거 문서 기반 답변 생성
+  ↓
+[사용자 화면]           — 답변 + 출처 표시
+```
 
-| 산출물 | 설명 |
-| --- | --- |
-| [`presentation/ppt/옆집 손주_찐최종 (1).pdf`](<presentation/ppt/옆집 손주_찐최종 (1).pdf>) | 최종 발표 PDF |
-| [`presentation/ppt/reviewable-graphrag-service-presentation-v4.pptx`](presentation/ppt/reviewable-graphrag-service-presentation-v4.pptx) | 검토 가능한 최신 PPTX 발표 자료 |
-| [`presentation/ppt/20min-presentation-script-v4.md`](presentation/ppt/20min-presentation-script-v4.md) | 20분 발표 스크립트 |
-| [`presentation/ppt/artifact-build-manifest.json`](presentation/ppt/artifact-build-manifest.json) | 발표 자료 생성과 검증 산출물 manifest |
-| `presentation/ppt/assets/` | Memgraph Lab graph, schema, query 결과 시연 캡처 |
+### 서비스별 역할
 
-## 10. 🚀 실행 방법
+| 서비스 | 역할 |
+|---|---|
+| Frontend / Streamlit | 사용자 질문 입력 및 답변 표시 |
+| Backend (FastAPI) | `/chat` API 수신, LangGraph Agent 실행 |
+| RAG Backend | 문서 ingest, 검색 API, MCP endpoint 제공 |
+| Memgraph | GraphRAG용 법령 그래프 데이터 저장 |
+| Redis | RAG job queue 및 캐시 |
+| Memgraph Lab | 그래프 시각화 및 Cypher 쿼리 실행 |
 
-### 1) 통합 Docker Compose 실행
+---
 
-`docs_web`과 `rag-red-team`을 제외하고, Backend, Streamlit, RAG Backend,
-RAG Frontend, Memgraph, Memgraph Lab, Redis를 같은 `infra_default` Docker
-network에서 함께 실행한다.
+## 🏗️ Architecture (아키텍처)
+
+```
+                     ┌──────────────────────┐
+                     │  Frontend / Streamlit │
+                     └──────────┬───────────┘
+                                │ HTTP POST /chat
+                     ┌──────────▼───────────┐
+                     │   Backend (FastAPI)   │
+                     │  LangGraph Main Agent │
+                     └──────────┬───────────┘
+                                │ MCP Tool Call
+                     ┌──────────▼───────────┐
+                     │  RAG Backend (FastAPI)│
+                     │  MCP endpoint /mcp/  │
+                     └────┬──────────┬──────┘
+                          │          │
+              ┌───────────▼──┐  ┌────▼──────┐
+              │  Memgraph    │  │  Redis    │
+              │  (GraphDB)   │  │  (Cache)  │
+              └──────────────┘  └───────────┘
+```
+
+### 아키텍처 원칙
+
+| 원칙 | 설명 |
+|---|---|
+| 영역 분리 | Frontend, Backend, RAG를 독립 서비스로 분리 |
+| Main Agent 중심 | Backend Agent가 질문 판단 및 답변 흐름 조율 |
+| MCP Tool 호출 | Agent는 RAG 내부 구현을 몰라도 MCP Tool로 검색 기능 사용 |
+| GraphRAG 확장 | Memgraph 기반 관계 검색으로 벡터 검색 한계 보완 |
+| 컨테이너 기반 실행 | 전체 서비스를 Docker Compose 단일 명령으로 실행 |
+
+---
+
+## ⚙️ Environment Setup (환경 설정)
+
+각 서비스 디렉터리의 `.env.example`을 복사해 실제 값을 채웁니다. 실제 `.env` 파일은 Git에 커밋하지 않습니다.
+
+| 서비스 | 예시 파일 | 주요 환경 변수 |
+|---|---|---|
+| Backend | `backend/.env.example` | `OPENROUTER_API_KEY`, `LANGSMITH_API_KEY`, `BACKEND_RAG_MCP_URL` |
+| Streamlit | `streamlit/.env.example` | `STREAMLIT_BACKEND_BASE_URL`, `STREAMLIT_CHAT_BACKEND_MOCK` |
+| RAG Backend | `rag/be/.env.example` | `RAG_MEMGRAPH_URI`, `RAG_REDIS_URL`, `OPENAI_API_KEY` |
+| RAG Frontend | `rag/fe/.env.example` | `VITE_RAG_API_BASE_URL` |
+| Infra | `infra/.env.example` | 포트 매핑, 컨테이너 이름 |
+
+---
+
+## 🚀 How to Run (실행 방법)
+
+### 1) 통합 Docker Compose 실행 (권장)
+
+Backend, Streamlit, RAG Backend, RAG Frontend, Memgraph, Memgraph Lab, Redis를 한 번에 실행합니다.
 
 ```bash
+# 환경 변수 파일 준비
 cp infra/.env.example infra/.env
-cp backend/.env infra/.env_backend
-cp streamlit/.env infra/.env_streamlit
-cp rag/be/.env infra/.env_rag_be
-cp rag/fe/.env infra/.env_rag_fe
-cp rag/infra/.env infra/.env_rag_infra
+cp backend/.env.example infra/.env_backend
+cp streamlit/.env.example infra/.env_streamlit
+cp rag/be/.env.example infra/.env_rag_be
+cp rag/fe/.env.example infra/.env_rag_fe
+cp rag/infra/.env.example infra/.env_rag_infra
 
+# 전체 서비스 실행
 docker compose --env-file infra/.env -f infra/docker-compose.yml up -d --build
 ```
 
-기본 접속 정보:
+기본 접속 주소:
 
-```text
-Backend API:   http://127.0.0.1:8100
-Streamlit UI:  http://127.0.0.1:8501
-RAG Backend:   http://127.0.0.1:8110
-RAG Frontend:  http://127.0.0.1:5174
-Memgraph Lab:  http://127.0.0.1:3000
-Memgraph Bolt: bolt://127.0.0.1:7687
-Redis:         redis://127.0.0.1:6379/0
-```
+| 서비스 | 주소 |
+|---|---|
+| Backend API | http://127.0.0.1:8100 |
+| Streamlit UI | http://127.0.0.1:8501 |
+| RAG Backend | http://127.0.0.1:8110 |
+| RAG Frontend | http://127.0.0.1:5174 |
+| Memgraph Lab | http://127.0.0.1:3000 |
+| Memgraph Bolt | bolt://127.0.0.1:7687 |
+| Redis | redis://127.0.0.1:6379/0 |
 
-Docker network 내부 연결:
-
-```text
-backend -> http://rag-be:8010/mcp/
-streamlit -> http://backend:8000
-rag-be -> bolt://memgraph:7687
-rag-be -> redis://redis:6379/0
-```
-
-`/chat`은 실제 OpenRouter 호출이므로 `infra/.env_backend`의
-`OPENROUTER_API_KEY` 또는 `BACKEND_OPENROUTER_API_KEY`가 유효해야 한다.
-
-### 2) Backend Agent 실행
+### 2) Backend 단독 실행
 
 ```bash
 cd backend
-cp .env.example .env
+cp .env.example .env   # OPENROUTER_API_KEY 등 값 입력
 uv sync
 
-set -a
-source .env
-set +a
-
+# 환경 변수 로드 후 서버 시작
+set -a && source .env && set +a
 PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8000 --reload
 ```
 
@@ -318,42 +240,20 @@ curl -s http://127.0.0.1:8000/health | python -m json.tool
 ```bash
 curl -s -X POST http://127.0.0.1:8000/chat \
   -H "Content-Type: application/json" \
-  -d '{"session_id":"readme-test-1","message":"안녕. 너는 어떤 일을 할 수 있어?"}' \
+  -d '{"session_id":"test-1","message":"기초연금 신청 방법을 알려줘"}' \
   | python -m json.tool
 ```
 
-### 3) Streamlit 상담 UI 실행
+### 3) Streamlit UI 단독 실행
 
 ```bash
 cd streamlit
-cp .env.example .env
+cp .env.example .env   # STREAMLIT_BACKEND_BASE_URL=http://127.0.0.1:8000 설정
 uv sync
 uv run streamlit run streamlit.py
 ```
 
-backend와 연결하려면 `streamlit/.env`에서 아래 값을 사용합니다.
-
-```env
-STREAMLIT_BACKEND_BASE_URL="http://127.0.0.1:8000"
-STREAMLIT_CHAT_BACKEND_MOCK=false
-```
-
-### 4) RAG Infra 실행
-
-```bash
-cd rag
-cp infra/.env.example infra/.env
-docker compose --env-file infra/.env -f infra/docker-compose.yml up -d
-```
-
-기본 접속 정보:
-
-```text
-Memgraph Bolt: bolt://127.0.0.1:7687
-Memgraph Lab:  http://127.0.0.1:3000
-```
-
-### 5) RAG Backend 실행
+### 4) RAG Backend 단독 실행
 
 ```bash
 cd rag/be
@@ -362,124 +262,78 @@ uv sync
 PYTHONPATH=src uv run uvicorn app:app --host 127.0.0.1 --port 8010
 ```
 
-주요 endpoint:
+주요 엔드포인트:
 
-```text
-GET  /health
-POST /ingest
-POST /search
-GET  /api/documents
-POST /api/documents/search
-GET  /api/review/edge-candidates
-MCP  /mcp
+| 메서드 | 경로 | 설명 |
+|---|---|---|
+| GET | /health | 상태 확인 |
+| POST | /ingest | 문서 ingestion |
+| POST | /search | 문서 검색 |
+| GET | /api/documents | 문서 목록 |
+| POST | /api/documents/search | 문서 검색 |
+| GET | /api/review/edge-candidates | 그래프 edge 후보 조회 |
+| — | /mcp | MCP Tool Server endpoint |
+
+### 5) RAG Infra (Memgraph + Redis) 단독 실행
+
+```bash
+cd rag
+cp infra/.env.example infra/.env
+docker compose --env-file infra/.env -f infra/docker-compose.yml up -d
 ```
 
-### 6) RAG Frontend 실행
+### 6) RAG Frontend (운영 UI) 실행
 
 ```bash
 cd rag/fe
 bun install
 bun run dev
+# → http://127.0.0.1:5173
 ```
 
-기본 접속:
-
-```text
-http://127.0.0.1:5173
-```
-
-### 7) RAG Red Team Neo4j 실험
+### 7) 검증 (Validation)
 
 ```bash
-cd rag-red-team
-cp .env.example .env
-uv sync
-docker compose -p rag-red-team -f infra/docker-compose.yml up -d
-uv run python -m rag_red_team_neo4j.load_graph
-```
-
-Remote MCP 컨테이너는 `docker compose -p rag-red-team -f infra/docker-compose.yml up -d --build mcp`로 실행한다. 기본 컨테이너 이름은 `rag-redteam`, MCP URL은 `http://127.0.0.1:9001/mcp`다. 자세한 스키마와 read-only Cypher 예시는 `rag-red-team/README.md`를 참고한다.
-
-### 8) Docs Web 실행
-
-```bash
-cd docs_web
-npm install
-npm run dev
-```
-
-## 11. 🧪 검증 방법
-
-### 1) Backend
-
-```bash
+# Backend 테스트
 cd backend
 PYTHONPATH=src uv run python -m compileall src scripts tests
 PYTHONPATH=src uv run python -m unittest discover -s tests
-```
 
-### 2) RAG Backend
-
-```bash
+# RAG Backend 테스트
 cd rag/be
 PYTHONPATH=src uv run python -m compileall src tests
 PYTHONPATH=src uv run python -m unittest discover -s tests
 ```
 
-### 3) RAG Frontend
+---
 
-```bash
-cd rag/fe
-bun run lint
-bun run build
-```
+## 👥 Team (팀원)
 
-### 4) Docs Web
+SK Networks AI Camp 28기 3차 프로젝트 1팀 (2026년 5월–6월)
 
-```bash
-cd docs_web
-npm run lint
-npm run build
-```
+| 이름 | 역할 |
+|---|---|
+| 이원빈 | 팀장 — 전체 일정 관리, 작업 방향 컨펌 |
+| 김지효 | RAG — 법령 데이터 수집, 문서 전처리, 임베딩 흐름 |
+| 송윤경 | Frontend — 사용자 화면 구성, API 연결, UX 설계 |
+| 전하영 | Backend — FastAPI /chat, LangGraph Agent, MCP Tool 연동 |
+| 양도영 | 기획·문서 — 서비스 흐름 정리, README, 발표 자료 |
 
-## 12. 🔐 환경 변수 관리
+---
 
-### 1) 관리 원칙
+## 📄 License & References (라이선스 & 참고 문서)
 
-- 실제 `.env` 파일은 Git에 올리지 않습니다.
-- 각 서비스 디렉터리의 `.env.example`을 복사해 로컬에서만 값을 채웁니다.
-- API key, DB URL, LangSmith key는 로컬 `.env`에서 관리합니다.
+| 문서 | 링크 |
+|---|---|
+| 국가법령정보센터 | https://www.law.go.kr |
+| LangGraph 공식 문서 | https://langchain-ai.github.io/langgraph/ |
+| Memgraph 공식 문서 | https://memgraph.com/docs |
+| MCP (Model Context Protocol) | https://modelcontextprotocol.io |
+| OpenRouter | https://openrouter.ai |
+| Backend 상세 README | [backend/README.md](backend/README.md) |
+| RAG 서브시스템 README | [rag/README.md](rag/README.md) |
+| RAG Backend README | [rag/be/README.md](rag/be/README.md) |
+| Infra README | [infra/README.md](infra/README.md) |
+| Streamlit README | [streamlit/README.md](streamlit/README.md) |
 
-### 2) 서비스별 환경 파일
-
-| 서비스 | 예시 파일 | 주요 값 |
-| --- | --- | --- |
-| Backend | `backend/.env.example` | OpenRouter API key, LangSmith 설정, CORS, RAG MCP URL |
-| Streamlit | `streamlit/.env.example` | Backend API 주소, mock mode 여부 |
-| RAG Backend | `rag/be/.env.example` | Memgraph 연결, MCP endpoint, 모델 설정 |
-| RAG Frontend | `rag/fe/.env.example` | RAG API base URL |
-| RAG Infra | `rag/infra/.env.example` | Memgraph 포트, Lab 포트 |
-
-## 13. 🤝 협업 방식
-
-### 1) 작업 관리
-
-| 도구 | 사용 목적 |
-| --- | --- |
-| GitHub | 코드 관리, PR, 리뷰 |
-| Linear | 파트별 일정과 이슈 관리 |
-| Notion | 회의 내용, 기획 문서, 프로젝트 정리 |
-| Discord | 실시간 소통 |
-
-### 2) Git 규칙
-
-- `main` 브랜치에 직접 push하지 않습니다.
-- 기능, 수정, 문서 작업은 별도 브랜치에서 진행합니다.
-- PR에는 변경 요약, 테스트 결과, 영향 디렉터리, 환경 변수 변경 여부를 기록합니다.
-- 상세 작업 규칙은 `AGENTS.md`와 `docs/agent_workspace_guidelines.md`를 따릅니다.
-
-## 14. 📝 한 줄 정리
-
-### 1) 프로젝트 요약
-
-이 프로젝트는 흩어진 노인·고령층 관련 법률 문서를 RAG로 찾고, Agent가 그 근거를 바탕으로 사용자가 이해하기 쉬운 상담 답변을 제공하는 서비스입니다.
+> 이 레포지터리의 코드는 SK Networks AI Camp 28기 교육 과정 중 제작된 팀 프로젝트 산출물입니다.
