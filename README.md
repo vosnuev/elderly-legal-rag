@@ -16,7 +16,7 @@
   <img alt="Docker" src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white">
 </p>
 
-## ⌨️ 프로젝트 개요
+## 1. ⌨️ 프로젝트 개요
 
 - **프로젝트명** : SKN28-3rd-1Team — Agentic RAG 기반 노년 복지·법령 상담 서비스
 - **기간** : 2026.05.22 ~ 2026.06.25
@@ -26,7 +26,7 @@
 
 ---
 
-## 🙋 내가 한 일 — 전하영 ([@vosnuev](https://github.com/vosnuev))
+## 2. 🙋 내가 한 일 — 전하영 ([@vosnuev](https://github.com/vosnuev))
 
 > 3차 프로젝트 백엔드 단독 담당. Main Agent · BFF · MCP 연동 · LLM provider 설정까지 한 사람이 관통했다.
 > 각 항목은 저장소 안의 `backend/` 코드·PR·테스트로 근거를 확인할 수 있다.
@@ -134,7 +134,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 <!------- 왜 만들었나 -------->
 
-## 🎯 왜 만들었나
+## 3. 🎯 왜 만들었나
 
 기존 복지·법령 정보 안내는 **어렵고, 흩어져 있고, 최신이 보장되지 않는다**. 노인복지·기초연금·고령자고용·근로기준 같은 문서는 국가법령정보센터, 보건복지부, 고용센터, 주민센터에 나눠 있고, 용어가 일반인에게 어렵고, 지원 금액·자격 조건은 매달 바뀔 수 있다.
 
@@ -155,7 +155,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 <!------- 사용자 시나리오 -------->
 
-## 👤 사용자 시나리오
+## 4. 👤 사용자 시나리오
 
 ### 시나리오 A — 만 65세 본인, 기초연금 신청 전 확인
 
@@ -197,7 +197,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ---
 
-## ⭐️ 핵심 기능
+## 5. ⭐️ 핵심 기능
 
 | 기능 | 입력 | 출력 | 비고 |
 |---|---|---|---|
@@ -214,7 +214,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ---
 
-## ⚙️ 시스템 아키텍처
+## 6. ⚙️ 시스템 아키텍처
 
 <img src="docs/architecture.png" width="100%">
 
@@ -241,7 +241,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ---
 
-## 🛠️ 기술 스택
+## 7. 🛠️ 기술 스택
 
 ### Backend
 
@@ -280,7 +280,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ---
 
-## 👥 팀원
+## 8. 👥 팀원
 
 | 이름 | GitHub | 주요 영역 |
 |---|---|---|
@@ -292,7 +292,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ---
 
-## 📁 저장소 구조
+## 9. 📁 저장소 구조
 
 ```
 SKN28-3rd-1Team/
@@ -326,7 +326,7 @@ SKN28-3rd-1Team/
 
 ---
 
-## 🚀 빠른 시작
+## 10. 🚀 빠른 시작
 
 > 환경변수는 **Infisical + Varlock**로 관리한다. 실제 `.env`는 커밋 금지, schema(`*.env.schema`)가 계약 기준.
 
@@ -368,7 +368,7 @@ curl -N http://127.0.0.1:8000/chat/stream \
 
 ---
 
-## 🔐 환경 변수
+## 11. 🔐 환경 변수
 
 | 서비스 | Schema | 주요 값 |
 |---|---|---|
@@ -386,7 +386,7 @@ curl -N http://127.0.0.1:8000/chat/stream \
 
 ---
 
-## 📚 문서
+## 12. 📚 문서
 
 | 문서 | 내용 |
 |---|---|
