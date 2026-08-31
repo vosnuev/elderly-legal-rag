@@ -210,6 +210,35 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 > **기대 효과** — 검색 + 신청 절차 + 다음 행동이 한 화면·한 음성 흐름에서 끝나서, "어디서부터 시작해야 하지"라는 인지 비용이 사라진다.
 
+```mermaid
+sequenceDiagram
+  participant U as 👵 김 할머니
+  participant FE as 📱 Frontend<br/>(로디 음성)
+  participant BFF as /api/chat<br/>(BFF)
+  participant BE as 🔧 /chat/stream<br/>(Django)
+  participant MA as 🧠 Main Agent
+  participant RAG as 🗂 RAG MCP
+  participant MG as 📊 Memgraph
+  participant TTS as 🔊 ElevenLabs TTS
+
+  U->>FE: "기초연금 신청하려면 뭐부터 해야 해?" (음성)
+  FE->>FE: 음성 chunk → STT → 텍스트
+  FE->>BFF: POST /api/chat (텍스트)
+  BFF->>BE: POST /chat/stream (SSE)
+  BE->>MA: run_agent_turn(session_id, message)
+  MA->>RAG: search("기초연금" + "신청")
+  RAG->>MG: 노드/엣지 따라가며 top-k
+  MG-->>RAG: 관련 문서 + 조문
+  RAG-->>MA: 검색 결과
+  MA-->>BE: "만 65세 이상, 소득·재산 하위 70%..." (SSE)
+  BE-->>BFF: SSE stream
+  BFF-->>FE: UIMessage stream
+  FE-->>U: 텍스트 답변 + 체크리스트 surface
+  MA->>TTS: Speech Text Agent → 답변 다듬기
+  TTS-->>FE: audio chunk stream
+  FE-->>U: 🔊 음성 답변
+```
+
 ### 시나리오 B — 복지사, 상담 중 법령 근거 확인
 
 > 박 복지사는 주민센터에서 어르신에게 긴급복지 생계지원을 안내하기 전, **정확한 법령과 신청 요건**을 빠르게 확인하고 싶다.
@@ -222,6 +251,36 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 > **기대 효과** — 잘못된 인용 없이, 근거가 항상 답변 옆에 붙어 다닌다. 복지사 입장에서 상담 신뢰도가 올라간다.
 
+```mermaid
+sequenceDiagram
+  participant U as 👨‍💼 박 복지사
+  participant FE as 🖥 Frontend<br/>(/chat)
+  participant BFF as /api/chat<br/>(BFF)
+  participant BE as 🔧 /chat/stream
+  participant MA as 🧠 Main Agent
+  participant RAG as 🗂 RAG MCP
+  participant SC as 🪟 Screen<br/>Control Agent
+  participant WS as 📋 Workspace<br/>Surface
+
+  U->>FE: "긴급복지 생계지원 신청 요건이랑 제출 서류를 알려줘"
+  FE->>BFF: POST /api/chat
+  BFF->>BE: POST /chat/stream
+  BE->>MA: run_agent_turn()
+  MA->>RAG: search("긴급복지 생계지원")
+  RAG-->>MA: 「긴급복지법」+「복지부 지침」+ 조문
+  MA-->>BE: 답변 + 근거 문서 (SSE)
+  BE-->>BFF: SSE stream
+  BFF-->>FE: UIMessage (답변 + 근거 part)
+  MA->>SC: 답변 + frontend snapshot
+  SC-->>FE: workspace command 1개 (action_checklist)
+  FE->>WS: 체크리스트 surface 갱신
+  WS-->>U: "신분증 사본 · 급여 통장 · 재산 신고서" 항목
+  U->>FE: "근거 문서" 클릭
+  FE-->>U: 원문 일부 + 조문 펼쳐짐
+  U->>FE: 인쇄 / 클립보드 복사
+  FE-->>U: 상담 기록 저장
+```
+
 ### 시나리오 C — 퇴직금 분쟁, 고령자 본인
 
 > 이 씨는 60대 중반에 건설 현장 일을 마치고 퇴직금을 못 받았다. **"어디에 상담하고 어떤 절차로 가져가야 하지"**를 알고 싶다.
@@ -233,6 +292,41 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 5. 음성 답변도 같이 흘러나와, 글씨가 작은 폰에서도 들으면서 진행할 수 있다.
 
 > **기대 효과** — "검색 → 근거 확인 → 지역 기관 찾기 → 준비물 정리" 4단계를 한 흐름에서 마칠 수 있다.
+
+```mermaid
+sequenceDiagram
+  participant U as 👷 이 씨 (60대)
+  participant FE as 📱 Frontend<br/>(/chat)
+  participant BFF as /api/chat
+  participant BE as 🔧 /chat/stream
+  participant MA as 🧠 Main Agent
+  participant RAG as 🗂 RAG MCP
+  participant EXT as 🌐 External MCP<br/>(Naver)
+  participant SC as 🪟 Screen<br/>Control
+  participant TTS as 🔊 TTS
+
+  U->>FE: "퇴직금을 못 받았을 때 어디에 상담해야 해?"
+  FE->>BFF: POST /api/chat
+  BFF->>BE: POST /chat/stream
+  BE->>MA: run_agent_turn()
+  MA->>RAG: search("근로기준법 퇴직금")
+  RAG-->>MA: 「근로기준법」+「고용노동부」+ 권리 구제 절차
+  par 병렬
+    MA->>EXT: Naver 지역 검색 "내 위치 가까운 고용센터"
+    EXT-->>MA: 지역별 고용센터 목록 + 좌표
+  end
+  MA-->>BE: 답변 + 지역 기관 정보 (SSE)
+  BE-->>BFF: SSE stream
+  BFF-->>FE: UIMessage (답변 + map/list part)
+  MA->>SC: 답변 + snapshot
+  SC-->>FE: workspace command: map_results + action_checklist
+  FE->>U: Naver 지도 + 목록 + 상세 갱신
+  FE->>U: 체크리스트 (근로계약서·임금대장·통장 거래내역)
+  MA->>TTS: 음성 답변
+  TTS-->>U: 🔊 답변 음성
+  U->>FE: 목록에서 특정 고용센터 선택
+  FE-->>U: 지도 포커스 + 상세(전화번호·운영시간)
+```
 
 ---
 
