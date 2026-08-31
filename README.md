@@ -198,6 +198,8 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ### 시나리오 A — 만 65세 본인, 기초연금 신청 전 확인
 
+![시나리오 A — 만 65세 본인, 기초연금 신청 전 확인](presentation/ppt/assets/scenario-a-basic-pension.png)
+
 > 김 할머니(만 65세)는 TV에서 기초연금 광고를 보고, "내가 받을 수 있는지"부터 확인하고 싶어한다.
 
 1. 김 할머니는 폰을 열고 `/chat`에 진입 → 마이크 버튼을 누르고 "기초연금 신청하려면 뭐부터 해야 해?" 라고 말한다.
@@ -214,6 +216,8 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ### 시나리오 B — 복지사, 상담 중 법령 근거 확인
 
+![시나리오 B — 복지사, 상담 중 법령 근거 확인](presentation/ppt/assets/scenario-b-welfare-citation.png)
+
 > 박 복지사는 주민센터에서 어르신에게 긴급복지 생계지원을 안내하기 전, **정확한 법령과 신청 요건**을 빠르게 확인하고 싶다.
 
 1. 박 복지사는 데스크톱 `/chat`에서 "긴급복지 생계지원 신청 요건이랑 제출 서류를 알려줘" 라고 입력한다.
@@ -227,6 +231,8 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 
 ### 시나리오 C — 퇴직금 분쟁, 고령자 본인
+
+![시나리오 C — 퇴직금 분쟁, 고령자 본인](presentation/ppt/assets/scenario-c-severance-consultation.png)
 
 > 이 씨는 60대 중반에 건설 현장 일을 마치고 퇴직금을 못 받았다. "어디에 상담하고 어떤 절차로 가져가야 하지"를 알고 싶다.
 
