@@ -1,4 +1,4 @@
-# 🧭 옆집손주 — 노년 복지·법령 Agentic RAG
+# 🧭 옆집손주 - 노년 복지·법령 Agentic RAG
 
 <p align="center">
   <b>흩어진 노인·고령층 복지·법령·지역 기관 정보를 자연어로 묻고, 근거와 다음 행동까지 한 번에.</b><br>
@@ -18,54 +18,54 @@
 
 ## 1. ⌨️ 프로젝트 개요
 
-- **프로젝트명** : SKN28-3rd-1Team — Agentic RAG 기반 노년 복지·법령 상담 서비스
+- **프로젝트명** : SKN28-3rd-1Team - Agentic RAG 기반 노년 복지·법령 상담 서비스
 - **기간** : 2026.05.22 ~ 2026.06.25
 - **구성원** : 5명 (팀장 · RAG · 프론트엔드 · 백엔드 · 기획·문서)
 - **내 역할** : **백엔드 (Django Channels `/chat/stream` · LangGraph Agent · MCP tool 연동)**
 - **원본 저장소** : `SKNETWORKS-FAMILY-AICAMP/SKN28-3rd-1Team` (이 저장소는 fork)
-- **서비스명** : **옆집손주** (캐릭터: **로디** — Road + Buddy, 복지 길잡이)
+- **서비스명** : **옆집손주** (캐릭터: **로디** - Road + Buddy, 복지 길잡이)
 
 ---
 
 ## 🖼️ 서비스 화면
 
-### 1. 랜딩 — "노인복지와 법률, 로디에게 물어보세요"
+### 1. 랜딩 - "노인복지와 법률, 로디에게 물어보세요"
 
 <img src="docs/screen-1-main.jpg" width="100%">
 
 - 헤더: 캐릭터티 소개 · 기능 소개 · 이용 방법 · 상담 주제 · **무료 상담 시작** CTA
 - 메인 카피: "노인복지와 법률, 로디에게 물어보세요" + 부제 (어르신을 위한 RAG 기반 법률·복지 상담)
-- 캐릭터: **로디(Rody)** — Road + Buddy를 합친 이름. 
+- 캐릭터: **로디(Rody)** - Road + Buddy를 합친 이름. 
 - 신뢰도 라인: **국가법령정보** · **24시간** (기반 데이터 · 연중무휴)
 - CTA: **무료로 상담 시작하기** · **이용 방법 보기**
 
-### 2. 캐릭터 소개 — "복잡한 복지 정보를 쉬운 길로 바꾸는 안내자 로디"
+### 2. 캐릭터 소개 - "복잡한 복지 정보를 쉬운 길로 바꾸는 안내자 로디"
 
 <img src="docs/screen-2-character.jpg" width="100%">
 
 - **로디 캐릭터티 소개**: 복잡한 복지 정보를 쉬운 길로 바꾸는 안내자 로디
 - 친근한 외형 + 차분한 어조로 어르신이 편하게 질문할 수 있는 분위기
 - 3가지 약속:
-  - **Road + Buddy** — 길을 뜻하는 Road와 친구를 뜻하는 Buddy를 합친 이름
-  - **복지 길잡이** — 지원 정책, 돌봄 기관, 요양 시설처럼 복잡한 정보를 쉽게 정리
-  - **앞에서 동행** — 앞에서 끝까지 같이 걸으며 필요한 방향을 알려줌
+  - **Road + Buddy** - 길을 뜻하는 Road와 친구를 뜻하는 Buddy를 합친 이름
+  - **복지 길잡이** - 지원 정책, 돌봄 기관, 요양 시설처럼 복잡한 정보를 쉽게 정리
+  - **앞에서 동행** - 앞에서 끝까지 같이 걸으며 필요한 방향을 알려줌
 
-### 3. 상담 화면 — 로디 채팅 + 체크리스트
+### 3. 상담 화면 - 로디 채팅 + 체크리스트
 
 <img src="docs/screen-3-chat.jpg" width="100%">
 
 - **좌측**: 상담 채팅 (음성 On, Trace 6). 메시지 입력 + 음성 마이크 + 전송
 - **우측 workspace surface**: **기초연금 신청 절차** 체크리스트 (5필수 / 0완료)
-  - STEP 1 — 신청 자격 확인 (만 65세 이상)
-  - STEP 2 — 소득 요건 확인 (본인 및 배우자 소득인정액 기준)
-  - STEP 3 — 거주 요건 확인 (대한민국 거주자)
-  - STEP 4 — 신청서 준비
+  - STEP 1 - 신청 자격 확인 (만 65세 이상)
+  - STEP 2 - 소득 요건 확인 (본인 및 배우자 소득인정액 기준)
+  - STEP 3 - 거주 요건 확인 (대한민국 거주자)
+  - STEP 4 - 신청서 준비
   - 마지막: **기초연금 신청 절차를 따른 후 필요한 서류를 준비하세요** + **다음으로 계속** CTA
 - **로디 답변**: "기초연금 수급 자격 조건 알려줘" → 자격 요건·소득 요건·거주 요건·신청 방법을 항목으로 정리해 한 화면에 표시
 
 ---
 
-## 2. 🙋 내가 한 일 — 전하영 ([@vosnuev](https://github.com/vosnuev))
+## 2. 🙋 내가 한 일 - 전하영 ([@vosnuev](https://github.com/vosnuev))
 
 > 3차 프로젝트 백엔드 단독 담당. Main Agent · BFF · MCP 연동 · LLM provider 설정까지 한 사람이 관통했다.
 > 각 항목은 저장소 안의 `backend/` 코드·PR·테스트로 근거를 확인할 수 있다.
@@ -82,11 +82,11 @@
 
 <br/>
 
-### 1️⃣ Django Channels `/chat/stream` — 백엔드의 단일 진입점
+### 1️⃣ Django Channels `/chat/stream` - 백엔드의 단일 진입점
 
 `/chat/stream`이 백엔드의 canonical SSE chat endpoint다. 프론트(`/api/chat` BFF)와 MCP가 외부에서 보기에 똑같은 한 곳을 두드린다. Channels ASGI 위에 SSE 응답을 흘려보내고, LLM 호출·tool calling 결과를 같은 응답에 끼워 넣어 토큰 단위로 내보낸다.
 
-**왜 BFF가 따로 있나** — 프론트는 `AI SDK`의 `UIMessage` stream/data part 규약을 따라야 하지만 백엔드 LLM이 그대로 흘려보내는 청크는 그 모양이 아니다. 그래서 `/api/chat`이 **SSE → UI message 변환기**로 한 번 번역한다. 백엔드 프로토콜이 바뀌어도 프론트는 그대로 둘 수 있다.
+**왜 BFF가 따로 있나** - 프론트는 `AI SDK`의 `UIMessage` stream/data part 규약을 따라야 하지만 백엔드 LLM이 그대로 흘려보내는 청크는 그 모양이 아니다. 그래서 `/api/chat`이 **SSE → UI message 변환기**로 한 번 번역한다. 백엔드 프로토콜이 바뀌어도 프론트는 그대로 둘 수 있다.
 
 ```python
 # backend/src/django_backend/views.py (요지)
@@ -98,11 +98,11 @@ async def chat_stream(request):
 
 ---
 
-### 2️⃣ LangGraph Agent — Main / Screen Control / Speech Text
+### 2️⃣ LangGraph Agent - Main / Screen Control / Speech Text
 
 세 에이전트가 분리되어 있다. **Main Agent**는 사용자 요청을 보고 어떤 tool을 부를지 결정하고, **Screen Control Agent**는 최종 답변과 frontend state snapshot을 보고 *typed workspace command* 한 개를 골라 frontend에 내려보낸다. **Speech Text Agent**는 답변을 음성용으로 다듬어 ElevenLabs TTS 노드에 넘긴다.
 
-**Screen Control을 따로 둔 이유** — LLM이 raw JSX나 endpoint를 직접 보내면 검증이 어렵다. Pydantic schema(backend) ↔ Zod schema(frontend)로 **명시적 command 계약을 강제**해 한 번에 1 surface만 갱신하도록 만들었다. 결과적으로 사용자 화면이 한 답변에 여러 번 바뀌지 않는다.
+**Screen Control을 따로 둔 이유** - LLM이 raw JSX나 endpoint를 직접 보내면 검증이 어렵다. Pydantic schema(backend) ↔ Zod schema(frontend)로 **명시적 command 계약을 강제**해 한 번에 1 surface만 갱신하도록 만들었다. 결과적으로 사용자 화면이 한 답변에 여러 번 바뀌지 않는다.
 
 ```text
 Main Agent ─┬─ RAG MCP Tool ─→ Memgraph
@@ -113,7 +113,7 @@ Main Agent ─┬─ RAG MCP Tool ─→ Memgraph
 
 ---
 
-### 3️⃣ MCP tool 연동 — RAG + External
+### 3️⃣ MCP tool 연동 - RAG + External
 
 Main Agent는 RAG 내부 구현을 **모른다**. 대신 MCP tool 인터페이스로 검색 기능을 호출한다. 그래서 RAG 영역이 바뀌어도(예: 검색 모델 교체) Main Agent 코드는 그대로다.
 
@@ -126,7 +126,7 @@ RAG 측에서는 `read-only` MCP endpoint만 노출해 검색 전용으로 쓰�
 
 ---
 
-### 4️⃣ Next.js BFF `/api/chat` — backend ↔ frontend 다리
+### 4️⃣ Next.js BFF `/api/chat` - backend ↔ frontend 다리
 
 프론트엔드는 `AI SDK`의 `UIMessage` stream 규약으로 데이터를 받아야 한다. backend의 raw SSE chunk는 그 모양이 아니라서, `/api/chat` Route Handler가 **SSE → UI message data part 변환기**로 동작한다.
 
@@ -143,7 +143,7 @@ TTS audio part도 같은 BFF에서 같이 흘려보낸다. 그래서 프론트�
 
 ---
 
-### 5️⃣ LLM Provider 설정 — agent별로 다른 모델
+### 5️⃣ LLM Provider 설정 - agent별로 다른 모델
 
 Main Agent는 추론 능력이 중요하고, Speech Text Agent는 짧고 자연스러운 한국어 문장이 필요하다. 그래서 **agent별 LLM provider/model**을 따로 둔다.
 
@@ -163,11 +163,11 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ### 6️⃣ 그 외 기여
 
-- **메모리/세션** — `ChatThreadContextStore` + `InMemorySaver`로 `session_id` 단위 대화 이어가기. TTL 경계를 코드에 명시.
-- **Main Agent tool indicator** — 메인 채팅 bubble에 tool call 발생 여부를 badge로 표시해서, 검색이 실제로 일어났는지 사용자가 알 수 있게.
-- **LangSmith 검증** — LLM 호출 trace · mock tool call trace를 시연 전에 확인. trace drawer도 frontend에 노출.
-- **Typed workspace command schema** — backend Pydantic ↔ frontend Zod로 화면 command 계약. 잘못된 형태는 BFF 단계에서 차단.
-- **Backend 운영 가이드** — `backend/README.md`에 `make start` · `make test` · `make check` 흐름 + `/health` · `/chat/stream` curl 예시 정리.
+- **메모리/세션** - `ChatThreadContextStore` + `InMemorySaver`로 `session_id` 단위 대화 이어가기. TTL 경계를 코드에 명시.
+- **Main Agent tool indicator** - 메인 채팅 bubble에 tool call 발생 여부를 badge로 표시해서, 검색이 실제로 일어났는지 사용자가 알 수 있게.
+- **LangSmith 검증** - LLM 호출 trace · mock tool call trace를 시연 전에 확인. trace drawer도 frontend에 노출.
+- **Typed workspace command schema** - backend Pydantic ↔ frontend Zod로 화면 command 계약. 잘못된 형태는 BFF 단계에서 차단.
+- **Backend 운영 가이드** - `backend/README.md`에 `make start` · `make test` · `make check` 흐름 + `/health` · `/chat/stream` curl 예시 정리.
 
 <br/>
 
@@ -196,9 +196,9 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ## 4. 👤 사용자 시나리오
 
-### 시나리오 A — 만 65세 본인, 기초연금 신청 전 확인
+### 시나리오 A - 만 65세 본인, 기초연금 신청 전 확인
 
-![시나리오 A — 만 65세 본인, 기초연금 신청 전 확인](presentation/ppt/assets/scenario-a-basic-pension.png)
+![시나리오 A - 만 65세 본인, 기초연금 신청 전 확인](presentation/ppt/assets/scenario-a-basic-pension.png)
 
 > 김 할머니(만 65세)는 TV에서 기초연금 광고를 보고, "내가 받을 수 있는지"부터 확인하고 싶어한다.
 
@@ -210,13 +210,13 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 6. Screen Control Agent는 최종 답변 + frontend snapshot을 보고 **`action_checklist` surface 1개**를 골라 command로 내보낸다. 프론트는 체크리스트 surface만 갱신한다.
 7. Speech Text Agent는 답변을 음성용으로 다듬고, ElevenLabs TTS가 audio chunk를 stream한다. 김 할머니는 폰으로 답을 들을 수 있다.
 
-> **기대 효과** — 검색 + 신청 절차 + 다음 행동이 한 화면·한 음성 흐름에서 끝나서, "어디서부터 시작해야 하지"라는 인지 비용이 사라진다.
+> **기대 효과** - 검색 + 신청 절차 + 다음 행동이 한 화면·한 음성 흐름에서 끝나서, "어디서부터 시작해야 하지"라는 인지 비용이 사라진다.
 
 
 
-### 시나리오 B — 복지사, 상담 중 법령 근거 확인
+### 시나리오 B - 복지사, 상담 중 법령 근거 확인
 
-![시나리오 B — 복지사, 상담 중 법령 근거 확인](presentation/ppt/assets/scenario-b-welfare-citation.png)
+![시나리오 B - 복지사, 상담 중 법령 근거 확인](presentation/ppt/assets/scenario-b-welfare-citation.png)
 
 > 박 복지사는 주민센터에서 어르신에게 긴급복지 생계지원을 안내하기 전, **정확한 법령과 신청 요건**을 빠르게 확인하고 싶다.
 
@@ -226,13 +226,13 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 4. 같은 화면의 **체크리스트 surface**에 "신분증 사본", "급여 통장 사본", "재산 신고서" 같은 항목이 자동으로 채워진다.
 5. 필요하면 "이 답변 인쇄" 또는 "클립보드에 복사"로 상담 기록에 붙여넣을 수 있다.
 
-> **기대 효과** — 잘못된 인용 없이, 근거가 항상 답변 옆에 붙어 다닌다. 복지사 입장에서 상담 신뢰도가 올라간다.
+> **기대 효과** - 잘못된 인용 없이, 근거가 항상 답변 옆에 붙어 다닌다. 복지사 입장에서 상담 신뢰도가 올라간다.
 
 
 
-### 시나리오 C — 퇴직금 분쟁, 고령자 본인
+### 시나리오 C - 퇴직금 분쟁, 고령자 본인
 
-![시나리오 C — 퇴직금 분쟁, 고령자 본인](presentation/ppt/assets/scenario-c-severance-consultation.png)
+![시나리오 C - 퇴직금 분쟁, 고령자 본인](presentation/ppt/assets/scenario-c-severance-consultation.png)
 
 > 이 씨는 60대 중반에 건설 현장 일을 마치고 퇴직금을 못 받았다. "어디에 상담하고 어떤 절차로 가져가야 하지"를 알고 싶다.
 
@@ -242,7 +242,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 4. 답변 끝의 체크리스트에 "근로계약서 사본", "임금대장", "통장 거래내역" 같은 준비물이 자동으로 들어간다.
 5. 음성 답변도 같이 흘러나와, 글씨가 작은 폰에서도 들으면서 진행할 수 있다.
 
-> **기대 효과** — "검색 → 근거 확인 → 지역 기관 찾기 → 준비물 정리" 4단계를 한 흐름에서 마칠 수 있다.
+> **기대 효과** - "검색 → 근거 확인 → 지역 기관 찾기 → 준비물 정리" 4단계를 한 흐름에서 마칠 수 있다.
 
 
 ---
@@ -278,14 +278,14 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 | | `backend/src/memory` | `session_id` · `InMemorySaver` · TTL 경계 | in-memory |
 | **RAG** | `rag/be/` | ingest · 검색 API · MCP endpoint (`/mcp`) | HTTP · MCP |
 | | `rag/fe/` | RAG 운영 UI (문서 목록 · ingest job · review queue) | HTTP |
-| | `rag/infra/` | Memgraph · Memgraph Lab 실행 설정 | — |
+| | `rag/infra/` | Memgraph · Memgraph Lab 실행 설정 | - |
 | **외부 MCP** | `external_mcp/` | Naver · Firecrawl · TMAP FastMCP provider tools | MCP |
 | **LLM** | OpenRouter · OpenAI · Cerebras | agent별 provider/model · `LLM_AGENT_<AGENT>_*` env | API |
 | **관측** | LangSmith | LLM 호출 + tool calling trace | SDK |
 | **데이터** | Memgraph (GraphRAG) | 노드·엣지·스키마 | Bolt |
 | | Redis | 캐시 · checkpointer 보조 | RESP |
-| **인프라** | Docker Compose | `db` / `api` / `weather` / `naver` / `eleven` / `all` profiles | — |
-| | AWS | ECR · CodeBuild · CodePipeline · ECS | — |
+| **인프라** | Docker Compose | `db` / `api` / `weather` / `naver` / `eleven` / `all` profiles | - |
+| | AWS | ECR · CodeBuild · CodePipeline · ECS | - |
 
 `/chat/stream` → Main Agent → RAG MCP Tool / External MCP Tool → Memgraph 검색 → 최종 답변 → Screen Control Agent → typed workspace command → frontend 1 surface 갱신.
 
@@ -306,7 +306,7 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 | `Memory` | 에이전트 아티팩트 | 리뷰 피드백을 누적해 정리한 **단일** curated memory |
 | `IngestJob` | 운영 | ingest·그래프 구축 진행 상태 마커 |
 
-> **핵심 구분** — `RelationshipCandidate` · `ReviewNote` · `Memory` · `IngestJob`은 **지식 노드가 아니다.** semantic KG(`Document` · `Chunk`)와 워크플로·운영 노드를 파일 단위로 분리해 둔다 (`nodes.py` / `review.py` / `memory.py` / `runtime.py`).
+> **핵심 구분** - `RelationshipCandidate` · `ReviewNote` · `Memory` · `IngestJob`은 **지식 노드가 아니다.** semantic KG(`Document` · `Chunk`)와 워크플로·운영 노드를 파일 단위로 분리해 둔다 (`nodes.py` / `review.py` / `memory.py` / `runtime.py`).
 
 ### 관계
 
@@ -413,11 +413,11 @@ Memgraph Lab에서 뽑은 스냅샷이다. **법령 도메인 엣지가 영문 �
 
 | 이름 | GitHub | 주요 영역 |
 |---|---|---|
-| 이원빈 | — | 팀장 · 전체 일정 관리 · 작업 방향 컨펌 · 파트별 진행 상황 확인 |
+| 이원빈 | - | 팀장 · 전체 일정 관리 · 작업 방향 컨펌 · 파트별 진행 상황 확인 |
 | 김지효 | [@jjeoe0317](https://github.com/jjeoe0317) | RAG · 노인·고령층 관련 법령 데이터 확인 · 문서 전처리 · 임베딩 흐름 |
-| 송윤경 | — | 프론트엔드 · 사용자 질문 화면 · API 연결 · 결과 화면 UX · RAG 테스트 케이스 |
+| 송윤경 | - | 프론트엔드 · 사용자 질문 화면 · API 연결 · 결과 화면 UX · RAG 테스트 케이스 |
 | **전하영** | [**@vosnuev**](https://github.com/vosnuev) | **백엔드 · Django Channels `/chat/stream` · LangGraph Agent 실행 구조 · MCP tool 연동** |
-| 양도영 | — | 기획·문서 · 서비스 흐름 정리 · README · 발표 자료 · 산출물 |
+| 양도영 | - | 기획·문서 · 서비스 흐름 정리 · README · 발표 자료 · 산출물 |
 
 ---
 
