@@ -291,6 +291,85 @@ LLM_AGENT_SPEECH_MODEL=llama-3.1-8b
 
 ---
 
+## 6-1. 🗄️ 그래프 스키마 (ERD)
+
+관계형 ERD 대신 **Memgraph 속성 그래프 스키마**가 이 프로젝트의 데이터 모델이다. 문서를 행·열로 정규화하는 대신, **조항 사이의 관계 자체를 엣지로 저장**하기 때문이다.
+
+### 노드 (Storage Contract)
+
+| 노드 | 성격 | 역할 |
+|---|---|---|
+| `Document` | 지식 | 최초 업로드된 원문 문서 |
+| `Chunk` | 지식 | agent가 만든 semantic chunk |
+| `RelationshipCandidate` | 리뷰 아티팩트 | **사람 검수 전** 단계의 제안된 엣지 후보 |
+| `ReviewNote` | 리뷰 아티팩트 | 후보 승인·거절에 붙는 리뷰어 피드백 이벤트 |
+| `Memory` | 에이전트 아티팩트 | 리뷰 피드백을 누적해 정리한 **단일** curated memory |
+| `IngestJob` | 운영 | ingest·그래프 구축 진행 상태 마커 |
+
+> **핵심 구분** — `RelationshipCandidate` · `ReviewNote` · `Memory` · `IngestJob`은 **지식 노드가 아니다.** semantic KG(`Document` · `Chunk`)와 워크플로·운영 노드를 파일 단위로 분리해 둔다 (`nodes.py` / `review.py` / `memory.py` / `runtime.py`).
+
+### 관계
+
+```mermaid
+flowchart TD
+    Document["Document<br/>원본 입력 문서"]
+    Chunk["Chunk<br/>semantic chunk"]
+    Candidate["RelationshipCandidate<br/>review 전 proposed edge"]
+    ReviewNote["ReviewNote<br/>candidate review feedback"]
+    Memory["Memory<br/>single curated memory"]
+    IngestJob["IngestJob<br/>operational progress marker"]
+    Left["left_node<br/>any graph node"]
+    Right["right_node<br/>any graph node"]
+    Evidence["evidence_node_id<br/>Chunk / Document"]
+    Edge["Approved relationship edge<br/>materialized after review"]
+
+    Document -->|HAS_CHUNK| Chunk
+    Evidence -->|EVIDENCES_RELATIONSHIP_CANDIDATE| Candidate
+    Left -->|CANDIDATE_LEFT| Candidate
+    Candidate -->|CANDIDATE_RIGHT| Right
+    Candidate -->|HAS_REVIEW_NOTE| ReviewNote
+    ReviewNote -->|EVIDENCES_MEMORY| Memory
+    Candidate -->|approved creates| Edge
+    Edge -. provenance .-> Candidate
+    IngestJob -. tracks progress for .-> Document
+```
+
+### 실제 적재된 엣지 분포
+
+Memgraph Lab에서 뽑은 스냅샷이다. **법령 도메인 엣지가 영문 타입과 한글 타입으로 섞여 있는 것**까지 그대로 남겼다.
+
+| from | 관계 | to | 건수 |
+|---|---|---|---:|
+| `Chunk` | `EVIDENCES_RELATIONSHIP_CANDIDATE` | `RelationshipCandidate` | 42 |
+| `Chunk` | `CANDIDATE_LEFT` | `RelationshipCandidate` | 42 |
+| `RelationshipCandidate` | `CANDIDATE_RIGHT` | `Chunk` | 39 |
+| `Document` | `HAS_CHUNK` | `Chunk` | 35 |
+| `Chunk` | `RELATED_TO` | `Chunk` | 8 |
+| `Chunk` | `관련_조항` | `Chunk` | 6 |
+| `RelationshipCandidate` | `HAS_REVIEW_NOTE` | `ReviewNote` | 5 |
+| `ReviewNote` | `EVIDENCES_MEMORY` | `Memory` | 5 |
+| `Chunk` | `DEFINES_TERM_FOR` | `Chunk` | 4 |
+| `Chunk` | `PROVIDES_EVIDENCE_FOR` | `Document` / `Chunk` | 3 / 2 |
+| `RelationshipCandidate` | `CANDIDATE_RIGHT` | `Document` | 3 |
+| `Chunk` | `INCURS_FINE` | `Chunk` | 2 |
+| `Chunk` | `SPECIFIES_STATUTE_OF_LIMITATIONS` | `Chunk` | 1 |
+| `Chunk` | `PUNISHES_VIOLATION` | `Chunk` | 1 |
+| `Chunk` | `보상_절차_연계` | `Chunk` | 1 |
+
+전체 스키마 시각화: [`presentation/ppt/assets/memgraph-lab-schema-full.png`](presentation/ppt/assets/memgraph-lab-schema-full.png) · 원본 정의: [`rag/be/src/query/schema/README.md`](rag/be/src/query/schema/README.md)
+
+### 설계 규칙
+
+| 규칙 | 내용 |
+|---|---|
+| **ID 소유권** | technical id는 agent가 만들지 않음. Memgraph `randomUUID()`가 생성하고 write layer가 반환 |
+| **status 제약** | `RelationshipCandidate.status`는 `pending_review` · `approved` · `rejected` 3개만 허용 |
+| **provenance** | `job_id`로 어떤 ingest run에서 나온 후보인지 추적. semantic property가 아닌 runtime 필드 |
+| **endpoint vs 근거** | `left_node`/`right_node`는 후보의 양 끝, `evidence_node_id`는 **선택적** 근거 앵커 |
+| **tool schema 분리** | DB 스키마의 **agent-write subset**만 tool schema로 노출 (`embedding` 등은 agent가 못 씀) |
+
+---
+
 ## 7. 🛠️ 기술 스택
 
 ### Backend
